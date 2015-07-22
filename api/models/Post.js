@@ -22,6 +22,7 @@ module.exports = {
       via: 'owner'
     },
 
+    //Metodi d'istanza
     upvote: function (callback) {
       this.upvotes += 1;
       this.save(callback);
