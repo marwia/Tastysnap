@@ -1,0 +1,18 @@
+FlapperNews_v2 - Relazione
+
+FlapperNews con Passport e JWT
+Relazione
+
+FlapperNews è una applicazione web sviluppata con il framework Sails (Node.js e Express) per il lato server, e con il framework Angular per il lato client. 
+
+Il primo passo della costruzione dell'applicazione è stata l'interfaccia utente in Angular e HTML.
+
+Solitamente una applicazione Angular è composta da due file distinti:
+	•	il file .js contiene il codice JavaScript e quindi i servizi, i controller e gli stati della nostra app;
+	•	il file .html contiene le varie viste dell'app;
+
+Questa versione è stata migliorata con l'aggiunta di:
+	•	Bower - per gestire le dipendence lato client;
+	•	l'app angular è stata scomposta in vari file e cartelle;
+
+Passport è un middleware che si occupa di verificare sostanzialmente il login dell'utente tramite le cosiddette strategie. Invece l'accesso alle API della applicazione  server viene controllato non tramite sessioni ma tramite Json Web Token. Ogni utente che fa login riceve un token che è generato in base ad una chiave segreta e un payload (che in questo caso è stato l'oggetto User). Ogni volta che l'utente richiede una risorsa che necessità una politica di autorizzazione deve inviare il token, il token viene verificato con la chiave e, se è valido, da quest'ultimo possiamo decodificare il payload e sapere anche di quale utente è tale token.
