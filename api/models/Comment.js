@@ -15,8 +15,12 @@ module.exports = {
 
     upvotes : { type: 'Integer', defaultsTo: 0 },
 
-    owner:{ 
-    	model:'Post' 
+    owner : { 
+    	model :'Post' 
+    },
+
+    RecipeOwner : { 
+      model :'Recipe' 
     }
 
   },
