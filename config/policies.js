@@ -55,6 +55,11 @@ module.exports.policies = {
   'PostController': {
     'getPost': true, // We dont need authorization here, allowing public access
     'find': true
+  },
+
+  'RecipeController': {
+    'getRecipe': true, // We dont need authorization here, allowing public access
+    'find': true
   }
 
   // '*': true,
