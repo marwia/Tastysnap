@@ -1,0 +1,145 @@
+/*
+ * Custom styles
+ * Mariusz Wiazowski
+ * 
+ */
+
+/*
+ * Serve per mantenere visibile il contenuto sotto la nav-bar
+ */
+#page-wrapper {
+  padding-top: 50px;
+}
+/*
+ * Quindi si deve alzare il footer
+ */
+.sidebar-footer {
+  bottom: 50px
+}
+
+/*
+ * Colore principale sidebar
+ */
+#sidebar-wrapper {
+  background: #353535;
+}
+
+/*
+ * Colore di sfondo del titolo della sidebar
+ */
+#page-wrapper:not(.open) ul.sidebar .sidebar-title.separator, .sidebar-footer, .sidebar-profile,
+ul.sidebar .sidebar-list a:hover, ul.sidebar .sidebar-main a {
+    background: #2f2f2f
+}
+
+/*
+ * Colore del testo dei titoli delle categorie
+ */
+ul.sidebar .sidebar-title {
+    color: #ff9800;
+}
+
+/*
+ * Colore del testo delle voci (che stanno dentro le categorie)
+ */
+ul.sidebar .sidebar-list a {
+    color: #cbcbcb;
+}
+
+.sidebar-footer div a {
+    color: #ff9800;
+    font-size: 12px;
+    line-height: 43px
+}
+
+/* navbar */
+.navbar-default {
+    background-color: #F8F8F8;
+    border-color: #E7E7E7;
+}
+
+/*
+ * Sezione della sidebar che mostra i dettagli dell'utente
+ */
+.sidebar-profile {
+    position: absolute;
+    bottom: 200px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    transition: all .6s ease 0s;
+    text-align: center;
+    color: #cbcbcb;
+}
+
+.sidebar-profile div a {
+    color: #cbcbcb;
+    font-size: 12px;
+    line-height: 10px
+}
+
+.sidebar-profile span {
+    font-size: 10px;
+}
+
+.sidebar-profile div a:hover {
+    color: #fff;
+    text-decoration: none
+}
+
+.image-circle{
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+}
+
+/* nascondo questo elemento */
+#page-wrapper:not(.open) .sidebar-profile {
+    display: none;
+}
+
+/*********************************************************************************************/
+
+
+
+/*********************************************************************************************/
+
+/* ANIMATIONS */
+
+/*
+ * Affinche questa funzionino bene ui-view deve stare dentro questo:
+ * <div class="row">
+ *   <div class="span12 ui-view-container">
+ *     <div ui-view></div>        
+ *   </div>
+ * </div> 
+ */
+
+.ui-view-container {
+  position: relative;
+}
+
+[ui-view].ng-enter, [ui-view].ng-leave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  -webkit-transition:all .5s ease-in-out;
+  transition:all .5s ease-in-out;
+}
+
+[ui-view].ng-enter {
+  opacity: 0;
+}
+
+[ui-view].ng-enter-active {
+  opacity: 1;
+}
+
+[ui-view].ng-leave {
+  opacity: 1;
+}
+
+[ui-view].ng-leave-active {
+  opacity: 0;
+}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="sampleApp">
   <head>
-    <title>New Sails App</title>
+    <title>TastySnap</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -29,10 +29,14 @@
     -->
     <!-- Custom CSS -->
     <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="libs/rdash-ui/dist/css/rdash.min.css">
+    <link rel="stylesheet" href="libs/angular-loading-bar/build/loading-bar.min.css">
     <!-- Attenzione: le righe comprese tra STYLES vengono sovrascritte, non modificare
     manualmente -->
 
     <!--STYLES-->
+    <link rel="stylesheet" href="/styles/custom.css">
     <link rel="stylesheet" href="/styles/importer.css">
     <!--STYLES END-->
   </head>
@@ -64,7 +68,7 @@
     -->
 
     <!--TEMPLATES-->
-    
+    <script type="text/javascript" src="/jst.js"></script>
     <!--TEMPLATES END-->
 
 
@@ -94,6 +98,10 @@
     <!-- Custom JS -->
     <script src="libs/angular/angular.js"></script>
     <script src="libs/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="libs/angular-cookies/angular-cookies.min.js"></script>
+    <script src="libs/angular-animate/angular-animate.min.js"></script>
+    <script src="libs/angular-loading-bar/build/loading-bar.min.js"></script>
     <!-- Attenzione: le righe comprese tra SCRIPTS vengono sovrascritte, non modificare
     manualmente -->
 
@@ -105,6 +113,13 @@
     <script src="/js/controllers/MainCtrl.js"></script>
     <script src="/js/controllers/NavCtrl.js"></script>
     <script src="/js/controllers/PostsCtrl.js"></script>
+    <script src="/js/controllers/alert-ctrl.js"></script>
+    <script src="/js/controllers/master-ctrl.js"></script>
+    <script src="/js/directives/loading.js"></script>
+    <script src="/js/directives/widget-body.js"></script>
+    <script src="/js/directives/widget-footer.js"></script>
+    <script src="/js/directives/widget-header.js"></script>
+    <script src="/js/directives/widget.js"></script>
     <script src="/js/services/AuthService.js"></script>
     <script src="/js/services/PostService.js"></script>
     <!--SCRIPTS END-->

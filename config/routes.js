@@ -36,6 +36,11 @@ module.exports.routes = {
     view: 'index'
   },
 
+  //usato per testing della dashboard
+  '/index2': {
+    view: 'index2'
+  },
+
   'get /post/:post': 'PostController.getPost',
 
   'put /post/:post/upvote': 'PostController.upvote',

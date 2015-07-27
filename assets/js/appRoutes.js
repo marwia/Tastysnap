@@ -50,8 +50,20 @@ $stateProvider
                             $state.go('home');
                         }
                     }]
+                })
+
+                //je la faremo a fallo funzionare???
+
+                .state('index2', {
+                    url: '/index2',
+                    templateUrl: 'templates/dashboard.html'
+                })
+
+                .state('tables', {
+                    url: '/tables',
+                    templateUrl: 'templates/tables.html'
                 });
 
-                $urlRouterProvider.otherwise('home');
+                $urlRouterProvider.otherwise('pene');//home
 
 }]);

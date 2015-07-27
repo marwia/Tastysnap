@@ -6,6 +6,11 @@
         "font-awesome": "latest",
         "animate.css": "latest",
         "angular": "latest",
-        "angular-ui-router": "latest"   
+        "angular-ui-router": "latest",
+        "angular-cookies": "latest",
+        "angular-bootstrap": "latest",
+        "angular-loading-bar": "latest",
+        "rdash-ui": "1.0.*",
+        "angular-animate": "latest"
     }
 }
