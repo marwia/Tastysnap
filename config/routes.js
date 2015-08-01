@@ -32,13 +32,9 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  // entry point dell'app AngularJS
   '/': {
     view: 'index'
-  },
-
-  //usato per testing della dashboard
-  '/index2': {
-    view: 'index2'
   },
 
   'get /post/:post': 'PostController.getPost',

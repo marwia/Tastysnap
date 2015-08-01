@@ -21,14 +21,14 @@ module.exports = {
 
     RecipeOwner : { 
       model :'Recipe' 
-    }
+    },
 
-  },
-
-  upvote: function(callback) {
+    upvote: function(callback) {
       this.upvotes += 1;
       this.save(callback);
     },
+
+  },
 
   connection: 'someMongodbServer'
 };

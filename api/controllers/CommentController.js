@@ -36,6 +36,8 @@ module.exports = {
     if (!commentId) { return next(); }
 
     Comment.findById(commentId).exec(function (err, comments) {
+      if (err) { return next(err); }
+      
       comments[0].upvote(function (err, comment){
         if (err) { return next(err); }
 
