@@ -22,6 +22,7 @@
  */
 #sidebar-wrapper {
   background: #2f2f2f;
+  *position: absolute;
 }
 
 /*

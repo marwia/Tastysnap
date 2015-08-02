@@ -8,12 +8,12 @@ angular.module('AuthService', []).factory('auth', ['$http', '$window', function(
 
 // Funzione per salvare il token in locale
 auth.saveToken = function (token){
-    $window.localStorage['flapper-news-token'] = token;
+    $window.localStorage['tastysnap-token'] = token;
 };
 
 // Funzione per caricare il token salvato in locale
 auth.getToken = function (){
-    return $window.localStorage['flapper-news-token'];
+    return $window.localStorage['tastysnap-token'];
 }
 
 // Funzione che verifica se esite un token e se è scaduto
@@ -55,7 +55,7 @@ auth.logIn = function(user){
 
 
 auth.logOut = function(){
-    $window.localStorage.removeItem('flapper-news-token');
+    $window.localStorage.removeItem('tastysnap-token');
 };
 
 return auth;

@@ -37,6 +37,16 @@ module.exports.routes = {
     view: 'index'
   },
 
+  '/:something': {
+       target: '/',
+       skipAssets: true
+  },
+
+  '/:something/*': {
+        target: '/',
+        skipAssets: true
+  },
+
   'get /post/:post': 'PostController.getPost',
 
   'put /post/:post/upvote': 'PostController.upvote',
