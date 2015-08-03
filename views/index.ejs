@@ -1,5 +1,10 @@
-
-<body>
+<!-- La direttiva "ng-app" dice ad Angular di inizializzare la nostra applicazione (bootstrap),
+     è una parte fondamentale per ogni applicazione Angular. Questa parte è anche 
+     responsabile della "iniezione delle dipendenze", infatti dice ad Angular di usare
+     come primo modulo quello chiamato sampleApp che, a sua volta, dovrà specificare quali
+     sono le sue dipendenze, ovvero quali sono i modului successivi da iniettare all'interno
+     della nostra applicazione. -->
+<body ng-app="sampleApp">
 
   <div ui-view></div>
   

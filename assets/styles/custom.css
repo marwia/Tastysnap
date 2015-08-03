@@ -7,9 +7,10 @@
 /*
  * Serve per mantenere visibile il contenuto sotto la nav-bar
  */
-#page-wrapper {
-  padding-top: 50px;
+ body { 
+  padding-top: 50px; 
 }
+
 /*
  * Quindi si deve alzare il footer
  */

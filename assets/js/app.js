@@ -9,4 +9,4 @@
  *
  */
 
-angular.module('sampleApp', ['ui.router', 'angular-loading-bar', 'ui.bootstrap', 'ngCookies', 'ngAnimate', 'AuthService', 'PostService', 'appRoutes', 'AuthCtrl', 'MainCtrl', 'NavCtrl', 'PostsCtrl', 'MasterCtrl']);
+angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'AuthService', 'PostService', 'angular-loading-bar', 'ngAnimate', 'appRoutes', 'AuthCtrl', 'MainCtrl', 'MasterCtrl', 'NavCtrl', 'PostsCtrl']);
