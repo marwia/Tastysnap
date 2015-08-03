@@ -15,10 +15,12 @@ angular.module('AuthCtrl', []).controller('AuthCtrl', [
 		};
 
 		$scope.logIn = function(){
+	
 			auth.logIn($scope.user).error(function(error){
 				$scope.error = error;
 			}).then(function(){
 				$state.go('dashboard');
 			});
+			
 		};
 	}]);

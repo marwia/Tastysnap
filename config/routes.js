@@ -32,17 +32,21 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  // entry point dell'app AngularJS
-  '/': {
+ /**
+  * Entry point dell'app AngularJS.
+  * E' importante specificare che si tratta di una GET altrimenti
+  * ogni richiesta verrà reinderizzata qui.
+  */
+  'get /': {
     view: 'index'
   },
 
-  '/:something': {
+  'get /:something': {
        target: '/',
        skipAssets: true
   },
 
-  '/:something/*': {
+  'get /:something/*': {
         target: '/',
         skipAssets: true
   },

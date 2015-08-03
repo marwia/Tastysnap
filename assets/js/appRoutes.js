@@ -66,7 +66,7 @@ angular.module('appRoutes', []).config([
                 })
 
                 // LOGIN PAGE ==========================================================
-                .state('dashboard.login', {
+                .state('login', {
                     url: '/login',
                     templateUrl: 'templates/login.html',
                     controller: 'AuthCtrl',
