@@ -1,13 +1,15 @@
 /**
- * Master Controller
+ * assets/js/controllers/alert-ctrl.js
+ *
+ * Mariusz Wiazowski
+ *
+ * Controller offerto insieme al progetto su Github: https://github.com/rdash/rdash-angular
+ * Serve principalmente per gestire la sidebar (chiusura e apertura).
  */
-
 angular.module('MasterCtrl', []).controller('MasterCtrl', [
     '$scope',
-    'posts', // variabile "inniettata" dal service
-    'auth',
     '$cookieStore',
-    function($scope, posts, auth, $cookieStore){
+    function($scope, $cookieStore){
 
         /**
          * Sidebar Toggle & Cookie Control

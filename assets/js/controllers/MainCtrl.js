@@ -1,8 +1,15 @@
-// assets/js/controllers/MainCtrl.js
+/**
+ * assets/js/controllers/MainCtrl.js
+ *
+ * Mariusz Wiazowski
+ *
+ * Controller usato principalmente per esporre le funzioni di servizio 
+ * per gestire i posts.
+ */
 angular.module('MainCtrl', []).controller('MainCtrl', [
 	'$scope',
-	'posts', // variabile "inniettata" dal service
-	'auth',
+	'posts', // variabile "inniettata" dal service dei posts
+	'auth', // variabile "inniettata" dal service per l'autenticazione
 	function($scope, posts, auth){
 		$scope.test = 'Hello world!';
 

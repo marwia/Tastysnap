@@ -1,4 +1,17 @@
-// assets/js/appRoutes.js
+/**
+ * assets/js/appRoutes.js
+ *
+ * Mariusz Wiazowski
+ *
+ * Router per l'applicazione Angular, quindi una sorta di router client-side.
+ * E' una parte fondamentale di una applicazione single-page, indica tutti gli stati 
+ * possibili dell'applicazione e le rispettive view (template o partials) da 
+ * mostrare all'utente.
+ * E' stato utilizzato un modulo chiamata "ui-router" perchè è più potente di quello
+ * nativo, infatti è possibile creare view annidate e addirittura multiple e
+ * distinguerle con dei nomi.
+ * 
+ */
 angular.module('appRoutes', []).config([
     '$stateProvider',
     '$urlRouterProvider',

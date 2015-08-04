@@ -1,12 +1,14 @@
 /**
- * Alerts Controller
+ * assets/js/controllers/alert-ctrl.js
+ *
+ * Mariusz Wiazowski
+ *
+ * Controller offerto insieme al progetto su Github: https://github.com/rdash/rdash-angular
  */
-
-angular
-    .module('sampleApp')
-    .controller('AlertsCtrl', ['$scope', AlertsCtrl]);
+angular.module('sampleApp').controller('AlertsCtrl', ['$scope', AlertsCtrl]);
 
 function AlertsCtrl($scope) {
+
     $scope.alerts = [{
         type: 'success',
         msg: 'Thanks for visiting! Feel free to create pull requests to improve the dashboard!'

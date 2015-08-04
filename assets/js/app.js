@@ -6,6 +6,7 @@
  *
  * In questa parte di codice dichiaro tutte le dipendenze relative al modulo principale chiamato "sampleApp".
  * ATTENZIONE: l'ordine potrebbe essere rilevante!
+ * Il primo modulo ad essere lanciato sarà 'sampleApp'
  *
  */
 

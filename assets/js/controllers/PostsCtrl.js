@@ -1,4 +1,11 @@
-// assets/js/controllers/PostsCtrl.js
+/**
+ * assets/js/controllers/PostsCtrl.js
+ *
+ * Mariusz Wiazowski
+ *
+ * Controller usato per interagire con i post: aggiungere commenti ad essi
+ * e "upvotare" questi commenti.
+ */
 angular.module('PostsCtrl', []).controller('PostsCtrl', [
 	'$scope',
 	'posts',
@@ -21,6 +28,7 @@ angular.module('PostsCtrl', []).controller('PostsCtrl', [
     	$scope.body = '';
     };
 
+    // funzione per incrementare i voti di un commento
     $scope.incrementUpvotes = function(comment){
     	posts.upvoteComment(post, comment);
     };
