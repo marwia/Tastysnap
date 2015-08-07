@@ -42,24 +42,24 @@ module.exports.policies = {
       upvote: 'commentParam'
   },*/
 
-  '*': 'isAuthorized', // Everything resctricted here
+  '*': true, // Di base tutte le operazioni sono autorizzate
+
+  // Elenco dei casi particolari
   
   'UserController': {
-    'create': true // We dont need authorization here, allowing public access
-  },
- 
-  'AuthController': {
-    '*': true // We dont need authorization here, allowing public access
+    'delete': false // Eliminazione non consentita
   },
 
   'PostController': {
-    'getPost': true, // We dont need authorization here, allowing public access
-    'find': true
+    'create' : 'isAuthorized'
+  },
+
+  'CommentController' : {
+    'create' : 'isAuthorized'
   },
 
   'RecipeController': {
-    'getRecipe': true, // We dont need authorization here, allowing public access
-    'find': true
+    'create' : 'isAuthorized'
   }
 
   // '*': true,

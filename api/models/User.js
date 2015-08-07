@@ -13,38 +13,53 @@ var jwt = require('jsonwebtoken');
 
 module.exports = {
 
+  /***************************************************************************
+  *                                                                          *
+  * Attributi e metodi d'istanza, ovvero oggetti che vengono creati ogni     *
+  * volta che viene creato un oggetto di questa classe.                      *
+  *                                                                          *
+  ***************************************************************************/
   attributes: {
 
     username : { type: 'String', unique: true, lowercase: true },
 
+    password : { type: 'String' },
+
     encryptedPassword: { type: 'String' },
+
+    // Override toJSON method to remove password from API
+    toJSON: function() {
+      var obj = this.toObject();
+      delete obj.encryptedPassword;
+      delete obj.password;
+      return obj;
+    }
  
   },
 
-  // We don't wan't to send back encrypted password either
-  toJSON: function () {
-    var obj = this.toObject();
-    delete obj.encryptedPassword;
-    return obj;
-  },
+  /***************************************************************************
+  *                                                                          *
+  * Metodi della classe (una sorta di metodi statici in Java).               *
+  *                                                                          *
+  ***************************************************************************/
 
   // Generating a hash
-    generateHash: function (password) {
-        return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-    },
+  generateHash: function (password) {
+      return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+  },
 
-    // Checking if password is valid
-    validPassword: function (user, password) {
-      console.log("password" + password);
-      console.log(this.generateHash(password));
-      console.log("encryptedPassword" + user.encryptedPassword);
-        try {
-            return bcrypt.compareSync(password, user.encryptedPassword);
-        }
-        catch (exception) {
-            return false;
-        }
-    },
+  // Checking if password is valid
+  validPassword: function (user, password) {
+    console.log("password" + password);
+    console.log(this.generateHash(password));
+    console.log("encryptedPassword" + user.encryptedPassword);
+      try {
+          return bcrypt.compareSync(password, user.encryptedPassword);
+      }
+      catch (exception) {
+          return false;
+      }
+  },
 
   // Here we encrypt password before creating a User
   beforeCreate : function (values, next) {
