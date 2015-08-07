@@ -41,6 +41,8 @@ module.exports.routes = {
     view: 'index'
   },
 
+  /*
+
   'get /:something': {
        target: '/',
        skipAssets: true
@@ -50,6 +52,7 @@ module.exports.routes = {
         target: '/',
         skipAssets: true
   },
+  */
 
   'get /post/:post': 'PostController.getPost',
 
