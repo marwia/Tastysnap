@@ -1,18 +1,9 @@
 /**
-* User.js
+* Collection.js
 *
-* @description :: TODO: You might write a short summary of how this model works and what it represents here.
+* @description :: Questo modello rappresenta una raccolta di ricette.
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
-
-
-/**
- * Module dependencies
- */
-var bcrypt = require('bcrypt-nodejs');// per generare l'hash
-
-var jwt = require('jsonwebtoken');// per l'autenticazione basata su token JSON
-
 
 module.exports = {
 
@@ -24,52 +15,41 @@ module.exports = {
   ***************************************************************************/
   attributes: {
 
-    username : { type: 'String', unique: true, lowercase: true },
+  	title : { type: 'String', required: true },
 
-    password : { type: 'String' },
+  	description : { type: 'String' },
 
-    encryptedPassword: { type: 'String' },
+  	// Count value
+  	recipesNumber : { type: 'Integer' },
 
-    // Override toJSON method to remove password from API
-    toJSON: function() {
-      var obj = this.toObject();
-      delete obj.encryptedPassword;
-      delete obj.password;
-      return obj;
-    }
- 
+  	// Count value
+  	followersNumber : { type: 'Integer' },
+
+  	// Count value
+  	viewsNumber : { type: 'Integer' },
+
+  	// Reference to User
+  	author : { 
+    	model :'user' 
+    },
+
+  	// Reference to many Recipes
+    recipes : {
+        collection: 'recipe',
+        via: 'collections'
+    },
+
+    upvote : function( callback ) {
+      this.upvotes += 1;
+      this.save(callback);
+    },
+
   },
-
   /***************************************************************************
   *                                                                          *
   * Metodi della classe (una sorta di metodi statici in Java).               *
   *                                                                          *
   ***************************************************************************/
-
-  // Generating a hash
-  generateHash: function (password) {
-      return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-  },
-
-  // Checking if password is valid
-  validPassword: function (user, password) {
-    console.log("password" + password);
-    console.log(this.generateHash(password));
-    console.log("encryptedPassword" + user.encryptedPassword);
-      try {
-          return bcrypt.compareSync(password, user.encryptedPassword);
-      }
-      catch (exception) {
-          return false;
-      }
-  },
-
-  // Here we encrypt password before creating a User
-  beforeCreate : function (values, next) {
-    values.encryptedPassword = this.generateHash(values.password);
-    next();
-  },
- 
 
   /***************************************************************************
   *                                                                          *

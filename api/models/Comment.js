@@ -1,7 +1,7 @@
 /**
 * Comment.js
 *
-* @description :: TODO: You might write a short summary of how this model works and what it represents here.
+* @description :: Questo modello rappresenta un commento.
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
@@ -16,11 +16,11 @@ module.exports = {
     upvotes : { type: 'Integer', defaultsTo: 0 },
 
     owner : { 
-    	model :'Post' 
+    	model :'post' 
     },
 
-    RecipeOwner : { 
-      model :'Recipe' 
+    recipeOwner : { 
+      model :'recipe' 
     },
 
     upvote: function(callback) {

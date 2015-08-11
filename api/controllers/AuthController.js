@@ -1,5 +1,10 @@
 /**
- * AuthController
+ * AuthController.js
+ *
+ * Controller che espone il metodo per fare il login di un utente. 
+ * In pratica permette di verificare il username e password di un utente
+ * se questi combaciano a quelli di un utente registrato, viene 
+ * ritrovato l'oggetto 'User'.
  *
  * @description :: Server-side logic for managing auths
  * @help        :: See http://links.sailsjs.org/docs/controllers

@@ -54,6 +54,16 @@ module.exports.routes = {
   },
   */
 
+  /***************************************************************************
+  *                                                                          *
+  * Custom routes here...                                                    *
+  *                                                                          *
+  *  If a request to a URL doesn't match any of the custom routes above, it  *
+  * is matched against Sails route blueprints. See `config/blueprints.js`    *
+  * for configuration options and examples.                                  *
+  *                                                                          *
+  ***************************************************************************/
+
   'get /post/:post': 'PostController.getPost',
 
   'put /post/:post/upvote': 'PostController.upvote',
@@ -65,17 +75,5 @@ module.exports.routes = {
   'put /post/:post/comment/:comment/upvote': 'CommentController.upvote',
 
   'post /login': 'AuthController.index'
-
-
-
-  /***************************************************************************
-  *                                                                          *
-  * Custom routes here...                                                    *
-  *                                                                          *
-  *  If a request to a URL doesn't match any of the custom routes above, it  *
-  * is matched against Sails route blueprints. See `config/blueprints.js`    *
-  * for configuration options and examples.                                  *
-  *                                                                          *
-  ***************************************************************************/
 
 };

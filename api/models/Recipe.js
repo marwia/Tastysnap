@@ -7,6 +7,12 @@
 
 module.exports = {
 
+  /***************************************************************************
+  *                                                                          *
+  * Attributi e metodi d'istanza, ovvero oggetti che vengono creati ogni     *
+  * volta che viene creato un oggetto di questa classe.                      *
+  *                                                                          *
+  ***************************************************************************/
   attributes: {
 
     title : { type: 'String' },
@@ -15,23 +21,39 @@ module.exports = {
 
     ingredients : { type: 'String' },
 
-    author : { type: 'String' },
-
-    upvotes : { type: 'Integer', defaultsTo: 0},
-
-    comments : {
-      collection: 'comment',
-      via: 'RecipeOwner'
+    // Reference to User
+    author : { 
+      model :'user' 
     },
 
-    //Metodi d'istanza
-    upvote: function (callback) {
-      this.upvotes += 1;
-      this.save(callback);
-    }
+    //TODO: da cambiare...
+    upvotes : { type: 'Integer', defaultsTo: 0},
+
+    // Reference to many Comments
+    comments : {
+      collection: 'comment',
+      via: 'recipeOwner'
+    },
+
+    // Reference to many Collections
+    collections : {
+      collection: 'collection',
+      via: 'recipes'
+    },
 
   },
+  /***************************************************************************
+  *                                                                          *
+  * Metodi della classe (una sorta di metodi statici in Java).               *
+  *                                                                          *
+  ***************************************************************************/
 
+  /***************************************************************************
+  *                                                                          *
+  * Nome dell'interfaccia di connessione al database relativo                *
+  * a questo modello.                                                        *
+  *                                                                          *
+  ***************************************************************************/
   connection: 'someMongodbServer'
 };
 

@@ -37,6 +37,8 @@ module.exports = function (req, res, next) {
   jwToken.verify(token, function (err, decoded) {
     if (err) return res.json(401, {err: 'Invalid Token!'});
     req.payload = decoded; // This is the decrypted token or the payload you provided
+    // ATTENZIONE: Dedoded (per come è fatta la procedura di login) rappresenta 
+    // l'oggetto 'User'.
     next();
   });
 };
