@@ -59,7 +59,8 @@ module.exports.policies = {
   },
 
   'RecipeController': {
-    'create' : 'isAuthorized'
+    'create' : 'isAuthorized',
+    'update' : ['isAuthorized', 'isAuthor']
   }
 
   // '*': true,

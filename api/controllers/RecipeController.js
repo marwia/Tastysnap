@@ -63,6 +63,46 @@ module.exports = {
         return res.json(recipe);
       });
     }
+    /**
+     * @api {put} /recipe/:id Update a Recipe
+     * @apiName UpdateRecipe
+     * @apiGroup Recipe
+     *
+     * @apiDescription Serve per applicare delle modifiche ad un ricetta.
+     * Visto che ogni ricetta deve avere un autore, soltanto l'autore può
+     * eseguire l'update.<br>
+     * Le richieste devono essere con codifica <strong>
+     * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
+     *
+     * @apiUse TokenHeader
+     *
+     * @apiParam {String} id Recipe id.
+     * @apiParam {Object} parameters Pass in body parameters with the same name as the attributes defined on your model to set those values on the desired record.
+     *
+     * @apiParamExample Request-Body-Example:
+     *     title=Spaghetti+fantastici&description=Questa+ricetta...
+     *
+     * @apiSuccess {json} recipe JSON that represents the recipe object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+     *     "recipe": 
+     *       {
+     *         "createdAt": "2015-08-11T18:58:46.329Z",
+     *         "updatedAt": "2015-08-11T18:58:46.329Z",
+     *         "id": "55ca45e69b4246110b319cb1"
+     *       }
+     *     }
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     *
+     * @apiUse NoPermissionError
+     */
 	
 };
 

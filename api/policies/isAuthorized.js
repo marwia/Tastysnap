@@ -10,6 +10,15 @@
  */
 
 /**
+ * @apiDefine TokenHeader
+ *
+ * @apiHeader {String} token  Authentication token.
+ *
+ * @apiHeaderExample Request-Header-Example:
+ *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+ */
+
+/**
  * @apiDefine TokenFormatError
  *
  * @apiError WrongTokenFormat Format is 'Authorization: Bearer [token]'
@@ -72,7 +81,7 @@ module.exports = function (req, res, next) {
   jwToken.verify(token, function (err, decoded) {
     if (err) return res.json(401, {error: 'Invalid Token!'});
     req.payload = decoded; // This is the decrypted token or the payload you provided
-    // ATTENZIONE: Dedoded (per come è fatta la procedura di login) rappresenta 
+    // ATTENZIONE: Decoded (per come è fatta la procedura di login) rappresenta 
     // l'oggetto 'User'.
     next();
   });
