@@ -15,9 +15,9 @@ module.exports = {
   ***************************************************************************/
   attributes: {
 
-    title : { type: 'String' },
+    title : { type: 'String', required: true },
 
-    description : { type: 'String' },
+    description : { type: 'String', required: true },
 
     ingredients : { type: 'String' },
 

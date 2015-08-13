@@ -1,27 +1,38 @@
 /**
- * PostController
+ * RecipeController
  *
- * @description :: Server-side logic for managing posts
+ * @description :: Server-side logic for managing Recipes
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
 module.exports = {
     /**
-     * @api {post} /recipe
+     * @api {post} /recipe Create a new Recipe
      * @apiName CreateRecipe
      * @apiGroup Recipe
      *
      * @apiDescription Serve per caricare un ricetta creata da un utente.
+     * Visto che ogni ricetta deve avere un autore, si deve inviare qualsiasi
+     * ricetta con il token del suo autore.<br>
+     * Le richieste devono essere con codifica <strong>
+     * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
      *
-     * @apiParam {Object} recipe Recipe to upload.
      * @apiHeader {String} token  Authentication token.
      *
-     * @apiHeaderExample {json} Request-Example:
+     * @apiHeaderExample Request-Header-Example:
      *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
      *
-     * @apiSuccess {Object} recipe Recipe object.
+     * @apiParam {String} title Recipe title.
+     * @apiParam {String} description Recipe description.
      *
-     * @apiSuccessExample Success-Response:
+     * @apiParam {json} recipe JSON string that represents the Recipe.
+     *
+     * @apiParamExample Request-Body-Example:
+     *     title=Spaghetti+fantastici&description=Questa+ricetta...
+     *
+     * @apiSuccess {json} recipe JSON that represents the recipe object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
      *     HTTP/1.1 200 OK
      *     {
      *     "recipe": 
@@ -32,22 +43,18 @@ module.exports = {
      *       }
      *     }
      *
-     * @apiError BadRequest Mancano dei parametri all'oggetto inviato al server.
+     * @apiUse TokenFormatError
      *
-     * @apiErrorExample Error-Response:
-     *     HTTP/1.1 400 Bad Request
-     *     {
-     *       "message": "Please fill out all fields"
-     *     }
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
      */
-    // Esempio di redefinizione della classica azione di create
     create: function (req, res, next) {
       var user = req.payload;
-      console.log(user);
 
       var recipe = req.body;
-      console.log(recipe);
 
+      // setto l'autore della ricetta
       recipe.author = user;
 
       Recipe.create(recipe).exec(function(err, recipe){

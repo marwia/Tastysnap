@@ -8,14 +8,14 @@ var o = {
 // dichiaro una funzione di questa factory
 // questa richiede tutti i post al server
 o.getAll = function() {
-    return $http.get('/post').success(function(data){
+    return $http.get('/api/v1/post').success(function(data){
         angular.copy(data, o.posts);
     });
 };
 
 // questa richiede di creare un nuovo post
 o.create = function(post) {
-    return $http.post('/post', post, {
+    return $http.post('/api/v1/post', post, {
         headers: {Authorization: 'Bearer '+auth.getToken()}
     }).success(function(data){
         o.posts.push(data);
@@ -23,7 +23,7 @@ o.create = function(post) {
 };
 
 o.upvote = function(post) {
-    return $http.put('/post/' + post.id + '/upvote', null, {
+    return $http.put('/api/v1/post/' + post.id + '/upvote', null, {
         headers: {Authorization: 'Bearer '+auth.getToken()}
     }).success(function(data){
         post.upvotes += 1;
@@ -31,19 +31,19 @@ o.upvote = function(post) {
 };
 
 o.get = function(id) {
-    return $http.get('/post/' + id).then(function(res){
+    return $http.get('/api/v1/post/' + id).then(function(res){
         return res.data;
     });
 };
 
 o.addComment = function(id, comment) {
-    return $http.post('/post/' + id + '/comment', comment, {
+    return $http.post('/api/v1/post/' + id + '/comment', comment, {
         headers: {Authorization: 'Bearer '+auth.getToken()}
     });
 };
 
 o.upvoteComment = function(post, comment) {
-    return $http.put('/post/' + post.id + '/comment/'+ comment.id + '/upvote', null, {
+    return $http.put('/api/v1/post/' + post.id + '/comment/'+ comment.id + '/upvote', null, {
         headers: {Authorization: 'Bearer '+auth.getToken()}
     }).success(function(data){
         comment.upvotes += 1;

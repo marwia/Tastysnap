@@ -9,7 +9,7 @@ module.exports = {
 
   attributes: {
 
-    title : { type: 'String' },
+    title : { type: 'String', required: true },
 
     link : { type: 'String' },
 

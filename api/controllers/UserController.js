@@ -7,7 +7,7 @@
 
 module.exports = {
     /**
-     * @api {post} /user
+     * @api {post} /user Register a new User
      * @apiName CreateUser
      * @apiGroup User
      *
@@ -32,7 +32,7 @@ module.exports = {
      *       "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjU1Y2E0NWU2OWI0MjQ2MTEwYjMxOWNiMSIsImlhdCI6MTQzOTMxOTUyNiwiZXhwIjoxNDM5MzMwMzI2fQ.GUOOFlWwiNPeZjmN3-HPHG4cMJsWnP7rgQbux6FNqGI"
      *     }
      *
-     * @apiError BadRequest Mancano dei parametri all'oggetto inviato al server.
+     * @apiError message Breve descrizione dell'errore che ha riscontrato il server.
      *
      * @apiErrorExample Error-Response:
      *     HTTP/1.1 400 Bad Request
@@ -40,7 +40,6 @@ module.exports = {
      *       "message": "Please fill out all fields"
      *     }
      */
-    // rappresenta la funzione "register"
   	create: function (req, res) {
       if (!req.body.username || !req.body.password) {
         return res.status(400).json({message: 'Please fill out all fields'});

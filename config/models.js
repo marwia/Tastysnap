@@ -27,6 +27,15 @@ module.exports.models = {
   * See http://sailsjs.org/#/documentation/concepts/ORM/model-settings.html  *
   *                                                                          *
   ***************************************************************************/
-  migrate: 'safe'
+  migrate: 'safe',
+
+  /***************************************************************************
+  *                                                                          *
+  * Imposto la verifica dello schema di ogni oggetto che viene salvato       *
+  * nel database, questo previene il salvataggio di attributi non            *
+  * presenti nei modelli.                                                    *
+  *                                                                          *
+  ***************************************************************************/
+  schema : true
 
 };

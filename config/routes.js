@@ -64,16 +64,16 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'get /post/:post': 'PostController.getPost',
+  'get /api/v1/post/:post': 'PostController.getPost',
 
-  'put /post/:post/upvote': 'PostController.upvote',
+  'put /api/v1/post/:post/upvote': 'PostController.upvote',
 
-  'post /post/create': 'PostController.create',
+  'post /api/v1/post/create': 'PostController.create',
 
-  'post /post/:post/comment': 'CommentController.create',
+  'post /api/v1/post/:post/comment': 'CommentController.create',
 
-  'put /post/:post/comment/:comment/upvote': 'CommentController.upvote',
+  'put /api/v1/post/:post/comment/:comment/upvote': 'CommentController.upvote',
 
-  'post /login': 'AuthController.index'
+  'post /api/v1/login': 'AuthController.index'
 
 };

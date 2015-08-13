@@ -39,6 +39,7 @@ module.exports = {
     create: function (req, res, next) {
       // req.body è un oggetto {...}
       req.body.author = req.payload.username;
+      console.log("CT: " + req.get('Content-Type'));
       Post.create(req.body).exec(function(err, post){
         if(err){ return next(err); }
         console.log(post);

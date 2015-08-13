@@ -13,7 +13,45 @@
 var passport = require('passport');
  
 module.exports = {
-  // l'azione di login
+  /**
+   * @api {post} /login User login
+   * @apiGroup User
+   * @apiName UserLogin
+   * 
+   *
+   * @apiDescription Per eseguire il login di un utente puoi inviare le sue credenziali
+   * al server, così otterrai il token che ti servirà per tutte le successive operazioni.
+   * Il username e la password sono parametri da inserire nel body della richiesta.
+   *
+   * @apiParam {String} username Username of the User.
+   * @apiParam {String} password  Password of the User.
+   *
+   * @apiParamExample {url-encoded} Request-Example:
+   *     username=cavallo&password=cavallo
+   *
+   * @apiSuccess {String} token  Token for identification.
+   *
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   *     {
+   *       "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+   *     }
+   *
+   * @apiError message Breve descrizione dell'errore che ha riscontrato il server.
+   *
+   * @apiErrorExample {json} Error-Response:
+   *     HTTP/1.1 401 Unauthorized
+   *     {
+   *       "message": "User and password required."
+   *     }
+   *
+   * @apiErrorExample {json} Error-Response:
+   *     HTTP/1.1 401 Unauthorized
+   *     {
+   *       "message": "User not found."
+   *     }
+   */
+
   index: function (req, res, next) {
     var username = req.param('username');
     var password = req.param('password');

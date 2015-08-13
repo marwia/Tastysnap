@@ -41,14 +41,14 @@ auth.currentUser = function(){
 
 
 auth.register = function(user){
-    return $http.post('/user/create', user).success(function(data){
+    return $http.post('api/v1/user/create', user).success(function(data){
         auth.saveToken(data.token);
     });
 };
 
 
 auth.logIn = function(user){
-    return $http.post('/login', user).success(function(data){
+    return $http.post('api/v1/login', user).success(function(data){
         auth.saveToken(data.token);
     });
 };
