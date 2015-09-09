@@ -64,6 +64,24 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
+  /***************************************************************************
+  *                                                                          *
+  * Voti a ricette.                                                          *
+  *                                                                          *
+  ***************************************************************************/
+
+  'post /api/v1/recipe/:recipe/upvote': 'VoteRecipeController.createUpvote',
+
+  'post /api/v1/recipe/:recipe/downvote': 'VoteRecipeController.createDownvote',
+
+  'delete /api/v1/recipe/:recipe/vote': 'VoteRecipeController.destroy',
+
+  'get /api/v1/recipe/:recipe/upvotes': 'VoteRecipeController.findUpvotes',
+
+  'get /api/v1/recipe/:recipe/downvotes': 'VoteRecipeController.findDownvotes',
+
+  'get /api/v1/recipe/:recipe/vote': 'VoteRecipeController.checkVote',
+
   'get /api/v1/post/:post': 'PostController.getPost',
 
   'put /api/v1/post/:post/upvote': 'PostController.upvote',

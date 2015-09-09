@@ -62,7 +62,8 @@ module.exports = {
         console.log(recipe);
         return res.json(recipe);
       });
-    }
+    },
+
     /**
      * @api {put} /recipe/:id Update a Recipe
      * @apiName UpdateRecipe

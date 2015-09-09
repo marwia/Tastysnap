@@ -61,6 +61,14 @@ module.exports.policies = {
   'RecipeController': {
     'create' : 'isAuthorized',
     'update' : ['isAuthorized', 'isAuthor']
+  },
+
+  'VoteRecipeController': {
+    'create' : false,
+    'destroy': 'isAuthorized',
+    'createUpvote' : 'isAuthorized',
+    'createDownvote' : 'isAuthorized',
+    'checkVote' : 'isAuthorized'
   }
 
   // '*': true,

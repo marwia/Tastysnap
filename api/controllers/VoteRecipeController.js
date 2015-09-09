@@ -1,0 +1,310 @@
+/**
+ * VoteRecipeController.js
+ *
+ * @description :: Server-side logic for managing likes for recipes.
+ * @help        :: See http://links.sailsjs.org/docs/controllers
+ */
+
+module.exports = {
+  /**
+   * @api {post} /recipe/:recipe/upvote Upvote a Recipe
+   * @apiName UpvoteRecipe
+   * @apiGroup Vote Recipe
+   *
+   * @apiDescription Serve per dare un voto positivo (+1) ad una ricetta.
+   * Visto che ogni voto deve avere un autore, si deve inviare qualsiasi
+   * richiesta con il token del suo autore.<br>
+   * Non sono richiesti parametri. 
+   *
+   * @apiHeader {String} token  Authentication token.
+   *
+   * @apiHeaderExample Request-Header-Example:
+   *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+   *
+   * @apiSuccess {json} recipe JSON that represents the upvote object.
+   *
+   * @apiSuccessExample {json} Success-Response-Example:
+   *     HTTP/1.1 200 OK
+   *     {
+   *      {
+   *        "value": 1,
+   *        "author": "55b275aa3e4935bc028d02c0",
+   *        "recipe": "55cc9b54e75edbb10e65089c",
+   *        "createdAt": "2015-09-09T09:53:20.041Z",
+   *        "updatedAt": "2015-09-09T09:53:20.041Z",
+   *        "id": "55f00190b6aecd11065cab85"
+   *      }
+   *     }
+   *
+   * @apiUse TokenFormatError
+   *
+   * @apiUse NoAuthHeaderError
+   *
+   * @apiUse InvalidTokenError
+   */
+  createUpvote: function (req, res, next) {
+    sails.controllers.voterecipe.create(req, res, next, 1);
+
+  },
+
+  /**
+   * @api {post} /recipe/:recipe/downvote Downvote a Recipe
+   * @apiName DownvoteRecipe
+   * @apiGroup Vote Recipe
+   *
+   * @apiDescription Serve per dare un voto negativo (-1) ad una ricetta.
+   * Visto che ogni voto deve avere un autore, si deve inviare qualsiasi
+   * richiesta con il token del suo autore.<br>
+   * Non sono richiesti parametri. 
+   *
+   * @apiHeader {String} token  Authentication token.
+   *
+   * @apiHeaderExample Request-Header-Example:
+   *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+   *
+   * @apiSuccess {json} recipe JSON that represents the upvote object.
+   *
+   * @apiSuccessExample {json} Success-Response-Example:
+   *     HTTP/1.1 200 OK
+   *     {
+   *      {
+   *        "value": -1,
+   *        "author": "55b275aa3e4935bc028d02c0",
+   *        "recipe": "55cc9b54e75edbb10e65089c",
+   *        "createdAt": "2015-09-09T09:53:20.041Z",
+   *        "updatedAt": "2015-09-09T09:53:20.041Z",
+   *        "id": "55f00190b6aecd11065cab85"
+   *      }
+   *     }
+   *
+   * @apiUse TokenFormatError
+   *
+   * @apiUse NoAuthHeaderError
+   *
+   * @apiUse InvalidTokenError
+   */
+  createDownvote: function (req, res, next) {
+    sails.controllers.voterecipe.create(req, res, next, -1);
+  },
+
+	/**
+   * Azione per creare un voto (+1 o -1) ad una ricetta.
+   * Questa azione non premette di avere due voti della stessa persona.
+   */
+	create: function (req, res, next, value) {
+    var user = req.payload;
+
+    var recipeId = req.param('recipe');// l'id è un parametro
+
+    var voteRecipe = {value: value, user: user};
+
+    if (!recipeId) { return next(); }
+
+    Recipe.find(recipeId).limit(1).exec( function (err, recipes) {
+      if (err) { return next(err); }
+      // completo l'oggetto voteRecipe
+      voteRecipe.author = user;
+      voteRecipe.recipe = recipes[0];
+
+      //cerco se c'è gia uno stesso vote
+      VoteRecipe.find().where({ author: user.id, recipe: recipes[0].id })
+        .exec(function (err, voteRecipes) {
+          if(err){ return next(err); }
+
+          if(voteRecipes.length == 0){// non trovato, quindi ne posso creare uno
+            VoteRecipe.create(voteRecipe).exec(function (err, voteRecipeCreated){
+              if(err){ return next(err); }
+
+              return res.json(voteRecipeCreated);
+            });
+          } else {// trovato!
+            if(voteRecipes[0].value != voteRecipe.value) {// se diverso
+              VoteRecipe.destroy(voteRecipes[0].id).exec(function (err){// cancello quello vecchio
+                if(err){ return next(err); }
+                VoteRecipe.create(voteRecipe).exec(function (err, voteRecipeCreated){
+                  if(err){ return next(err); }
+
+                  return res.json(voteRecipeCreated);
+                });
+              });
+            }// se uguale allora non faccio nulla
+            else { return res.json(voteRecipes[0]); }
+          }
+      })
+    });
+  },
+
+  /**
+   * @api {delete} /recipe/:recipe/vote Delete a generic vote from Recipe
+   * @apiName DeleteVoteRecipe
+   * @apiGroup Vote Recipe
+   *
+   * @apiDescription Serve eliminare un voto generico (positivo o negativo) ad una ricetta.
+   * Visto che ogni voto deve avere un autore, si deve inviare qualsiasi
+   * richiesta con il token del suo autore.<br>
+   * Non sono richiesti parametri. 
+   *
+   * @apiHeader {String} token  Authentication token.
+   *
+   * @apiHeaderExample Request-Header-Example:
+   *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+   *
+   * @apiSuccess {json} recipe JSON that represents the upvote object.
+   *
+   * @apiSuccessExample {json} Success-Response-Example:
+   *     HTTP/1.1 200 OK
+   *
+   * @apiUse TokenFormatError
+   *
+   * @apiUse NoAuthHeaderError
+   *
+   * @apiUse InvalidTokenError
+   */
+  destroy: function (req, res, next) {
+    var user = req.payload;
+
+    var recipeId = req.param('recipe');// l'id è un parametro
+
+    if (!recipeId) { return next(); }
+
+    var voteRecipeToDelete = {author: user.id, recipe: recipeId};
+
+    VoteRecipe.destroy(voteRecipeToDelete).exec(function (err){
+      if(err){ return next(err); }
+
+      return res.ok();// eliminato
+    })
+  },
+
+  /**
+   * @api {get} /recipe/:recipe/upvotes List the upvotes for a Recipe
+   * @apiName GetUpvotesRecipe
+   * @apiGroup Vote Recipe
+   *
+   * @apiDescription Serve a richiedere la lista di voti positivi di una ricetta.
+   * <br>
+   * Non sono richiesti ne parametri ne le credenziali dell'utente. 
+   *
+   * @apiSuccess {json} recipe JSON that represents the upvote object.
+   *
+   * @apiSuccessExample {json} Success-Response-Example:
+   *     HTTP/1.1 200 OK
+   *  [
+   *    {
+   *      "author": {
+   *        "username": "cavallo",
+   *        "createdAt": "2015-07-24T17:28:10.577Z",
+   *        "updatedAt": "2015-07-24T17:28:10.577Z",
+   *        "id": "55b275aa3e4935bc028d02c0"
+   *    },
+   *      "recipe": "55cc9b54e75edbb10e65089c",
+   *      "value": 1,
+   *      "createdAt": "2015-09-09T09:53:20.041Z",
+   *      "updatedAt": "2015-09-09T09:53:20.041Z",
+   *      "id": "55f00190b6aecd11065cab85"
+   *    }
+   *  ]
+   */
+  findUpvotes: function (req, res, next) {
+    var recipeId = req.param('recipe');// l'id è un parametro
+
+    if (!recipeId) { return next(); }
+    VoteRecipe.find().where({ recipe: recipeId, value: 1 }).populate('author').exec( function (err, voteRecipes) {
+      if(err){ return next(err); }
+
+      return res.json(voteRecipes);
+    })
+  },
+
+  /**
+   * @api {get} /recipe/:recipe/downvotes List the downvotes for a Recipe
+   * @apiName GetDownvotesRecipe
+   * @apiGroup Vote Recipe
+   *
+   * @apiDescription Serve a richiedere la lista di voti negativi di una ricetta.
+   * <br>
+   * Non sono richiesti ne parametri ne le credenziali dell'utente. 
+   *
+   * @apiSuccess {json} recipe JSON that represents the upvote object.
+   *
+   * @apiSuccessExample {json} Success-Response-Example:
+   *     HTTP/1.1 200 OK
+   *  [
+   *    {
+   *      "author": {
+   *        "username": "cavallo",
+   *        "createdAt": "2015-07-24T17:28:10.577Z",
+   *        "updatedAt": "2015-07-24T17:28:10.577Z",
+   *        "id": "55b275aa3e4935bc028d02c0"
+   *    },
+   *      "recipe": "55cc9b54e75edbb10e65089c",
+   *      "value": -1,
+   *      "createdAt": "2015-09-09T09:53:20.041Z",
+   *      "updatedAt": "2015-09-09T09:53:20.041Z",
+   *      "id": "55f00190b6aecd11065cab85"
+   *    }
+   *  ]
+   */
+  findDownvotes: function (req, res, next) {
+    var recipeId = req.param('recipe');// l'id è un parametro
+
+    if (!recipeId) { return next(); }
+    VoteRecipe.find().where({ recipe: recipeId, value: -1 }).populate('author').exec( function (err, voteRecipes) {
+      if(err){ return next(err); }
+
+      return res.json(voteRecipes);
+    })
+  },
+
+  /**
+   * @api {get} /recipe/:recipe/vote Check if you voted a Recipe
+   * @apiName CheckVoteRecipe
+   * @apiGroup Vote Recipe
+   *
+   * @apiDescription Serve a controllare se l'utente ha votato una ricetta.
+   * <br>
+   * Necessita di autenticazione.
+   *
+   * @apiHeader {String} token  Authentication token.
+   *
+   * @apiHeaderExample Request-Header-Example:
+   *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+   *
+   * @apiSuccess {json} recipe JSON that represents the upvote object.
+   *
+   * @apiSuccessExample {json} Success-Response-Example:
+   *     HTTP/1.1 200 OK
+   *  {
+   *    value: 1
+   *    author: "55b275aa3e4935bc028d02c0"
+   *    recipe: "55cc9b54e75edbb10e65089c"
+   *    createdAt: "2015-09-09T19:53:12.315Z"
+   *    updatedAt: "2015-09-09T19:53:12.315Z"
+   *    id: "55f08e28a489ce62116cfacf"
+   *  }
+   *
+   * @apiErrorExample Error-Response:
+   *     HTTP/1.1 404 Not Found
+   *
+   * @apiUse TokenFormatError
+   *
+   * @apiUse NoAuthHeaderError
+   *
+   * @apiUse InvalidTokenError
+   */
+  checkVote: function (req, res, next) {
+    var user = req.payload;
+    var recipeId = req.param('recipe');// l'id è un parametro
+
+    if (!recipeId) { return next(); }
+    VoteRecipe.find().where({ recipe: recipeId, author: user.id }).exec( function (err, voteRecipes) {
+      if(err){ return next(err); }
+
+      if(voteRecipes.length == 0) {
+        return res.status(404).send('Not found');// HTTP status 404: NotFound
+      } else { return res.json(voteRecipes[0]); }
+    })
+  }
+	
+};
+

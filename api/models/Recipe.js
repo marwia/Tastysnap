@@ -29,6 +29,12 @@ module.exports = {
     //TODO: da cambiare...
     upvotes : { type: 'Integer', defaultsTo: 0},
 
+    // Reference to many Likes or Not likes
+    votes : {
+      collection: 'voteRecipe',
+      via: 'recipe'
+    },
+
     // Reference to many Comments
     comments : {
       collection: 'comment',
