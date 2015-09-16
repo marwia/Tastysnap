@@ -29,6 +29,14 @@ module.exports = {
     recipes : {
         collection: 'recipe',
         via: 'collections'
+    },
+
+    findRecipe : function (recipeId) {
+      for (var i = 0; i < this.recipes.length; i++) {
+        if(this.recipes[i].id == recipeId)
+          return i;
+      };
+      return -1;
     }
 
   },

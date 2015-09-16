@@ -264,6 +264,7 @@ module.exports = {
   findOne: function (req, res, next) {
     var commentId = req.param('id');
     if(!commentId) { return next(); }
+    
     Comment.findOne(commentId).populate('user').exec( function (err, comment) {
       if(err){ return next(err); }
 

@@ -56,6 +56,7 @@ module.exports.policies = {
     'create' : 'isAuthorized',
     'delete' : ['isAuthorized', 'isCollectionAuthor'],
     'addRecipe' : ['isAuthorized', 'isCollectionAuthor', 'findCollection'],
+    'removeRecipe' : ['isAuthorized', 'isCollectionAuthor', 'findCollection']
   },
 
   'CommentController' : {

@@ -142,7 +142,7 @@ module.exports = {
    * @apiSuccess {json} recipe JSON that represents the upvote object.
    *
    * @apiSuccessExample {json} Success-Response-Example:
-   *     HTTP/1.1 200 OK
+   *     HTTP/1.1 204 No Content
    *
    * @apiUse TokenFormatError
    *
@@ -162,7 +162,7 @@ module.exports = {
     VoteRecipe.destroy(voteRecipeToDelete).exec(function (err){
       if(err){ return next(err); }
 
-      return res.ok();// eliminato
+      return res.send(204, null);// eliminato
     })
   },
 

@@ -80,7 +80,7 @@ module.exports = {
      * @apiHeaderExample Request-Header-Example:
      *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
      *
-     * @apiSuccess {json} recipe JSON that represents the collection object.
+     * @apiSuccess {json} recipe JSON that represents the collection object deleted.
      *
      * @apiSuccessExample {json} Success-Response-Example:
      *     HTTP/1.1 200 OK
@@ -125,24 +125,49 @@ module.exports = {
      * @apiHeaderExample Request-Header-Example:
      *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
      *
-     * @apiSuccess {json} recipe JSON that represents the collection object.
+     * @apiSuccess {json} recipe JSON that represents the updated collection object.
      *
      * @apiSuccessExample {json} Success-Response-Example:
      *     HTTP/1.1 200 OK
 		{
-		  "recipes": [],
-		  "author": {
-		    "username": "cavallo",
-		    "createdAt": "2015-09-15T13:59:50.559Z",
-		    "updatedAt": "2015-09-15T13:59:50.559Z",
-		    "id": "55f8245674cb8184028877b9"
-		  },
-		  "title": "Cazzate",
-		  "description": "Bla bla bla...",
-		  "createdAt": "2015-09-15T20:33:00.133Z",
-		  "updatedAt": "2015-09-15T20:33:00.133Z",
-		  "id": "55f8807c10dc1b5d0abda19a"
-		}
+          "recipes": [
+            {
+              "title": "Carbonara senza uova",
+              "description": "Procedere cosi...",
+              "author": "55f8245674cb8184028877b9",
+              "createdAt": "2015-09-15T14:01:17.587Z",
+              "updatedAt": "2015-09-16T14:01:00.416Z",
+              "id": "55f824ad74cb8184028877ba"
+            },
+            {
+              "title": "Insalata gustosa",
+              "description": "...",
+              "author": "55f8245674cb8184028877b9",
+              "createdAt": "2015-09-16T13:47:06.431Z",
+              "updatedAt": "2015-09-16T13:59:05.017Z",
+              "id": "55f972da73909ce21687036d"
+            },
+            {
+              "title": "Pollo con le patate",
+              "description": "Un classico...",
+              "author": "55f8245674cb8184028877b9",
+              "createdAt": "2015-09-16T14:03:22.642Z",
+              "updatedAt": "2015-09-16T14:03:22.642Z",
+              "id": "55f976aa38c06a6c17c84b6b"
+            }
+          ],
+          "author": {
+            "username": "cavallo",
+            "createdAt": "2015-09-15T13:59:50.559Z",
+            "updatedAt": "2015-09-15T13:59:50.559Z",
+            "id": "55f8245674cb8184028877b9"
+          },
+          "title": "Ricette super fresche",
+          "description": "Bla bla bla...",
+          "createdAt": "2015-09-15T20:31:48.692Z",
+          "updatedAt": "2015-09-16T14:03:54.654Z",
+          "id": "55f8803410dc1b5d0abda199"
+        }
      *
      * @apiUse TokenFormatError
      *
@@ -162,16 +187,62 @@ module.exports = {
       		if(!recipe) { return res.notFound({error: 'No recipe found'}); }
 
 		    var newCollection = req.collection;
-		    newCollection.recipes.add(recipe);
-		    console.log(newCollection);
+		    newCollection.recipes.add(recipe.id);
 
-		    Collection.update({id: newCollection.id}, newCollection).exec(function (err, updatedCollections){
-      			if(err){ return next(err); }
+            newCollection.save(function (err, saved) {
+                if(err){ return next(err); }
+                return res.json(saved);
+            });
 
-      			return res.json(updatedCollections[0]);
-    		});
     	});
 	    
+    },
+
+    /**
+     * @api {delete} /collection/:collection/recipe Remove a recipe from a Collection
+     * @apiName RemoveRecipeCollection
+     * @apiGroup Collection
+     *
+     * @apiDescription Serve per rimuovere una ricetta da un propria collezione.
+     * Per essere sicuri dell'eliminazione conviene richiedere la stessa collezione.
+     * Bisogna essere autori della collezione.<br>
+     * Le richieste devono essere con codifica <strong>
+     * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
+     *
+     * @apiParam {Integer} recipe_id The id of the recipe to remove.
+     *
+     * @apiHeader {String} token  Authentication token.
+     *
+     * @apiHeaderExample Request-Header-Example:
+     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     *
+     * @apiSuccess {json} recipe JSON that represents the collection object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 204 No Content
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     *
+     * @apiUse NoPermissionError
+     */
+    removeRecipe: function (req, res, next) {
+        var recipeId = req.body.recipe_id;
+        if(!recipeId) { return next(); }
+
+        var collection = req.collection;
+        /*
+        var idx = collection.findRecipe(recipeId);
+        if(idx == -1) { return res.notFound({error: 'No recipe found in this collection'}) }
+        */
+        collection.recipes.remove(recipeId);
+        collection.save(function (err, saved) {
+            if(err){ return next(err); }
+            return res.send(204, null);
+        });  
     },
 	
 };
