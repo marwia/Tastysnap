@@ -28,8 +28,6 @@ module.exports.policies = {
 
   //'*':'postParam',
 
-  
-
   /*
   PostController: {
       // Apply 'postParam' to the 'upvote' action.
@@ -42,36 +40,51 @@ module.exports.policies = {
       upvote: 'commentParam'
   },*/
 
-  '*': true, // Di base tutte le operazioni sono autorizzate
+  '*' : true, // Di base tutte le operazioni sono autorizzate
 
   // Elenco dei casi particolari
   
-  'UserController': {
-    'delete': false // Eliminazione non consentita
+  'UserController' : {
+    'delete' : false // Eliminazione non consentita
   },
 
-  'PostController': {
+  'PostController' : {
     'create' : 'isAuthorized'
+  },
+
+  'CollectionController' : {
+    'create' : 'isAuthorized',
+    'delete' : ['isAuthorized', 'isCollectionAuthor'],
+    'addRecipe' : ['isAuthorized', 'isCollectionAuthor', 'findCollection'],
   },
 
   'CommentController' : {
-    'create' : 'isAuthorized'
+    'create' : ['isAuthorized', 'findRecipe'],
+    'update' : ['isAuthorized', 'isCommentAuthor', 'findRecipe'],
+    'delete' : ['isAuthorized', 'isCommentAuthor', 'findRecipe'],
+    'find' : 'findRecipe',
+    'findOne' : 'findRecipe'
   },
 
-  'RecipeController': {
+  'RecipeController' : {
     'create' : 'isAuthorized',
-    'update' : ['isAuthorized', 'isAuthor']
+    'update' : ['isAuthorized', 'isRecipeAuthor'],
+    'find' : true,
+    'findOne' : ['attachUser','setRecipeViewed'],
+    'delete' : ['isAuthorized', 'isRecipeAuthor']
   },
 
-  'VoteRecipeController': {
+  'VoteRecipeController' : {
     'create' : false,
-    'destroy': 'isAuthorized',
-    'createUpvote' : 'isAuthorized',
-    'createDownvote' : 'isAuthorized',
-    'checkVote' : 'isAuthorized'
+    'find' : false,
+    'findOne' : false,
+    'destroy' : ['isAuthorized', 'findRecipe'],// isAuthor è implicito
+    'createUpvote' : ['isAuthorized', 'findRecipe'],
+    'createDownvote' : ['isAuthorized', 'findRecipe'],
+    'checkVote' : ['isAuthorized', 'findRecipe'],
+    'findUpvotes' : 'findRecipe',
+    'findDownvotes' : 'findRecipe'
   }
-
-  // '*': true,
 
   /***************************************************************************
   *                                                                          *

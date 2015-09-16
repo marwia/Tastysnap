@@ -20,7 +20,37 @@
  * http://sailsjs.org/#/documentation/concepts/Routes/RouteTargetSyntax.html
  */
 
-module.exports.routes = {
+var blueprintConfig = require('./blueprints');
+
+var ROUTE_PREFIX = blueprintConfig.blueprints.prefix || "";
+
+// add global prefix to manually defined routes
+function addGlobalPrefix(routes) {
+  var paths = Object.keys(routes),
+      newRoutes = {};
+
+  if(ROUTE_PREFIX === "") {
+    return routes;
+  }
+
+  paths.forEach(function(path) {
+    var pathParts = path.split(" "),
+        uri = pathParts.pop(),
+        prefixedURI = "", newPath = "";
+
+      prefixedURI = ROUTE_PREFIX + uri;
+
+      pathParts.push(prefixedURI);
+
+      newPath = pathParts.join(" ");
+      // construct the new routes
+      newRoutes[newPath] = routes[path];
+  });
+
+  return newRoutes;
+};
+
+module.exports.routes = addGlobalPrefix({
 
   /***************************************************************************
   *                                                                          *
@@ -70,28 +100,50 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'post /api/v1/recipe/:recipe/upvote': 'VoteRecipeController.createUpvote',
+  'post /recipe/:recipe/upvote': 'VoteRecipeController.createUpvote',
 
-  'post /api/v1/recipe/:recipe/downvote': 'VoteRecipeController.createDownvote',
+  'post /recipe/:recipe/downvote': 'VoteRecipeController.createDownvote',
 
-  'delete /api/v1/recipe/:recipe/vote': 'VoteRecipeController.destroy',
+  'delete /recipe/:recipe/vote': 'VoteRecipeController.destroy',
 
-  'get /api/v1/recipe/:recipe/upvotes': 'VoteRecipeController.findUpvotes',
+  'get /recipe/:recipe/upvote': 'VoteRecipeController.findUpvotes',
 
-  'get /api/v1/recipe/:recipe/downvotes': 'VoteRecipeController.findDownvotes',
+  'get /recipe/:recipe/downvote': 'VoteRecipeController.findDownvotes',
 
-  'get /api/v1/recipe/:recipe/vote': 'VoteRecipeController.checkVote',
+  'get /recipe/:recipe/vote': 'VoteRecipeController.checkVote',
 
-  'get /api/v1/post/:post': 'PostController.getPost',
+  /***************************************************************************
+  *                                                                          *
+  * Commenti a ricette.                                                      *
+  *                                                                          *
+  ***************************************************************************/
 
-  'put /api/v1/post/:post/upvote': 'PostController.upvote',
+  'post /recipe/:recipe/comment' : 'CommentController.create',
 
-  'post /api/v1/post/create': 'PostController.create',
+  'delete /recipe/:recipe/comment/:id' : 'CommentController.destroy',
 
-  'post /api/v1/post/:post/comment': 'CommentController.create',
+  'put /recipe/:recipe/comment/:id' : 'CommentController.update',
 
-  'put /api/v1/post/:post/comment/:comment/upvote': 'CommentController.upvote',
+  'get /recipe/:recipe/comment' : 'CommentController.find',
 
-  'post /api/v1/login': 'AuthController.index'
+  'get /recipe/:recipe/comment/:id' : 'CommentController.findOne',
 
-};
+  /***************************************************************************
+  *                                                                          *
+  * Collezzioni di ricette.                                                  *
+  *                                                                          *
+  ***************************************************************************/
+
+  'put /collection/:collection/recipe' : 'CollectionController.addRecipe',
+  
+
+
+  'get /post/:post': 'PostController.getPost',
+
+  'put /post/:post/upvote': 'PostController.upvote',
+
+  'post /post/create': 'PostController.create',
+
+  'post /login': 'AuthController.index'
+
+});

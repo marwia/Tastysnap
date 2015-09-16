@@ -7,29 +7,39 @@
 
 module.exports = {
 
+  /***************************************************************************
+  *                                                                          *
+  * Attributi e metodi d'istanza, ovvero oggetti che vengono creati ogni     *
+  * volta che viene creato un oggetto di questa classe.                      *
+  *                                                                          *
+  ***************************************************************************/
   attributes: {
 
-  	body : { type: 'String' },
+  	body : { type: 'String', required: true },
 
-    author : { type: 'String' },
-
-    upvotes : { type: 'Integer', defaultsTo: 0 },
-
-    owner : { 
-    	model :'post' 
+    user : { 
+    	model :'user',
+      required : true
     },
 
-    recipeOwner : { 
-      model :'recipe' 
-    },
-
-    upvote: function(callback) {
-      this.upvotes += 1;
-      this.save(callback);
-    },
+    recipe : { 
+      model :'recipe',
+      required : true
+    }
 
   },
+  /***************************************************************************
+  *                                                                          *
+  * Metodi della classe (una sorta di metodi statici in Java).               *
+  *                                                                          *
+  ***************************************************************************/
 
+  /***************************************************************************
+  *                                                                          *
+  * Nome dell'interfaccia di connessione al database relativo                *
+  * a questo modello.                                                        *
+  *                                                                          *
+  ***************************************************************************/
   connection: 'someMongodbServer'
 };
 

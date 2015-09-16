@@ -53,7 +53,7 @@ module.exports = {
 
   // Checking if password is valid
   validPassword: function (user, password) {
-    console.log("password" + password);
+    //console.log("password" + password);
     console.log(this.generateHash(password));
     console.log("encryptedPassword" + user.encryptedPassword);
       try {

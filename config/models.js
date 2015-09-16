@@ -23,6 +23,7 @@ module.exports.models = {
   *                                                                          *
   * How and whether Sails will attempt to automatically rebuild the          *
   * tables/collections/etc. in your schema.                                  *
+  * safe, alter, drop                                                        *
   *                                                                          *
   * See http://sailsjs.org/#/documentation/concepts/ORM/model-settings.html  *
   *                                                                          *

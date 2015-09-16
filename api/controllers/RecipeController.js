@@ -7,6 +7,112 @@
 
 module.exports = {
     /**
+     * @api {get} /recipe List Recipes
+     * @apiName ListRecipes
+     * @apiGroup Recipe
+     *
+     * @apiDescription Serve per richiedere un lista di ricette.
+     * Attenzione che i risultati sono limitati ad un numero preciso di ricette, massimo 30 per richiesta.<br>
+     * Questo end point accetta prametri.
+     *
+     * @apiParam {Integer} skip The number of records to skip (useful for pagination).
+     * @apiParam {Integer} limit The maximum number of records to send back (useful for pagination). Defaults to 30. 
+     * @apiParam {String} where Instead of filtering based on a specific attribute, you may instead choose to provide a where parameter with a Waterline WHERE criteria object, encoded as a JSON string.
+     * @apiParam {String} sort The sort order. By default, returned records are sorted by primary key value in ascending order. 
+     *
+     * @apiParamExample Request-Param-Example:
+     *     ?skip=6&limit=3
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     [
+     *{
+     *  "votes": [],
+     *  "comments": [],
+     *  "collections": [],
+     *  "author": {
+     *    "username": "cavallo",
+     *    "createdAt": "2015-07-24T17:28:10.577Z",
+     *    "updatedAt": "2015-07-24T17:28:10.577Z",
+     *    "id": "55b275aa3e4935bc028d02c0"
+     *  },
+     *  "Title": "Carbonara new",
+     *  "Description": "dedsds sd sdsd",
+     *  "upvotes": 0,
+     *  "createdAt": "2015-08-13T13:31:25.262Z",
+     *  "updatedAt": "2015-08-13T13:31:25.262Z",
+     *   "id": "55cc9c2de75edbb10e6508a1"
+     * },
+     * {
+     *  "votes": [],
+     *   "comments": [],
+     *  "collections": [],
+     *  "author": {
+     *    "username": "cavallo",
+     *   "createdAt": "2015-07-24T17:28:10.577Z",
+     *    "updatedAt": "2015-07-24T17:28:10.577Z",
+     *    "id": "55b275aa3e4935bc028d02c0"
+     *  },
+     *  "Title": "Carbonara",
+     *  "Description": "dedsds sd sdsd",
+     *  "upvotes": 0,
+     *  "createdAt": "2015-08-13T14:05:26.104Z",
+     *  "updatedAt": "2015-08-13T14:05:26.104Z",
+     *  "id": "55cca42654ceca27112f4733"
+     *},
+     *{
+     *  "votes": [],
+     *  "comments": [],
+     *  "collections": [],
+     *  "author": {
+     *    "username": "cavallo",
+     *    "createdAt": "2015-07-24T17:28:10.577Z",
+     *    "updatedAt": "2015-07-24T17:28:10.577Z",
+     *    "id": "55b275aa3e4935bc028d02c0"
+     *  },
+     *  "Title": "Carbonara 2",
+     *  "Description": "dedsds sd sdsd",
+     *  "upvotes": 0,
+     *  "createdAt": "2015-08-13T14:06:59.150Z",
+     *  "updatedAt": "2015-08-13T14:06:59.150Z",
+     *  "id": "55cca48354ceca27112f4734"
+     *}
+     *]
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     */
+
+     /**
+     * @api {get} /recipe/:id Get a Recipe
+     * @apiName GetRecipe
+     * @apiGroup Recipe
+     *
+     * @apiDescription Serve per caricare tutti i dettagli di una ricetta.
+     *
+     * @apiParam {String} id Recipe id.
+     *
+     * @apiSuccess {json} recipe JSON that represents the recipe object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+     *     "recipe": 
+     *       {
+     *         "createdAt": "2015-08-11T18:58:46.329Z",
+     *         "updatedAt": "2015-08-11T18:58:46.329Z",
+     *         "id": "55ca45e69b4246110b319cb1"
+     *       }
+     *     }
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     */
+
+    /**
      * @api {post} /recipe Create a new Recipe
      * @apiName CreateRecipe
      * @apiGroup Recipe
@@ -53,16 +159,53 @@ module.exports = {
       var user = req.payload;
 
       var recipe = req.body;
-
       // setto l'autore della ricetta
       recipe.author = user;
 
       Recipe.create(recipe).exec(function(err, recipe){
         if(err){ return next(err); }
-        console.log(recipe);
         return res.json(recipe);
       });
     },
+
+    /**
+     * @api {delete} /recipe Delete a Recipe
+     * @apiName DeleteRecipe
+     * @apiGroup Recipe
+     *
+     * @apiDescription Serve per eliminare un ricetta creata da un utente.
+     * Si deve inviare qualsiasi richiesta con il token del suo autore.<br>
+     * Le richieste devono essere con codifica <strong>
+     * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
+     *
+     * @apiHeader {String} token  Authentication token.
+     *
+     * @apiHeaderExample Request-Header-Example:
+     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     *
+     * @apiSuccess {json} recipe JSON that represents the recipe object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+     *     "recipe": 
+     *       {
+     *         "title": "Spagoasd"
+     *         "description": "..."
+     *         "createdAt": "2015-08-11T18:58:46.329Z",
+     *         "updatedAt": "2015-08-11T18:58:46.329Z",
+     *         "id": "55ca45e69b4246110b319cb1"
+     *       }
+     *     }
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     *
+     * @apiUse NoPermissionError
+     */
 
     /**
      * @api {put} /recipe/:id Update a Recipe

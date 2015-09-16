@@ -17,10 +17,6 @@ module.exports = {
 
     upvotes : { type: 'Integer', defaultsTo: 0},
 
-    comments:{
-      collection: 'comment',
-      via: 'owner'
-    },
 
     //Metodi d'istanza
     upvote: function (callback) {

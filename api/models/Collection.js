@@ -19,30 +19,17 @@ module.exports = {
 
   	description : { type: 'String' },
 
-  	// Count value
-  	recipesNumber : { type: 'Integer' },
-
-  	// Count value
-  	followersNumber : { type: 'Integer' },
-
-  	// Count value
-  	viewsNumber : { type: 'Integer' },
-
   	// Reference to User
   	author : { 
-    	model :'user' 
+    	model :'user',
+      required : true
     },
 
   	// Reference to many Recipes
     recipes : {
         collection: 'recipe',
         via: 'collections'
-    },
-
-    upvote : function( callback ) {
-      this.upvotes += 1;
-      this.save(callback);
-    },
+    }
 
   },
   /***************************************************************************

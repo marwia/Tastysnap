@@ -1,7 +1,8 @@
 /**
 * Recipe.js
 *
-* @description :: Rappresenta una generica ricetta che ogni utente può creare.
+* @description :: Rappresenta una generica ricetta che ogni utente
+*                 iscritto alla piattaforma può creare.
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
@@ -26,19 +27,22 @@ module.exports = {
       model :'user' 
     },
 
-    //TODO: da cambiare...
-    upvotes : { type: 'Integer', defaultsTo: 0},
-
     // Reference to many Likes or Not likes
     votes : {
       collection: 'voteRecipe',
       via: 'recipe'
     },
 
+    // Reference to many Views
+    views : {
+      collection: 'viewRecipe',
+      via: 'recipe'
+    },
+
     // Reference to many Comments
     comments : {
       collection: 'comment',
-      via: 'recipeOwner'
+      via: 'recipe'
     },
 
     // Reference to many Collections

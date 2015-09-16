@@ -94,43 +94,33 @@ module.exports = {
 	create: function (req, res, next, value) {
     var user = req.payload;
 
-    var recipeId = req.param('recipe');// l'id è un parametro
+    // completo l'oggetto voteRecipe
+    var voteRecipe = {value: value, author: user, recipe: req.recipe.id };
 
-    var voteRecipe = {value: value, user: user};
+    //cerco se c'è gia uno stesso vote
+    VoteRecipe.find().where({ author: user.id, recipe: req.recipe.id })
+      .exec(function (err, voteRecipes) {
+        if(err){ return next(err); }
 
-    if (!recipeId) { return next(); }
+        if(voteRecipes.length == 0){// non trovato, quindi ne posso creare uno
+          VoteRecipe.create(voteRecipe).exec(function (err, voteRecipeCreated){
+            if(err){ return next(err); }
 
-    Recipe.find(recipeId).limit(1).exec( function (err, recipes) {
-      if (err) { return next(err); }
-      // completo l'oggetto voteRecipe
-      voteRecipe.author = user;
-      voteRecipe.recipe = recipes[0];
-
-      //cerco se c'è gia uno stesso vote
-      VoteRecipe.find().where({ author: user.id, recipe: recipes[0].id })
-        .exec(function (err, voteRecipes) {
-          if(err){ return next(err); }
-
-          if(voteRecipes.length == 0){// non trovato, quindi ne posso creare uno
-            VoteRecipe.create(voteRecipe).exec(function (err, voteRecipeCreated){
+            return res.json(voteRecipeCreated);
+          });
+        } else {// trovato!
+          if(voteRecipes[0].value != voteRecipe.value) {// se diverso
+            VoteRecipe.destroy(voteRecipes[0].id).exec(function (err){// cancello quello vecchio
               if(err){ return next(err); }
-
-              return res.json(voteRecipeCreated);
-            });
-          } else {// trovato!
-            if(voteRecipes[0].value != voteRecipe.value) {// se diverso
-              VoteRecipe.destroy(voteRecipes[0].id).exec(function (err){// cancello quello vecchio
+              VoteRecipe.create(voteRecipe).exec(function (err, voteRecipeCreated){
                 if(err){ return next(err); }
-                VoteRecipe.create(voteRecipe).exec(function (err, voteRecipeCreated){
-                  if(err){ return next(err); }
 
-                  return res.json(voteRecipeCreated);
-                });
+                return res.json(voteRecipeCreated);
               });
-            }// se uguale allora non faccio nulla
-            else { return res.json(voteRecipes[0]); }
-          }
-      })
+            });
+          }// se uguale allora non faccio nulla
+          else { return res.json(voteRecipes[0]); }
+        }
     });
   },
 
@@ -159,15 +149,15 @@ module.exports = {
    * @apiUse NoAuthHeaderError
    *
    * @apiUse InvalidTokenError
+   *
+   * @apiUse NoPermissionError
+   *
+   * @apiUse NoRecipeError
    */
   destroy: function (req, res, next) {
     var user = req.payload;
 
-    var recipeId = req.param('recipe');// l'id è un parametro
-
-    if (!recipeId) { return next(); }
-
-    var voteRecipeToDelete = {author: user.id, recipe: recipeId};
+    var voteRecipeToDelete = {author: user.id, recipe: req.recipe.id};
 
     VoteRecipe.destroy(voteRecipeToDelete).exec(function (err){
       if(err){ return next(err); }
@@ -177,7 +167,7 @@ module.exports = {
   },
 
   /**
-   * @api {get} /recipe/:recipe/upvotes List the upvotes for a Recipe
+   * @api {get} /recipe/:recipe/upvote List the upvotes for a Recipe
    * @apiName GetUpvotesRecipe
    * @apiGroup Vote Recipe
    *
@@ -204,12 +194,11 @@ module.exports = {
    *      "id": "55f00190b6aecd11065cab85"
    *    }
    *  ]
+   *
+   * @apiUse NoRecipeError
    */
   findUpvotes: function (req, res, next) {
-    var recipeId = req.param('recipe');// l'id è un parametro
-
-    if (!recipeId) { return next(); }
-    VoteRecipe.find().where({ recipe: recipeId, value: 1 }).populate('author').exec( function (err, voteRecipes) {
+    VoteRecipe.find().where({ recipe: req.recipe.id, value: 1 }).populate('author').exec( function (err, voteRecipes) {
       if(err){ return next(err); }
 
       return res.json(voteRecipes);
@@ -217,7 +206,7 @@ module.exports = {
   },
 
   /**
-   * @api {get} /recipe/:recipe/downvotes List the downvotes for a Recipe
+   * @api {get} /recipe/:recipe/downvote List the downvotes for a Recipe
    * @apiName GetDownvotesRecipe
    * @apiGroup Vote Recipe
    *
@@ -244,12 +233,11 @@ module.exports = {
    *      "id": "55f00190b6aecd11065cab85"
    *    }
    *  ]
+   *
+   * @apiUse NoRecipeError
    */
   findDownvotes: function (req, res, next) {
-    var recipeId = req.param('recipe');// l'id è un parametro
-
-    if (!recipeId) { return next(); }
-    VoteRecipe.find().where({ recipe: recipeId, value: -1 }).populate('author').exec( function (err, voteRecipes) {
+    VoteRecipe.find().where({ recipe: req.recipe.id, value: -1 }).populate('author').exec( function (err, voteRecipes) {
       if(err){ return next(err); }
 
       return res.json(voteRecipes);
@@ -291,13 +279,13 @@ module.exports = {
    * @apiUse NoAuthHeaderError
    *
    * @apiUse InvalidTokenError
+   *
+   * @apiUse NoRecipeError
    */
   checkVote: function (req, res, next) {
     var user = req.payload;
-    var recipeId = req.param('recipe');// l'id è un parametro
 
-    if (!recipeId) { return next(); }
-    VoteRecipe.find().where({ recipe: recipeId, author: user.id }).exec( function (err, voteRecipes) {
+    VoteRecipe.find().where({ recipe: req.recipe.id, author: user.id }).exec( function (err, voteRecipes) {
       if(err){ return next(err); }
 
       if(voteRecipes.length == 0) {
