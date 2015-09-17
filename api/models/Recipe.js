@@ -24,7 +24,8 @@ module.exports = {
 
     // Reference to User
     author : { 
-      model :'user' 
+      model :'user',
+      required : true
     },
 
     // Reference to many Likes or Not likes

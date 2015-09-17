@@ -5,7 +5,83 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+// libreria per gestire gli array
+var _ = require('lodash');
+
 module.exports = {
+
+    /**
+     * @api {get} /collection List Collections
+     * @apiName ListCollections
+     * @apiGroup Collection
+     *
+     * @apiDescription Serve per richiedere un lista di collezioni.
+     * Attenzione che i risultati sono limitati ad un numero preciso di elementi, massimo 30 per richiesta.<br>
+     * Questo end point accetta prametri.
+     *
+     * @apiParam {Integer} skip The number of records to skip (useful for pagination).
+     * @apiParam {Integer} limit The maximum number of records to send back (useful for pagination). Defaults to 30. 
+     * @apiParam {String} where Instead of filtering based on a specific attribute, you may instead choose to provide a where parameter with a Waterline WHERE criteria object, encoded as a JSON string.
+     * @apiParam {String} sort The sort order. By default, returned records are sorted by primary key value in ascending order. 
+     *
+     * @apiParamExample Request-Param-Example:
+     *     ?skip=6&limit=3
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *
+     */
+
+
+    /**
+     * @api {get} /collection/:collection/recipe List recipes for a Collection
+     * @apiName ListRecipeForCollection
+     * @apiGroup Collection
+     *
+     * @apiDescription Serve per richiedere la lista di ricette che sono in un collezione.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *
+     */
+    getRecipes: function (req, res, next) {
+        var collection = req.collection;
+        /*
+         * Codice "magico": è in grado di far elencare le ricette di una collezione poplando 
+         * l'autore di ogni ricetta.
+         * Infatti in Sails le populate annidate non sono implementate.
+         * http://stackoverflow.com/questions/23446484/sails-js-populate-nested-associations
+         */
+        Collection
+            .findOne(collection.id)
+            .populate('author')
+            .populate('recipes')
+            .then(function(collection) {
+                var recipeUsers = User.find({
+                    id: _.pluck(collection.recipes, 'author')
+                    //_.pluck: Retrieves the value of a 'user' property from all elements in the collection.comments collection.
+                })
+                .then(function(recipeUsers) {
+                    return recipeUsers;
+                });
+                return [collection, recipeUsers];
+            })
+            .spread(function(collection, recipeUsers) {
+                var recipeUsers = _.indexBy(recipeUsers, 'id');
+                //_.indexBy: Creates an object composed of keys generated from the results of running each element of the collection through the given callback. The corresponding value of each key is the last element responsible for generating the key
+                collection.recipes = _.map(collection.recipes, function(recipe) {
+                    recipe.author = recipeUsers[recipe.author].toJSON();
+                    return recipe;
+                });
+                res.json(collection.recipes);
+            })
+            .catch(function(err) {
+                if (err) {
+                    return next(err);
+                }
+            });
+
+    },
 
 	/**
      * @api {post} /collection Create a new Collection

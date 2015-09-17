@@ -137,6 +137,8 @@ module.exports.routes = addGlobalPrefix({
   'put /collection/:collection/recipe' : 'CollectionController.addRecipe',
 
   'delete /collection/:collection/recipe' : 'CollectionController.removeRecipe',
+
+  'get /collection/:collection/recipe' : 'CollectionController.getRecipes',
   
 
 

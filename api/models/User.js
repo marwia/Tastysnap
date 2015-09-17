@@ -30,6 +30,30 @@ module.exports = {
 
     encryptedPassword: { type: 'String' },
 
+    // Reference to many Recipes
+    recipes : {
+      collection: 'recipe',
+      via: 'author'
+    },
+
+    // Reference to many Collections
+    collections : {
+      collection: 'collection',
+      via: 'author'
+    },
+
+    // Reference to many Users
+    followers : {
+      collection: 'user',
+      via: 'following'
+    },
+
+    // Reference to many Users
+    following : {
+      collection: 'user',
+      via: 'following'
+    },
+
     // Override toJSON method to remove password from API
     toJSON: function() {
       var obj = this.toObject();
