@@ -96,6 +96,24 @@ module.exports.routes = addGlobalPrefix({
 
   /***************************************************************************
   *                                                                          *
+  * Utenti                                                                   *
+  *                                                                          *
+  ***************************************************************************/
+
+  'put /user/:user/follow': 'UserController.follow',
+
+  'delete /user/:user/follow': 'UserController.unfollow',
+
+  'get /user/:user/follower': 'UserController.getFollowers',
+
+  'get /user/:user/following': 'UserController.getFollowing',
+
+  'get /user/following/:user': 'UserController.areYouFollowing',
+
+  'get /user/:user/following/:target_user': 'UserController.isFollowing',
+
+  /***************************************************************************
+  *                                                                          *
   * Voti a ricette.                                                          *
   *                                                                          *
   ***************************************************************************/
@@ -139,6 +157,14 @@ module.exports.routes = addGlobalPrefix({
   'delete /collection/:collection/recipe' : 'CollectionController.removeRecipe',
 
   'get /collection/:collection/recipe' : 'CollectionController.getRecipes',
+
+  'put /collection/:collection/follow': 'CollectionController.follow',
+
+  'delete /collection/:collection/follow': 'CollectionController.unfollow',
+
+  'get /collection/:collection/follower': 'CollectionController.getFollowers',
+
+  'get /collection/:collection/following': 'CollectionController.areYouFollowing',
   
 
 

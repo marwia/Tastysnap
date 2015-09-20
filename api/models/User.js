@@ -51,7 +51,13 @@ module.exports = {
     // Reference to many Users
     following : {
       collection: 'user',
-      via: 'following'
+      via: 'followers'
+    },
+
+    // Reference to many Collections
+    followingCollections : {
+      collection: 'Collection',
+      via: 'followers'
     },
 
     // Override toJSON method to remove password from API
@@ -60,6 +66,20 @@ module.exports = {
       delete obj.encryptedPassword;
       delete obj.password;
       return obj;
+    },
+
+    isFollowingUser: function(userId) {
+      for (var i = 0; i < this.following.length; i++) {
+        if(this.following[i].id == userId) { return true; }
+      };
+      return false;
+    },
+
+    isFollowingCollection: function(collectionId) {
+      for (var i = 0; i < this.followingCollections.length; i++) {
+        if(this.followingCollections[i].id == collectionId) { return true; }
+      };
+      return false;
     }
  
   },

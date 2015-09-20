@@ -45,7 +45,13 @@ module.exports.policies = {
   // Elenco dei casi particolari
   
   'UserController' : {
-    'delete' : false // Eliminazione non consentita
+    'delete' : false, // Eliminazione non consentita
+    'follow' : ['isAuthorized', 'findUser'],
+    'unfollow' : ['isAuthorized', 'findUser'],
+    'getFollowers' : 'findUser',
+    'getFollowing' : 'findUser',
+    'areYouFollowing' : ['isAuthorized', 'findUser'],
+    'isFollowing' : 'findUser',
   },
 
   'PostController' : {
@@ -57,7 +63,11 @@ module.exports.policies = {
     'delete' : ['isAuthorized', 'isCollectionAuthor'],
     'addRecipe' : ['isAuthorized', 'isCollectionAuthor', 'findCollection'],
     'removeRecipe' : ['isAuthorized', 'isCollectionAuthor', 'findCollection'],
-    'getRecipes' : 'findCollection'
+    'getRecipes' : 'findCollection',
+    'follow' : ['isAuthorized', 'findCollection'],
+    'unfollow' : ['isAuthorized', 'findCollection'],
+    'getFollowers' : true,
+    'areYouFollowing' : ['isAuthorized', 'findCollection']
   },
 
   'CommentController' : {

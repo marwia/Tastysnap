@@ -317,8 +317,160 @@ module.exports = {
         collection.recipes.remove(recipeId);
         collection.save(function (err, saved) {
             if(err){ return next(err); }
-            return res.send(204, null);
+            return res.send(204, null);// OK - No Content
         });  
+    },
+
+    /**
+     * @api {put} /collection/:collection/follow Follow a Collection
+     * @apiName FollowCollection
+     * @apiGroup Collection
+     *
+     * @apiDescription Serve seguire una collezione.
+     * Richiede l'autenticazione della richiesta. Attenzione: non è possibile seguire se
+     * stessi.
+     *
+     * @apiHeader {String} token  Authentication token.
+     *
+     * @apiHeaderExample Request-Header-Example:
+     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 204 No Content
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     *
+     * @apiUse NoUserError
+     *
+     * @apiUse NoCollectionError
+     */
+    follow: function (req, res, next) {
+        var user = req.payload;
+        var collectionToFollow = req.collection;
+
+        // ricarico l'utente corrente (con l'array dei following) (necessario...)
+        User.findOne(user.id).populate('followingCollections').exec( function (err, foundUser) {
+            // seguire più volte non è permesso
+            if(foundUser.isFollowingCollection(collectionToFollow.id) == true) { return res.badRequest(); }
+
+            foundUser.followingCollections.add(collectionToFollow.id);
+
+            foundUser.save(function (err, saved) {
+                if(err){ return next(err); }
+                return res.send(204, null);// OK - No Content
+            });
+        });  
+    },
+
+    /**
+     * @api {delete} /collection/:collection/follow Unfollow a Collection
+     * @apiName UnfollowCollection
+     * @apiGroup Collection
+     *
+     * @apiDescription Serve non seguire più una collezione.
+     * Richiede l'autenticazione della richiesta.
+     *
+     * @apiHeader {String} token  Authentication token.
+     *
+     * @apiHeaderExample Request-Header-Example:
+     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 204 No Content
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     *
+     * @apiUse NoUserError
+     *
+     * @apiUse NoCollectionError
+     */
+    unfollow: function (req, res, next) {
+        var user = req.payload;
+        var collectionTounfollow = req.collection;
+
+        // ricarico l'utente corrente (con l'array dei following) (necessario...)
+        User.findOne(user.id).exec( function (err, foundUser) {
+
+            foundUser.followingCollections.remove(collectionTounfollow.id);
+
+            foundUser.save(function (err, saved) {
+                if(err){ return next(err); }
+                return res.send(204, null);// OK - No Content
+            });
+        });  
+    },
+
+    /**
+     * @api {get} /collection/:collection/follower List followers of a Collection
+     * @apiName FollowerCollection
+     * @apiGroup Collection
+     *
+     * @apiDescription Serve per ricavare la lista degli utenti che seguono una collezione.
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *
+     *
+     * @apiUse NoCollectionError
+     */
+    getFollowers: function (req, res, next) {
+        var collectionId = req.param('collection');
+        if (!collectionId) { return next(); }
+
+        Collection.findOne(collectionId).populate('followers').exec( function(err, foundCollection) {
+            if(err){ return next(err); }
+            if(!foundCollection) { return res.notFound({error: 'No collection found'}); }
+            return res.json(foundCollection.followers);
+        });
+    },
+
+    /**
+     * @api {get} /collection/:collection/following Check if you are following a Collection
+     * @apiName AreYouFollowingCollection
+     * @apiGroup Collection
+     *
+     * @apiDescription Serve per verificare se l'utente chiamante sta segundo una Collezione.
+     * Richiede l'autenticazione della richiesta.
+     *
+     * @apiHeader {String} token  Authentication token.
+     *
+     * @apiHeaderExample Request-Header-Example:
+     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 204 No Content
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 404 Not Found
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     *
+     * @apiUse NoCollectionError
+     */
+    areYouFollowing: function (req, res, next) {
+        var user = req.payload;
+        var targetCollection = req.collection;
+
+        // ricarico l'utente corrente (necessario...)
+        User.findOne(user.id).populate('followingCollections').exec( function (err, foundUser) {
+            if(err){ return next(err); }
+
+            // seguire più volte non è permesso
+            if(foundUser.isFollowingCollection(targetCollection.id) == false) { return res.notFound(); }
+
+            return res.send(204, null);// OK - No Content
+        });
     },
 	
 };

@@ -27,8 +27,14 @@ module.exports = {
 
   	// Reference to many Recipes
     recipes : {
-        collection: 'recipe',
+        collection: 'Recipe',
         via: 'collections'
+    },
+
+    // Reference to many Users
+    followers : {
+      collection: 'User',
+      via: 'followingCollections'
     },
 
     findRecipe : function (recipeId) {
