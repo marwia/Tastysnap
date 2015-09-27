@@ -86,6 +86,18 @@ module.exports.policies = {
     'delete' : ['isAuthorized', 'isRecipeAuthor']
   },
 
+  'IngredientGroupController' : {
+    'create' : ['isAuthorized', 'isRecipeAuthor'],
+    'update' : ['isAuthorized', 'isRecipeAuthor'],
+    'delete' : ['isAuthorized', 'isRecipeAuthor'],
+  },
+
+  'IngredientController' : {
+    'create' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
+    'update' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
+    'delete' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
+  },
+
   'VoteRecipeController' : {
     'create' : false,
     'find' : false,

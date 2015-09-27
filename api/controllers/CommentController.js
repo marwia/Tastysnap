@@ -110,7 +110,7 @@ module.exports = {
 
     var newComment = {body: req.body.body}
 
-    Comment.update({id: commentId}, newComment).exec(function (err, updatedComments){
+    Comment.update({ id: commentId, recipe: req.recipe.id}, newComment).exec(function (err, updatedComments){
       if(err){ return next(err); }
 
       return res.json(updatedComments[0]);

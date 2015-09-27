@@ -19,6 +19,8 @@ module.exports = {
 
   	description : { type: 'String' },
 
+    isPrivate : { type: 'Boolean', default: false},
+
   	// Reference to User
   	author : { 
     	model :'user',

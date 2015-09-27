@@ -148,7 +148,7 @@ module.exports.routes = addGlobalPrefix({
 
   /***************************************************************************
   *                                                                          *
-  * Collezioni di ricette.                                                  *
+  * Collezioni di ricette.                                                   *
   *                                                                          *
   ***************************************************************************/
 
@@ -165,6 +165,25 @@ module.exports.routes = addGlobalPrefix({
   'get /collection/:collection/follower': 'CollectionController.getFollowers',
 
   'get /collection/:collection/following': 'CollectionController.areYouFollowing',
+
+  /***************************************************************************
+  *                                                                          *
+  * Ingredienti di ricette.                                                  *
+  *                                                                          *
+  ***************************************************************************/
+
+  'post /recipe/:recipe/ingredient_group' : 'IngredientGroupController.create',
+
+  'put /recipe/:recipe/ingredient_group/:ingredient_group' : 'IngredientGroupController.update',
+
+  'delete /recipe/:recipe/ingredient_group/:ingredient_group' : 'IngredientGroupController.delete',
+  
+
+  'post /recipe/:recipe/ingredient_group/:ingredient_group/ingredient' : 'IngredientController.create',
+
+  'put /recipe/:recipe/ingredient_group/:ingredient_group/ingredient/:ingredient' : 'IngredientController.update',
+
+  'delete /recipe/:recipe/ingredient_group/:ingredient_group/ingredient/:ingredient' : 'IngredientController.delete',
   
 
 

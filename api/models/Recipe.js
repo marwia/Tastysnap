@@ -20,12 +20,16 @@ module.exports = {
 
     description : { type: 'String', required: true },
 
-    ingredients : { type: 'String' },
-
     // Reference to User
     author : { 
       model :'user',
       required : true
+    },
+
+    // Reference to many Ingredient Groups
+    ingredientGroups : {
+      collection: 'IngredientGroup',
+      via: 'recipe'
     },
 
     // Reference to many Likes or Not likes

@@ -120,6 +120,9 @@ module.exports = {
      * @apiDescription Serve per caricare un ricetta creata da un utente.
      * Visto che ogni ricetta deve avere un autore, si deve inviare qualsiasi
      * ricetta con il token del suo autore.<br>
+     * Una volta creata la ricetta, il client deve proseguire creando prima i 
+     * gruppi di ingredienti e poi gli ingredienti di ogni gruppo. Una volta finita
+     * questa serie di creazioni, la ricetta può essere considerata creata con successo.<br>
      * Le richieste devono essere con codifica <strong>
      * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
      *
