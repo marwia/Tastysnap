@@ -19,6 +19,24 @@ module.exports = {
     title : { type: 'String', required: true },
 
     description : { type: 'String', required: true },
+    
+    category : { 
+        type: 'String',
+        required: true,
+        enum: ['first courses', 
+        'second courses', 
+        'soups', 
+        'salads',
+        'appetizers and snacks', 
+        'desserts and cakes', 
+        'beverages', 
+        'cocktails',
+        'side dishes',
+        'jams and preserves',
+        'sauces']
+    },
+    
+    dominantColor : { type: 'String', hexColor: true },
 
     // Reference to User
     author : { 
