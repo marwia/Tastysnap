@@ -1,0 +1,213 @@
+/**
+ * Custom style.css
+ *
+ * Matteo Bolognesi
+ *
+ * 
+ */
+body{
+	padding-top: 50px;
+	background-color: #876D53;
+}
+
+.black_bar{
+	background-color:#2F2F2F;
+	border:none;
+}
+
+#cover_profile{
+	height: 330px;
+	background-image: url('images/profile_cover.jpg');
+    background-size: cover;
+    background-position: 50% 50%;
+	text-align:center;
+	position:relative;
+}
+
+.profile_info_container{
+    position: absolute;
+    top: 39px;
+    left: 0;
+    margin: auto;
+    right: 0;
+	
+	-webkit-transition: all 0.3s ease-in;
+	-moz-transition: all 0.3s ease-in;
+	-ms-transition: all 0.3s ease-in;
+	-o-transition: all 0.3s ease-in;
+	transition: all 0.3s ease-in;
+}
+
+.profile_info_text {
+    width: auto;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.profile_photo{
+	width: 120px;
+    height: 120px;
+    background-image: url('images/matteo.jpg');
+    background-size: cover;
+    background-position: 50% 50%;
+    margin: auto;
+    margin-bottom: 15px;
+}
+
+.profile_name{
+	color: white;
+    font-weight: 700;
+}
+
+.profile_city{
+	color: white;
+    font-weight: 700;
+}
+
+.profile_follow{
+	color:white;
+}
+
+.profile_follow_btn {
+    background-color: orange;
+    color: white;
+    cursor: pointer;
+    width: 87px;
+    margin: auto;
+    padding: 2px;
+	text-align: center;
+}
+
+#menu_profile{
+	position: absolute;
+    bottom: 0px;
+    left: 0;
+    margin: auto;
+    right: 0;
+    text-align: center;
+}
+
+div.button_menu{
+	float: left;
+    width: 140px;
+    margin: auto;
+    color: white;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+button.button_menu{
+	border: none;
+    background-color: transparent;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+	outline:0;
+}
+
+button.button_menu:hover{
+	border-bottom: 2px solid orange;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+button.button_menu_selected{
+	border-bottom: 2px solid orange;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.container_menu{
+	max-width: 1036px;
+    margin: auto;
+    padding: 10px;
+    padding-top: 30px;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.card{
+    width: 234px;
+    height: 378px;
+    background-color: black;
+    float: left;
+    margin: 10px;
+}
+
+
+@media screen and (max-width: 1035px){.container_menu{max-width: 782px;}}
+
+@media screen and (max-width: 781px){.container_menu{max-width: 528px;}}
+
+@media screen and (max-width: 775px){.profile_info_container{top: 4px;}}
+
+@media screen and (max-width: 620px){
+	.profile_info_container{
+		width: 370px;
+	}
+	
+	.profile_photo{
+		float:left;
+		margin-left:3px;
+	}
+	
+	.profile_info_text {
+		float: right;
+		margin-right: 20px;
+	}
+}
+
+@media screen and (max-width: 527px){.container_menu{max-width: 273px;}}
+
+@media screen and (max-width: 370px){.profile_info_container {width: 100%;}}
+
+@media screen and (max-width: 370px){div.button_menu {width: auto;}}
+
+@media screen and (max-width: 346px){
+	.profile_info_text {
+		margin-right: 7px;
+		text-align: right;
+		float:none;
+	}
+	
+	.profile_follow_btn{float: right;}
+}
+
+
+@media screen and (max-width: 315px){
+	.profile_info_text{
+		float: left;
+		margin-right: 20px;
+		width: 53%;
+	}
+}
+   
+
+
+
+
+
+

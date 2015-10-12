@@ -36,12 +36,12 @@ angular.module('appRoutes', []).config([
                     url: '/home',
                     views: {
                         'content@dashboard': { 
-                            templateUrl: 'templates/posts.html',
-                            controller: 'MainCtrl',
+                            templateUrl: 'templates/recipes.html',
+                            controller: 'RecipeCtrl',
                             // ogni volta che parte da questo stato farà questa funzione
                             resolve: {
-                                postPromise: ['posts', function(posts){
-                                    return posts.getAll();
+                                postPromise: ['recipes', function(recipes){
+                                    return recipes.getAll();
                                 }]
                             }
                         }

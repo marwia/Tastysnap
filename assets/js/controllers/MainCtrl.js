@@ -18,14 +18,7 @@ angular.module('MainCtrl', []).controller('MainCtrl', [
 
 		$scope.posts = posts.posts;// aggiungo i post inniettati a tutti i post
 
-    	/*
-		$scope.posts = [
-		{title: 'post 1', upvotes: 5},
-		{title: 'post 2', upvotes: 2},
-		{title: 'post 3', upvotes: 15},
-		{title: 'post 4', upvotes: 9},
-		{title: 'post 5', upvotes: 4}
-		];*/
+
 
 		$scope.addPost = function(){
 			if(!$scope.title || $scope.title === '') { return; }

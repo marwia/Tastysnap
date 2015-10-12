@@ -18,6 +18,7 @@ angular.module('PostsCtrl', []).controller('PostsCtrl', [
 
     $scope.post = post;
 
+    // funzione per aggiungere un commento ad un post
     $scope.addComment = function(){
     	if($scope.body === '') { return; }
     	posts.addComment(post.id, {
