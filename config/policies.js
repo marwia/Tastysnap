@@ -51,7 +51,7 @@ module.exports.policies = {
     'getFollowers' : 'findUser',
     'getFollowing' : 'findUser',
     'areYouFollowing' : ['isAuthorized', 'findUser'],
-    'isFollowing' : 'findUser',
+    'isFollowing' : 'findUser'
   },
 
   'PostController' : {
@@ -89,13 +89,13 @@ module.exports.policies = {
   'IngredientGroupController' : {
     'create' : ['isAuthorized', 'isRecipeAuthor'],
     'update' : ['isAuthorized', 'isRecipeAuthor'],
-    'delete' : ['isAuthorized', 'isRecipeAuthor'],
+    'delete' : ['isAuthorized', 'isRecipeAuthor']
   },
 
   'IngredientController' : {
     'create' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
     'update' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
-    'delete' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
+    'delete' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup']
   },
 
   'VoteRecipeController' : {
@@ -108,6 +108,20 @@ module.exports.policies = {
     'checkVote' : ['isAuthorized', 'findRecipe'],
     'findUpvotes' : 'findRecipe',
     'findDownvotes' : 'findRecipe'
+  },
+  
+  'TryRecipeController' : {
+    'create' : ['isAuthorized', 'findRecipe'],
+    'find' : 'findRecipe',
+    'findOne' : false,
+    'destroy' : ['isAuthorized', 'findRecipe'],// isAuthor è implicito
+    'checkTry' : ['isAuthorized', 'findRecipe']
+  },
+  
+  'TryRecipeDetailController' : {
+    'create' : ['isAuthorized', 'findRecipe', 'findUserTryRecipe'],
+    'destroy' : ['isAuthorized', 'findRecipe', 'findUserTryRecipe'],
+    'update' : ['isAuthorized', 'findRecipe', 'findUserTryRecipe']
   }
 
   /***************************************************************************

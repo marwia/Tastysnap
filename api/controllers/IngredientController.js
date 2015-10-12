@@ -9,7 +9,7 @@ module.exports = {
 
 	 /**
  	  * @apiDefine NoIngredientError
-      *
+        *
  	  * @apiError NoIngredient The ingredient was not found.
  	  *
  	  * @apiErrorExample Error-Response:
@@ -19,7 +19,7 @@ module.exports = {
  	  *     }
  	  */
 
-	/**
+     /**
      * @api {post} /recipe/:recipe/ingredient_group/:ingredient_group/ingredient Create an ingredient
      * @apiName CreateIngredient
      * @apiGroup Recipe

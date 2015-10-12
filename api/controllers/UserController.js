@@ -69,10 +69,7 @@ module.exports = {
      * Richiede l'autenticazione della richiesta. Attenzione: non è possibile seguire se
      * stessi.
      *
-     * @apiHeader {String} token  Authentication token.
-     *
-     * @apiHeaderExample Request-Header-Example:
-     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     * @apiUse TokenHeader
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 204 No Content
@@ -114,10 +111,7 @@ module.exports = {
      * @apiDescription Serve non seguire più un utente.
      * Richiede l'autenticazione della richiesta.
      *
-     * @apiHeader {String} token  Authentication token.
-     *
-     * @apiHeaderExample Request-Header-Example:
-     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     * @apiUse TokenHeader
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 204 No Content
@@ -197,10 +191,7 @@ module.exports = {
      * @apiDescription Serve per verificare se l'utente chiamante sta segundo un altro.
      * Richiede l'autenticazione della richiesta.
      *
-     * @apiHeader {String} token  Authentication token.
-     *
-     * @apiHeaderExample Request-Header-Example:
-     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     * @apiUse TokenHeader
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 204 No Content

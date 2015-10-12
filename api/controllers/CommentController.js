@@ -17,10 +17,7 @@ module.exports = {
    * richiesta con il token del suo autore.<br>
    * Nei parametri della richiesta va inserito il corpo del commento. 
    *
-   * @apiHeader {String} token  Authentication token.
-   *
-   * @apiHeaderExample Request-Header-Example:
-   *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+   * @apiUse TokenHeader
    *
    * @apiParam {String} body The comment's body.
    *
@@ -71,10 +68,7 @@ module.exports = {
    * Necessità di autorizzazione e di essere l'autore del commento.<br>
    * Nei parametri della richiesta va inserito il corpo del commento. 
    *
-   * @apiHeader {String} token  Authentication token.
-   *
-   * @apiHeaderExample Request-Header-Example:
-   *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+   * @apiUse TokenHeader
    *
    * @apiParam {String} body The comment's body.
    *
@@ -126,10 +120,7 @@ module.exports = {
    * Necessità di autorizzazione e di essere l'autore del commento.<br>
    * Nei parametri della richiesta va inserito il corpo del commento. 
    *
-   * @apiHeader {String} token  Authentication token.
-   *
-   * @apiHeaderExample Request-Header-Example:
-   *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+   * @apiUse TokenHeader
    *
    * @apiSuccess {json} comment JSON that represents the comment object.
    *

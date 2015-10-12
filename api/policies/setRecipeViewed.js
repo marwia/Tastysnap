@@ -19,30 +19,15 @@ module.exports = function (req, res, next) {
 
   var recipeId = req.param('id');
 
-  if (!recipeId || !user)// se non ho i dati necessari allora non proseguo
-    console.log();
-  else
+  if (recipeId && user)// se non ho i dati necessari allora non proseguo
+    // verifico se esiste la ricetta richiesta
     Recipe.findOne(recipeId).exec(function (err, foundedRecipe) {
       if(err){ console.log(err); }
-
-      if(foundedRecipe) {
-
-        ViewRecipe.findOne({user: user.id, recipe: foundedRecipe.id}).exec(function (err, foundedView) {
+      else {
+        // creo l'oggetto che rappresenta la visualizzazione
+        var viewRecipe = {user: user, recipe: foundedRecipe};
+        ViewRecipe.create(viewRecipe).exec(function (err, created){
           if(err){ console.log(err); }
-
-          if(!foundedView) {// non trovato
-            var viewRecipe = {user: user, recipe: foundedRecipe};
-            ViewRecipe.create(viewRecipe).exec(function (err, created){
-              if(err){ console.log(err); }
-              console.log("viewed for first time");
-            });
-          }
-          else {// trovato
-            ViewRecipe.update({user: user.id, recipe: foundedRecipe.id}, {}).exec(function (err, updated){
-              if(err){ console.log(err); }
-              console.log("viewed more times");
-            });
-          }
         });
       }
     });

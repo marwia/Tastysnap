@@ -94,10 +94,7 @@ module.exports = {
      * Le richieste devono essere con codifica <strong>
      * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
      *
-     * @apiHeader {String} token  Authentication token.
-     *
-     * @apiHeaderExample Request-Header-Example:
-     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     * @apiUse TokenHeader
      *
      * @apiParam {String} title Collection title.
      * @apiParam {String} description Collection description.
@@ -151,10 +148,7 @@ module.exports = {
      * Le richieste devono essere con codifica <strong>
      * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
      *
-     * @apiHeader {String} token  Authentication token.
-     *
-     * @apiHeaderExample Request-Header-Example:
-     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     * @apiUse TokenHeader
      *
      * @apiSuccess {json} recipe JSON that represents the collection object deleted.
      *
@@ -196,10 +190,7 @@ module.exports = {
      *
      * @apiParam {Integer} recipe_id The id of the recipe to add.
      *
-     * @apiHeader {String} token  Authentication token.
-     *
-     * @apiHeaderExample Request-Header-Example:
-     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     * @apiUse TokenHeader
      *
      * @apiSuccess {json} recipe JSON that represents the updated collection object.
      *
@@ -287,10 +278,7 @@ module.exports = {
      *
      * @apiParam {Integer} recipe_id The id of the recipe to remove.
      *
-     * @apiHeader {String} token  Authentication token.
-     *
-     * @apiHeaderExample Request-Header-Example:
-     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     * @apiUse TokenHeader
      *
      * @apiSuccessExample {json} Success-Response-Example:
      *     HTTP/1.1 204 No Content
@@ -328,10 +316,7 @@ module.exports = {
      * Richiede l'autenticazione della richiesta. Attenzione: non è possibile seguire se
      * stessi.
      *
-     * @apiHeader {String} token  Authentication token.
-     *
-     * @apiHeaderExample Request-Header-Example:
-     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     * @apiUse TokenHeader
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 204 No Content
@@ -372,10 +357,7 @@ module.exports = {
      * @apiDescription Serve non seguire più una collezione.
      * Richiede l'autenticazione della richiesta.
      *
-     * @apiHeader {String} token  Authentication token.
-     *
-     * @apiHeaderExample Request-Header-Example:
-     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     * @apiUse TokenHeader
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 204 No Content
@@ -438,10 +420,7 @@ module.exports = {
      * @apiDescription Serve per verificare se l'utente chiamante sta segundo una Collezione.
      * Richiede l'autenticazione della richiesta.
      *
-     * @apiHeader {String} token  Authentication token.
-     *
-     * @apiHeaderExample Request-Header-Example:
-     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     * @apiUse TokenHeader
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 204 No Content

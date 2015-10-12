@@ -126,10 +126,7 @@ module.exports = {
      * Le richieste devono essere con codifica <strong>
      * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
      *
-     * @apiHeader {String} token  Authentication token.
-     *
-     * @apiHeaderExample Request-Header-Example:
-     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     * @apiUse TokenHeader
      *
      * @apiParam {String} title Recipe title.
      * @apiParam {String} description Recipe description.
@@ -181,10 +178,7 @@ module.exports = {
      * Le richieste devono essere con codifica <strong>
      * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
      *
-     * @apiHeader {String} token  Authentication token.
-     *
-     * @apiHeaderExample Request-Header-Example:
-     *     Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImNhdmFsbG8iLCJjcmVhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJ1cGRhdGVkQXQiOiIyMDE1LTA3LTI0VDE3OjI4OjEwLjU3N1oiLCJpZCI6IjU1YjI3NWFhM2U0OTM1YmMwMjhkMDJjMCIsImlhdCI6MTQzOTA1ODQ2MSwiZXhwIjoxNDM5MDY5MjYxfQ.EBvGiq4fuRwKXjgrX5kKmUJZVQOgkjCBRe-j--g8NbU
+     * @apiUse TokenHeader
      *
      * @apiSuccess {json} recipe JSON that represents the recipe object.
      *

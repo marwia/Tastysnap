@@ -25,6 +25,7 @@ var blueprintConfig = require('./blueprints');
 var ROUTE_PREFIX = blueprintConfig.blueprints.prefix || "";
 
 // add global prefix to manually defined routes
+// Exclude the first one
 function addGlobalPrefix(routes) {
   var paths = Object.keys(routes),
       newRoutes = {};
@@ -32,25 +33,32 @@ function addGlobalPrefix(routes) {
   if(ROUTE_PREFIX === "") {
     return routes;
   }
-
+  
+  var i=0;
   paths.forEach(function(path) {
+
     var pathParts = path.split(" "),
         uri = pathParts.pop(),
         prefixedURI = "", newPath = "";
-
-      prefixedURI = ROUTE_PREFIX + uri;
+      console.log(path);
+      if(i != 0)
+        prefixedURI = ROUTE_PREFIX + uri;
+      else
+        prefixedURI = uri;
 
       pathParts.push(prefixedURI);
 
       newPath = pathParts.join(" ");
       // construct the new routes
       newRoutes[newPath] = routes[path];
+      i++;
   });
+  
 
   return newRoutes;
 };
 
-module.exports.routes = addGlobalPrefix({
+var apiRoutes = addGlobalPrefix({
 
   /***************************************************************************
   *                                                                          *
@@ -66,6 +74,7 @@ module.exports.routes = addGlobalPrefix({
   * Entry point dell'app AngularJS.
   * E' importante specificare che si tratta di una GET altrimenti
   * ogni richiesta verrà reinderizzata qui.
+  * ATTENZIONE è STATA ESCLUSA DALL'AGGIUNGERE IL PREFISSO
   */
   'get /': {
     view: 'index'
@@ -128,7 +137,27 @@ module.exports.routes = addGlobalPrefix({
 
   'get /recipe/:recipe/downvote': 'VoteRecipeController.findDownvotes',
 
-  'get /recipe/:recipe/vote': 'VoteRecipeController.checkVote',
+  'get /recipe/:recipe/voted': 'VoteRecipeController.checkVote',
+  
+  /***************************************************************************
+  *                                                                          *
+  * Prove di ricette.                                                          *
+  *                                                                          *
+  ***************************************************************************/
+
+  'post /recipe/:recipe/try': 'TryRecipeController.create',
+
+  'delete /recipe/:recipe/try': 'TryRecipeController.destroy',
+
+  'get /recipe/:recipe/try': 'TryRecipeController.find',
+
+  'get /recipe/:recipe/tried': 'TryRecipeController.checkTry',
+  
+  'post /recipe/:recipe/try/detail': 'TryRecipeDetailController.create',
+
+  'delete /recipe/:recipe/try/detail': 'TryRecipeDetailController.destroy',
+  
+  'put /recipe/:recipe/try/detail': 'TryRecipeDetailController.update',
 
   /***************************************************************************
   *                                                                          *
@@ -196,3 +225,9 @@ module.exports.routes = addGlobalPrefix({
   'post /login': 'AuthController.index'
 
 });
+
+var paths = Object.keys(apiRoutes);
+
+//console.log(apiRoutes);
+
+module.exports.routes = apiRoutes;
