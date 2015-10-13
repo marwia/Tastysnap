@@ -40,7 +40,7 @@ function addGlobalPrefix(routes) {
     var pathParts = path.split(" "),
         uri = pathParts.pop(),
         prefixedURI = "", newPath = "";
-      console.log(path);
+      // escludo la prima...
       if(i != 0)
         prefixedURI = ROUTE_PREFIX + uri;
       else
@@ -120,6 +120,16 @@ var apiRoutes = addGlobalPrefix({
   'get /user/following/:user': 'UserController.areYouFollowing',
 
   'get /user/:user/following/:target_user': 'UserController.isFollowing',
+  
+  /***************************************************************************
+  *                                                                          *
+  * Ricette.                                                                 *
+  *                                                                          *
+  ***************************************************************************/
+  
+  // definisco solo le azioni non standard
+  
+  'put /recipe/:id/upload_cover_image': 'RecipeController.uploadCoverImage',
 
   /***************************************************************************
   *                                                                          *

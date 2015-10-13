@@ -20,8 +20,7 @@ module.exports = {
       	required : true
     },
     
-    // Reference to many Ingredients
-  	// Because a product can become an ingredient many times
+    // Reference to many Trial Details
     details : {
       collection: 'TryRecipeDetail',
       via: 'trial'

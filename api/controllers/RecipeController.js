@@ -5,6 +5,13 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+/**
+ * Module dependencies
+ * 
+ * Prese da https://github.com/balderdashy/sails/blob/master/lib/hooks/blueprints/actions/find.js
+ */
+var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+
 module.exports = {
     /**
      * @api {get} /recipe List Recipes
@@ -85,6 +92,44 @@ module.exports = {
      *
      * @apiUse InvalidTokenError
      */
+    find: function (req, res, next) {
+        var queryParams = req.query;
+        
+        Recipe.find()
+        .where( actionUtil.parseCriteria(req) )
+        .limit( actionUtil.parseLimit(req) )
+        .skip( actionUtil.parseSkip(req) )
+        .sort( actionUtil.parseSort(req) )
+        .populate('author')
+        .populate('views')
+        .populate('votes')
+        .populate('comments')
+        .populate('trials')
+        .exec( function(err, foundRecipes) {
+            if(err){ return next(err); }
+            
+            // array di appoggio
+            var recipes = new Array();
+            
+            // conto gli elementi delle collection
+            for (var i in foundRecipes) {
+                foundRecipes[i].viewsCount = foundRecipes[i].views.length;
+                foundRecipes[i].votesCount = foundRecipes[i].votes.length;
+                foundRecipes[i].commentsCount = foundRecipes[i].comments.length;
+                foundRecipes[i].trialsCount = foundRecipes[i].trials.length;
+
+                /**
+                 * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
+                 * delle associazioni vengono automaticamente tolte quando si esegue
+                 * il seguente metodo.
+                 */
+                var obj = foundRecipes[i].toObject();
+                delete obj.description;// tolgo la descrizione della ricetta
+                recipes.push(obj);
+            }
+            return res.json(recipes);
+        });
+    },
 
      /**
      * @api {get} /recipe/:id Get a Recipe
@@ -161,11 +206,103 @@ module.exports = {
       var recipe = req.body;
       // setto l'autore della ricetta
       recipe.author = user;
+      // tolgo dall'oggetto ricetta elementi 'particolari'
+      delete recipe.coverImageUrl;
+      delete recipe.coverImageFd;
 
       Recipe.create(recipe).exec(function(err, recipe){
         if(err){ return next(err); }
         return res.json(recipe);
       });
+    },
+    
+    /**
+     * @api {put} /recipe/:recipe/upload_cover_image Upload the cover image
+     * @apiName UploadCoverImage
+     * @apiGroup Recipe
+     *
+     * @apiDescription Serve per caricare l'immagine principale per una ricetta
+     * Ogni richiesta necessità di autenticazione e di essere l'autore della
+     * ricetta che si sta modificando.
+     * Le richieste devono essere con codifica <strong>
+     * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
+     *
+     * @apiUse TokenHeader
+     *
+     * @apiParam {File} coverImage Cover image file.
+     *
+     * @apiSuccess {json} recipe JSON that represents the recipe object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+     *     "recipe": 
+     *       {
+     *         "createdAt": "2015-08-11T18:58:46.329Z",
+     *         "updatedAt": "2015-08-11T18:58:46.329Z",
+     *         "id": "55ca45e69b4246110b319cb1"
+     *       }
+     *     }
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     * 
+     * @apiError message Breve descrizione dell'errore che ha riscontrato il server.
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 400 Bad Request
+     *     {
+     *       "message": "No file was found"
+     *     }
+     * 
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 400 Bad Request
+     *     {
+     *       "message": "No file was uploaded"
+     *     }
+     */
+    uploadCoverImage: function (req, res) {
+        var recipe = req.recipe;
+        
+        var coverImage = req.file('coverImage');
+        if(!coverImage) {return res.badRequest('No file was found'); }
+
+        coverImage.upload({
+            // don't allow the total upload size to exceed ~10MB
+            maxBytes: 10000000,
+            // put the image in the assets folder (only development)
+            dirname: sails.config.appPath + '/assets/images'
+        }, function whenDone(err, uploadedFiles) {
+            if (err) {
+                return res.negotiate(err);
+            }
+            
+            console.log(uploadedFiles[0]);
+        
+            // If no files were uploaded, respond with an error.
+            if (uploadedFiles.length === 0){
+                return res.badRequest('No file was uploaded');
+            }
+            
+            // get the file name from a path
+            var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
+            // Save the "fd" and the url where the avatar for a user can be accessed
+            Recipe.update(recipe.id, {
+                
+                // Generate a unique URL where the avatar can be downloaded.
+                coverImageUrl: require('util').format('%s%s', sails.getBaseUrl(), '/assets/images/' + filename),
+            
+                // Grab the first file and use it's `fd` (file descriptor)
+                coverImageFd: uploadedFiles[0].fd
+            })
+            .exec(function (err, updatedRecipes) {
+                if (err) return res.negotiate(err);
+                    return res.json(updatedRecipes[0]);
+            });
+        });
     },
 
     /**

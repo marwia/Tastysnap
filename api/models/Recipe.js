@@ -36,6 +36,11 @@ module.exports = {
         'sauces']
     },
     
+    // Url which represents the main image of the recipe
+    coverImageUrl : { type: 'String', url: true },
+    // cover image file descriptor (full image path)
+    coverImageFd : { type: 'String' },
+    
     dominantColor : { type: 'String', hexColor: true },
 
     // Reference to User
@@ -65,6 +70,12 @@ module.exports = {
     // Reference to many Comments
     comments : {
       collection: 'comment',
+      via: 'recipe'
+    },
+    
+    // Reference to many Trials
+    trials : {
+      collection: 'tryRecipe',
       via: 'recipe'
     },
 
