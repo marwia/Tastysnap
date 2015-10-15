@@ -1,91 +1,27 @@
 
-  <!-- Navbar -->
-  <div ui-view="navbar"></div>
-  <!-- End Navbar -->
+<!-- Navbar -->
+<div ui-view="navbar"></div>
+<!-- End Navbar -->
 
+<div style="clear:both;"></div>
+  
+<div id="wrapper" ng-class="{'toggled': toggle}"> <!-- ng-cloak -->
+  
+  <!-- Sidebar -->
+  <div ui-view="sidebar"></div>
+  <!-- End Sidebar -->
+  
   <div style="clear:both;"></div>
   
-  <div id="page-wrapper" ng-class="{'open': toggle}" ><!-- ng-cloak -->
-   
-    <!-- Sidebar -->
-    <div ui-view="sidebar"></div>
-    <!-- End Sidebar -->
-    
-    <div style="clear:both;"></div>
-    <div id="content-wrapper">
-      <div class="page-content">
-
-        <!-- Header Bar -->
-        <div class="row header">
-          <div class="col-xs-12">
-            <div class="user pull-right">
-              <div class="item dropdown">
-                <a href="#" class="dropdown-toggle">
-                  <img src="http://lorempixel.com/output/people-q-c-100-100-1.jpg">
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right">
-                  <li class="dropdown-header">
-                    Joe Bloggs
-                  </li>
-                  <li class="divider"></li>
-                  <li class="link">
-                    <a href="#">
-                      Profile
-                    </a>
-                  </li>
-                  <li class="link">
-                    <a href="#">
-                      Menu Item
-                    </a>
-                  </li>
-                  <li class="link">
-                    <a href="#">
-                      Menu Item
-                    </a>
-                  </li>
-                  <li class="divider"></li>
-                  <li class="link">
-                    <a href="#">
-                      Logout
-                    </a>
-                  </li>
-                </ul>
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div ui-view="content"></div>    
               </div>
-              <div class="item dropdown">
-               <a href="#" class="dropdown-toggle">
-                <i class="fa fa-bell-o"></i>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li class="dropdown-header">
-                  Notifications
-                </li>
-                <li class="divider"></li>
-                <li>
-                  <a href="#">Server Down!</a>
-                </li>
-              </ul>
-            </div>
           </div>
-          <div class="meta">
-            <div class="page">
-              Dashboard
-            </div>
-            <div class="breadcrumb-links">
-              Home / Dashboard
-            </div>
-          </div>
-        </div>
       </div>
-      <!-- End Header Bar -->
-
-      <!-- Main Content -->
-      <div class="row">
-        <div class="span12 ui-view-container">
-          <div ui-view="content"></div>        
-        </div>
-      </div> 
-      <!-- End Main Content -->
-
-    </div><!-- End Page Content -->
-  </div><!-- End Content Wrapper -->
-  </div><!-- End Page Wrapper -->
+  </div><!-- End Page Content -->
+  
+</div><!-- End Page Wrapper -->

@@ -1,69 +1,102 @@
 /*
- * Custom styles
- * Mariusz Wiazowski
- *
- * Fogli di stile usati principalmente nella dashboard.
- * 
- */
-
-/*
- * Serve per mantenere visibile il contenuto sotto la nav-bar
- */
- body { 
-  padding-top: 50px; 
-}
-
-/*
- * Quindi si deve alzare il footer
- */
-.sidebar-footer {
-  bottom: 50px
-}
-
-/*
  * Colore principale sidebar
  */
 #sidebar-wrapper {
   background: #2f2f2f;
-  *position: absolute;
 }
 
 /*
  * Colore di sfondo del titolo della sidebar
  */
-#page-wrapper:not(.open) ul.sidebar .sidebar-title.separator, .sidebar-footer, .sidebar-profile,
-ul.sidebar .sidebar-list a:hover, ul.sidebar .sidebar-main a {
-    background: #282828
+ul.sidebar .sidebar-main a,
+.sidebar-footer,
+ul.sidebar .sidebar-list a:hover,
+#page-wrapper:not(.open) ul.sidebar .sidebar-title.separator {
+  /* Sidebar header and footer color */
+  background: #282828;
 }
 
-/*
- * Colore del testo dei titoli delle categorie
- */
-ul.sidebar .sidebar-title {
-    color: #ff9800;
+ul.sidebar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-indent: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-/*
- * Colore del testo delle voci (che stanno dentro le categorie)
- */
-ul.sidebar .sidebar-list a {
-    color: #cbcbcb;
+ul.sidebar li a {
+  color: #fff;
+  display: block;
+  float: left;
+  text-decoration: none;
+  width: 250px;
 }
 
-.sidebar-footer div a {
-    color: #ff9800;
-    font-size: 12px;
-    line-height: 43px
-}
-
-/* impostato a zero perchè vi era spazio tra la parte del profilo */
 ul.sidebar .sidebar-main {
-    height: 0px;
+  height: 65px;
+}
+
+ul.sidebar .sidebar-main a {
+  font-size: 18px;
+  line-height: 60px;
+}
+
+ul.sidebar .sidebar-main a:hover {
+  cursor: pointer;
+}
+
+ul.sidebar .sidebar-main .menu-icon {
+  float: right;
+  font-size: 18px;
+  padding-right: 28px;
+  line-height: 60px;
+}
+
+ul.sidebar .sidebar-title {
+  color: #ff9800;
+  font-size: 12px;
+  height: 35px;
+  line-height: 40px;
+  text-transform: uppercase;
+  transition: all .6s ease 0s;
+}
+
+ul.sidebar .sidebar-list {
+  height: 40px;
+}
+
+ul.sidebar .sidebar-list a {
+  text-indent: 25px;
+  font-size: 15px;
+  color: cbcbcb;
+  line-height: 40px;
+}
+
+ul.sidebar .sidebar-list a:hover {
+  color: #fff;
+  border-left: 3px solid #e99d1a;
+  text-indent: 22px;
+}
+
+ul.sidebar .sidebar-list a:hover .menu-icon {
+  text-indent: 25px;
+}
+
+ul.sidebar .sidebar-list .menu-icon {
+  float: right;
+  padding-right: 29px;
+  line-height: 40px;
+  width: 70px;
 }
 
 /*
  * Sezione della sidebar che mostra i dettagli dell'utente
  */
+ 
 .sidebar-profile {
     /*position: absolute;*/
     /*bottom: 200px;*/
@@ -108,15 +141,6 @@ ul.sidebar .sidebar-main {
     height: 60px;
     margin-top: 10px;
 }
-
-/* nascondo questo elemento */
-#page-wrapper:not(.open) .sidebar-profile {
-    display: none;
-}
-
-/*********************************************************************************************/
-
-
 
 /*********************************************************************************************/
 

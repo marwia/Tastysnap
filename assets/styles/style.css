@@ -3,7 +3,7 @@
  *
  * Matteo Bolognesi
  *
- * 
+ * Stile usato nella pagina del profilo di un utente.
  */
 body{
 	padding-top: 50px;
@@ -148,15 +148,6 @@ button.button_menu_selected{
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
 }
-
-.card{
-    width: 234px;
-    height: 378px;
-    background-color: black;
-    float: left;
-    margin: 10px;
-}
-
 
 @media screen and (max-width: 1035px){.container_menu{max-width: 782px;}}
 

@@ -10,7 +10,6 @@
         "angular-cookies": "latest",
         "angular-bootstrap": "latest",
         "angular-loading-bar": "latest",
-        "rdash-ui": "1.0.*",
         "angular-animate": "latest"
     }
 }

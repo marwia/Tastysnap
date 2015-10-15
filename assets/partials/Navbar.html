@@ -7,18 +7,15 @@
 
 -->
 
-<nav class="navbar navbar-default navbar-fixed-top" ng-controller="NavCtrl">
+<nav id="navbar" class="navbar navbar-default navbar-fixed-top" ng-controller="NavCtrl">
     <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Brand</a>
-        </div>
+        
+        <!-- Toggle Menu Button -->
+        <a id="menu-toggle" ng-click="toggleSidebar()">
+			<p class="navbar-text glyphicon glyphicon-option-horizontal nav_bar_style"></p>
+		</a>
 
+        <!-- Search Bar -->
         <form class="navbar-form navbar-left" role="search">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Search">
@@ -26,7 +23,7 @@
             <!-- <button type="submit" class="btn btn-default">Cerca</button> -->
         </form>
 
-        <div id="navbar" class="navbar-collapse collapse navbar-right" aria-expanded="false" style="height: 1px;">
+        <div class="navbar-collapse collapse navbar-right" aria-expanded="false" style="height: 1px;">
           <ul class="nav navbar-nav">
                 <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
                 <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
