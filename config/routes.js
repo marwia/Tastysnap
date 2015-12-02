@@ -130,6 +130,10 @@ var apiRoutes = addGlobalPrefix({
   // definisco solo le azioni non standard
   
   'put /recipe/:id/upload_cover_image': 'RecipeController.uploadCoverImage',
+  
+  'get /recipe/categories': 'RecipeController.getRecipeCategories',
+  
+  'get /recipe/dosage_types': 'RecipeController.getRecipeDosageTypes',
 
   /***************************************************************************
   *                                                                          *
@@ -168,6 +172,8 @@ var apiRoutes = addGlobalPrefix({
   'delete /recipe/:recipe/try/detail': 'TryRecipeDetailController.destroy',
   
   'put /recipe/:recipe/try/detail': 'TryRecipeDetailController.update',
+  
+  'get /try/detail/typologies': 'TryRecipeDetailController.getTryDetailTypologies',
 
   /***************************************************************************
   *                                                                          *
@@ -224,7 +230,22 @@ var apiRoutes = addGlobalPrefix({
 
   'delete /recipe/:recipe/ingredient_group/:ingredient_group/ingredient/:ingredient' : 'IngredientController.delete',
   
-
+  
+  'get /ingredient/unit_of_measures': 'IngredientController.getIngredientUnitOfMeasure',
+  
+  /***************************************************************************
+  *                                                                          *
+  * Robba vecchia da cancellare.                                             *
+  *                                                                          *
+  ***************************************************************************/
+  
+  'get /product/categories': 'ProductController.getProductCategories',
+  
+  /***************************************************************************
+  *                                                                          *
+  * Robba vecchia da cancellare.                                             *
+  *                                                                          *
+  ***************************************************************************/
 
   'get /post/:post': 'PostController.getPost',
 

@@ -381,6 +381,64 @@ module.exports = {
      *
      * @apiUse NoPermissionError
      */
+    
+     /**
+     * @api {get} /recipe/categories Get all recipe cetegories
+     * @apiName GetRecipeCategories
+     * @apiGroup Recipe
+     *
+     * @apiDescription Serve per ottenere la lista delle categorie di ricette.
+     * 
+     * @apiSuccess {json} recipe JSON that represents the recipe categories object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+     *          "type": "string",
+     *          "enum": [
+     *               "first courses",
+     *               "second courses",
+     *               "soups",
+     *               "salads",
+     *               "appetizers and snacks",
+     *               "desserts and cakes",
+     *               "beverages",
+     *               "cocktails",
+     *               "side dishes",
+     *               "jams and preserves",
+     *               "sauces"
+     *          ]
+     *      }
+     *
+     */
+    getRecipeCategories: function (req, res) {
+        return res.json(sails.models.recipe.definition.category);
+    },
+    
+    /**
+     * @api {get} /recipe/dosage_types Get recipe dosage types
+     * @apiName GetRecipeDosageTypes
+     * @apiGroup Recipe
+     *
+     * @apiDescription Serve per ottenere la lista dei vari tipi di 
+     * dosaggi si può associare alla ricetta.
+     * 
+     * @apiSuccess {json} recipe JSON that represents the dosage types object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+     *          "type": "string",
+     *          "enum": [
+     *               "persons",
+     *               "units"
+     *          ]
+     *      }
+     *
+     */
+    getRecipeDosageTypes: function (req, res) {
+        return res.json(sails.models.recipe.definition.dosagesType);
+    }
 	
 };
 

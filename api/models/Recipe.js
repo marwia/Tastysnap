@@ -20,6 +20,14 @@ module.exports = {
 
     description : { type: 'String', required: true },
     
+    // Example: "Dosages for 8 persons"
+    dosagesFor : { type: 'Integer', required: true },
+    
+    dosagesType : { 
+        type: 'String', 
+        required: true,
+        enum: ['persons', 'units'] },
+    
     category : { 
         type: 'String',
         required: true,

@@ -219,6 +219,43 @@ module.exports = {
   			return res.send(204, null);// OK - No Content
 		});
 	},
+      
+     /**
+     * @api {get} /ingredient/unit_of_measures Get ingredient unit of measures
+     * @apiName GetIngredientUnitOfMeasure
+     * @apiGroup Ingredient
+     *
+     * @apiDescription Serve per ottenere la lista dei vari tipi di 
+     * unità di misura della quantità degli ingredienti.
+     * 
+     * @apiSuccess {json} recipe JSON that represents the ingredient unit of measures object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+     *      "type": "string",
+     *      "enum": [
+     *          "kg",
+     *          "hg",
+     *          "dg",
+     *          "g",
+     *          "mg",
+     *          "l",
+     *          "dl",
+     *          "cl",
+     *          "ml",
+     *          "drop",
+     *          "pinch",
+     *          "teaspoon",
+     *          "tablespoon",
+     *          "cup"
+     *      ]
+     *    }
+     *
+     */
+    getIngredientUnitOfMeasure: function (req, res) {
+        return res.json(sails.models.ingredient.definition.unitOfMeasue);
+    }
 
 };
 

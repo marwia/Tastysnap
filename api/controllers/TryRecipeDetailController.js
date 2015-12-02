@@ -149,5 +149,31 @@ module.exports = {
 		})
 	},
 	
+	/**
+     * @api {get} /try/detail/typologies Get trial's detail typologies
+     * @apiName GetTryDetailTypologies
+     * @apiGroup Try Recipe Detail
+     *
+     * @apiDescription Serve per ottenere la lista dei vari tipi di 
+     * tipologies di dettagli di prove che si possono associare ad una ricetta.
+     * 
+     * @apiSuccess {json} recipe JSON that represents the trial's detail typologies object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+     *      "type": "string",
+     *      "enum": [
+     *          "cheap",
+     *          "easy",
+     *          "healthy"
+     *      ]
+     *    }
+     *
+     */
+    getTryDetailTypologies: function (req, res) {
+        return res.json(sails.models.tryrecipedetail.definition.typology);
+    }
+	
 };
 

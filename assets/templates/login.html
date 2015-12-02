@@ -1,31 +1,43 @@
 <!-- Template per il login.
      CSS e HTML preso da: http://getbootstrap.com/examples/signin/ -->
 
-<div class="container" ng-submit="logIn()">
-
-    <form class="form-signin">
-
-        <h2 class="form-signin-heading">Please sign in</h2>
-
-        <label for="inputUsername" class="sr-only">Username</label>
-        <input type="text" id="inputUsername" class="form-control" placeholder="Username" required="" autofocus="" ng-model="user.username">
-
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" ng-model="user.password">
-
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
+<div class="container center_div" ng-submit="logIn()">
+    
+    <form class="form">
+        
+        <!-- Logo image -->
+        <div style="margin-bottom: 25px">
+            <img src="images/logo.png" class="image-circle center-block" />
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-
-        <div class="row">
-        <div ng-show="error" class="alert alert-danger row">
-            <span>{{ error.message }}</span>
+           
+        <!-- Username input -->
+        <div class="form-group">
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <input class="form-control" type="text" name="parameterValue" placeholder="Username" ng-model="user.username" />
+            </div>                    
         </div>
-    </div>
+
+        <!-- Password input -->
+        <div class="form-group">
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon"><span class="fa fa-lock"></span></span>
+                <input class="form-control" type="text" name="parameterValue" placeholder="Password" ng-model="user.password" />
+            </div>                     
+        </div>
+
+        <!-- Login button -->
+        <button class="btn btn-lg btn-custom btn-block" type="submit">LOGIN</button>
+        
+        <p class="text-center">Not a member? <a href="#">Sign up now</a> <span class="fa fa-arrow-right"></span></p>
+        
+         <div class="row" ng-show="error">
+            <div class="alert alert-danger row">
+                <span>{{ error.message }}</span>
+            </div>
+        </div>
 
     </form>
+    
 
 </div>

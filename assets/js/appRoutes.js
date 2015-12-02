@@ -29,7 +29,12 @@ angular.module('appRoutes', []).config([
                         'navbar@dashboard': { templateUrl: 'partials/navbar.html' },
                         'sidebar@dashboard': { templateUrl: 'partials/sidebar.html' },
                         'content@dashboard': { templateUrl: 'templates/rdash.html' }
-                    }  
+                    },
+                    onEnter: ['$state', 'auth', function($state, auth){
+                        if(!auth.isLoggedIn()){
+                            $state.go('login');
+                        }
+                    }]
                 })
 
                 .state('dashboard.home', {

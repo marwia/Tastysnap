@@ -11,7 +11,7 @@
     <div class="container-fluid">
         
         <!-- Toggle Menu Button -->
-        <a id="menu-toggle" ng-click="toggleSidebar()">
+        <a ng-show="isLoggedIn()" id="menu-toggle" ng-click="toggleSidebar()">
 			<p class="navbar-text glyphicon glyphicon-option-horizontal nav_bar_style"></p>
 		</a>
 
@@ -26,7 +26,7 @@
         <div class="navbar-collapse collapse navbar-right" aria-expanded="false" style="height: 1px;">
           <ul class="nav navbar-nav">
                 <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
-                <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
+                <li ng-show="isLoggedIn()"><a href="/login" ng-click="logOut()">Log Out</a></li>
                 <li ng-hide="isLoggedIn()"><a href="/login">Log In</a></li>
                 <li ng-hide="isLoggedIn()"><a href="/user/create">Register</a></li>
                 <li><a href="/dashboard/tables">Tables</a></li>

@@ -21,7 +21,7 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
         };
 
         $scope.$watch($scope.getWidth, function(newValue, oldValue) {
-            if (newValue >= mobileView) {
+            if (newValue >= mobileView && $scope.isLoggedIn()) {
                 if (angular.isDefined($cookieStore.get('toggle'))) {
                     $scope.toggle = ! $cookieStore.get('toggle') ? false : true;
                 } else {
