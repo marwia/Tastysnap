@@ -10,6 +10,7 @@
         "angular-cookies": "latest",
         "angular-bootstrap": "latest",
         "angular-loading-bar": "latest",
-        "angular-animate": "latest"
+        "angular-animate": "latest",
+	    "bootstrap-select": "latest"
     }
 }

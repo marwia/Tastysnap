@@ -36,6 +36,13 @@ angular.module('appRoutes', []).config([
                         }
                     }]
                 })
+                
+                .state('dashboard.new_recipe', {
+                    url: '/new_recipe',
+                    views: {
+                        'content@dashboard': { templateUrl: 'templates/new_recipe.html' }
+                    }
+                })
 
                 .state('dashboard.home', {
                     url: '/home',
@@ -107,6 +114,7 @@ angular.module('appRoutes', []).config([
                     }]
                 });
 
+                // DEFAULT PAGE ==========================================================
                 $urlRouterProvider.otherwise( function($injector, $location) {
                     var $state = $injector.get("$state");
                     $state.go("dashboard");

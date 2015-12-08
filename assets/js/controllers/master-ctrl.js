@@ -9,7 +9,11 @@
 angular.module('MasterCtrl', []).controller('MasterCtrl', [
     '$scope',
     '$cookieStore',
-    function($scope, $cookieStore){
+    'auth', // variabile "inniettata" dal service per l'autenticazione
+    function($scope, $cookieStore, auth){
+        
+        // espongo allo scope il metodo di auth chiamato "isLoggedIn"
+    	$scope.isLoggedIn = auth.isLoggedIn;
 
         /**
          * Sidebar Toggle & Cookie Control

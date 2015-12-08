@@ -7,7 +7,11 @@
  * 
  */
  
-#navbar{
+ .navbar-form .input-group>.form-control { 
+   width: 140%;
+ }
+ 
+#navbar {
 	margin-bottom: 0;
     background-color: #282828;
     color: white;
