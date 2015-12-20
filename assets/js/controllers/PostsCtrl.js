@@ -10,11 +10,11 @@ angular.module('PostsCtrl', []).controller('PostsCtrl', [
 	'$scope',
 	'posts',
 	'post',
-	'auth',
-	function($scope, posts, post, auth){
+	'Auth',
+	function($scope, posts, post, Auth){
 
     // espongo allo scope il metodo di auth chiamato "isLoggedIn"
-    $scope.isLoggedIn = auth.isLoggedIn;
+    $scope.isLoggedIn = Auth.isLoggedIn;
 
     $scope.post = post;
 

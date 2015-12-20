@@ -11,6 +11,6 @@
         "angular-bootstrap": "latest",
         "angular-loading-bar": "latest",
         "angular-animate": "latest",
-	    "bootstrap-select": "latest"
+        "ng-table": "latest"
     }
 }

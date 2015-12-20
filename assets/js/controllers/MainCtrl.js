@@ -9,12 +9,12 @@
 angular.module('MainCtrl', []).controller('MainCtrl', [
 	'$scope',
 	'posts', // variabile "inniettata" dal service dei posts
-	'auth', // variabile "inniettata" dal service per l'autenticazione
-	function($scope, posts, auth){
+	'Auth', // variabile "inniettata" dal service per l'autenticazione
+	function($scope, posts, Auth){
 		$scope.test = 'Hello world!';
 
     	// espongo allo scope il metodo di auth chiamato "isLoggedIn"
-    	$scope.isLoggedIn = auth.isLoggedIn;
+    	$scope.isLoggedIn = Auth.isLoggedIn;
 
 		$scope.posts = posts.posts;// aggiungo i post inniettati a tutti i post
 
@@ -23,7 +23,7 @@ angular.module('MainCtrl', []).controller('MainCtrl', [
 		$scope.addPost = function(){
 			if(!$scope.title || $scope.title === '') { return; }
 
-			console.log(auth.currentUser());
+			console.log(Auth.currentUser());
 			posts.create({
 				title: $scope.title,
 				link: $scope.link

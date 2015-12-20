@@ -7,14 +7,14 @@
  */
 angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
 	'$scope',
-	'recipes',
-	'auth',
-	function($scope, recipes, auth){
+	'Recipe',
+	'Auth',
+	function($scope, Recipe, Auth){
 
     // espongo allo scope il metodo di auth chiamato "isLoggedIn"
-    $scope.isLoggedIn = auth.isLoggedIn;
+    $scope.isLoggedIn = Auth.isLoggedIn;
 	
-	$scope.recipes = recipes.recipes;
+	$scope.recipes = Recipe.recipes;
 
 
 }]);

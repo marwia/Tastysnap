@@ -10,12 +10,12 @@
 angular.module('AuthCtrl', []).controller('AuthCtrl', [
 	'$scope',
 	'$state',
-	'auth',
-	function($scope, $state, auth){
+	'Auth',
+	function($scope, $state, Auth){
 		$scope.user = {};
 
 		$scope.register = function(){
-			auth.register($scope.user).error(function(error){
+			Auth.register($scope.user).error(function(error){
 				$scope.error = error;
 			}).then(function(){
 				$state.go('dashboard');
@@ -24,7 +24,7 @@ angular.module('AuthCtrl', []).controller('AuthCtrl', [
 
 		$scope.logIn = function(){
 	
-			auth.logIn($scope.user).error(function(error){
+			Auth.logIn($scope.user).error(function(error){
 				$scope.error = error;
 			}).then(function(){
 				$state.go('dashboard');

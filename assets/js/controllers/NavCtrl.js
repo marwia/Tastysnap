@@ -9,9 +9,9 @@
  */
 angular.module('NavCtrl', []).controller('NavCtrl', [
   '$scope',
-  'auth',
-  function($scope, auth){
-    $scope.isLoggedIn = auth.isLoggedIn;
-    $scope.currentUser = auth.currentUser;
-    $scope.logOut = auth.logOut;
+  'Auth',
+  function($scope, Auth){
+    $scope.isLoggedIn = Auth.isLoggedIn;
+    $scope.currentUser = Auth.currentUser;
+    $scope.logOut = Auth.logOut;
 }]);

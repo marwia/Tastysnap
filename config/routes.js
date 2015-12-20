@@ -58,6 +58,7 @@ function addGlobalPrefix(routes) {
   return newRoutes;
 };
 
+
 var apiRoutes = addGlobalPrefix({
 
   /***************************************************************************
@@ -81,17 +82,17 @@ var apiRoutes = addGlobalPrefix({
   },
 
   /*
-
   'get /:something': {
        target: '/',
        skipAssets: true
   },
-
-  'get /:something/*': {
+  
+  'get /:something/:weft': {
         target: '/',
         skipAssets: true
   },
   */
+  
 
   /***************************************************************************
   *                                                                          *
@@ -258,6 +259,11 @@ var apiRoutes = addGlobalPrefix({
 });
 
 var paths = Object.keys(apiRoutes);
+
+  //This automatically serves all routes, apart from /api/** routes to ember
+  //(which will be initialized in assets/index.html). This route needs to be
+  //at the very bottom if you want to server other routes through Sails, because they are matched in order
+apiRoutes['get /*'] = {view: 'index', skipAssets: true, skipRegex: /^\/api\/.*$/ };
 
 //console.log(apiRoutes);
 

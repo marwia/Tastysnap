@@ -30,17 +30,29 @@ angular.module('appRoutes', []).config([
                         'sidebar@dashboard': { templateUrl: 'partials/sidebar.html' },
                         'content@dashboard': { templateUrl: 'templates/rdash.html' }
                     },
-                    onEnter: ['$state', 'auth', function($state, auth){
-                        if(!auth.isLoggedIn()){
+                    onEnter: ['$state', 'Auth', function($state, Auth){
+                        if(!Auth.isLoggedIn()){
                             $state.go('login');
                         }
                     }]
                 })
                 
-                .state('dashboard.new_recipe', {
-                    url: '/new_recipe',
+                .state('dashboard.recipe-create', {
+                    url: '/recipe_create',
                     views: {
-                        'content@dashboard': { templateUrl: 'templates/new_recipe.html' }
+                        'content@dashboard': { 
+                            templateUrl: 'templates/recipe-create.html',
+                            controller: 'RecipeCreateCtrl',
+                            // ogni volta che parte da questo stato farà questa funzione
+                            resolve: {
+                                postPromise: ['Recipe', function(recipes){
+                                    return recipes.getAllRecipeCategories();
+                                }],
+                                dosageType: ['Recipe', function(recipes){
+                                    return recipes.getAllDosageTypes();
+                                }]
+                            }
+                        }
                     }
                 })
 
@@ -52,7 +64,7 @@ angular.module('appRoutes', []).config([
                             controller: 'RecipeCtrl',
                             // ogni volta che parte da questo stato farà questa funzione
                             resolve: {
-                                postPromise: ['recipes', function(recipes){
+                                postPromise: ['Recipe', function(recipes){
                                     return recipes.getAll();
                                 }]
                             }
@@ -95,8 +107,8 @@ angular.module('appRoutes', []).config([
                     url: '/login',
                     templateUrl: 'templates/login.html',
                     controller: 'AuthCtrl',
-                    onEnter: ['$state', 'auth', function($state, auth){
-                        if(auth.isLoggedIn()){
+                    onEnter: ['$state', 'Auth', function($state, Auth){
+                        if(Auth.isLoggedIn()){
                             $state.go('dashboard');
                         }
                     }]
@@ -107,8 +119,8 @@ angular.module('appRoutes', []).config([
                     url: '/user/create',
                     templateUrl: 'templates/register.html',
                     controller: 'AuthCtrl',
-                    onEnter: ['$state', 'auth', function($state, auth){
-                        if(auth.isLoggedIn()){
+                    onEnter: ['$state', 'Auth', function($state, Auth){
+                        if(Auth.isLoggedIn()){
                             $state.go('dashboard');
                         }
                     }]
