@@ -263,7 +263,7 @@ var paths = Object.keys(apiRoutes);
   //This automatically serves all routes, apart from /api/** routes to ember
   //(which will be initialized in assets/index.html). This route needs to be
   //at the very bottom if you want to server other routes through Sails, because they are matched in order
-apiRoutes['get /*'] = {view: 'index', skipAssets: true, skipRegex: /^\/api\/.*$/ };
+apiRoutes['get *'] = {view: 'index', skipAssets: true, skipRegex: /^\/api\/.*$|csrfToken/ };
 
 //console.log(apiRoutes);
 
