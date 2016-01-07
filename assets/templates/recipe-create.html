@@ -1,174 +1,230 @@
 <div class="panel panel-default">
-  <div class="panel-body">
-    <form ng-submit="addRecipe()" role="form">
+    <div class="panel-body">
+        <form ng-submit="addRecipe()" role="form">
 
-      <div class="page-header">
-        <h1><small>Inserisci la ricetta</small>
+            <div class="page-header">
+                <h1><small>Inserisci la ricetta</small>
           <br>DAI SFOGO ALLA TUA CREATIVIT&Aacute; </h1>
-      </div>
+            </div>
 
-      <h3>INFORMAZIONI GENERALI</h3>
+            <h3>INFORMAZIONI GENERALI</h3>
 
-      <div class="form-group">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <label class="control-label">Titolo ricetta</label>
+                        <input type="text" class="form-control" name="title" ng-model="title" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <label class="control-label">Categoria</label>
+                        <br>
+                        <my-dropdown data-menu-type="button" select-val="selected_category = selectedVal" preselected-item="selected_category" data-dropdown-data="recipeCategories"></my-dropdown>
+                    </div>
+                </div>
+            </div>
+
+            <h3>INGREDIENTI</h3>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <label class="control-label">Dosi per</label>
+                        <input type="text" class="form-control" name="dosages_for" id="dosages_for" ng-model="dosagesFor" />
+                    </div>
+
+                    <div class="col-xs-2">
+                        <label class="control-label">Tipologia</label>
+                        <br>
+                        <my-dropdown data-menu-type="button" select-val="selected_dosage_type = selectedVal" preselected-item="selected_dosage_type"
+                        data-dropdown-data="dosageTypes"></my-dropdown>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div ng-repeat="ingredient_group in ingredient_groups">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <label class="control-label">Titolo gruppo ingredienti</label>
+                            <input type="text" class="form-control" name="director" ng-model="ingredient_group.title" />
+                        </div>
+                    </div>
+                </div>
+                    
+                <div class="form-group" ng-repeat="ingredient in ingredient_group.ingredients">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <label class="control-label">Ingrediente</label>
+                            <input type="text" class="form-control" name="director" />
+                        </div>
+
+                        <div class="col-xs-2">
+                            <label class="control-label">Quantità</label>
+                            <input type="text" class="form-control" name="writer" />
+                        </div>
+
+                        <div class="col-xs-2">
+                            <label class="control-label">Unità di misura</label>
+                            <input type="text" class="form-control" name="producer" />
+                        </div>
+
+                        <div class="col-xs-2">
+                            <label class="control-label"> </label>
+                            <br>
+                            <button type="button" class="btn btn-danger" ng-click="addIngredient($parent.$index)">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-danger" ng-click="removeIngredientGroup($index)">-</button>
+            <button type="button" class="btn btn-warning" ng-click="addIngredientGroup()">Aggiungi gruppo ingredienti</button>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <label class="control-label">Procedimento</label>
+                        <textarea class="form-control" name="review" rows="8" ng-model="description"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-default">Invia</button>
+            <button type="button" class="btn btn-danger">Cancella</button>
+
+        </form>
+
+        <!-- Inizio sezione da modificare! -->
         <div class="row">
-          <div class="col-xs-8">
-            <label class="control-label">Titolo ricetta</label>
-            <input type="text" class="form-control" name="title" ng-model="title" />
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="row">
-          <div class="col-xs-8">
-            <label class="control-label">Categoria</label>
-            <br>
-            <my-dropdown data-menu-type="button" select-val="selected_category = selectedVal" preselected-item="selected_category" data-dropdown-data="recipeCategories"></my-dropdown>
-          </div>
-        </div>
-      </div>
+            <div class="col-xs-8">
+                <table class="table table-bordered table-hover table-condensed">
+                    <tr style="font-weight: bold">
+                        <td style="width:35%">Ingrediente</td>
+                        <td style="width:20%">Quantità</td>
+                        <td style="width:20%">Unità di misura</td>
+                        <td style="width:25%">Modifica</td>
+                    </tr>
+                    <tr ng-repeat="ingredient in ingredient_groups[0].ingredients">
+                        <td>
+                                    <!-- editable username (text with validation) -->
+                                    <span editable-text="ingredient.name" e-name="name" e-form="rowform" e-required>
+                                        {{ ingredient.name || 'empty' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <!-- editable status (select-local) -->
+                                    <span editable-text="ingredient.name" e-name="name" e-form="rowform" e-required>
+                                        {{ ingredient.quantity || 'empty' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <!-- editable group (select-remote) -->
+                                    <span editable-text="ingredient.name" e-name="name" e-form="rowform" e-required>
+                                        {{ ingredient.type || 'empty' }}
+                                    </span>
+                                </td>
+                        <td style="white-space: nowrap">
+                            <!-- form -->
+                            <form editable-form name="rowform" onbeforesave="saveUser($data, user.id)" ng-show="rowform.$visible" class="form-buttons form-inline"
+                            shown="inserted == user">
+                                <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                                    Salva
+                                </button>
+                                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                                    Annulla
+                                </button>
+                            </form>
+                            <div class="buttons" ng-show="!rowform.$visible">
+                                <button class="btn btn-primary" ng-click="rowform.$show()">Modifica</button>
+                                <button class="btn btn-danger" ng-click="removeIngredient(0, $index)">Elimina</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
 
-      <h3>INGREDIENTI</h3>
-
-      <div class="form-group">
-        <div class="row">
-          <div class="col-xs-2">
-            <label class="control-label">Dosi per</label>
-            <input type="text" class="form-control" name="dosages_for" id="dosages_for" ng-model="dosagesFor" />
-          </div>
-
-          <div class="col-xs-2">
-            <label class="control-label">Tipologia</label>
-            <br>
-            <my-dropdown data-menu-type="button" select-val="selected_dosage_type = selectedVal" preselected-item="selected_dosage_type" data-dropdown-data="dosageTypes"></my-dropdown>
-          </div>
-
-        </div>
-      </div>
-
-
-      <div ng-repeat="ingredient_group in ingredient_groups">
-        <div class="form-group">
-          <div class="row">
-            <div class="col-xs-4">
-              <label class="control-label">Titolo gruppo ingredienti</label>
-              <input type="text" class="form-control" name="director" ng-model="ingredient_group.title" />
+                <button class="btn btn-default" ng-click="addIngredient(0)">Aggiungi ingredient</button>
             </div>
-          </div>
         </div>
 
-        <div class="form-group" ng-repeat="ingredient in ingredient_group.ingredients">
-          <div class="row">
-            <div class="col-xs-2">
-              <label class="control-label">Ingrediente</label>
-              <input type="text" class="form-control" name="director" />
-            </div>
-
-            <div class="col-xs-2">
-              <label class="control-label">Quantità</label>
-              <input type="text" class="form-control" name="writer" />
-            </div>
-
-            <div class="col-xs-2">
-              <label class="control-label">Unità di misura</label>
-              <input type="text" class="form-control" name="producer" />
-            </div>
-
-            <div class="col-xs-2">
-              <button class="btn btn-danger" ng-click="addIngredient($parent.$index)">+</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <button class="btn btn-danger" ng-click="removeIngredientGroup($index)">-</button>
-      <button class="btn btn-warning" ng-click="addIngredientGroup()">Aggiungi gruppo ingredienti</button>
-
-      <div class="form-group">
-        <div class="row">
-          <div class="col-xs-8">
-            <label class="control-label">Procedimento</label>
-            <textarea class="form-control" name="review" rows="8" ng-model="description"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-default">Invia</button>
-      <button class="btn btn-danger">Cancella</button>
-
-    </form>
-  </div>
+    </div>
 </div>
 
 
 
 
 <div class="panel panel-default">
-  <div class="panel-body">
-    <form id="movieForm" method="post">
-      <div class="form-group">
-        <div class="row">
-          <div class="col-xs-8">
-            <label class="control-label">Movie title</label>
-            <input type="text" class="form-control" name="title" />
-          </div>
-        </div>
-      </div>
+    <div class="panel-body">
+        <form id="movieForm" method="post">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <label class="control-label">Movie title</label>
+                        <input type="text" class="form-control" name="title" />
+                    </div>
+                </div>
+            </div>
 
-      <div class="form-group">
-        <div class="row">
-          <div class="col-xs-4">
-            <label class="control-label">Director</label>
-            <input type="text" class="form-control" name="director" />
-          </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <label class="control-label">Director</label>
+                        <input type="text" class="form-control" name="director" />
+                    </div>
 
-          <div class="col-xs-4">
-            <label class="control-label">Writer</label>
-            <input type="text" class="form-control" name="writer" />
-          </div>
+                    <div class="col-xs-4">
+                        <label class="control-label">Writer</label>
+                        <input type="text" class="form-control" name="writer" />
+                    </div>
 
-          <div class="col-xs-4">
-            <label class="control-label">Producer</label>
-            <input type="text" class="form-control" name="producer" />
-          </div>
-        </div>
-      </div>
+                    <div class="col-xs-4">
+                        <label class="control-label">Producer</label>
+                        <input type="text" class="form-control" name="producer" />
+                    </div>
+                </div>
+            </div>
 
-      <div class="form-group">
-        <div class="row">
-          <div class="col-xs-6">
-            <label class="control-label">Website</label>
-            <input type="text" class="form-control" name="website" />
-          </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <label class="control-label">Website</label>
+                        <input type="text" class="form-control" name="website" />
+                    </div>
 
-          <div class="col-xs-6">
-            <label class="control-label">Youtube trailer</label>
-            <input type="text" class="form-control" name="trailer" />
-          </div>
-        </div>
-      </div>
+                    <div class="col-xs-6">
+                        <label class="control-label">Youtube trailer</label>
+                        <input type="text" class="form-control" name="trailer" />
+                    </div>
+                </div>
+            </div>
 
-      <div class="form-group">
-        <label class="control-label">Procedimento</label>
-        <textarea class="form-control" name="review" rows="8"></textarea>
-      </div>
+            <div class="form-group">
+                <label class="control-label">Procedimento</label>
+                <textarea class="form-control" name="review" rows="8"></textarea>
+            </div>
 
-      <div class="form-group">
-        <label class="control-label">Rating</label>
-        <div>
-          <label class="radio-inline">
-            <input type="radio" name="rating" value="terrible" /> Terrible
-          </label>
-          <label class="radio-inline">
-            <input type="radio" name="rating" value="watchable" /> Watchable
-          </label>
-          <label class="radio-inline">
-            <input type="radio" name="rating" value="best" /> Best ever
-          </label>
-        </div>
-      </div>
+            <div class="form-group">
+                <label class="control-label">Rating</label>
+                <div>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="terrible" /> Terrible
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="watchable" /> Watchable
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="rating" value="best" /> Best ever
+                    </label>
+                </div>
+            </div>
 
-      <button type="submit" class="btn btn-default">Validate</button>
-    </form>
+            <button type="submit" class="btn btn-default">Validate</button>
+        </form>
 
-  </div>
+    </div>
 </div>

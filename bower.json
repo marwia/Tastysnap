@@ -1,16 +1,16 @@
 {
-    "name": "tastysnap_core",
-    "version": "1.0.0",
-    "dependencies": {
-        "bootstrap": "latest",
-        "font-awesome": "latest",
-        "animate.css": "latest",
-        "angular": "latest",
-        "angular-ui-router": "latest",
-        "angular-cookies": "latest",
-        "angular-bootstrap": "latest",
-        "angular-loading-bar": "latest",
-        "angular-animate": "latest",
-        "ng-table": "latest"
-    }
+  "name": "tastysnap_core",
+  "version": "1.0.0",
+  "dependencies": {
+    "bootstrap": "latest",
+    "font-awesome": "latest",
+    "animate.css": "latest",
+    "angular": "latest",
+    "angular-ui-router": "latest",
+    "angular-cookies": "latest",
+    "angular-bootstrap": "latest",
+    "angular-loading-bar": "latest",
+    "angular-animate": "latest",
+    "angular-xeditable": "~0.1.9"
+  }
 }
