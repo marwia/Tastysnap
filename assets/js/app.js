@@ -10,8 +10,19 @@
  *
  */
 
-angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies',
+var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable',
 				'AuthService', 'PostService', 'RecipeService',
 				'angular-loading-bar', 'ngAnimate', 'appRoutes', 
 				'AuthCtrl', 'MainCtrl', 'MasterCtrl', 'NavCtrl', 'PostsCtrl', 
 				'RecipeCtrl', 'RecipeCreateCtrl']);
+     
+// funzione che parte all'avvio dell'app
+// Serve per ricevere il token CSRF una volta sola        
+myApp.run(function($http) {
+    // change site
+    $http.get('csrfToken').success(function(data){
+        console.log(data);
+        $http.defaults.headers.common['x-csrf-token'] = data._csrf;
+        $http.defaults.withCredentials = true;
+        });
+});
