@@ -45,7 +45,7 @@ module.exports.policies = {
   // Elenco dei casi particolari
   
   'UserController' : {
-    'delete' : false, // Eliminazione non consentita
+    'destroy' : false, // Eliminazione non consentita
     'follow' : ['isAuthorized', 'findUser'],
     'unfollow' : ['isAuthorized', 'findUser'],
     'getFollowers' : 'findUser',
@@ -60,7 +60,7 @@ module.exports.policies = {
 
   'CollectionController' : {
     'create' : 'isAuthorized',
-    'delete' : ['isAuthorized', 'isCollectionAuthor'],
+    'destroy' : ['isAuthorized', 'isCollectionAuthor'],
     'addRecipe' : ['isAuthorized', 'isCollectionAuthor', 'findCollection'],
     'removeRecipe' : ['isAuthorized', 'isCollectionAuthor', 'findCollection'],
     'getRecipes' : 'findCollection',
@@ -73,7 +73,7 @@ module.exports.policies = {
   'CommentController' : {
     'create' : ['isAuthorized', 'findRecipe'],
     'update' : ['isAuthorized', 'isCommentAuthor', 'findRecipe'],
-    'delete' : ['isAuthorized', 'isCommentAuthor', 'findRecipe'],
+    'destroy' : ['isAuthorized', 'isCommentAuthor', 'findRecipe'],
     'find' : 'findRecipe',
     'findOne' : 'findRecipe'
   },
@@ -83,20 +83,20 @@ module.exports.policies = {
     'update' : ['isAuthorized', 'isRecipeAuthor'],
     'find' : true,
     'findOne' : ['attachUser','setRecipeViewed'],
-    'delete' : ['isAuthorized', 'isRecipeAuthor'],
+    'destroy' : ['isAuthorized', 'isRecipeAuthor'],
     'uploadCoverImage' : ['isAuthorized', 'isRecipeAuthor']
   },
 
   'IngredientGroupController' : {
     'create' : ['isAuthorized', 'isRecipeAuthor'],
     'update' : ['isAuthorized', 'isRecipeAuthor'],
-    'delete' : ['isAuthorized', 'isRecipeAuthor']
+    'destroy' : ['isAuthorized', 'isRecipeAuthor']
   },
 
   'IngredientController' : {
     'create' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
     'update' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
-    'delete' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup']
+    'destroy' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup']
   },
 
   'VoteRecipeController' : {
