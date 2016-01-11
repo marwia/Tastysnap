@@ -10,8 +10,23 @@
 angular.module('NavCtrl', []).controller('NavCtrl', [
   '$scope',
   'Auth',
-  function($scope, Auth){
+  '$http',
+  function($scope, Auth, $http){
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.currentUser = Auth.currentUser;
     $scope.logOut = Auth.logOut;
+    
+    // Any function returning a promise object can be used to load values asynchronously
+    $scope.getLocation = function(val) {
+        return $http.get('/api/v1/recipe', {
+        params: {
+            where: {
+                "title": {"contains": val}
+                }
+        }
+        }).then(function(response){
+            return response.data;
+        });
+    };
+  
 }]);
