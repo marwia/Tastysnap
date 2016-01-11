@@ -135,6 +135,8 @@ var apiRoutes = addGlobalPrefix({
   'get /recipe/categories': 'RecipeController.getRecipeCategories',
   
   'get /recipe/dosage_types': 'RecipeController.getRecipeDosageTypes',
+  
+  'post /recipe/image': 'RecipeController.uploadImage',
 
   /***************************************************************************
   *                                                                          *
@@ -263,6 +265,10 @@ var paths = Object.keys(apiRoutes);
   //This automatically serves all routes, apart from /api/** routes to ember
   //(which will be initialized in assets/index.html). This route needs to be
   //at the very bottom if you want to server other routes through Sails, because they are matched in order
+  
+  /*
+  Credo che la regex significhi esegui questa route se non contiene la parola api ne la parola csrfToken
+  */
 apiRoutes['get *'] = {view: 'index', skipAssets: true, skipRegex: /^\/api\/.*$|csrfToken/ };
 
 //console.log(apiRoutes);

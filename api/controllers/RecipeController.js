@@ -207,7 +207,7 @@ module.exports = {
       // setto l'autore della ricetta
       recipe.author = user;
       // tolgo dall'oggetto ricetta elementi 'particolari'
-      delete recipe.coverImageUrl;
+      //delete recipe.coverImageUrl;
       delete recipe.coverImageFd;
 
       Recipe.create(recipe).exec(function(err, recipe){
@@ -438,7 +438,55 @@ module.exports = {
      */
     getRecipeDosageTypes: function (req, res) {
         return res.json(sails.models.recipe.definition.dosagesType);
-    }
+    },
+    
+    /**
+     * Upload avatar for currently logged-in user
+     *
+    * (POST /recipe/:recipe/image)
+    */
+    uploadImage: function (req, res) {
+        console.log("REQ FILE: "+req.file);
+        console.log("REQ: "+req);
+
+        req.file('avatar').upload({
+            // don't allow the total upload size to exceed ~10MB
+            maxBytes: 10000000,
+            // put the image in the assets folder (only development)
+            dirname: sails.config.appPath + '/assets/images'
+        },function whenDone(err, uploadedFiles) {
+            if (err) {
+            return res.negotiate(err);
+            }
+
+            // If no files were uploaded, respond with an error.
+            if (uploadedFiles.length === 0){
+            return res.badRequest('No file was uploaded');
+            }
+            
+            // get the file name from a path
+            var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
+            var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
+            console.log(fileUrl);
+            return res.ok(fileUrl);
+
+            /*
+            // Save the "fd" and the url where the avatar for a user can be accessed
+            User.update(req.session.me, {
+
+            // Generate a unique URL where the avatar can be downloaded.
+            avatarUrl: require('util').format('%s/user/avatar/%s', sails.getBaseUrl(), req.session.me),
+
+            // Grab the first file and use it's `fd` (file descriptor)
+            avatarFd: uploadedFiles[0].fd
+            })
+            .exec(function (err){
+            if (err) return res.negotiate(err);
+            return res.ok();
+            });
+            */
+        });
+    },
 	
 };
 

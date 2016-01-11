@@ -84,7 +84,8 @@ module.exports.policies = {
     'find' : true,
     'findOne' : ['attachUser','setRecipeViewed'],
     'destroy' : ['isAuthorized', 'isRecipeAuthor'],
-    'uploadCoverImage' : ['isAuthorized', 'isRecipeAuthor']
+    'uploadCoverImage' : ['isAuthorized', 'isRecipeAuthor'],
+    'uploadImage' : ['isAuthorized', 'isRecipeAuthor']
   },
 
   'IngredientGroupController' : {
