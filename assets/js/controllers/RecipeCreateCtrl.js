@@ -30,6 +30,18 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         $scope.dosagesFor;
         $scope.desscription;
         
+        $scope.dominantColor;
+        
+        // Ritorna il colore dominante del canvas che contiene
+        // la prima delle immagini caricate
+        $scope.getCoverImageDominanatColor = function () {
+            var coverImageCanvas = angular.element($('#myCanvas'))[0];
+            console.log(coverImageCanvas);
+            var colorThief = new ColorThief();
+            console.log(colorThief.getColor(coverImageCanvas));
+            $scope.dominantColor = colorThief.getColor(coverImageCanvas)
+        };
+        
         $scope.recipeToCreate = {
                 title: "",
                 dosagesFor: "",

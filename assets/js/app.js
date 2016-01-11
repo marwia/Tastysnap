@@ -5,15 +5,15 @@
  * volta che viene fatta una richiesta HTTP.
  *
  * In questa parte di codice dichiaro tutte le dipendenze relative al modulo principale chiamato "sampleApp".
- * ATTENZIONE: l'ordine potrebbe essere rilevante!
+ * ATTENZIONE: l'ordine è  rilevante!
  * Il primo modulo ad essere lanciato sarà 'sampleApp'
  *
  */
 
-var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload',
+var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload', 
 				'AuthService', 'PostService', 'RecipeService',
 				'angular-loading-bar', 'ngAnimate', 'appRoutes', 
-				'AuthCtrl', 'MainCtrl', 'MasterCtrl', 'NavCtrl', 'PostsCtrl', 
+				'AuthCtrl', 'MainCtrl', 'MasterCtrl', 'NavCtrl', 'PostsCtrl',
 				'RecipeCtrl', 'RecipeCreateCtrl']);
      
 // funzione che parte all'avvio dell'app

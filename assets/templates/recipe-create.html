@@ -13,17 +13,26 @@
             <div class="row">
                 <div class="col-xs-8">
                     <div class="fileUpload btn btn-primary">
-                        <span>Carica immagine</span>
+                        <span>Aggiungi immagine</span>
                         <input type="file" class="upload" nv-file-select="" uploader="uploader" />
                     </div>
                 </div>
             </div>
         </div>
         
+        <!-- Aggiungi un nuovo gruppo di ingredienti -->
         <div class="row">
             <div class="col-xs-8">
-                <h3>Upload queue</h3>
-                <p>Queue length: {{ uploader.queue.length }}</p>
+                <br><!-- Spaziatura necessaria -->
+                <button type="button" class="btn btn-default" ng-click="getCoverImageDominanatColor()" style="background-color: rgb( {{dominantColor[0]}}, {{dominantColor[1]}}, {{dominantColor[2]}} )">Ottieni colore dominante</button>
+                <br><!-- Spaziatura necessaria -->
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-8">
+                <h3>Immagini selezionate</h3>
+                <p>Numero: {{ uploader.queue.length }}</p>
 
                 <table class="table">
                     <thead>
@@ -37,7 +46,9 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="item in uploader.queue">
-                            <td><strong>{{ item.file.name }}</strong></td>
+                            <td><strong>{{ item.file.name }}</strong>
+                            <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 50 }"></div>
+                            </td>
                             <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
                             <td ng-show="uploader.isHTML5">
                                 <div class="progress" style="margin-bottom: 0;">

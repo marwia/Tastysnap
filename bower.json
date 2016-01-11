@@ -12,6 +12,7 @@
     "angular-loading-bar": "latest",
     "angular-animate": "latest",
     "angular-xeditable": "~0.1.9",
-    "angular-file-upload": "~2.2.0"
+    "angular-file-upload": "~2.2.0",
+    "color-thief": "~2.0.1"
   }
 }
