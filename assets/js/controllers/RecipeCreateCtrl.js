@@ -11,7 +11,9 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
     'Recipe', // servizio per le ricette
     'Auth', // servizio per l'autenticazione
     '$filter',
-    function ($scope, $state, Recipe, Auth, $filter) {
+    'FileUploader', // per il file upload
+    '$http',
+    function ($scope, $state, Recipe, Auth, $filter, FileUploader, $http) {
 
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
         $scope.isLoggedIn = Auth.isLoggedIn;
@@ -27,6 +29,15 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         $scope.dosagesFor;
         $scope.desscription;
+        
+        $scope.recipeToCreate = {
+                title: "",
+                dosagesFor: "",
+                dosagesType: "",
+                category: "",
+                description: "",
+                coverImageUrl: ""
+            };
 		
         // TODO: bisogna memorizzare degli oggetti più complessi...
         $scope.ingredient_groups =
@@ -41,7 +52,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         }];
 		
         // metodo per aggiungere banalmente un gruppo di ingredienti
-        $scope.addIngredientGroup = function (index) {
+        $scope.addIngredientGroup = function () {
             $scope.ingredient_groups
                 .push({
                     id: "0",
@@ -54,12 +65,12 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 });
         };
         
-        $scope.removeIngredientGroup = function (index) {
-            $scope.ingredient_groups.splice(index, 1);
+        $scope.removeIngredientGroup = function (group_index) {
+            $scope.ingredient_groups.splice(group_index, 1);
         };
 
-        $scope.addIngredient = function (index) {
-            $scope.ingredient_groups[index].ingredients.push({
+        $scope.addIngredient = function (group_index) {
+            $scope.ingredient_groups[group_index].ingredients.push({
                 name: "",
                 quantity: "",
                 type: ""
@@ -74,87 +85,88 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         $scope.addRecipe = function () {
             // preparo l'oggetto ricetta da spedire al server...
-            var recipeToCreate = {
+            /*
+            $scope.recipeToCreate = {
                 title: $scope.title,
                 dosagesFor: $scope.dosagesFor,
                 dosagesType: $scope.selected_dosage_type,
                 category: $scope.selected_category,
-                description: $scope.description
+                description: $scope.description,
+                coverImageUrl: ''
             };
-            console.log(recipeToCreate);
+            */
+            
+            $scope.recipeToCreate.title = $scope.title;
+            $scope.recipeToCreate.description = $scope.description;
+            $scope.recipeToCreate.dosagesFor = $scope.dosagesFor;
+            $scope.recipeToCreate.dosagesType = $scope.selected_dosage_type;
+            $scope.recipeToCreate.category = $scope.selected_category;
+            console.log($scope.recipeToCreate);
 
-            Recipe.create(recipeToCreate, function (response) {
+            Recipe.create($scope.recipeToCreate, function (response) {
                 $state.go('dashboard');
             });
         };
         
-        // sezione da modificare
+        // File uploading
         
-        $scope.users = [
-            { id: 1, name: 'awesome user1', status: 2, group: 4, groupName: 'admin' },
-            { id: 2, name: 'awesome user2', status: undefined, group: 3, groupName: 'vip' },
-            { id: 3, name: 'awesome user3', status: 2, group: null }
-        ];
+        var uploader = $scope.uploader = new FileUploader({
+            url: '/api/v1/recipe/image',
+            alias: 'avatar',
+            headers: {
+                    Authorization: 'Bearer ' + Auth.getToken(),
+                    'x-csrf-token': $http.defaults.headers.common['x-csrf-token']
+                }
+        });
 
-        $scope.statuses = [
-            { value: 1, text: 'status1' },
-            { value: 2, text: 'status2' },
-            { value: 3, text: 'status3' },
-            { value: 4, text: 'status4' }
-        ];
+        // FILTERS
 
-        $scope.groups = [];
-        $scope.loadGroups = function () {
-            return $scope.groups.length ? null : $http.get('/groups').success(function (data) {
-                $scope.groups = data;
-            });
-        };
-
-        $scope.showGroup = function (user) {
-            if (user.group && $scope.groups.length) {
-                var selected = $filter('filter')($scope.groups, { id: user.group });
-                return selected.length ? selected[0].text : 'Not set';
-            } else {
-                return user.groupName || 'Not set';
+        uploader.filters.push({
+            name: 'customFilter',
+            fn: function(item /*{File|FileLikeObject}*/, options) {
+                return this.queue.length < 10;
             }
+        });
+
+        // CALLBACKS
+
+        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+            console.info('onWhenAddingFileFailed', item, filter, options);
+        };
+        uploader.onAfterAddingFile = function(fileItem) {
+            console.info('onAfterAddingFile', fileItem);
+        };
+        uploader.onAfterAddingAll = function(addedFileItems) {
+            console.info('onAfterAddingAll', addedFileItems);
+        };
+        uploader.onBeforeUploadItem = function(item) {
+            console.info('onBeforeUploadItem', item);
+        };
+        uploader.onProgressItem = function(fileItem, progress) {
+            console.info('onProgressItem', fileItem, progress);
+        };
+        uploader.onProgressAll = function(progress) {
+            console.info('onProgressAll', progress);
+        };
+        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+            console.info('onSuccessItem', fileItem, response, status, headers);
+            // salvo il nome che il server ha dato al file
+            $scope.recipeToCreate.coverImageUrl = response;
+        };
+        uploader.onErrorItem = function(fileItem, response, status, headers) {
+            console.info('onErrorItem', fileItem, response, status, headers);
+        };
+        uploader.onCancelItem = function(fileItem, response, status, headers) {
+            console.info('onCancelItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            console.info('onCompleteItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteAll = function() {
+            console.info('onCompleteAll');
         };
 
-        $scope.showStatus = function (user) {
-            var selected = [];
-            if (user.status) {
-                selected = $filter('filter')($scope.statuses, { value: user.status });
-            }
-            return selected.length ? selected[0].text : 'Not set';
-        };
-
-        $scope.checkName = function (data, id) {
-            if (id === 2 && data !== 'awesome') {
-                return "Username 2 should be `awesome`";
-            }
-        };
-
-        $scope.saveUser = function (data, id) {
-            //$scope.user not updated yet
-            angular.extend(data, { id: id });
-            return $http.post('/saveUser', data);
-        };
-
-        // remove user
-        $scope.removeUser = function (index) {
-            $scope.users.splice(index, 1);
-        };
-
-        // add user
-        $scope.addUser = function () {
-            $scope.inserted = {
-                id: $scope.users.length + 1,
-                name: '',
-                status: null,
-                group: null
-            };
-            $scope.users.push($scope.inserted);
-        };
-
-
+        console.info('uploader', uploader);
+        
 
     }]);
