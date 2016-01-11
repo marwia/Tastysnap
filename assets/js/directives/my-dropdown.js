@@ -19,13 +19,13 @@ angular
             var html = '';
             switch (attrs.menuType) {
                 case "button":
-                    html += '<div dropdown class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>Seleziona <span class="caret"></span></button>';
+                    html += '<div uib-dropdown class="btn-group"><button type="button" class="btn btn-default" uib-dropdown-toggle>Seleziona <span class="caret"></span></button>';
                     break;
                 default:
-                    html += '<div class="dropdown"><a class="dropdown-toggle" role="button" data-toggle="dropdown" href="javascript:;">Dropdown<b class="caret"></b></a>';
+                    html += '<div uib-dropdown><a uib-dropdown-toggle role="button" data-toggle="dropdown" href="javascript:;">Dropdown<b class="caret"></b></a>';
                     break;
             }
-            html += '<ul class="dropdown-menu" role="menu"><li role="menuitem" ng-repeat="item in items"><a href="#" tabindex="-1" data-ng-click="selectVal(item)">{{item}}</a></li></ul></div>';
+            html += '<ul uib-dropdown-menu role="menu"><li role="menuitem" ng-repeat="item in items"><a href="#" tabindex="-1" data-ng-click="selectVal(item)">{{item}}</a></li></ul></div>';
             element.append($compile(html)(scope));
             for (var i = 0; i < scope.items.length; i++) {
                 if (scope.items[i] === scope.selectedItem) {
