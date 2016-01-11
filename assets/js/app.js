@@ -10,7 +10,7 @@
  *
  */
 
-var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable',
+var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload',
 				'AuthService', 'PostService', 'RecipeService',
 				'angular-loading-bar', 'ngAnimate', 'appRoutes', 
 				'AuthCtrl', 'MainCtrl', 'MasterCtrl', 'NavCtrl', 'PostsCtrl', 
