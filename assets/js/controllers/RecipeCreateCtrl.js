@@ -147,12 +147,67 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         };
         uploader.onAfterAddingFile = function(fileItem) {
             console.info('onAfterAddingFile', fileItem);
+            /*
+            * Il seguente codice viene eseguito dopo che un file è stato
+            * aggiunto alla coda e serve a ridimensionare l'immagine
+            * e ridurre la sua qualità.
+            */
+            var file = fileItem._file;
+            var dataUrl = "";
+            // Create an image
+            var img = document.createElement("img");
+            // Create a file reader
+            var reader = new FileReader();
+            // Set the image once loaded into file reader
+            reader.onload = function(e)
+            {
+                img.src = e.target.result;
+        
+                var canvas = document.createElement("canvas");
+                //var canvas = $("<canvas>", {"id":"testing"})[0];
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+        
+                // Set Width and Height
+                var MAX_WIDTH = 1024;
+                var MAX_HEIGHT = 1024;
+                var width = img.width;
+                var height = img.height;
+        
+                if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+                } else {
+                if (height > MAX_HEIGHT) {
+                    width *= MAX_HEIGHT / height;
+                    height = MAX_HEIGHT;
+                }
+                }
+                canvas.width = width;
+                canvas.height = height;
+                var ctx = canvas.getContext("2d");
+                // Transofm the file to Canvas
+                ctx.drawImage(img, 0, 0, width, height);
+        
+                dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+                
+                // Transofm to blob
+                var blob = dataURItoBlob(dataUrl);
+                fileItem._file = blob;
+                
+            }
+            // Load files into file reader
+            reader.readAsDataURL(file);
         };
         uploader.onAfterAddingAll = function(addedFileItems) {
             console.info('onAfterAddingAll', addedFileItems);
         };
         uploader.onBeforeUploadItem = function(item) {
             console.info('onBeforeUploadItem', item);
+            
+            
         };
         uploader.onProgressItem = function(fileItem, progress) {
             console.info('onProgressItem', fileItem, progress);
@@ -179,6 +234,23 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         };
 
         console.info('uploader', uploader);
+        
+        /**
+         * Converts data uri to Blob. Necessary for uploading.
+         * @see
+         *   http://stackoverflow.com/questions/4998908/convert-data-uri-to-file-then-append-to-formdata
+         * @param  {String} dataURI
+         * @return {Blob}
+         */
+        var dataURItoBlob = function(dataURI) {
+            var binary = atob(dataURI.split(',')[1]);
+            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+            var array = [];
+            for(var i = 0; i < binary.length; i++) {
+            array.push(binary.charCodeAt(i));
+            }
+            return new Blob([new Uint8Array(array)], {type: mimeString});
+        };
         
 
     }]);
