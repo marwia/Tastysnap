@@ -1,46 +1,592 @@
-/**
- * Custom style.css
- *
- * Matteo Bolognesi
- *
- * Stile usato nella pagina del profilo di un utente.
- */
-body{
+/* general style, per tutte le pagine, serve ad avere la barra in alto fixed, e il background del colore che vogliamo noi */
+
+/* --------------------------------------------------    OPPA GANGNAM STYLE (GENERAL) --------------------------------------- */
+
+body {
 	padding-top: 50px;
-	background-color: #EAE8E8;
+	background-color:#282828;
 }
 
-.black_bar{
-	background-color:#2F2F2F;
-	border:none;
+.no-padding{padding:0;}
+
+.no-margin{margin:0;}
+
+.no-border{border:0;}
+
+.no-border-radius{border-radius: 0px;}
+
+.full{
+	width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background: url("imm/hamburger_blur.jpg") no-repeat center center fixed;	
+    background-attachment: fixed;
+	background-size:cover;
+    z-index: 0;
 }
 
-#cover_profile{
-	height: 330px;
-	background-image: url('images/profile_cover.jpg');
-    background-size: cover;
-    background-position: 50% 50%;
+.container_card_4{
+	width:100%;
+	max-width: 968px;
+	text-align: center;
+	margin: auto;
+}
+
+/* ------------------------------------------------------------- BLACK BAR	 ------------------------------------------------- */
+
+.top_menu_toggle_menu{
+    float: left;
+    margin: 0;
+}
+
+.top_menu_form{
+    margin: 0;
+    padding: 0;
+    border: 0;    
+}
+
+.tastysnap_logo{
+	width:42px;
+	left: calc(50% - 29px);
+	position: absolute;
+	top: 4px;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.top_menu_profile{
+	width: 42px;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.top_menu_item{
+	color: white;
+    font-size: 1.2em;
+    margin: 20px 20px auto 20px;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.top_menu_search_label{
+	color: white;
+    font-size: 2em;
+    padding: 11px;
+}
+
+.top_menu_search_input{
+	width: 275px;
+    height: 50px;
+    border: none;
+    background: none;
+    padding: 0;
+	outline:none !important;
+	color: white;
+    font-size: 2em;
+}
+
+@media only screen and (max-width : 750px){
+	.top_menu_search_input{width: 175px;}
+	.top_menu_item{margin: 20px 10px auto 10px;}
+}
+
+@media only screen and (max-width : 510px){
+	.tastysnap_logo{
+		left: 85px;
+	}
+	
+	.top_menu_search{
+		display:none;
+	}
+}
+
+.top_menu_search_input:focus {   
+	border-color: transparent;
+	box-shadow: none;
+	outline: 0 none;
+}
+
+.top_menu_search_input::-webkit-input-placeholder {
+	color: white;
+}
+
+.top_menu_search_input:-moz-placeholder { /* Firefox 18- */
+	color: white;
+	font-size: 2em;
+}
+
+.top_menu_search_input::-moz-placeholder {  /* Firefox 19+ */
+	color: white;
+	font-size: 2em;
+}
+
+.top_menu_search_input:-ms-input-placeholder {  
+	color: white;
+	font-size: 2em;
+}
+
+ /* example */
+.dropdown-menu_tasty{
+	left:50% !important;
+	top: 48px;
+}
+
+.top_menu_profile_dropdown{
+	max-width: 200px;
+	right: 0 !important;
+	left: inherit;
+	top: 48px;
+	text-align:right;
+}
+
+.badge-notify{
+	background: red;
+    position: relative;
+    top: -15px;
+    left: -12px;
+    width: 23px;
+    padding: 2px 1px 5px 1px;
+}
+
+
+/* -------------------------------------------------------------   LOGIN ------------------------------------------------- */
+
+.login_container{
+	width:100%;
+	max-width:500px;
+	height:400px;
+	margin-top:200px;
+}
+
+.login_brand{
+	width:100%;
+	max-width:280px;
+}
+
+.login_privacy{
+	color: white;
+	max-width: 220px;
+    margin: 20px auto;
+}
+
+.login_privacy a{
+	color:orange;
+}
+
+.social-buttons {
+    max-width: 220px;
+    margin: auto;
+}
+
+.btn-social{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.login_footer{
+	width:100%;
+	position: absolute;
+    bottom: 0;
+    color: white;
 	text-align:center;
+}
+
+.login_footer_item{
+	margin: auto 5px auto 5px;
+    display: -webkit-inline-box;
+    padding: 3px;
+	font-weight:700;
+}
+
+.login_body{
+    background: url("imm/login.jpg") no-repeat center center fixed; /* example */
+	background-size:cover;
+	padding:0;
+}
+
+@media only screen and (max-width : 750px) {
+	.login_container{
+		margin-top:100px;
+	}
+	
+	.login_footer{
+		position: relative;
+	}
+}
+
+@media only screen and (max-height : 563px){	
+	.login_footer{
+		position: relative;
+	}
+}
+
+@media only screen and (max-width : 400px) {
+	.login_footer_item{
+		width:97%;
+		display:block;
+	}
+	
+	.login_footer_item_divider{
+		display:none;
+	}
+}
+
+/* -------------------------------------------------------------    CARD STYLE ------------------------------------------------- */
+
+.card{
+	width: 219px;
+    height: 354px;
+	margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 20px;
+    position: relative;
+    display: inline-flex;
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+}
+
+.card_img{
+	width: 100%;
+	height: 219px;
+	background-size: cover;
+    background-position: 50% 50%;
+	background-image: url("imm/thai_tb.jpg"); /* example */
+}
+
+.cont_card_img{
 	position:relative;
 }
 
-.profile_info_container{
-    position: absolute;
-    top: 39px;
-    left: 0;
-    margin: auto;
-    right: 0;
-	
-	-webkit-transition: all 0.3s ease-in;
-	-moz-transition: all 0.3s ease-in;
-	-ms-transition: all 0.3s ease-in;
-	-o-transition: all 0.3s ease-in;
-	transition: all 0.3s ease-in;
+.card:hover .card_share{
+	display:block;
 }
 
-.profile_info_text {
-    width: auto;
-	
+.card_share{
+	width:100%;
+	height: 219px;
+	background-color:rgba(0,0,0,0.5);
+	color:white;
+	display:none;
+	position:absolute;
+	top:0;
+	left:0;
+}
+
+.gly_share_size{
+	font-size: 3.8em;
+	cursor:pointer;
+}
+
+.cont_row_share{
+	margin-top:60px;
+}
+
+.card_info{
+	width: 100%;
+	height: 100%;
+	background-color: #62231D; /* example */
+}
+
+.color_caption{
+	color:white !important;  /* example */
+	padding: 12px !important;
+	    
+}
+
+.card_icon_container {
+    text-align: right;
+}
+
+.card_icon{
+	font-size: 0.85em;
+    margin-right: 5px;
+}
+
+.card_title{
+	font-weight:700;
+	text-align: left;
+}
+
+.card_reach{
+	text-align: left;
+	margin: 10px auto 5px auto;
+}
+
+.card_profile{
+	position:absolute;
+	bottom: 5px;
+}
+
+.card_profile_photo{
+	width: 35px;
+}
+
+.card_profile_name{
+	margin-left: 7px;
+    margin-top: 2px;
+}
+
+.card_premium{
+	position: absolute;
+	top:0;
+	right:0;	
+	width : 0;
+	height : 0;
+	border-top : 60px solid orange; 
+	border-left : 60px solid transparent;
+}
+
+.card_premium_1{
+	position: absolute;
+	top:0;
+	right:0;
+	font-size: 2em;
+	color:orange;
+}
+
+.card_premium_2{
+	width:35px;
+	height:35px;
+	background-image:url("tastysnaplogo.png");
+	background-size:cover;
+	position: absolute;
+	top:0;
+	right:0;
+}
+
+/* card small */
+.card_xs{
+	width: 177px;
+    height: 286px;
+}
+
+.card_xs_img{
+	width: 100%;
+	height: 177px;
+}
+
+.card_xs_reach{
+	display:none;
+}
+
+/* -------------------------------------------------------------    COLLECTION CARD STYLE ------------------------------------------------- */
+
+.card_collection{
+	height:200px;
+}
+
+
+.card_collection_ex_1{
+	background-image:url("imm/sushi_tb.jpg");
+	background-size:cover;
+}
+
+.box{
+    position: relative;
+	margin: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+	width: calc(33.3% - 20px);
+}
+.box:before{
+    content: "";
+    display: block;
+    padding-top: 100%;  /* ratio of 1:1*/
+}
+
+.card_collection_content_bg{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-size:cover;
+}
+
+.card_collection_content_bg2{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-size:cover;
+	background-position:50%;
+}
+
+.card_collection_content_bg_1_4{
+	height:50%;
+	width:50%;
+	float:left;
+	background-size: cover;
+    background-position: 50%;
+}
+
+.collection_card_gradient{
+	background-image: linear-gradient(to bottom, rgba(255,255,255,0) 40%, rgba(0,0,0,0.65) 59%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.card_collection_content{
+	position:absolute;
+	width: calc(100% - 30px);
+	z-index: 2;
+}
+
+.collection_card_title{
+	color:white; /* example */
+    position: absolute;
+    bottom: 46px;
+    width: 100%;
+    text-align: left;
+	font-weight: 700;
+    font-size: 1.3em;
+}
+
+.collection_card_profile{
+	width: 100%;
+	position:absolute;
+	bottom: 10px;
+}
+
+.collection_card_info {
+    position: absolute;
+    right: 15px;
+    bottom: 0px;
+    color: white;
+}
+
+.collection_card_profile_photo{
+	width: 35px;
+}
+
+.collection_card_profile_name{
+	color:white; /* example */
+	margin-left: 7px;
+    margin-top: 2px;
+}
+
+.collection_card_info_item{
+	font-size: 11px;
+	margin-left: 5px;
+    margin-right: 5px;
+}
+
+.collection_card_info_item_count{
+	margin-left:2px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 1.1em;
+}
+
+@media only screen and (max-width : 820px){
+	.box{
+		width: calc(50% - 20px);
+	}
+}
+
+@media only screen and (max-width : 528px){
+	.box{
+		width: 90%;
+		margin: 5% 5% 0 5%;
+	}
+}
+
+/* -------------------------------------------------------------    COLLECTION STYLE ------------------------------------------------- */
+
+.collection_container{
+	width: 100%;
+	position: absolute;
+    z-index: 2;
+    margin: auto;
+    top: 70px;
+    left: 0;
+    right: 0;
+	padding: 15px;
+}
+
+.collection_profile_photo{
+	width:50px;
+}
+
+.collection_div_profile_name{
+    color: white !important; /* example */
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.collection_profile_edited{
+	font-size: 11px;
+}
+
+.collection_title{
+	color:white; /* example */
+}
+
+.collection_info_item{
+	color:white; /* example */
+	margin-left:5px;
+	margin-right:5px;
+}
+
+.collection_info_item_count{
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	color:white; /* example */
+	margin-left:5px;
+	margin-right:5px;
+}
+
+.collection_container_cards{
+	margin-top: 50px;
+}
+
+.collection_main_info{
+	text-align:left;
+	margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+@media only screen and (max-width : 928px) {
+	.collection_main_info{
+		max-width: 679px;
+   		margin: auto;
+	}
+}
+
+@media only screen and (max-width : 699px) {
+	.collection_main_info{
+		max-width: 447px;
+   		margin: auto;
+	}
+}
+
+/* -------------------------------------------------------------    PERSONAL PROFILE STYLE ------------------------------------------------- */
+
+.prof_personal_header{
+	height:300px;
+	position: relative;
+	background: url("imm/cocktails_rs.jpg") no-repeat center center fixed; /* example */
+	background-size:cover;
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	color: white; /* example */
+}
+
+.prof_personal_info{
+	margin-top:30px;
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
@@ -48,54 +594,157 @@ body{
 	transition: all 0.3s ease-in-out;
 }
 
-.profile_photo{
-	width: 120px;
-    height: 120px;
-    background-image: url('images/matteo.jpg');
-    background-size: cover;
-    background-position: 50% 50%;
-    margin: auto;
-    margin-bottom: 15px;
+.prof_personal_info_item{
+	margin: 3px 0 3px 0; 
 }
 
-.profile_name{
-	color: white;
-    font-weight: 700;
-}
-
-.profile_city{
-	color: white;
-    font-weight: 700;
-}
-
-.profile_follow{
-	color:white;
-}
-
-.profile_follow_btn {
-    background-color: orange;
-    color: white;
-    cursor: pointer;
-    width: 87px;
-    margin: auto;
-    padding: 2px;
-	text-align: center;
-}
-
-#menu_profile{
+.profile_menu{
+	width:100%;
 	position: absolute;
     bottom: 0px;
     left: 0;
-    margin: auto;
     right: 0;
+}
+
+.profile_photo{
+	width: 100px;
+}
+
+.profile_button_item{
+    width: 120px;
+    margin: auto 10px auto 10px;
+    text-align: center;
+	display: inline-flex;
+}
+
+.profile_button_item span{
+	margin:auto;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.profile_button_item.active{
+	border-bottom:1px solid darkorange;
+}
+
+
+@media only screen and (max-width : 600px) {
+	.profile_button_item{
+		width: 70px;
+	}
+}
+
+@media only screen and (max-width : 400px) {
+	.prof_personal_info{
+		margin-top:5px;
+	}
+	
+	.profile_button_item span{
+		font-size:0.8em;
+	}
+}
+
+
+
+/* ------------------------------------------------------------- HOME LOADED PERSON ------------------------------------------------- */
+.home_load_space_container{
+	padding:30px;
+}
+
+.home_title_category{
+	color: white;
+    padding: 30px 15px 30px 15px;
+}
+
+.home_title_bar{
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.home_title_text{
+	margin-top: 3px;
+    font-weight: 700;
+    font-size: 2.1em;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.btn_home_load{
+	background-color: #D68A1D;
+    border-radius: 0;
+}
+
+.home_navbar{
+	top: 50px;
+	z-index: 1;
+    background-color: rgba(0,0,0,0.4);
+    border-color: transparent;
     text-align: center;
 }
 
-div.button_menu{
-	float: left;
-    width: 140px;
+.home_navbar_item>a{
+	color:white;
+	border-bottom:1px solid transparent;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.home_navbar_item:hover>a{
+	color:white;
+	border-bottom:1px solid orange;
+}
+
+li.home_navbar_item {
+    text-align: center;
     margin: auto;
-    color: white;
+    float: none;
+    display: -webkit-inline-box;
+}
+
+ul.home_navbar{
+	text-align: center;
+    width: 100%;
+}
+
+.home_navbar_item_active>a{
+	color:white !important;
+	border-bottom:1px solid orange;
+}
+
+.home_container_card{
+	padding-top: 50px;
+}
+
+
+/* -------------------------------------------------------------  RECIPE ------------------------------------------------- */
+
+.recipe_body{
+    background: url("imm/spiedini_blur.jpg") no-repeat center center fixed; /* example */
+	background-size:cover;
+	padding:0;
+}
+
+.recipe{
+    width: 100%;
+    max-width: 800px;
+	background: #E7E5E6;
+	margin: 120px auto 40px auto;
+	
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 	
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -104,23 +753,17 @@ div.button_menu{
 	transition: all 0.3s ease-in-out;
 }
 
-button.button_menu{
-	border: none;
-    background-color: transparent;
-	
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-ms-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
-	outline:0;
+.recipe_suggested{
+	width: 100%;
+    max-width: 800px;
+	margin: 40px auto 40px auto;
 }
 
-button.button_menu:hover{
-	border-bottom: 2px solid orange;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+.recipe_col_8 {
+	background-color: white;
+    color: black;
+	width: calc(66.66666667% - 20px);
+    margin: 10px 10px 0 10px;
 	
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -129,18 +772,9 @@ button.button_menu:hover{
 	transition: all 0.3s ease-in-out;
 }
 
-button.button_menu_selected{
-	border-bottom: 2px solid orange;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.container_menu{
-	max-width: 1036px;
-    margin: auto;
-    padding: 10px;
-    padding-top: 30px;
+.recipe_col_4{
+	background-color: #151515; /* example */
+	color:white; /* example */
 	
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -149,56 +783,258 @@ button.button_menu_selected{
 	transition: all 0.3s ease-in-out;
 }
 
-@media screen and (max-width: 1035px){.container_menu{max-width: 782px;}}
+.recipe_generic_con{
+	-webkit-box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.57);
+	-moz-box-shadow:    0px 0px 10px 0px rgba(50, 50, 50, 0.57);
+	box-shadow:         0px 0px 10px 0px rgba(50, 50, 50, 0.57);
+}
 
-@media screen and (max-width: 781px){.container_menu{max-width: 528px;}}
+.recipe_sub_title {
+    font-size: large;
+    margin: 15px 0 15px 0px;
+}
 
-@media screen and (max-width: 775px){.profile_info_container{top: 4px;}}
+.recipe_sp_1{
+	padding-top:10px;
+}
 
-@media screen and (max-width: 620px){
-	.profile_info_container{
-		width: 370px;
-	}
+.recipe_sp_1_1>span{
+	color: #635A57;
+    font-size: 0.8em;
+    margin-right: 10px;
+}
+
+.recipe_sp_1_2 {
+	width:100%;
+	float:left;
+}
+
+.recipe_sp_1_3 {
+	width:100%;
+	float:left;
+	margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.recipe_sp_2{
+	padding:0;
+}
+
+.recipe_sp_2_1{
+	height:266px;
+	width:100%;
+	background: url("imm/spiedini_tb.jpg") no-repeat center center; /* example */
+	background-size: cover;
+}
+
+.recipe_sp_2_2 {
+    text-align: center;
+    padding: 20px;
+}
+
+.recipe_sp_2_2_icon{
+	font-size: 1.2em;
+    margin: 0 5px 0 5px;
+}
+
+.recipe_sp_2_2_table{
+	width: 100%;
+    max-width: 220px;
+}
+
+.recipe_sp_3{
+	max-width: 220px;
+	margin: 10px auto 30px auto;
+}
+
+.recipe_sp_3_title{
+	text-align: center;
+    border-bottom: 1px solid white;
+    margin-bottom: 5px;
+    padding-bottom: 2px;
+}
+
+.recipe_sp_3_table{
+	width:100%;
+}
+
+tr.recipe_sp_3_tr {
+    height: 35px;
+}
+
+.recipe_sp_3_val_nut{
+	font-weight:700;
+}
+
+.recipe_sp_3_val_nut_sec {
+    padding-left: 20px;
+}
+
+.recipe_profile_photo{
+	width:50px;
+	color:black;
+}
+
+.recipe_div_profile_name{
+    color: black;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.recipe_sp_spons_con{
+	border-top: 1px solid gray;
+    padding-top: 8px;
+}
+
+.recipe_sp_spons_con > span{
+	color:gray;
+}
+
+.recipe_sp_spons{
+    margin: 15px 0 20px 0;
+}
+
+.recipe_ing_con{
+	min-height: 164px;
+}
+
+.recipe_ing_txt {
+    font-size: small;
+    color: gray;
+}
+.recipe_comment_con{
+	padding-bottom: 20px;
+}
+
+.recipe_comment_input{
+	height:50px;
+}
+
+.recipe_comment_photo{
+	width: 50px;
+}
+
+.recipe_comment_sub_photo{
+	width: 40px !important;
+}
+
+.recipe_comment_reply A {
+    font-size: 0.85em;
+    color: gray;
+}
+
+.recipe_comment_reply > A > i {
+    font-size: 1.1em;
+    color: gray;
+	margin: 0 2px 0 2px;
 	
-	.profile_photo{
-		float:left;
-		margin-left:3px;
-	}
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.recipe_comment_txt{
+	margin-bottom:2px;
+}
+
+.recipe_comment_reply > i:hover{
+	color:black;
+}
+
+.recipe_comment_when{
+	color: gray;
+	font-size: smaller;
+}
+
+.recipe_title_bar{
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.recipe_title_text{
+	color:white;
+	margin-top: 3px;
+    font-weight: 700;
+    font-size: 2.1em;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.recipe_container_cards{
+	max-width:800px;
+	margin:auto;
+}
+
+.recipe_card{
 	
-	.profile_info_text {
+}
+
+@media(min-width: 770px){
+	.recipe_col_8 {
 		float: right;
-		margin-right: 20px;
+	}	
+}
+
+/* ricetta responsive */
+@media(max-width: 770px){
+	.recipe_col_8{
+		width: auto;
+		margin:0;
+	}
+	
+	.recipe_col_4{
+		padding-bottom: 15px;
+	}
+	
+	.recipe{
+		max-width:500px;
+	}
+	
+	.recipe_sp_2_2_table {
+		margin: auto;
+	}
+	
+	.recipe_generic_con{
+		-webkit-box-shadow: 0px 0px 0px 0px;
+		-moz-box-shadow:     0px 0px 0px 0px;
+		box-shadow:          0px 0px 0px 0px;
+	}
+	
+	.recipe_sp_3{
+		margin: 0px auto 0px auto;
+	}
+	
+	.recipe_sp_3_title{
+		font-weight:700;
+	}
+	
+	.recipe_sp_4{
+		width: 50%;
+		float:right;
+		padding:15px;
+	}
+	
+	.recipe_sp_spons {
+		margin: 15px 0 0px 0;
+	}
+	
+	.recipe_sp_spons_con {
+		border-top: 0px solid;
+		padding-top: 8px;
 	}
 }
 
-@media screen and (max-width: 527px){.container_menu{max-width: 273px;}}
-
-@media screen and (max-width: 370px){.profile_info_container {width: 100%;}}
-
-@media screen and (max-width: 370px){div.button_menu {width: auto;}}
-
-@media screen and (max-width: 346px){
-	.profile_info_text {
-		margin-right: 7px;
-		text-align: right;
+@media(max-width: 480px){
+	.recipe_sp_4{
+		width: 100%;
 		float:none;
 	}
-	
-	.profile_follow_btn{float: right;}
 }
-
-
-@media screen and (max-width: 315px){
-	.profile_info_text{
-		float: left;
-		margin-right: 20px;
-		width: 53%;
-	}
-}
-   
-
-
-
-
-
-

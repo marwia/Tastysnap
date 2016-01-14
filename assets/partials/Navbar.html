@@ -7,51 +7,39 @@
 
 -->
 
-<nav id="navbar" class="navbar navbar-default navbar-fixed-top" ng-controller="NavCtrl">
-    <div class="container-fluid">
+<nav id="navbar" class="navbar navbar-inverse navbar-fixed-top" ng-controller="NavCtrl">
+    <div class="container-fluid text-center">
 
         <!-- Toggle Menu Button -->
-        <a ng-show="isLoggedIn()" id="menu-toggle" ng-click="toggleSidebar()">
+        <a class="navbar-btn top_menu_toggle_menu" ng-show="isLoggedIn()" id="menu-toggle" ng-click="toggleSidebar()">
             <p class="navbar-text glyphicon glyphicon-option-horizontal nav_bar_style"></p>
         </a>
 
         <!-- Search Bar -->
-        <form class="navbar-form navbar-left" role="search">
-            <div class="input-group col-xs-12">
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-search"></span>
-                </span>
-                <input type="text" ng-model="asyncSelected" placeholder="Cerca ricette, raccolte, prodotti..." uib-typeahead="recipe.title for recipe in getLocation($viewValue)"
-                typeahead-loading="loadingLocations" typeahead-no-results="noResults" class="form-control">
-            </div>
+        <form class="navbar-form navbar-left top_menu_form" role="search">
+            <div class="glyphicon glyphicon-search pull-left top_menu_search_label"></div>
+            <input type="text" ng-model="asyncSelected" class="form-control pull-left top_menu_search_input top_menu_search" placeholder="Cerca" uib-typeahead="recipe.title for recipe in getLocation($viewValue)"
+            typeahead-loading="loadingLocations" typeahead-no-results="noResults" class="form-control">
+
         </form>
-
-        <div class="navbar-collapse collapse navbar-right" aria-expanded="false" style="height: 1px;">
-
-            <ul class="nav navbar-nav">
-                <li ng-show="isLoggedIn()">
-                    <p class="navbar-btn">
-                        <a href="dashboard/recipe_create" class="btn btn-warning" ng-click="toggleSidebar()">Crea ricetta <i class="fa fa-plus"></i></a>
-                    </p>
-                </li>
-                <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
-                <li ng-hide="isLoggedIn()"><a href="/login">Log In</a></li>
-                <li ng-hide="isLoggedIn()"><a href="/user/create">Register</a></li>
-
-                <!-- Dropdown menu example  -->
-                <li uib-dropdown ng-show="isLoggedIn()"><a href="#" id="single-button" uib-dropdown-toggle>Profilo e impostazioni <span class="caret"></span></a>
-                    <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                        <li role="menuitem"><a href="#">Action</a></li>
-                        <li role="menuitem"><a href="#">Another action</a></li>
-                        <li role="menuitem"><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li role="menuitem"><a href="/login" ng-click="logOut()">Esci</a></li>
-                    </ul>
-                </li>
-
+        
+        <img alt="TastySnap" src="images/logo.png" class="tastysnap_logo">
+        
+        <!-- Dropdown menu example  -->
+        <div uib-dropdown ng-show="isLoggedIn()">
+            <img alt="{{ currentUser() }}" src="images/matteo.jpg" id="single-button" uib-dropdown-toggle class="top_menu_profile img-circle pull-right">
+            <ul uib-dropdown-menu class="top_menu_profile_dropdown" role="menu" aria-labelledby="single-button">
+                <li role="menuitem"><a href="#">Action</a></li>
+                <li role="menuitem"><a href="#">Another action</a></li>
+                <li role="menuitem"><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li role="menuitem"><a href="/login" ng-click="logOut()">Esci</a></li>
             </ul>
         </div>
-
+        
+        <!-- MENU -->        
+		<a href="#" ng-hide="active"><div class="glyphicon glyphicon-comment pull-right top_menu_item"><span class="badge badge-notify">42</span></div></a>
+		<a href="#" ng-hide="active"><div class="glyphicon glyphicon-bell pull-right top_menu_item"></div></a>
 
     </div>
 </nav>
