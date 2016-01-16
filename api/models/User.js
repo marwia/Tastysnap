@@ -25,6 +25,16 @@ module.exports = {
   attributes: {
 
     username : { type: 'String', unique: true, lowercase: true },
+    
+    name : { type: 'String', unique: true },
+    
+    surname : { type: 'String' },
+    
+    email: { type: 'String', email: true },
+    
+    facebookId : {type: 'String' },
+    
+    profileImage: { type: 'String' },
 
     password : { type: 'String' },
 

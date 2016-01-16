@@ -124,13 +124,23 @@ angular.module('appRoutes', []).config([
                             $state.go('dashboard');
                         }
                     }]
+                })
+                
+                .state('facebook_login', {
+                    url: 'api/v1/auth/facebook',
+                })
+                
+                .state('facebook_login_callback', {
+                    url: 'api/v1/auth/facebook/callback'
                 });
 
                 // DEFAULT PAGE ==========================================================
+                /*
                 $urlRouterProvider.otherwise( function($injector, $location) {
                     var $state = $injector.get("$state");
                     $state.go("dashboard");
                 });
+                */
 
         // disabilito la necessità dei # nelle URL
         $locationProvider.html5Mode(true);

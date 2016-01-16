@@ -41,7 +41,7 @@ function addGlobalPrefix(routes) {
         uri = pathParts.pop(),
         prefixedURI = "", newPath = "";
       // escludo la prima...
-      if(i != 0)
+      if(i != 0 || i != 0)
         prefixedURI = ROUTE_PREFIX + uri;
       else
         prefixedURI = uri;
@@ -80,6 +80,10 @@ var apiRoutes = addGlobalPrefix({
   'get /': {
     view: 'index'
   },
+  
+  'get /no_angular': {
+    view: 'no_angular'
+  },
 
   /*
   'get /:something': {
@@ -110,6 +114,10 @@ var apiRoutes = addGlobalPrefix({
   *                                                                          *
   ***************************************************************************/
 
+  'get /auth/facebook': 'AuthController.facebook',
+  
+  'get /auth/facebook/callback': 'AuthController.facebookCallback',
+  
   'put /user/:user/follow': 'UserController.follow',
 
   'delete /user/:user/follow': 'UserController.unfollow',
