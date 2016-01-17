@@ -104,11 +104,14 @@ angular.module('appRoutes', []).config([
 
                 // LOGIN PAGE ==========================================================
                 .state('login', {
-                    url: '/login',
+                    url: '/login?token',// query param (opzionale)
                     templateUrl: 'templates/login.html',
                     controller: 'AuthCtrl',
-                    onEnter: ['$state', 'Auth', function($state, Auth){
-                        if(Auth.isLoggedIn()){
+                    onEnter: ['$state', '$stateParams', 'Auth', function($state, $stateParams, Auth){
+                        if($stateParams.token) {
+                            Auth.saveToken($stateParams.token);
+                        }
+                        if(Auth.isLoggedIn()) {
                             $state.go('dashboard');
                         }
                     }]
@@ -125,22 +128,14 @@ angular.module('appRoutes', []).config([
                         }
                     }]
                 })
-                
-                .state('facebook_login', {
-                    url: 'api/v1/auth/facebook',
-                })
-                
-                .state('facebook_login_callback', {
-                    url: 'api/v1/auth/facebook/callback'
-                });
 
                 // DEFAULT PAGE ==========================================================
-                /*
+                
                 $urlRouterProvider.otherwise( function($injector, $location) {
                     var $state = $injector.get("$state");
                     $state.go("dashboard");
                 });
-                */
+                
 
         // disabilito la necessità dei # nelle URL
         $locationProvider.html5Mode(true);

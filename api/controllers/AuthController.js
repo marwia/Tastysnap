@@ -92,8 +92,7 @@ module.exports = {
                 if (user) {
                     // rispondo con il token generato in base all'oggetto "user"
                     // così, ogni volta che verifico il token posso risalire ai dati dell'utente
-                    return res.redirect('/login?token='+jwToken.issue(user))
-                    //return res.json({ token: jwToken.issue(user) });
+                    return res.redirect('/login?token=' + jwToken.issue(user))
                 } else {
                     return res.status(401).json({ message: 'User not found.' });//info contains the error message
                 }

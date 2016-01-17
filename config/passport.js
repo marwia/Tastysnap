@@ -39,17 +39,17 @@ passport.use(new LocalStrategy(
 passport.use(new FacebookStrategy({
     clientID: "617087911724851",
     clientSecret: "5e8033ba7bc89b9c72d890862b5d618c",
-    callbackURL: "http://localhost:1337/api/v1/auth/facebook/callback"
+    callbackURL: "http://localhost:1337/api/v1/auth/facebook/callback",
+    profileFields: ['id', 'displayName', 'name', 'gender', 'email', 'photos']
   },
   function(accessToken, refreshToken, profile, done) {
-      console.log("Facebook strategy...\n");
-      console.log("Profilo FB", profile);
+      console.log("Facebook strategy triggered...\n");
     User.findOrCreate({
         facebookId: profile.id,
         name: profile.name.givenName,
         surname: profile.name.familyName,
-        email: profile.emails[0].value
-        //profileImage: profile.photos[0].value
+        email: profile.emails[0].value,
+        profileImage: profile.photos[0].value
     }).exec( function(err, user) {
       if (err) { return done(err); }
       console.log("Utente FB creato o trovato....", user);

@@ -13,7 +13,7 @@
 var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload', 
 				'AuthService', 'PostService', 'RecipeService',
 				'angular-loading-bar', 'ngAnimate', 'appRoutes', 
-				'AuthCtrl', 'MainCtrl', 'MasterCtrl', 'NavCtrl', 'PostsCtrl',
+				'AuthCtrl', 'MainCtrl', 'MasterCtrl', 'NavCtrl', 'PostsCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeCreateCtrl']);
      
 // funzione che parte all'avvio dell'app
