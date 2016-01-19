@@ -1,50 +1,60 @@
 <!-- menu -->
-<div class="row">
-	<div class="container_menu">
-		<div ng-repeat="recipe in recipes">
-		
-			<!-- card -->
-			<div class="container card box-shadow">
-				<div class="row cont_card_img">
-					<div class="container-fluid card_share">
-						<div class="cont_row_share">
-							<div class="row text-center">
-								<div class="col-xs-6"><span class="glyphicon glyphicon-heart-empty gly_share_size"></span></div>
-								<div class="col-xs-6"><span class="glyphicon glyphicon-share-alt gly_share_size"></span></div>
-							</div>
-							<div class="row text-center">
-								<span class="glyphicon glyphicon-plus gly_share_size">
-							</div>
-						</div>
-					</div>
-					<div class="card_img" style="background-image:url('{{recipe.coverImageUrl}}')"></div>
-				</div>
-				<div class="row">
-					<div class="card_info card_background1">
-						<div class="container-fluid">
-							<div class="row text-right card_info1">
-								<span class="glyphicon glyphicon-cutlery">{{recipe.trialsCount}}</span>&nbsp;&nbsp;
-								<span class="glyphicon glyphicon-eye-open">{{recipe.viewsCount}}</span>&nbsp;&nbsp;
-								<span class="glyphicon glyphicon-comment">{{recipe.commentsCount}}</span>&nbsp;&nbsp;
-								<span class="glyphicon glyphicon-heart">{{recipe.votesCount}}</span>&nbsp;&nbsp;
-							</div>
-							<div class="row text-left card_info2">
-								<span>{{recipe.title}}</span>
-							</div>
-							<div class="row text-left card_info3">
-								<span class="text-uppercase"><strong>{{recipe.title}}</strong></span>
-							</div>
-							<div class="row text-left card_info4">
-								<img src="images/matteo.jpg" class="img-circle img_profile_card">
-								<span class="name_profile_card">{{recipe.author.username}}</span>
-							</div>
-						</div>
-					</div>
-				</div>	
-			</div>
-			
-		</div><!-- End single recipe -->
-		
-		<div style="clear:both;"></div>
-	</div><!-- End container_menu -->
-</div>
+<div class="fluid-container">
+    <div class="row tasty_container text-center">
+
+
+        <!-- basic card -->
+        <div class="card" ng-repeat="recipe in recipes">
+            <div class="thumbnail no-padding no-border card_info no-border-radius">
+                <!-- card image -->
+                <div class="card_img" style="background-image:url('{{recipe.coverImageUrl}}')"></div>
+
+                <!-- card share -->
+                <div class="container-fluid card_share">
+                    <div class="cont_row_share">
+                        <div class="row text-center">
+                            <div class="col-xs-6"><span class="glyphicon glyphicon-heart-empty gly_share_size"></span></div>
+                            <div class="col-xs-6"><span class="glyphicon glyphicon-share-alt gly_share_size"></span></div>
+                        </div>
+                        <div class="row text-center">
+                            <span class="glyphicon glyphicon-plus gly_share_size">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="caption color_caption">
+                        <div class="container-fluid">
+                        
+                            <!-- icone + valori -->
+                            <div class="row text-right">
+                                <i class="fa fa-heart card_icon"> {{recipe.votesCount}}</i>
+                                <i class="fa fa-comment card_icon"> {{recipe.commentsCount}}</i>
+                                <i class="fa fa-eye card_icon"> {{recipe.viewsCount}}</i>
+                                <i class="fa fa-cutlery card_icon"> {{recipe.trialsCount}}</i>
+                            </div>
+                            
+                            <!-- tipo portata -->
+                            <div class="row">
+                                <span><h6 class="card_reach">{{recipe.category}}</h6></span>
+                        </div>
+
+                        <!-- titolo portata -->
+                        <div class="row">
+                            <span class="text-uppercase"><h5 class="no-margin card_title">{{recipe.title}}</h5></span>
+                        </div>
+
+                        <!-- profile -->
+                        <div class="row">
+                            <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
+                            <div class="card_profile_name pull-left">
+                                <h6>{{recipe.author.name}} {{recipe.author.surname}}</h6></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- fine card -->
+
+        </div>
+        <!-- End container_menu -->
+    </div>

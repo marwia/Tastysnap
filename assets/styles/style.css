@@ -15,26 +15,17 @@ body {
 
 .no-border-radius{border-radius: 0px;}
 
-.full{
-	width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    background: url("imm/hamburger_blur.jpg") no-repeat center center fixed;	
-    background-attachment: fixed;
-	background-size:cover;
-    z-index: 0;
-}
-
-.container_card_4{
+.tasty_container{
 	width:100%;
-	max-width: 968px;
-	text-align: center;
-	margin: auto;
+	max-width:1024px;
+	margin:auto;
 }
 
-/* ------------------------------------------------------------- BLACK BAR	 ------------------------------------------------- */
+.tasty_container_margin{
+	margin-top:40px;
+}
+
+/* ------------------------------------------------------------- NAVBAR ------------------------------------------------- */
 
 .top_menu_toggle_menu{
     float: left;
@@ -207,8 +198,8 @@ body {
 }
 
 .login_body{
-    background: url("imm/login.jpg") no-repeat center center fixed; /* example */
-	background-size:cover;
+    background: url("../images/login.jpg") no-repeat center center fixed; /* example */
+	background-size: cover;
 	padding:0;
 }
 
@@ -242,22 +233,21 @@ body {
 /* -------------------------------------------------------------    CARD STYLE ------------------------------------------------- */
 
 .card{
-	width: 219px;
-    height: 354px;
-	margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 20px;
+	width: 233px;
+    height: 376px;
+    margin: 7.5px;
     position: relative;
     display: inline-flex;
-	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-	-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-	box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
 .card_img{
 	width: 100%;
-	height: 219px;
-	background-size: cover;
+    height: auto;
+    padding-bottom: 100%;
+    background-size: cover;
     background-position: 50% 50%;
 	background-image: url("imm/thai_tb.jpg"); /* example */
 }
@@ -272,7 +262,7 @@ body {
 
 .card_share{
 	width:100%;
-	height: 219px;
+	height: 233px;
 	background-color:rgba(0,0,0,0.5);
 	color:white;
 	display:none;
@@ -299,11 +289,6 @@ body {
 .color_caption{
 	color:white !important;  /* example */
 	padding: 12px !important;
-	    
-}
-
-.card_icon_container {
-    text-align: right;
 }
 
 .card_icon{
@@ -312,6 +297,7 @@ body {
 }
 
 .card_title{
+	height:36px;
 	font-weight:700;
 	text-align: left;
 }
@@ -321,13 +307,11 @@ body {
 	margin: 10px auto 5px auto;
 }
 
-.card_profile{
-	position:absolute;
-	bottom: 5px;
-}
-
 .card_profile_photo{
 	width: 35px;
+	-webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+	-moz-box-shadow:    0px 0px 10px 0px rgba(0, 0, 0, 0.4);
+	box-shadow:         0px 0px 10px 0px rgba(0, 0, 0, 0.4);
 }
 
 .card_profile_name{
@@ -363,27 +347,11 @@ body {
 	right:0;
 }
 
-/* card small */
-.card_xs{
-	width: 177px;
-    height: 286px;
-}
-
-.card_xs_img{
-	width: 100%;
-	height: 177px;
-}
-
-.card_xs_reach{
-	display:none;
-}
-
 /* -------------------------------------------------------------    COLLECTION CARD STYLE ------------------------------------------------- */
 
 .card_collection{
 	height:200px;
 }
-
 
 .card_collection_ex_1{
 	background-image:url("imm/sushi_tb.jpg");
@@ -506,15 +474,20 @@ body {
 
 /* -------------------------------------------------------------    COLLECTION STYLE ------------------------------------------------- */
 
+.collection_body{
+    background: url("imm/spiedini_blur.jpg") no-repeat center center fixed; /* example */
+	background-size:cover;
+}
+
 .collection_container{
-	width: 100%;
-	position: absolute;
-    z-index: 2;
-    margin: auto;
-    top: 70px;
-    left: 0;
-    right: 0;
-	padding: 15px;
+    width: 100%;
+	margin: 120px auto 40px auto;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
 }
 
 .collection_profile_photo{
@@ -548,16 +521,12 @@ body {
 	margin-right:5px;
 }
 
-.collection_container_cards{
-	margin-top: 50px;
-}
-
 .collection_main_info{
 	text-align:left;
 	margin-top: 5px;
     margin-bottom: 5px;
 }
-
+/*
 @media only screen and (max-width : 928px) {
 	.collection_main_info{
 		max-width: 679px;
@@ -570,7 +539,7 @@ body {
 		max-width: 447px;
    		margin: auto;
 	}
-}
+}*/
 
 /* -------------------------------------------------------------    PERSONAL PROFILE STYLE ------------------------------------------------- */
 
@@ -648,15 +617,18 @@ body {
 }
 
 
-
 /* ------------------------------------------------------------- HOME LOADED PERSON ------------------------------------------------- */
-.home_load_space_container{
-	padding:30px;
+
+.home_body{
+	padding-top: 102px;
+}
+
+.home_load_space{
+	margin:30px auto 30px auto;
 }
 
 .home_title_category{
 	color: white;
-    padding: 30px 15px 30px 15px;
 }
 
 .home_title_bar{
@@ -676,11 +648,6 @@ body {
 	-ms-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
-}
-
-.btn_home_load{
-	background-color: #D68A1D;
-    border-radius: 0;
 }
 
 .home_navbar{
@@ -723,11 +690,6 @@ ul.home_navbar{
 	border-bottom:1px solid orange;
 }
 
-.home_container_card{
-	padding-top: 50px;
-}
-
-
 /* -------------------------------------------------------------  RECIPE ------------------------------------------------- */
 
 .recipe_body{
@@ -738,7 +700,6 @@ ul.home_navbar{
 
 .recipe{
     width: 100%;
-    max-width: 800px;
 	background: #E7E5E6;
 	margin: 120px auto 40px auto;
 	
@@ -751,12 +712,6 @@ ul.home_navbar{
 	-ms-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
-}
-
-.recipe_suggested{
-	width: 100%;
-    max-width: 800px;
-	margin: 40px auto 40px auto;
 }
 
 .recipe_col_8 {
@@ -789,7 +744,7 @@ ul.home_navbar{
 	box-shadow:         0px 0px 10px 0px rgba(50, 50, 50, 0.57);
 }
 
-.recipe_sub_title {
+.recipe_sub_title{
     font-size: large;
     margin: 15px 0 15px 0px;
 }
@@ -816,15 +771,12 @@ ul.home_navbar{
     margin-bottom: 15px;
 }
 
-.recipe_sp_2{
-	padding:0;
-}
-
 .recipe_sp_2_1{
-	height:266px;
-	width:100%;
-	background: url("imm/spiedini_tb.jpg") no-repeat center center; /* example */
-	background-size: cover;
+    width: 100%;
+	height: auto;
+    padding-top: 100%;
+    background: url("imm/spiedini_tb.jpg") no-repeat center center;
+    background-size: cover;
 }
 
 .recipe_sp_2_2 {
@@ -839,12 +791,6 @@ ul.home_navbar{
 
 .recipe_sp_2_2_table{
 	width: 100%;
-    max-width: 220px;
-}
-
-.recipe_sp_3{
-	max-width: 220px;
-	margin: 10px auto 30px auto;
 }
 
 .recipe_sp_3_title{
@@ -858,12 +804,8 @@ ul.home_navbar{
 	width:100%;
 }
 
-tr.recipe_sp_3_tr {
+tr.recipe_sp_3_tr{
     height: 35px;
-}
-
-.recipe_sp_3_val_nut{
-	font-weight:700;
 }
 
 .recipe_sp_3_val_nut_sec {
@@ -961,6 +903,7 @@ tr.recipe_sp_3_tr {
 	margin-top: 3px;
     font-weight: 700;
     font-size: 2.1em;
+	
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
@@ -968,23 +911,14 @@ tr.recipe_sp_3_tr {
 	transition: all 0.3s ease-in-out;
 }
 
-.recipe_container_cards{
-	max-width:800px;
-	margin:auto;
-}
-
-.recipe_card{
-	
-}
-
-@media(min-width: 770px){
-	.recipe_col_8 {
+@media screen and (min-width: 768px){
+	.recipe_col_8{
 		float: right;
-	}	
+	}
 }
 
 /* ricetta responsive */
-@media(max-width: 770px){
+@media screen and (max-width: 767px){
 	.recipe_col_8{
 		width: auto;
 		margin:0;
@@ -1008,8 +942,16 @@ tr.recipe_sp_3_tr {
 		box-shadow:          0px 0px 0px 0px;
 	}
 	
+	.recipe_sp_spons_title{
+		float:left;
+		width:100%;
+		text-align:center;
+	}
+	
 	.recipe_sp_3{
-		margin: 0px auto 0px auto;
+		width:50%;
+		float:left;
+		margin-top:7.5px;
 	}
 	
 	.recipe_sp_3_title{
@@ -1022,19 +964,181 @@ tr.recipe_sp_3_tr {
 		padding:15px;
 	}
 	
-	.recipe_sp_spons {
-		margin: 15px 0 0px 0;
+	.recipe_sp_spons{
+		float: left;
+		width: 50%;
+		padding: 7.5px;
 	}
 	
-	.recipe_sp_spons_con {
+	.recipe_sp_spons_con{
 		border-top: 0px solid;
 		padding-top: 8px;
 	}
 }
 
-@media(max-width: 480px){
+@media screen and (max-width: 480px){
 	.recipe_sp_4{
 		width: 100%;
 		float:none;
+	}
+	
+	.recipe_sp_3{
+		width:auto;
+		float:none;
+		margin:auto;
+	}
+	
+	.recipe_sp_spons{
+		float: left;
+		width: 100%;
+		padding: 0px;
+	}
+	
+	.recipe_ingredient{
+		width:100%;
+	}
+}
+
+
+/* -------------------------------------------------------------  Personal CARDS ------------------------------------------------- */
+
+.profile_card{
+    position: relative;
+	margin: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+	width:calc(25% - 20px);
+	float: left;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+	
+	-webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.8);
+	-moz-box-shadow:    0px 0px 10px 0px rgba(0, 0, 0, 0.8);
+	box-shadow:         0px 0px 10px 0px rgba(0, 0, 0, 0.8);
+}
+
+.profile_card:before{
+    content: "";
+    display: block;
+    padding-top: 100%;  /* ratio of 1:1*/
+}
+
+.profile_card_gradient{
+	background-image: linear-gradient(to bottom, rgba(255,255,255,0) 40%, rgba(0,0,0,0.65) 59%);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.profile_card_background{
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	z-index: 0;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	top: 0;
+	left: 0;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.profile_card:hover .profile_card_background{	
+	background-image: url("imm/matt.jpg");  /* example */
+}
+
+.profile_card:hover .profile_card_img{	
+	opacity: 0;
+}
+
+ /* example */
+.profile_card_matt{background-image: url("imm/copertina_matt.jpg");}
+.profile_card_mario{background-image: url("imm/copertina_mario.jpg");}
+.profile_card_cristian{background-image: url("imm/copertina_cristian.jpg");}
+.profile_card_obama{background-image: url("imm/copertina_obama.jpg");}
+
+.profile_card:hover .profile_card_mario{background-image: url("imm/mario.jpg");}
+.profile_card:hover .profile_card_cristian{background-image: url("imm/cristian.jpg");}
+.profile_card:hover .profile_card_obama{background-image: url("imm/obama.jpg");}
+
+
+/* special star wars */
+.profile_card_yoda{background-image: url("imm/copertina_yoda.jpg");}
+.profile_card_windu{background-image: url("imm/copertina_windu.jpg");}
+.profile_card_kenobi{background-image: url("imm/copertina_kenobi.jpg");}
+.profile_card_fener{background-image: url("imm/copertina_fener.jpg");}
+
+.profile_card:hover .profile_card_yoda{background-image: url("imm/yoda.jpg");}
+.profile_card:hover .profile_card_windu{background-image: url("imm/windu.jpg");}
+.profile_card:hover .profile_card_kenobi{background-image: url("imm/kenobi.jpg");}
+.profile_card:hover .profile_card_fener{background-image: url("imm/fener.jpg");}
+
+
+img.profile_card_img{
+	width: 50%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -65px;
+    bottom: 0;
+    margin: auto;
+	z-index: 2;
+	
+	-webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 1);
+	-moz-box-shadow:    0px 0px 10px 0px rgba(0, 0, 0, 1);
+	box-shadow:         0px 0px 10px 0px rgba(0, 0, 0, 1);
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.profile_card_name{
+	color: white;
+    position: absolute;
+    width: calc(100% - 30px);
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 13px;
+    font-size: 1.3em;
+    padding: 0 15px 0 15px;
+	z-index: 2;
+}
+
+@media screen and (max-width: 768px){
+	.profile_card{
+		width:calc(33% - 20px);
+	}
+}
+
+@media screen and (max-width: 528px){
+	.profile_card{
+		width:calc(50% - 20px);
+	}
+	
+	.profile_card_name{
+		font-size: 1em;
+		bottom:0;
 	}
 }

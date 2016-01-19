@@ -1,94 +1,66 @@
 <!-- Template per il login.
      CSS e HTML preso da: http://getbootstrap.com/examples/signin/ -->
+<!--<div class="login_body"></div> -->
 
-<div class="row background">
-    <div class="container-fluid login_container text-center">
-        <div class="row">
-            <a href="index.php"><img src="tastysnaplogo_full.png" class="login_brand"></a>
-        </div>
+<style>
+    body {
+        background: url("images/login.jpg") no-repeat center center fixed;
+        background-size: cover;
+        padding: 0;
+    }
+</style>
 
-        <a href="api/v1/auth/facebook" target="_self">Facebook</a>
+<div class="fluid-container">
+    <div class="row login_body">
+        <div class="container-fluid login_container text-center">
 
-        <div class="row social-buttons">
-            <a href="api/v1/auth/facebook" target="_self" class="btn btn-block btn-social btn-facebook">
-                <span class="fa fa-facebook"></span> Sign in with <b>Facebook</b>
-            </a>
-            <a class="btn btn-block btn-social btn-google">
-                <span class="fa fa-google"></span> Sign in with <b>Google</b>
-            </a>
-            <a class="btn btn-block btn-social btn-twitter">
-                <span class="fa fa-twitter"></span> Sign in with <b>Twitter</b>
-            </a>
-        </div>
-        <div class="row">
-            <p class="login_privacy">
-                <small>
+            <div class="row">
+                <a href="index.php"><img src="images/tastysnaplogo_full.png" class="login_brand"></a>
+            </div>
+
+            <div class="row social-buttons">
+                <a href="api/v1/auth/facebook" target="_self" class="btn btn-block btn-social btn-facebook">
+                    <span class="fa fa-facebook"></span> Sign in with <b>Facebook</b>
+                </a>
+                <a href="api/v1/auth/google" target="_self" class="btn btn-block btn-social btn-google">
+                    <span class="fa fa-google"></span> Sign in with <b>Google</b>
+                </a>
+                <a href="api/v1/auth/twitter" target="_self" class="btn btn-block btn-social btn-twitter">
+                    <span class="fa fa-twitter"></span> Sign in with <b>Twitter</b>
+                </a>
+            </div>
+            <div class="row">
+                <p class="login_privacy">
+                    <small>
                 Iscrivendoti, accetti i <a href="#">Termini di Servizio</a> e l' <a href="#">informativa sulla privacy</a>, incluso l' <a href="#">Utilizzo dei cookie</a>.
                 Altri utenti potranno trovarti tramite email, laddove fornita.
                 </small>
-            </p>
+                </p>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="row login_footer">
-    <div class="login_footer_item">Informazioni su TastySnap</div>
-    <div class="login_footer_item login_footer_item_divider">-</div>
+    <div class="row login_footer">
+        <div class="login_footer_item">Informazioni su TastySnap</div>
+        <div class="login_footer_item login_footer_item_divider">-</div>
 
-    <div class="login_footer_item">Blog</div>
-    <div class="login_footer_item login_footer_item_divider">-</div>
+        <div class="login_footer_item">Blog</div>
+        <div class="login_footer_item login_footer_item_divider">-</div>
 
-    <div class="login_footer_item">Per le Aziende</div>
-    <div class="login_footer_item login_footer_item_divider">-</div>
+        <div class="login_footer_item">Per le Aziende</div>
+        <div class="login_footer_item login_footer_item_divider">-</div>
 
-    <div class="login_footer_item">Privacy e Termini</div>
-    <div class="login_footer_item login_footer_item_divider">-</div>
+        <div class="login_footer_item">Privacy e Termini</div>
+        <div class="login_footer_item login_footer_item_divider">-</div>
 
-    <div class="login_footer_item">App per Android</div>
-    <div class="login_footer_item login_footer_item_divider">-</div>
+        <div class="login_footer_item">App per Android</div>
+        <div class="login_footer_item login_footer_item_divider">-</div>
 
-    <div class="login_footer_item">App per Iphone</div>
-</div>
-
-</div>
-
-<div class="container center_div" ng-submit="logIn()">
-
-    <form class="form">
-
-        <!-- Logo image -->
-        <div style="margin-bottom: 25px">
-            <img src="images/logo.png" class="image-circle center-block" />
-        </div>
-
-        <!-- Username input -->
-        <div class="form-group">
-            <div class="input-group input-group-lg">
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                <input class="form-control" type="text" name="parameterValue" placeholder="Username" ng-model="user.username" />
-            </div>
-        </div>
-
-        <!-- Password input -->
-        <div class="form-group">
-            <div class="input-group input-group-lg">
-                <span class="input-group-addon"><span class="fa fa-lock"></span></span>
-                <input class="form-control" type="text" name="parameterValue" placeholder="Password" ng-model="user.password" />
-            </div>
-        </div>
-
-        <!-- Login button -->
-        <button class="btn btn-lg btn-custom btn-block" type="submit">LOGIN</button>
-
-        <p class="text-center">Not a member? <a href="#">Sign up now</a> <span class="fa fa-arrow-right"></span></p>
-
-        <div class="row" ng-show="error">
-            <div class="alert alert-danger row">
-                <span>{{ error.message }}</span>
-            </div>
-        </div>
-
-    </form>
-
+        <div class="login_footer_item">App per Iphone</div>
+    </div>
 
 </div>
+
+</div>
+
+
