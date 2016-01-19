@@ -118,6 +118,14 @@ var apiRoutes = addGlobalPrefix({
   
   'get /auth/facebook/callback': 'AuthController.facebookCallback',
   
+  'get /auth/google': 'AuthController.google',
+  
+  'get /auth/google/callback': 'AuthController.googleCallback',
+  
+  'get /auth/twitter': 'AuthController.twitter',
+  
+  'get /auth/twitter/callback': 'AuthController.twitterCallback',
+  
   'put /user/:user/follow': 'UserController.follow',
 
   'delete /user/:user/follow': 'UserController.unfollow',
