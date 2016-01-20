@@ -5,6 +5,13 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+/**
+ * Module dependencies
+ * 
+ * Prese da https://github.com/balderdashy/sails/blob/master/lib/hooks/blueprints/actions/find.js
+ */
+var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+
 module.exports = {
     /**
      * @api {post} /user Register a new User
@@ -58,6 +65,133 @@ module.exports = {
           res.json(200, {user: user, token: jwToken.issue({id: user.id})});
         }
       });
+    },
+    
+    /**
+     * @api {get} /user List Users
+     * @apiName ListUsers
+     * @apiGroup User
+     *
+     * @apiDescription Serve per richiedere un lista di ricette.
+     * Attenzione che i risultati sono limitati ad un numero preciso di ricette, massimo 30 per richiesta.<br>
+     * Questo end point accetta prametri.
+     *
+     * @apiParam {Integer} skip The number of records to skip (useful for pagination).
+     * @apiParam {Integer} limit The maximum number of records to send back (useful for pagination). Defaults to 30. 
+     * @apiParam {String} where Instead of filtering based on a specific attribute, you may instead choose to provide a where parameter with a Waterline WHERE criteria object, encoded as a JSON string.
+     * @apiParam {String} sort The sort order. By default, returned records are sorted by primary key value in ascending order. 
+     *
+     * @apiParamExample Request-Param-Example:
+     *     ?skip=6&limit=3
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     */
+    find: function (req, res, next) {
+        User.find()
+        .where( actionUtil.parseCriteria(req) )
+        .limit( actionUtil.parseLimit(req) )
+        .skip( actionUtil.parseSkip(req) )
+        .sort( actionUtil.parseSort(req) )
+        .populate('recipes')
+        .populate('collections')
+        .populate('followers')
+        .populate('following')
+        .populate('followingCollections')
+        .exec( function(err, foundUsers) {
+            if(err){ return next(err); }
+            
+            // array di appoggio
+            var users = new Array();
+            
+            // conto gli elementi delle collection
+            for (var i in foundUsers) {
+                foundUsers[i].recipesCount = foundUsers[i].recipes.length;
+                foundUsers[i].collectionsCount = foundUsers[i].collections.length;
+                foundUsers[i].followersCount = foundUsers[i].followers.length;
+                foundUsers[i].followingCount = foundUsers[i].following.length;
+                foundUsers[i].followingCollectionsCount = foundUsers[i].followingCollections.length;
+                
+                /**
+                 * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
+                 * delle associazioni vengono automaticamente tolte quando si esegue
+                 * il seguente metodo.
+                 */
+                var obj = foundUsers[i].toObject();
+                users.push(obj);
+            }
+
+            return res.json(users);
+        });
+    },
+    
+    /**
+     * @api {get} /user/:id Get a User
+     * @apiName GetUser
+     * @apiGroup User
+     *
+     * @apiDescription Serve per caricare tutti i dettagli di un 
+     * particolare utente.
+     *
+     * @apiParam {String} id User id.
+     *
+     * @apiSuccess {json} user JSON that represents the user object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+            "username": "cavallo",
+            "createdAt": "2015-09-15T13:59:50.559Z",
+            "updatedAt": "2015-09-15T13:59:50.559Z",
+            "id": "55f8245674cb8184028877b9",
+            "recipesCount": 22,
+            "collectionsCount": 1,
+            "followersCount": 1,
+            "followingCount": 0,
+            "followingCollectionsCount": 0
+            }
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     */
+    findOne: function (req, res, next) {
+        var userId = req.param('id');
+        if(!userId) { return next(); }
+        
+        User.findOne(userId)
+        .populate('recipes')
+        .populate('collections')
+        .populate('followers')
+        .populate('following')
+        .populate('followingCollections')
+        .exec( function(err, foundUser) {
+            if(err){ return next(err); }
+            
+            if(!foundUser) { return res.notFound({error: 'No user found'}); }
+            
+            // conto gli elementi delle collection
+            foundUser.recipesCount = foundUser.recipes.length;
+            foundUser.collectionsCount = foundUser.collections.length;
+            foundUser.followersCount = foundUser.followers.length;
+            foundUser.followingCount = foundUser.following.length;
+            foundUser.followingCollectionsCount = foundUser.followingCollections.length;
+            
+            /**
+             * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
+             * delle associazioni vengono automaticamente tolte quando si esegue
+             * il seguente metodo.
+             */
+            var obj = foundUser.toObject();
+ 
+            return res.json(obj);
+        });
     },
 
     /**
