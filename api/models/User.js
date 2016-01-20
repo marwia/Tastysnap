@@ -23,8 +23,6 @@ module.exports = {
   *                                                                          *
   ***************************************************************************/
   attributes: {
-
-    username : { type: 'String', unique: true, lowercase: true },
     
     name : { type: 'String', unique: true },
     
@@ -32,13 +30,25 @@ module.exports = {
     
     email: { type: 'String', email: true },
     
+    coverImageUrl: { type: 'String', url: true },
+    
+    //FACEBOOK
+    
     facebookId : {type: 'String' },
     
-    profileImage: { type: 'String' },
-
-    password : { type: 'String' },
-
-    encryptedPassword: { type: 'String' },
+    facebookImageUrl: { type: 'String', url: true },
+    
+    //GOOGLE
+    
+    googleId : {type: 'String' },
+    
+    googleImageUrl: { type: 'String', url: true },
+    
+    //TWITTER
+    
+    twitterId : {type: 'String' },
+    
+    twitterImageUrl: { type: 'String', url: true },
 
     // Reference to many Recipes
     recipes : {
@@ -66,15 +76,14 @@ module.exports = {
 
     // Reference to many Collections
     followingCollections : {
-      collection: 'Collection',
+      collection: 'collection',
       via: 'followers'
     },
 
     // Override toJSON method to remove password from API
     toJSON: function() {
       var obj = this.toObject();
-      delete obj.encryptedPassword;
-      delete obj.password;
+      // do nothing for now...
       return obj;
     },
 
@@ -101,6 +110,7 @@ module.exports = {
   ***************************************************************************/
 
   // Generating a hash
+  /*
   generateHash: function (password) {
       return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
   },
@@ -123,6 +133,7 @@ module.exports = {
     values.encryptedPassword = this.generateHash(values.password);
     next();
   },
+  */
  
 
   /***************************************************************************
