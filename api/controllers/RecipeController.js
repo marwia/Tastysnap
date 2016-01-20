@@ -92,9 +92,7 @@ module.exports = {
      *
      * @apiUse InvalidTokenError
      */
-    find: function (req, res, next) {
-        var queryParams = req.query;
-        
+    find: function (req, res, next) {        
         Recipe.find()
         .where( actionUtil.parseCriteria(req) )
         .limit( actionUtil.parseLimit(req) )
