@@ -20,33 +20,34 @@ passport.use(new FacebookStrategy({
 },
     function (accessToken, refreshToken, profile, done) {
         console.log("Facebook strategy triggered...\n");
-        //TODO: sostituire con delle update!
-        User.findOne().where({
+        var fbUser = {
+            facebookId: profile.id,
+            facebookImageUrl: profile.photos[0].value,
+            name: profile.name.givenName,
+            surname: profile.name.familyName,
+            email: profile.emails[0].value
+        };
+
+        User.update({
             or: [
                 { facebookId: profile.id },
-                { name: profile.name.givenName, surname: profile.name.familyName }
+                { email: profile.emails[0].value }
             ]
-        }).exec(function (err, foundUser) {
+        }, fbUser).exec(function (err, foundUser) {
             if (err) { return done(err); }
-            if(foundUser) {
-                console.log("Utente FB loggato", foundUser);
-                done(null, foundUser);
+            if (foundUser[0]) {
+                console.log("Utente FB loggato", foundUser[0]);
+                done(null, foundUser[0]);
             } else {
-                User.create({
-                    facebookId: profile.id,
-                    facebookImageUrl: profile.photos[0].value,
-                    name: profile.name.givenName,
-                    surname: profile.name.familyName,
-                    email: profile.emails[0].value
-                }).exec(function (err, user) {
-                    
+                User.create(fbUser).exec(function (err, user) {
+
                     if (err) { return done(err); }
                     console.log("Utente FB creato", user);
                     done(null, user);
                 });
             }
-            });
-}));
+        });
+    }));
 
 // Google strategy
 passport.use(new GoogleStrategy({
@@ -54,36 +55,39 @@ passport.use(new GoogleStrategy({
     clientSecret: "gQR5REP8GLh86OJaC4mDLNcb",
     callbackURL: "http://localhost:1337/api/v1/auth/google/callback",
     profileFields: ['id', 'displayName', 'name', 'gender', 'email', 'photos']
-  },
-  function(accessToken, refreshToken, profile, done) {
-      console.log("Google strategy triggered...\n");
-      User.findOne().where({
+},
+    function (accessToken, refreshToken, profile, done) {
+        console.log("Google strategy triggered...\n");
+        console.log("Google profile:", profile);
+        var gUser = {
+            googleId: profile.id,
+            googleImageUrl: profile.photos[0].value,
+            name: profile.name.givenName,
+            surname: profile.name.familyName,
+            email: profile.emails[0].value
+        };
+
+        User.update({
             or: [
                 { googleId: profile.id },
-                { name: profile.name.givenName, surname: profile.name.familyName }
+                { email: profile.emails[0].value }
             ]
-        }).exec(function (err, foundUser) {
+        }, gUser).exec(function (err, foundUser) {
             if (err) { return done(err); }
-            if(foundUser) {
-                console.log("Utente Google loggato", foundUser);
-                done(null, foundUser);
+            if (foundUser[0]) {
+                console.log("Utente Google loggato", foundUser[0]);
+                done(null, foundUser[0]);
             } else {
-                User.create({
-                    googleId: profile.id,
-                    googleImageUrl: profile.photos[0].value,
-                    name: profile.name.givenName,
-                    surname: profile.name.familyName,
-                    email: profile.emails[0].value
-                }).exec(function (err, user) {
-                    
+                User.create(gUser).exec(function (err, user) {
+
                     if (err) { return done(err); }
                     console.log("Utente Google creato", user);
                     done(null, user);
                 });
             }
-            });
-  }
-));
+        });
+    }
+    ));
 
 // Twitter strategy
 passport.use(new TwitterStrategy({
@@ -91,33 +95,36 @@ passport.use(new TwitterStrategy({
     consumerSecret: "oayhHlz10mYJY84NsuyqUd960UrClxgkUYYLgcok2Z62VLaGJg",
     callbackURL: "http://localhost:1337/api/v1/auth/twitter/callback",
     profileFields: ['id', 'displayName', 'name', 'gender', 'email', 'photos']
-  },
-  function(accessToken, refreshToken, profile, done) {
-      console.log("Twitter strategy triggered...\n", profile);
-      User.findOne().where({
+},
+    function (accessToken, refreshToken, profile, done) {
+        console.log("Twitter strategy triggered...\n", profile);
+        console.log("Twitter profile:", profile);
+        var tUser = {
+            twitterId: profile.id,
+            twitterImageUrl: profile.photos[0].value,
+            name: profile.displayName.split(' ')[0],
+            surname: profile.displayName.split(' ')[1],
+            email: profile.emails[0].value
+        };
+
+        User.update({
             or: [
                 { twitterId: profile.id },
-                { name: profile.displayName.split(' ')[0], surname: profile.displayName.split(' ')[1] }
+                { email: profile.emails[0].value }
             ]
-        }).exec(function (err, foundUser) {
+        }, tUser).exec(function (err, foundUser) {
             if (err) { return done(err); }
-            if(foundUser) {
-                console.log("Utente Twitter loggato", foundUser);
-                done(null, foundUser);
+            if (foundUser[0]) {
+                console.log("Utente Twitter loggato", foundUser[0]);
+                done(null, foundUser[0]);
             } else {
-                User.create({
-                    twitterId: profile.id,
-                    twitterImageUrl: profile.photos[0].value,
-                    name: profile.displayName.split(' ')[0],
-                    surname: profile.displayName.split(' ')[1]
-                    //email: profile.emails[0].value
-                }).exec(function (err, user) {
-                    
+                User.create(tUser).exec(function (err, user) {
+
                     if (err) { return done(err); }
                     console.log("Utente Twitter creato", user);
                     done(null, user);
                 });
             }
-            });
-  }
-));
+        });
+    }
+    ));

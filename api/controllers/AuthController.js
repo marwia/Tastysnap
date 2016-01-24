@@ -26,6 +26,7 @@ module.exports = {
                     // rispondo con il token generato in base all'oggetto "user"
                     // così, ogni volta che verifico il token posso risalire ai dati dell'utente
                     var payload = {id: user.id, name: user.name, surname: user.surname};
+                    console.log("payload del token:", payload);
                     return res.redirect('/login?token=' + jwToken.issue(payload))
                 } else {
                     return res.status(401).json({ message: 'User not found.' });//info contains the error message
