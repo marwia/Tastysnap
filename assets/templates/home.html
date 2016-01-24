@@ -1,0 +1,320 @@
+<div class="container-fluid">
+
+    <nav class="navbar navbar-inverse home_navbar navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav home_navbar">
+                        <li class="home_navbar_item home_navbar_item_active"><a href="#">Le più recenti <span class="sr-only">(current)</span></a></li>
+                        <li class="home_navbar_item"><a href="#">Le piu assaggiate</a></li>
+                        <li class="home_navbar_item"><a href="#">Di Tendenza</a></li>
+                        <li class="home_navbar_item"><a href="#">Le piu commentate</a></li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    
+    <div style="wisth: 100%; height: 50px" class="row"></div>
+
+    <!-- container card -->
+    <div class="row tasty_container text-center home_title_category home_load_space">
+        <div class="col-md-4">
+            <hr class="home_title_bar"></hr>
+        </div>
+        <div class="col-md-4">
+            <h3 class="home_title_text">Ultime Ricette</h3></div>
+        <div class="col-md-4">
+            <hr class="home_title_bar"></hr>
+        </div>
+    </div>
+
+    <!-- CARD -->
+    <div class="row tasty_container text-center">
+
+        <!-- basic card -->
+        <div class="card" ng-repeat="recipe in recipes">
+            <div class="thumbnail no-padding no-border card_info no-border-radius">
+                <!-- card image -->
+                <div class="card_img" style="background-image:url('{{recipe.coverImageUrl}}')"></div>
+
+                <!-- card share -->
+                <div class="container-fluid card_share">
+                    <div class="cont_row_share">
+                        <div class="row text-center">
+                            <div class="col-xs-6"><span class="glyphicon glyphicon-heart-empty gly_share_size"></span></div>
+                            <div class="col-xs-6"><span class="glyphicon glyphicon-share-alt gly_share_size"></span></div>
+                        </div>
+                        <div class="row text-center">
+                            <span class="glyphicon glyphicon-plus gly_share_size">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="caption color_caption">
+                        <div class="container-fluid">
+                        
+                            <!-- icone + valori -->
+                            <div class="row text-right">
+                                <i class="fa fa-heart card_icon"> {{recipe.votesCount}}</i>
+                                <i class="fa fa-comment card_icon"> {{recipe.commentsCount}}</i>
+                                <i class="fa fa-eye card_icon"> {{recipe.viewsCount}}</i>
+                                <i class="fa fa-cutlery card_icon"> {{recipe.trialsCount}}</i>
+                            </div>
+                            
+                            <!-- tipo portata -->
+                            <div class="row">
+                                <span><h6 class="card_reach">{{recipe.category}}</h6></span>
+                        </div>
+
+                        <!-- titolo portata -->
+                        <div class="row">
+                            <span class="text-uppercase"><h5 class="no-margin card_title">{{recipe.title}}</h5></span>
+                        </div>
+
+                        <!-- profile -->
+                        <div class="row">
+                            <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
+                            <div class="card_profile_name pull-left">
+                                <h6>{{recipe.author.name}} {{recipe.author.surname}}</h6></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        <!-- fine card -->
+
+    </div>
+    <!-- fine tasty_container -->
+
+
+    <!-- button carica altro -->
+    <div class="row tasty_container text-center home_load_space">
+        <button class="btn btn-warning " type="submit">CARICA ALTRO</button>
+    </div>
+
+    <!-- title -->
+    <div class="row tasty_container text-center home_title_category home_load_space">
+        <div class="col-md-4">
+            <hr class="home_title_bar"></hr>
+        </div>
+        <div class="col-md-4">
+            <h3 class="home_title_text">Raccolte consigliate</h3></div>
+        <div class="col-md-4">
+            <hr class="home_title_bar"></hr>
+        </div>
+    </div>
+
+    <!-- container card -->
+    <div class="row tasty_container text-center home_load_space">
+        <!-- card collection 1 -->
+        <div class="col-xs-12 col-sm-6 col-md-4 box">
+            <div class="card_collection_content_bg2">
+                <div class="card_collection_content_bg_1_4" style="background-image:url('imm/sushi_tb.jpg');"></div>
+                <div class="card_collection_content_bg_1_4" style="background-image:url('imm/spaghetti_tb.jpg');"></div>
+                <div class="card_collection_content_bg_1_4" style="background-image:url('imm/arrosto_tb.jpg');"></div>
+                <div class="card_collection_content_bg_1_4" style="background-image:url('imm/food_tb.jpg');"></div>
+            </div>
+            <!-- div che contiene titolo - profilo - like -->
+            <div class="container-fluid card_collection_content">
+                <!-- titolo -->
+                <div class="row collection_card_title">APERITIVO CON LE AMICHE DI CARLOS</div>
+                <!-- profilo -->
+                <div class="row collection_card_profile">
+                    <img src="imm/matt.jpg" class="img-circle collection_card_profile_photo pull-left">
+                    <div class="collection_card_profile_name pull-left">
+                        <h6>Matteo Bolognesi</h6></div>
+                </div>
+
+                <!-- icone + valori -->
+                <div class="row collection_card_info">
+                    <i class="fa fa-heart collection_card_info_item"> 30</i>
+                    <i class="fa fa-eye collection_card_info_item"> 90</i>
+                </div>
+            </div>
+
+            <div class="collection_card_gradient"></div>
+
+        </div>
+
+        <!-- card collection 2-->
+        <div class="col-xs-12 col-sm-6 col-md-4 box">
+            <div class="card_collection_content_bg" style="background-image:url('imm/sushi_tb.jpg');"></div>
+
+            <!-- div che contiene titolo - profilo - like -->
+            <div class="container-fluid card_collection_content">
+                <!-- titolo -->
+                <div class="row collection_card_title">APERITIVO CON LE AMICHE</div>
+                <!-- profilo -->
+                <div class="row collection_card_profile">
+                    <img src="imm/matt.jpg" class="img-circle collection_card_profile_photo pull-left">
+                    <div class="collection_card_profile_name pull-left">
+                        <h6>Matteo Bolognesi</h6></div>
+                </div>
+                <!-- icone + valori -->
+                <div class="row collection_card_info">
+                    <i class="fa fa-heart collection_card_info_item"> 30</i>
+                    <i class="fa fa-eye collection_card_info_item"> 90</i>
+                </div>
+            </div>
+
+            <div class="collection_card_gradient"></div>
+        </div>
+
+        <!-- card collection 4 -->
+        <div class="col-xs-12 col-sm-6 col-md-4 box">
+            <div class="card_collection_content_bg2">
+                <div class="card_collection_content_bg_1_4" style="background-image:url('imm/hamburger_tb.jpg');"></div>
+                <div class="card_collection_content_bg_1_4" style="background-image:url('imm/pizza_tb.jpg');"></div>
+                <div class="card_collection_content_bg_1_4" style="background-image:url('imm/snack_tb.jpg');"></div>
+                <div class="card_collection_content_bg_1_4" style="background-image:url('imm/thai_tb.jpg');"></div>
+            </div>
+            <!-- div che contiene titolo - profilo - like -->
+            <div class="container-fluid card_collection_content">
+                <!-- titolo -->
+                <div class="row collection_card_title">APERITIVO CON LE AMICHE DI CARLOS</div>
+                <!-- profilo -->
+                <div class="row collection_card_profile">
+                    <img src="imm/matt.jpg" class="img-circle collection_card_profile_photo pull-left">
+                    <div class="collection_card_profile_name pull-left">
+                        <h6>Matteo Bolognesi</h6></div>
+                </div>
+                <!-- icone + valori -->
+                <div class="row collection_card_info">
+                    <i class="fa fa-heart collection_card_info_item"> 30</i>
+                    <i class="fa fa-eye collection_card_info_item"> 90</i>
+                </div>
+            </div>
+
+            <div class="collection_card_gradient"></div>
+        </div>
+
+    </div>
+
+    <!-- button carica altro -->
+    <div class="row tasty_container text-center home_load_space">
+        <button class="btn btn-warning" type="submit">CARICA ALTRO</button>
+    </div>
+
+    <!-- title -->
+    <div class="row tasty_container text-center home_title_category home_load_space">
+        <div class="col-md-4">
+            <hr class="home_title_bar"></hr>
+        </div>
+        <div class="col-md-4">
+            <h3 class="home_title_text">Persone che segui</h3></div>
+        <div class="col-md-4">
+            <hr class="home_title_bar"></hr>
+        </div>
+    </div>
+
+    <!-- profile's cards -->
+    <div class="row tasty_container text-center home_load_space">
+
+        <!-- MATT -->
+        <div class="col-sm-4 col-md-3 profile_card">
+            <a href="">
+                <div class="profile_card_background profile_card_matt"></div>
+                <img src="imm/matt.jpg" class="img-circle profile_card_img" />
+                <div class="profile_card_name text-center">MATTEO BOLOGNESI</div>
+                <div class="profile_card_gradient"></div>
+            </a>
+        </div>
+
+        <!-- MARIO -->
+        <div class="col-sm-4 col-md-3 profile_card">
+            <a href="">
+                <div class="profile_card_background profile_card_mario"></div>
+                <img src="imm/mario.jpg" class="img-circle profile_card_img" />
+                <div class="profile_card_name text-center">MARIUSZ WIAZOWSKI</div>
+                <div class="profile_card_gradient"></div>
+            </a>
+        </div>
+
+        <!-- CRISTIAN -->
+        <div class="col-sm-4 col-md-3 profile_card">
+            <a href="">
+                <div class="profile_card_background profile_card_cristian"></div>
+                <img src="imm/cristian.jpg" class="img-circle profile_card_img" />
+                <div class="profile_card_name text-center">CRISTIAN TEATINI</div>
+                <div class="profile_card_gradient"></div>
+            </a>
+        </div>
+
+        <!-- OBAMA -->
+        <div class="col-sm-4 col-md-3 profile_card">
+            <a href="">
+                <div class="profile_card_background profile_card_obama"></div>
+                <img src="imm/obama.jpg" class="img-circle profile_card_img" />
+                <div class="profile_card_name text-center">PRESIDENT BARACK OBAMA</div>
+                <div class="profile_card_gradient"></div>
+            </a>
+        </div>
+
+        <!-- INIZIO SPECIAL STAR WARS -->
+
+        <!-- YODA -->
+        <div class="col-sm-4 col-md-3 profile_card">
+            <a href="">
+                <div class="profile_card_background profile_card_yoda"></div>
+                <img src="imm/yoda.jpg" class="img-circle profile_card_img" />
+                <div class="profile_card_name text-center">MAESTRO YODA</div>
+                <div class="profile_card_gradient"></div>
+            </a>
+        </div>
+
+        <!-- windu -->
+        <div class="col-sm-4 col-md-3 profile_card">
+            <a href="">
+                <div class="profile_card_background profile_card_windu"></div>
+                <img src="imm/windu.jpg" class="img-circle profile_card_img" />
+                <div class="profile_card_name text-center">MAESTRO WINDU</div>
+                <div class="profile_card_gradient"></div>
+            </a>
+        </div>
+
+        <!-- kenobi -->
+        <div class="col-sm-4 col-md-3 profile_card">
+            <a href="">
+                <div class="profile_card_background profile_card_kenobi"></div>
+                <img src="imm/kenobi.jpg" class="img-circle profile_card_img" />
+                <div class="profile_card_name text-center">MAESTRO OBI-WAN KENOBI</div>
+                <div class="profile_card_gradient"></div>
+            </a>
+        </div>
+
+        <!-- fener -->
+        <div class="col-sm-4 col-md-3 profile_card">
+            <a href="">
+                <div class="profile_card_background profile_card_fener"></div>
+                <img src="imm/fener.jpg" class="img-circle profile_card_img" />
+                <div class="profile_card_name text-center">DART FENER</div>
+                <div class="profile_card_gradient"></div>
+            </a>
+        </div>
+
+
+        <!-- FINE SPECIAL STAR WARS -->
+
+    </div>
+
+    <!-- button carica altro -->
+    <div class="row tasty_container text-center home_load_space">
+        <button class="btn btn-warning" type="submit">CARICA ALTRO</button>
+    </div>
+
+</div>

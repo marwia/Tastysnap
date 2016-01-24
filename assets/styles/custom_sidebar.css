@@ -102,7 +102,7 @@ ul.sidebar .sidebar-list .menu-icon {
     /*bottom: 200px;*/
     width: 100%;
     margin: 0;
-    padding-bottom: 10px;
+    padding-bottom: 40px;
     transition: all .6s ease 0s;
     text-align: center;
     color: #ffffff;
@@ -181,4 +181,22 @@ ul.sidebar .sidebar-list .menu-icon {
 
 [ui-view].ng-leave-active {
   opacity: 0;
+}
+
+.sidebar_create_recipe {
+    background-color: #ff9800;
+    color: whitesmoke;
+    position: absolute; 
+    top: 225px; 
+    right: 15px;
+    text-indent: 0px;
+}
+
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
 }

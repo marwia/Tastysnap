@@ -60,7 +60,7 @@ angular.module('appRoutes', []).config([
                     url: '/home',
                     views: {
                         'content@dashboard': { 
-                            templateUrl: 'templates/recipes.html',
+                            templateUrl: 'templates/home.html',
                             controller: 'RecipeCtrl',
                             // ogni volta che parte da questo stato farà questa funzione
                             resolve: {
@@ -116,8 +116,17 @@ angular.module('appRoutes', []).config([
                         }
                     }]
                 })
+                
+                // PROFILE PAGE ==========================================================
+                .state('dashboard.profile', {
+                    url: '/profile',
+                    views: {
+                        'content@dashboard': { templateUrl: 'templates/profile.html' }
+                    } 
+                })
 
                 // REGISTER PAGE =======================================================
+                //TODO: da eliminare 
                 .state('register', {
                     url: '/user/create',
                     templateUrl: 'templates/register.html',
