@@ -13,7 +13,8 @@
 *   -- 7. PERONAL PROFILE (stile della pagina dell'utente)
 *   -- 8. HOME LOADED (home, quando l'utente è loggato)
 *   -- 9. RECIPE (stile della ricetta)
-*   -- 10. PERSONAL CARD (card profili delle persone)
+*   -- 10.PERSONAL CARD (card profili delle persone)
+*   -- 11.CREAETE RECIPE 
 */
 
 /* ------------------------------------------------------------   1    ------------------------------------------------------ */
@@ -1167,4 +1168,20 @@ img.profile_card_img{
 		font-size: 1em;
 		bottom:0;
 	}
+}
+
+/* ------------------------------------------------------------------ 11 -------------------------------------------------------- */
+/* ------------------------------------------------------------- CREATE RECIPE -------------------------------------------------- */
+
+.c_recipe_row{
+    background-color: rgba(128, 128, 128, 0.26);
+}
+
+.c_recipe_left{
+    text-align:right;
+}
+
+.c_recipe_right{
+    background-color:white;
+    padding-bottom: 30px;
 }
