@@ -28,7 +28,16 @@ angular.module('appRoutes', []).config([
                             controller: 'MasterCtrl'},
                         'navbar@dashboard': { templateUrl: 'partials/navbar.html' },
                         'sidebar@dashboard': { templateUrl: 'partials/sidebar.html' },
-                        'content@dashboard': { templateUrl: 'templates/rdash.html' }
+                        'content@dashboard': { 
+                            templateUrl: 'templates/home.html',
+                            controller: 'RecipeCtrl',
+                            // ogni volta che parte da questo stato farà questa funzione
+                            resolve: {
+                                postPromise: ['Recipe', function(recipes){
+                                    return recipes.getAll();
+                                }]
+                            }
+                        }
                     },
                     onEnter: ['$state', 'Auth', function($state, Auth){
                         if(!Auth.isLoggedIn()){
@@ -142,7 +151,7 @@ angular.module('appRoutes', []).config([
                 
                 $urlRouterProvider.otherwise( function($injector, $location) {
                     var $state = $injector.get("$state");
-                    $state.go("dashboard");
+                    $state.go("dashboard.home");
                 });
                 
 
