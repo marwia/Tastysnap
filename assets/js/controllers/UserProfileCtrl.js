@@ -8,8 +8,13 @@
 angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
     '$scope',
     'User',
-    function ($scope, User) {
+    '$state',
+    function ($scope, User, $state) {
         // Espongo gli elementi del User service
         $scope.user = User.user;//utente del profilo
         
+        // Espongo il metodo per determinare lo stato dell'app
+        $scope.getCurrentState = function () {
+            return $state.current.name;
+        }
     }]);

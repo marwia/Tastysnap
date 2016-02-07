@@ -136,10 +136,11 @@ angular.module('appRoutes', []).config([
             })
                 
         // PROFILE PAGE ==========================================================
+            // PROFILE ROOT (DEFAULT)
             .state('dashboard.profile', {
                 url: '/profile/{id}',
                 views: {
-                    'content@dashboard': { 
+                    'content@dashboard': {
                         templateUrl: 'templates/profile.html',
                         controller: 'UserProfileCtrl',
                         resolve: {
@@ -147,6 +148,36 @@ angular.module('appRoutes', []).config([
                                 return user.getUserById($stateParams.id);
                             }]
                         }
+                    },
+                    'profile_content@dashboard.profile': {
+                        templateUrl: 'templates/profile_recipes.html'
+                    }
+                }
+            })
+            // PROFILE COLLECTIONS
+            .state('dashboard.profile.collections', {
+                url: '/collections',
+                views: {
+                    'profile_content@dashboard.profile': {
+                        templateUrl: 'templates/profile_collections.html'
+                    }
+                }
+            })
+            // PROFILE FOLLOWERS
+            .state('dashboard.profile.followers', {
+                url: '/followers',
+                views: {
+                    'profile_content@dashboard.profile': {
+                        templateUrl: 'templates/profile_followers.html'
+                    }
+                }
+            })
+            // PROFILE FOLLOWING
+            .state('dashboard.profile.following', {
+                url: '/following',
+                views: {
+                    'profile_content@dashboard.profile': {
+                        templateUrl: 'templates/profile_following.html'
                     }
                 }
             })

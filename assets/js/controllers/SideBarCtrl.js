@@ -21,6 +21,7 @@ angular.module('SideBarCtrl', []).controller('SideBarCtrl', [
         // Espongo i metodi del User service
         $scope.currentUser = User.currentUser
         
+        // Espongo il metodo per determinare lo stato dell'app
         $scope.getCurrentState = function () {
             return $state.current.name;
         };
