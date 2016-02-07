@@ -12,29 +12,29 @@
     <ul class="sidebar-nav sidebar">
         <div class="sidebar-profile">
             <div class="col-xs-12" align="center">
-                <img src="{{ currentUser().facebookImageUrl }}" class="image-circle center-block" />
-                <br/> {{ currentUser().name }} {{ currentUser().surname }}
+                <img src="{{ currentUser.facebookImageUrl }}" class="image-circle center-block" />
+                <br/> {{ currentUser.name }} {{ currentUser.surname }}
                 <br/>
                 <span>FABRIANO</span>
             </div>
             <div class="col-xs-6">
                 <a href="#" class="link">
-            45 <br/> <span>FOLLOWING</span>
+            {{currentUser.followingCount}} <br/> <span>FOLLOWING</span>
           </a>
             </div>
             <div class="col-xs-6">
                 <a href="#" class="link">
-            377 <br/> <span>FOLLOWERS</span>
+            {{currentUser.followersCount}} <br/> <span>FOLLOWERS</span>
           </a>
             </div>
             <div class="col-xs-6">
                 <a href="#" class="link">
-            22 <br/> <span>RICETTE</span>
+            {{currentUser.recipesCount}} <br/> <span>RICETTE</span>
           </a>
             </div>
             <div class="col-xs-6">
                 <a href="#" class="link">
-            8 <br/> <span>RACCOLTE</span>
+            {{currentUser.collectionsCount}} <br/> <span>RACCOLTE</span>
           </a>
             </div>
         </div>

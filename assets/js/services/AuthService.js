@@ -5,6 +5,10 @@
 
 angular.module('AuthService', [])
         .factory('Auth', ['$http', '$window', function ($http, $window) {
+            
+    var server_prefix = '/api/v1';
+        
+    // service body    
     var auth = {};
 
     // Funzione per salvare il token in locale
@@ -17,7 +21,7 @@ angular.module('AuthService', [])
         return $window.localStorage['tastysnap-token'];
     }
 
-    // Funzione che verifica se esite un token e se è scaduto
+    // Funzione che verifica se esite un token e se è scaduto (non valido)
     auth.isLoggedIn = function () {
         var token = auth.getToken();
 
@@ -30,7 +34,11 @@ angular.module('AuthService', [])
         }
     };
 
-    // Funzione che verifica se l'utente è loggato e ritorna il suo nome
+    /**
+     * Funzione che verifica se l'utente è loggato (controllando se esiste
+     * un valido token salvato nel browser). Se l'utente è loggato, viene
+     * restituito il payload del token (che differisce dalla classe User).
+     */
     auth.currentUser = function () {
         if (auth.isLoggedIn()) {
             var token = auth.getToken();
@@ -42,14 +50,14 @@ angular.module('AuthService', [])
 
 
     auth.register = function (user) {
-        return $http.post('api/v1/user/create', user).success(function (data) {
+        return $http.post(server_prefix + '/user/create', user).success(function (data) {
             auth.saveToken(data.token);
         });
     };
 
 
     auth.logIn = function (user) {
-        return $http.post('api/v1/login', user).success(function (data) {
+        return $http.post(server_prefix + '/login', user).success(function (data) {
             auth.saveToken(data.token);
         });
     };

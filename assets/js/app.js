@@ -11,10 +11,10 @@
  */
 
 var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload', 
-				'AuthService', 'PostService', 'RecipeService',
+				'AuthService', 'PostService', 'RecipeService', 'UserService',
 				'angular-loading-bar', 'ngAnimate', 'appRoutes', 
 				'AuthCtrl', 'MainCtrl', 'MasterCtrl', 'NavCtrl', 'PostsCtrl', 'SideBarCtrl',
-				'RecipeCtrl', 'RecipeCreateCtrl']);
+				'RecipeCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl']);
      
 // funzione che parte all'avvio dell'app
 // Serve per ricevere il token CSRF una volta sola        

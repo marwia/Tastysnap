@@ -4,11 +4,11 @@
         <div class="container-fluid text-center prof_personal_info">
             <!-- profile photo -->
             <div class="row">
-                <img src="images/matteo.jpg" alt="Matteo Bolognesi" class="img-circle profile_photo">
+                <img src="{{user.facebookImageUrl}}" alt="{{user.name}} {{user.surname}}" class="img-circle profile_photo">
             </div>
             <!-- profile name -->
             <div class="row">
-                <span><h4>Matteo Bolognesi</h4></span>
+                <span><h4>{{user.name}} {{user.surname}}</h4></span>
             </div>
             <!-- profile where -->
             <div class="row">
@@ -25,19 +25,19 @@
         <div class="row text-center profile_menu">
 
             <div class="profile_button_item active">
-                <span>250<br>FOLLOWING</span>
+                <span>{{user.followingCount}}<br>FOLLOWING</span>
             </div>
 
             <div class="profile_button_item">
-                <span>200<br>FOLLOWER</span>
+                <span>{{user.followersCount}}<br>FOLLOWERS</span>
             </div>
 
             <div class="profile_button_item">
-                <span>23<br>RICETTE</span>
+                <span>{{user.recipesCount}}<br>RICETTE</span>
             </div>
 
             <div class="profile_button_item">
-                <span>7<br>RACCOLTE</span>
+                <span>{{user.collectionsCount}}<br>RACCOLTE</span>
             </div>
         </div>
         <!-- gradient -->
