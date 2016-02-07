@@ -29,7 +29,6 @@ ul.sidebar {
 }
 
 ul.sidebar li a {
-  color: #fff;
   display: block;
   float: left;
   text-decoration: none;
@@ -81,6 +80,19 @@ ul.sidebar .sidebar-list a:hover {
   border-left: 3px solid #e99d1a;
   text-indent: 22px;
 }
+
+/** CONDIZIONI IN CASO DI UN LINK SELEZIONATO **/
+/* ------------------------------------------------------------------------  ----------------------------------------------------------- */
+ul.sidebar .sidebar-list a.active {
+  color: #fff;
+  border-left: 3px solid #e99d1a;
+  text-indent: 22px;
+}
+
+ul.sidebar .sidebar-list a.active .menu-icon {
+  text-indent: 25px;
+}
+/* ------------------------------------------------------------------------  ----------------------------------------------------------- */
 
 ul.sidebar .sidebar-list a:hover .menu-icon {
   text-indent: 25px;

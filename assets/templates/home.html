@@ -88,9 +88,12 @@
 
                         <!-- profile -->
                         <div class="row">
-                            <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
+                            <img src="{{ recipe.author.facebookImageUrl }}" class="img-circle card_profile_photo pull-left">
                             <div class="card_profile_name pull-left">
-                                <h6>{{recipe.author.name}} {{recipe.author.surname}}</h6></div>
+                                <a href="dashboard/profile/{{recipe.author.id}}">
+                                <h6>{{recipe.author.name}} {{recipe.author.surname}}</h6>
+                                </a>
+                            </div>
                         </div>
 
                     </div>

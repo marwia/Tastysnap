@@ -12,12 +12,17 @@ angular.module('SideBarCtrl', []).controller('SideBarCtrl', [
     'Auth',
     'User',
     '$http',
-    function ($scope, Auth, User, $http) {
+    '$state',
+    function ($scope, Auth, User, $http, $state) {
         // Espongo i metodi del Auth service
         $scope.isLoggedIn = Auth.isLoggedIn;
         $scope.logOut = Auth.logOut;
     
         // Espongo i metodi del User service
         $scope.currentUser = User.currentUser
+        
+        $scope.getCurrentState = function () {
+            return $state.current.name;
+        };
     
     }]);

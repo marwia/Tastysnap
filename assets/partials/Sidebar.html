@@ -8,7 +8,7 @@
 -->
 
 <!-- Sidebar -->
-<div id="sidebar-wrapper" ng-controller="NavCtrl">
+<div id="sidebar-wrapper" ng-controller="SideBarCtrl">
     <ul class="sidebar-nav sidebar">
         <div class="sidebar-profile">
             <div class="col-xs-12" align="center">
@@ -48,7 +48,7 @@
 
         <li class="sidebar-title"><span>PRINCIPALE</span></li>
         <li class="sidebar-list">
-            <a href="/dashboard/home">Home <span class="menu-icon fa fa-home"></span></a>
+            <a href="/dashboard/home" ng-class="{'active': getCurrentState() == 'dashboard.home'}">Home <span class="menu-icon fa fa-home"></span></a>
         </li>
         <li class="sidebar-list">
             <a href="#">Attività <span class="menu-icon fa fa-users"></span></a>

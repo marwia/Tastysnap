@@ -23,8 +23,16 @@
 
         <!-- buttons -->
         <div class="row text-center profile_menu">
-
+            
             <div class="profile_button_item active">
+                <span>{{user.recipesCount}}<br>RICETTE</span>
+            </div>
+
+            <div class="profile_button_item">
+                <span>{{user.collectionsCount}}<br>RACCOLTE</span>
+            </div>
+
+            <div class="profile_button_item">
                 <span>{{user.followingCount}}<br>FOLLOWING</span>
             </div>
 
@@ -32,14 +40,8 @@
                 <span>{{user.followersCount}}<br>FOLLOWERS</span>
             </div>
 
-            <div class="profile_button_item">
-                <span>{{user.recipesCount}}<br>RICETTE</span>
-            </div>
-
-            <div class="profile_button_item">
-                <span>{{user.collectionsCount}}<br>RACCOLTE</span>
-            </div>
         </div>
+        
         <!-- gradient -->
         <div class="prof_personal_header_gradient"></div>
     </div>

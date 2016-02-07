@@ -66,6 +66,6 @@ angular.module('AuthService', [])
     auth.logOut = function () {
         $window.localStorage.removeItem('tastysnap-token');
     };
-
+    
     return auth;
 }]);

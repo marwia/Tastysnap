@@ -18,7 +18,7 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
         /**
          * Sidebar Toggle & Cookie Control
          */
-        var mobileView = 992;
+        var mobileView = 1024;
 
         $scope.getWidth = function() {
             return window.innerWidth;
@@ -39,6 +39,14 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
 
         $scope.toggleSidebar = function() {
             $scope.toggle = !$scope.toggle;
+            $cookieStore.put('toggle', $scope.toggle);
+        };
+        
+        /**
+         * Funzione per nascondere la sideBar.
+         */
+        $scope.hideSidebar = function() {
+            $scope.toggle = false;
             $cookieStore.put('toggle', $scope.toggle);
         };
 
