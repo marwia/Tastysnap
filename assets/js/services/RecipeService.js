@@ -23,6 +23,21 @@ angular.module('RecipeService', [])
             angular.copy(data, o.recipes);
         });
     };
+    
+    /**
+     * Metodo per richiedere una lista di ricette.
+     */
+    o.getUserRecipes = function (id) {
+        return $http.get(server_prefix + '/recipe', {
+                params: {
+                    where: {
+                        "author": id
+                    }
+                }
+            }).success(function (data) {
+            angular.copy(data, o.recipes);
+        });
+    };
 
     /**
      * Metodo per richiedere una lista di categorie di ricette.

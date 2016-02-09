@@ -42,7 +42,7 @@ angular.module('appRoutes', []).config([
                         controller: 'RecipeCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
-                            postPromise: ['Recipe', function (recipes) {
+                            recipePromise: ['Recipe', function (recipes) {
                                 return recipes.getAll();
                             }]
                         }
@@ -87,7 +87,12 @@ angular.module('appRoutes', []).config([
                             }]
                         }
                     }
-                }
+                },
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                    if (!Auth.isLoggedIn()) {
+                        $state.go('login');
+                    }
+                }]
             })
 
             .state('dashboard.post', {
@@ -136,7 +141,7 @@ angular.module('appRoutes', []).config([
             })
                 
         // PROFILE PAGE ==========================================================
-            // PROFILE ROOT (DEFAULT)
+        // PROFILE ROOT (DEFAULT)
             .state('dashboard.profile', {
                 url: '/profile/{id}',
                 views: {
@@ -146,6 +151,9 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             userPromise: ['User', '$stateParams', function (user, $stateParams) {
                                 return user.getUserById($stateParams.id);
+                            }],
+                            recipePromise: ['Recipe', '$stateParams', function (recipes, $stateParams) {
+                                return recipes.getUserRecipes($stateParams.id);
                             }]
                         }
                     },
@@ -154,7 +162,7 @@ angular.module('appRoutes', []).config([
                     }
                 }
             })
-            // PROFILE COLLECTIONS
+        // PROFILE COLLECTIONS
             .state('dashboard.profile.collections', {
                 url: '/collections',
                 views: {
@@ -163,7 +171,7 @@ angular.module('appRoutes', []).config([
                     }
                 }
             })
-            // PROFILE FOLLOWERS
+        // PROFILE FOLLOWERS
             .state('dashboard.profile.followers', {
                 url: '/followers',
                 views: {
@@ -172,7 +180,7 @@ angular.module('appRoutes', []).config([
                     }
                 }
             })
-            // PROFILE FOLLOWING
+        // PROFILE FOLLOWING
             .state('dashboard.profile.following', {
                 url: '/following',
                 views: {
@@ -199,7 +207,7 @@ angular.module('appRoutes', []).config([
                 
         $urlRouterProvider.otherwise(function ($injector, $location) {
             var $state = $injector.get("$state");
-            $state.go("dashboard.home");
+            $state.go("dashboard");
         });
                 
 

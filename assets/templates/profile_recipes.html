@@ -1,302 +1,54 @@
-<!-- card 1 -->
-        <div class="card">
+<!-- basic card -->
+        <div class="card" ng-repeat="recipe in recipes">
             <div class="thumbnail no-padding no-border card_info no-border-radius">
-                <div class="card_img"></div>
-                <div class="caption color_caption">
-                    <div class="container-fluid">
+                <!-- card image -->
+                <div class="card_img" style="background-image:url('{{recipe.coverImageUrl}}')"></div>
 
-                        <!-- icone + valori -->
-                        <div class="row text-right">
-                            <i class="fa fa-heart card_icon"> 30</i>
-                            <i class="fa fa-comment card_icon"> 112</i>
-                            <i class="fa fa-eye card_icon"> 90</i>
-                            <i class="fa fa-cutlery card_icon"> 8</i>
+                <!-- card share -->
+                <div class="container-fluid card_share">
+                    <div class="cont_row_share">
+                        <div class="row text-center">
+                            <div class="col-xs-6"><span class="glyphicon glyphicon-heart-empty gly_share_size"></span></div>
+                            <div class="col-xs-6"><span class="glyphicon glyphicon-share-alt gly_share_size"></span></div>
                         </div>
-
-                        <!-- tipo portata -->
-                        <div class="row">
-                            <span><h6 class="card_reach">Primi piatti</h6></span>
+                        <div class="row text-center">
+                            <span class="glyphicon glyphicon-plus gly_share_size">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="caption color_caption">
+                        <div class="container-fluid">
+                        
+                            <!-- icone + valori -->
+                            <div class="row text-right">
+                                <i class="fa fa-heart card_icon"> {{recipe.votesCount}}</i>
+                                <i class="fa fa-comment card_icon"> {{recipe.commentsCount}}</i>
+                                <i class="fa fa-eye card_icon"> {{recipe.viewsCount}}</i>
+                                <i class="fa fa-cutlery card_icon"> {{recipe.trialsCount}}</i>
+                            </div>
+                            
+                            <!-- tipo portata -->
+                            <div class="row">
+                                <span><h6 class="card_reach">{{recipe.category}}</h6></span>
                         </div>
 
                         <!-- titolo portata -->
                         <div class="row">
-                            <span class="text-uppercase"><h5 class="no-margin card_title">Tagliatelle alla Thai</h5></span>
+                            <span class="text-uppercase"><h5 class="no-margin card_title">{{recipe.title}}</h5></span>
                         </div>
 
                         <!-- profile -->
-                        <div class="row card_profile">
-                            <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
+                        <div class="row">
+                            <img src="{{ recipe.author.facebookImageUrl }}" class="img-circle card_profile_photo pull-left">
                             <div class="card_profile_name pull-left">
-                                <h6>Matteo Beolo</h6></div>
+                                <a href="dashboard/profile/{{recipe.author.id}}">
+                                <h6>{{recipe.author.name}} {{recipe.author.surname}}</h6>
+                                </a>
+                            </div>
                         </div>
 
                     </div>
                 </div>
             </div>
-        </div>
         <!-- fine card -->
-
-        <!-- card 2 -->
-        <div class="card">
-            <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#BC922B;">
-                <div class="card_img" style="background-image: url('imm/arrosto_tb.jpg');"></div>
-                <div class="caption color_caption">
-                    <div class="container-fluid">
-
-                        <!-- icone + valori -->
-                        <div class="row text-right">
-                            <i class="fa fa-heart card_icon"> 30</i>
-                            <i class="fa fa-comment card_icon"> 112</i>
-                            <i class="fa fa-eye card_icon"> 90</i>
-                            <i class="fa fa-cutlery card_icon"> 8</i>
-                        </div>
-
-                        <!-- tipo portata -->
-                        <div class="row">
-                            <span><h6 class="card_reach">Secondi piatti</h6></span>
-                        </div>
-
-                        <!-- titolo portata -->
-                        <div class="row">
-                            <span class="text-uppercase"><h5 class="no-margin card_title">tagliata con patate al forno</h5></span>
-                        </div>
-
-                        <!-- profile -->
-                        <div class="row card_profile">
-                            <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
-                            <div class="card_profile_name pull-left">
-                                <h6>Matteo Bolognesi</h6></div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- fine card -->
-
-        <!-- card 3 -->
-        <div class="card">
-            <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#FFB555;">
-                <div class="card_img" style="background-image: url('imm/pizza_tb.jpg');"></div>
-                <div class="caption color_caption">
-                    <div class="container-fluid">
-
-                        <!-- icone + valori -->
-                        <div class="row text-right">
-                            <i class="fa fa-heart card_icon"> 30</i>
-                            <i class="fa fa-comment card_icon"> 112</i>
-                            <i class="fa fa-eye card_icon"> 90</i>
-                            <i class="fa fa-cutlery card_icon"> 8</i>
-                        </div>
-
-                        <!-- tipo portata -->
-                        <div class="row">
-                            <span><h6 class="card_reach">Pizza</h6></span>
-                        </div>
-
-                        <!-- titolo portata -->
-                        <div class="row">
-                            <span class="text-uppercase"><h5 class="no-margin card_title">Pizza La parmigiana</h5></span>
-                        </div>
-
-                        <!-- profile -->
-                        <div class="row card_profile">
-                            <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
-                            <div class="card_profile_name pull-left">
-                                <h6>Matteo Bolognesi</h6></div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- fine card -->
-
-        <!-- card 4 -->
-        <div class="card">
-            <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#B37D4C;">
-                <div class="card_img" style="background-image: url('imm/snack_tb.jpg');"></div>
-                <div class="caption color_caption">
-                    <div class="container-fluid">
-
-                        <!-- icone + valori -->
-                        <div class="row text-right">
-                            <i class="fa fa-heart card_icon"> 30</i>
-                            <i class="fa fa-comment card_icon"> 112</i>
-                            <i class="fa fa-eye card_icon"> 90</i>
-                            <i class="fa fa-cutlery card_icon"> 8</i>
-                        </div>
-
-                        <!-- tipo portata -->
-                        <div class="row">
-                            <span><h6 class="card_reach">Dolci</h6></span>
-                        </div>
-
-                        <!-- titolo portata -->
-                        <div class="row">
-                            <span class="text-uppercase"><h5 class="no-margin card_title">Bocconcini al cocco</h5></span>
-                        </div>
-
-                        <!-- profile -->
-                        <div class="row card_profile">
-                            <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
-                            <div class="card_profile_name pull-left">
-                                <h6>Matteo Bolognesi</h6></div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- fine card -->
-
-        <!-- card 5 -->
-        <div class="card">
-            <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#CEA373;">
-                <div class="card_img" style="background-image: url('imm/spaghetti_tb.jpg');"></div>
-                <div class="caption color_caption">
-                    <div class="container-fluid">
-
-                        <!-- icone + valori -->
-                        <div class="row text-right">
-                            <i class="fa fa-heart card_icon"> 30</i>
-                            <i class="fa fa-comment card_icon"> 112</i>
-                            <i class="fa fa-eye card_icon"> 90</i>
-                            <i class="fa fa-cutlery card_icon"> 8</i>
-                        </div>
-
-                        <!-- tipo portata -->
-                        <div class="row">
-                            <span><h6 class="card_reach">Primi piatti</h6></span>
-                        </div>
-
-                        <!-- titolo portata -->
-                        <div class="row">
-                            <span class="text-uppercase"><h5 class="no-margin card_title">Spaghetti allo scoglio</h5></span>
-                        </div>
-
-                        <!-- profile -->
-                        <div class="row card_profile">
-                            <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
-                            <div class="card_profile_name pull-left">
-                                <h6>Matteo Bolognesi</h6></div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- fine card -->
-
-        <!-- card 6 -->
-        <div class="card">
-            <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#FCC3A4;">
-                <div class="card_img" style="background-image: url('imm/food_tb.jpg');"></div>
-                <div class="caption color_caption">
-                    <div class="container-fluid">
-
-                        <!-- icone + valori -->
-                        <div class="row text-right">
-                            <i class="fa fa-heart card_icon"> 30</i>
-                            <i class="fa fa-comment card_icon"> 112</i>
-                            <i class="fa fa-eye card_icon"> 90</i>
-                            <i class="fa fa-cutlery card_icon"> 8</i>
-                        </div>
-
-                        <!-- tipo portata -->
-                        <div class="row">
-                            <span><h6 class="card_reach">Secondi Piatti</h6></span>
-                        </div>
-
-                        <!-- titolo portata -->
-                        <div class="row">
-                            <span class="text-uppercase"><h5 class="no-margin card_title">Salmone affumicato condito</h5></span>
-                        </div>
-
-                        <!-- profile -->
-                        <div class="row card_profile">
-                            <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
-                            <div class="card_profile_name pull-left">
-                                <h6>Matteo Bolognesi</h6></div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- fine card -->
-
-        <!-- card 7 -->
-        <div class="card">
-            <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#211B09;">
-                <div class="card_img" style="background-image: url('imm/sushi_tb.jpg');"></div>
-                <div class="caption color_caption">
-                    <div class="container-fluid">
-
-                        <!-- icone + valori -->
-                        <div class="row text-right">
-                            <i class="fa fa-heart card_icon"> 30</i>
-                            <i class="fa fa-comment card_icon"> 112</i>
-                            <i class="fa fa-eye card_icon"> 90</i>
-                            <i class="fa fa-cutlery card_icon"> 8</i>
-                        </div>
-
-                        <!-- tipo portata -->
-                        <div class="row">
-                            <span><h6 class="card_reach">Secondi piatti</h6></span>
-                        </div>
-
-                        <!-- titolo portata -->
-                        <div class="row">
-                            <span class="text-uppercase"><h5 class="no-margin card_title">Sushi</h5></span>
-                        </div>
-
-                        <!-- profile -->
-                        <div class="row card_profile">
-                            <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
-                            <div class="card_profile_name pull-left">
-                                <h6>Matteo Bolognesi</h6></div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- fine card -->
-
-        <!-- card 8 -->
-        <div class="card">
-            <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#405700;">
-                <div class="card_img" style="background-image: url('imm/hamburger_tb.jpg');"></div>
-                <div class="caption color_caption">
-                    <div class="container-fluid">
-
-                        <!-- icone + valori -->
-                        <div class="row text-right">
-                            <i class="fa fa-heart card_icon"> 30</i>
-                            <i class="fa fa-comment card_icon"> 112</i>
-                            <i class="fa fa-eye card_icon"> 90</i>
-                            <i class="fa fa-cutlery card_icon"> 8</i>
-                        </div>
-
-                        <!-- tipo portata -->
-                        <div class="row">
-                            <span><h6 class="card_reach">Secondi piatti</h6></span>
-                        </div>
-
-                        <!-- titolo portata -->
-                        <div class="row">
-                            <span class="text-uppercase"><h5 class="no-margin card_title">Hamburger</h5></span>
-                        </div>
-
-                        <!-- profile -->
-                        <div class="row card_profile">
-                            <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
-                            <div class="card_profile_name pull-left">
-                                <h6>Matteo Bolognesi</h6></div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>

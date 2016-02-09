@@ -14,6 +14,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
     // espongo allo scope il metodo di auth chiamato "isLoggedIn"
     $scope.isLoggedIn = Auth.isLoggedIn;
 	
+    // espongo allo scope le ricette del servizio Recipe
 	$scope.recipes = Recipe.recipes;
 
 
