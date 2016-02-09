@@ -340,6 +340,14 @@ body {
     margin-top: 2px;
 }
 
+.card_profile_name A H6{
+    color:white;
+}
+
+.card_profile_name A:hover{
+    text-decoration:none;
+}
+
 .card_premium{
 	position: absolute;
 	top:0;
@@ -568,7 +576,6 @@ body {
 .prof_personal_header{
 	height: 450px;
 	position: relative;
-	*background: url("imm/cocktails_rs.jpg") no-repeat center center fixed; /* example */
 	background-size:cover;
 	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 	-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
@@ -636,6 +643,15 @@ body {
 	-ms-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
+}
+
+.profile_button_item A{
+    text-align: center;
+    width: 100%;
+}
+
+.profile_button_item A span{
+    color:white;
 }
 
 .profile_button_item.active{
