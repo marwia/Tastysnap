@@ -11,6 +11,7 @@ angular.module('RecipeService', [])
     // service body
     var o = {
         recipes: [],
+        detailedRecipe: {}, // one recipe 
         recipeCategories: [],
         dosagesTypes: []
     };
@@ -25,17 +26,26 @@ angular.module('RecipeService', [])
     };
     
     /**
-     * Metodo per richiedere una lista di ricette.
+     * Metodo per richiedere una lista di ricette di un dato utente.
      */
-    o.getUserRecipes = function (id) {
+    o.getUserRecipes = function (userId) {
         return $http.get(server_prefix + '/recipe', {
                 params: {
                     where: {
-                        "author": id
+                        "author": userId
                     }
                 }
             }).success(function (data) {
             angular.copy(data, o.recipes);
+        });
+    };
+    
+    /**
+     * Metodo per richiedere una una ricetta tramite il suo id.
+     */
+    o.getRecipe = function (recipeId) {
+        return $http.get(server_prefix + '/recipe/' + recipeId).success(function (data) {
+            angular.copy(data, o.detailedRecipe);
         });
     };
 

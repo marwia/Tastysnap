@@ -190,24 +190,28 @@ angular.module('appRoutes', []).config([
                 }
             })
 
-        // REGISTER PAGE =======================================================
-        //TODO: da eliminare 
-            .state('register', {
-                url: '/user/create',
-                templateUrl: 'templates/register.html',
-                controller: 'AuthCtrl',
-                onEnter: ['$state', 'Auth', function ($state, Auth) {
-                    if (Auth.isLoggedIn()) {
-                        $state.go('dashboard');
+        // RECIPE PAGE =======================================================
+            .state('dashboard.recipe', {
+                url: '/recipe/{id}',
+                views: {
+                    'content@dashboard': {
+                        templateUrl: 'templates/recipe_detail.html',
+                        controller: 'RecipeCtrl',
+                        // ogni volta che parte da questo stato farà questa funzione
+                        resolve: {
+                            recipePromise: ['Recipe', '$stateParams', function (recipes, $stateParams) {
+                                return recipes.getRecipe($stateParams.id);
+                            }]
+                        }
                     }
-                }]
+                }
             })
 
         // DEFAULT PAGE ==========================================================
                 
         $urlRouterProvider.otherwise(function ($injector, $location) {
             var $state = $injector.get("$state");
-            $state.go("dashboard");
+                $state.go("dashboard");
         });
                 
 

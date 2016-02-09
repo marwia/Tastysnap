@@ -16,6 +16,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
 	
     // espongo allo scope le ricette del servizio Recipe
 	$scope.recipes = Recipe.recipes;
+    $scope.detailedRecipe = Recipe.detailedRecipe;
 
 
 }]);
