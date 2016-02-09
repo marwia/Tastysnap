@@ -120,11 +120,12 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             });
         };
         
-        // File uploading
+        // File uploading (configuration)
         
         var uploader = $scope.uploader = new FileUploader({
             url: '/api/v1/recipe/image',
             alias: 'avatar',
+            //autoUpload: true,
             headers: {
                     Authorization: 'Bearer ' + Auth.getToken(),
                     'x-csrf-token': $http.defaults.headers.common['x-csrf-token']
