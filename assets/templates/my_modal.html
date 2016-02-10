@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h3 class="modal-title">I'm a modal!</h3>
+    <h3 class="modal-title">Aggiungi <strong>{{ selectedRecipe.title }}</strong> a una raccolta</h3>
 </div>
 <div class="modal-body">
     <ul>
@@ -8,6 +8,8 @@
         </li>
     </ul>
     Selected: <b>{{ selected.item }}</b>
+    
+    Matteo, ora sai cosa fare... procedi con lo stile!
 </div>
 <div class="modal-footer">
     <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>

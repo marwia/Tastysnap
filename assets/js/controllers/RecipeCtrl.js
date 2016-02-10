@@ -25,16 +25,19 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
 
         $scope.animationsEnabled = true;
 
-        $scope.open = function (size) {
+        $scope.open = function (selectedRecipe) {
 
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
                 templateUrl: 'templates/my_modal.html',
                 controller: 'ModalInstanceCtrl',
-                size: size,
+                //size: size,
                 resolve: {
                     items: function () {
                         return $scope.items;
+                    },
+                    selectedRecipe: function () {
+                        return selectedRecipe;
                     }
                 }
             });
@@ -44,10 +47,6 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
             });
-        };
-
-        $scope.toggleAnimation = function () {
-            $scope.animationsEnabled = !$scope.animationsEnabled;
         };
 
 
