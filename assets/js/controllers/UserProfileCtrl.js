@@ -9,7 +9,8 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
     '$scope',
     'User',
     '$state',
-    function ($scope, User, $state) {
+    'Recipe',
+    function ($scope, User, $state, Recipe) {
         // Espongo gli elementi del User service
         $scope.user = User.user;//utente del profilo
         
@@ -17,4 +18,7 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
         $scope.getCurrentState = function () {
             return $state.current.name;
         }
+        
+        // espongo allo scope le ricette del servizio Recipe
+        $scope.recipes = Recipe.recipes;
     }]);

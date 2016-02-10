@@ -1,0 +1,643 @@
+<div class="row background">
+    <div class="container-fluid">
+        <div class="row recipe tasty_container">
+
+            <!-- Profilo + Titolo -->
+            <div class="col-md-8 col-sm-8 recipe_col_8 recipe_sp_1 recipe_generic_con">
+                <!-- +aggiungi - condividi -->
+                <div class="recipe_sp_1_1 text-right">
+                    <span><i class="fa fa-plus"></i> Aggiungi a</span>
+                    <span><i class="fa fa-share-alt"></i> Condividi</span>
+                </div>
+                <!-- profilo -->
+                <div class="recipe_sp_1_2">
+                    <a href="personal_profile.php"><img src="imm/matt.jpg" class="img-circle recipe_profile_photo pull-left"></a>
+                    <div class="recipe_div_profile_name pull-left">
+                        <h5 class="recipe_profile_name no-margin"><strong>Matteo Bolognesi</strong></h5>
+                        <h6 class="recipe_profile_edited no-margin">1 settimana fa</h6>
+                    </div>
+                </div>
+                <!-- portata + titolo -->
+                <div class="recipe_sp_1_3">
+                    <h6 class="no-margin">Secondi Piatti</h6>
+                    <h1 class="no-margin">{{detailedRecipe.title}}</h1>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+
+            <!-- Foto + like-->
+            <div class="col-md-4 col-sm-4 recipe_col_4 no-padding">
+                <!-- immagine -->
+                <div class="recipe_sp_2_1" style="background-image:url('{{detailedRecipe.coverImageUrl}}')"></div>
+
+                <!-- icone + valori -->
+                <div class="recipe_sp_2_2">
+                    <table class="recipe_sp_2_2_table">
+                        <tr>
+                            <td><i class="fa fa-heart recipe_sp_2_2_icon"></i></td>
+                            <td><i class="fa fa-comment recipe_sp_2_2_icon"></i></td>
+                            <td><i class="fa fa-eye recipe_sp_2_2_icon"></i></td>
+                            <td><i class="fa fa-cutlery recipe_sp_2_2_icon"></i></td>
+                        </tr>
+                        <tr>
+                            <td>30</td>
+                            <td>112</td>
+                            <td>90</td>
+                            <td>8</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- INGREDIENTI + PREPARAZIONE -->
+            <div class="col-md-8 col-sm-8 recipe_col_8 recipe_generic_con">
+                <!-- INGREDIENTI -->
+                <div class="row recipe_ing_con">
+                    <div class="col-md-12">
+                        <div class="recipe_sub_title">INGREDIENTI</div>
+                    </div>
+
+                    <!-- impasto -->
+                    <div class="col-md-12">
+                        <h4>Impasto</h4></div>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                <div class="text-left">
+                                    <p class="recipe_ing_txt"><a href="">Farina 00 Barilla</a></p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                <div class="text-right">
+                                    <p class="recipe_ing_txt">100 gr</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                <div class="text-left">
+                                    <p class="recipe_ing_txt">Lievito per dolci</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                <div class="text-right">
+                                    <p class="recipe_ing_txt">8 gr</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                <div class="text-left">
+                                    <p class="recipe_ing_txt">Burro TreValli</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                <div class="text-right">
+                                    <p class="recipe_ing_txt">400 gr</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                <div class="text-left">
+                                    <p class="recipe_ing_txt">Sale</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                <div class="text-right">
+                                    <p class="recipe_ing_txt">un pizzico</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                <div class="text-left">
+                                    <p class="recipe_ing_txt">Uova</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                <div class="text-right">
+                                    <p class="recipe_ing_txt">2</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                <div class="text-left">
+                                    <p class="recipe_ing_txt">Yogurt</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                <div class="text-right">
+                                    <p class="recipe_ing_txt">80 gr</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                <div class="text-left">
+                                    <p class="recipe_ing_txt">Zucchero di canna</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                <div class="text-right">
+                                    <p class="recipe_ing_txt">120 gr</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                <div class="text-left">
+                                    <p class="recipe_ing_txt">Fecola di patate</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                <div class="text-right">
+                                    <p class="recipe_ing_txt">40 gr</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- copertura -->
+                    <div class="col-md-12">
+                        <h4>Copertura</h4></div>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                <div class="text-left">
+                                    <p class="recipe_ing_txt">Ciliegie</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                <div class="text-right">
+                                    <p class="recipe_ing_txt">300 gr</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                <div class="text-left">
+                                    <p class="recipe_ing_txt">Burro TreValli</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                <div class="text-right">
+                                    <p class="recipe_ing_txt">25 gr</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
+                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                <div class="text-left">
+                                    <p class="recipe_ing_txt">Lievito per dolci</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                <div class="text-right">
+                                    <p class="recipe_ing_txt">70 gr</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INGREDIENTI -->
+                <div class="row recipe_ing_con">
+                    <div class="col-md-12">
+                        <div class="recipe_sub_title">PREPARAZIONE</div>
+                    </div>
+                    <div class="col-md-12">
+                        <p>
+                            Consectetur adipiscing elit. Ut quam lacus, fermentum vitae eros id, semper rutrum nibh. Vestibulum elementum leo vel eros
+                            hendrerit rutrum. Fusce aliquam fringilla leo, sit amet ullamcorper nisi sagittis vitae. Sed
+                            ut accumsan risus. Fusce eu ex ullamcorper, cursus ipsum vitae, hendrerit justo. Consectetur
+                            adipiscing elit. Ut quam lacus, fermentum vitae eros id, semper rutrum nibh. Vestibulum elementum
+                            leo vel eros hendrerit rutrum. Fusce aliquam fringilla leo, sit amet ullamcorper nisi sagittis
+                            vitae. Sed ut accumsan risus. Fusce eu ex ullamcorper, cursus ipsum vitae, hendrerit justo.
+                            <br/>
+                            <br/> Consectetur adipiscing elit. Ut quam lacus, fermentum vitae eros id, semper rutrum nibh. Vestibulum
+                            elementum leo vel eros hendrerit rutrum. Fusce aliquam fringilla leo, sit amet ullamcorper nisi
+                            sagittis vitae. Sed ut accumsan risus. Fusce eu ex ullamcorper, cursus ipsum vitae, hendrerit
+                            justo.
+                            <br/>
+                            <br/> Consectetur adipiscing elit. Ut quam lacus, fermentum vitae eros id, semper rutrum nibh. Vestibulum
+                            elementum leo vel eros hendrerit rutrum. Fusce aliquam fringilla leo, sit amet ullamcorper nisi
+                            sagittis vitae. Sed ut accumsan risus. Fusce eu ex ullamcorper, cursus ipsum vitae, hendrerit
+                            justo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OPINIONI + VALORI NUTRIZIONALI + SPONSOR -->
+            <div class="col-md-4 col-sm-4 recipe_col_4">
+
+                <div class="row">
+                    <!-- OPINIONI -->
+                    <div class="col-md-12 recipe_sp_3">
+                        <div class="recipe_sp_3_title">OPINIONI</div>
+                        <div class="recipe_sp_3_con">
+                            <table class="recipe_sp_3_table">
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left">DIFFICOLTA</td>
+                                    <td class="text-right">media</td>
+                                </tr>
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left">COSTO</td>
+                                    <td class="text-right">basso</td>
+                                </tr>
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left">CALORIE</td>
+                                    <td class="text-right">molto calorica</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- VALORI NUTRIZIONALI -->
+                    <div class="col-md-12 recipe_sp_3">
+                        <div class="recipe_sp_3_title">VALORI NUTRIZIONALI</div>
+                        <div class="recipe_sp_3_con">
+                            <table class="recipe_sp_3_table">
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left"><strong>Valore energetico</strong></td>
+                                    <td class="text-right">378 kcal</td>
+                                </tr>
+
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left"><strong>Proteine</strong></td>
+                                    <td class="text-right">7 gr</td>
+                                </tr>
+
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left"><strong>Carboidrati</strong></td>
+                                    <td class="text-right">84gr</td>
+                                </tr>
+
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left recipe_sp_3_val_nut_sec"><strong>di cui zuccheri</strong></td>
+                                    <td class="text-right">8 gr</td>
+                                </tr>
+
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left"><strong>Grassi</strong></td>
+                                    <td class="text-right">20 gr</td>
+                                </tr>
+
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left recipe_sp_3_val_nut_sec"><strong>di cui saturi</strong></td>
+                                    <td class="text-right">5 gr</td>
+                                </tr>
+
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left"><strong>Fibre</strong></td>
+                                    <td class="text-right">6 gr</td>
+                                </tr>
+
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left"><strong>Sodio</strong></td>
+                                    <td class="text-right">0.7 gr</td>
+                                </tr>
+
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left"><strong>Sale</strong></td>
+                                    <td class="text-right">20 gr</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SPONSOR -->
+                <div class="recipe_sp_spons_con">
+                    <span class="recipe_sp_spons_title">SPONSORIZZATE</span>
+
+                    <div class="recipe_sp_spons">
+                        <img src="imm/sponsor.jpg" class="img-responsive">
+                        <h5><strong>NUOVA COLLEZIONE BARILLA</strong></h5>
+                        <h6>Scopri la qualità della nostra pasta ottenuto unicamente dal nostro grano 100% italiano.</h6>
+                    </div>
+
+                    <div class="recipe_sp_spons">
+                        <img src="imm/sponsor1.png" class="img-responsive">
+                        <h5><strong>COCA-COLA</strong></h5>
+                        <h6>La nuova coca-cola senza zuccheri aggiunti!</h6>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                </div>
+                <div class="clearfix"></div>
+            </div>
+
+            <!-- COMMENTI -->
+            <div class="col-md-8 col-sm-8 recipe_col_8 recipe_generic_con">
+                <div class="row recipe_comment_con">
+                    <!-- commenti - title -->
+                    <div class="col-md-12">
+                        <div class="recipe_sub_title">COMMENTI</div>
+                    </div>
+
+                    <!-- commenti - list -->
+                    <div class="col-md-12">
+
+                        <!-- nuovo commento (del profilo loggato) -->
+                        <div class="media">
+                            <a class="pull-left" href="personal_profile.php">
+                                <img class="media-object img-circle recipe_comment_photo" src="imm/matt.jpg" alt="Matteo Bolognesi">
+                            </a>
+                            <div class="media-body">
+                                <input type="text" class="form-control recipe_comment_input" placeholder="scrivi cosa ne pensi...">
+                            </div>
+                        </div>
+
+                        <!-- commento singolo -->
+                        <div class="media">
+                            <a class="pull-left" href="personal_profile.php">
+                                <img class="media-object img-circle recipe_comment_photo" src="imm/cristian.jpg" alt="Cristian Teatini">
+                            </a>
+                            <div class="media-body">
+                                <h5 class="media-heading"><strong>Cristian</strong> <span class="recipe_comment_when">2 giorni fa</span></h5>
+                                <h6 class="recipe_comment_txt">
+												Complimenti Matteo per questa ricetta! L'ho provata è buonissima!
+											</h6>
+                                <!-- Rispondi -->
+                                <div class="recipe_comment_reply">
+                                    <a href=""><span>Rispondi</span></a>
+                                    <a href=""><i class="fa fa-thumbs-o-up"></i></a>
+                                    <a href=""><i class="fa fa-thumbs-o-down"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- commento singolo + commenti -->
+                        <div class="media">
+                            <a class="pull-left" href="personal_profile.php">
+                                <img class="media-object img-circle recipe_comment_photo" src="imm/matt.jpg" alt="Matteo Bolognesi">
+                            </a>
+
+                            <div class="media-body">
+                                <h5 class="media-heading"><strong>Matteo</strong> <span class="recipe_comment_when">questa mattina</span></h5>
+                                <h6 class="recipe_comment_txt">
+												Grazie Cri!! Me l'ha insegnata Mario!!
+											</h6>
+                                <!-- Rispondi -->
+                                <div class="recipe_comment_reply">
+                                    <a href=""><span>Rispondi</span></a>
+                                    <a href=""><i class="fa fa-thumbs-o-up"></i></a>
+                                    <a href=""><i class="fa fa-thumbs-o-down"></i></a>
+                                </div>
+
+                                <!-- commento di commento -->
+                                <div class="media">
+                                    <a class="pull-left" href="personal_profile.php">
+                                        <img class="media-object img-circle recipe_comment_photo recipe_comment_sub_photo" src="imm/mario.jpg" alt="Mariusz Wiazowski">
+                                    </a>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>Mariusz</strong> <span class="recipe_comment_when">1 ora fa</span></h5>
+                                        <h6 class="recipe_comment_txt">
+														Eh si! fatti alla griglia vengono buonissimi!
+													</h6>
+                                    </div>
+                                </div>
+
+                                <!-- commento di commento -->
+                                <div class="media">
+                                    <a class="pull-left" href="personal_profile.php">
+                                        <img class="media-object img-circle recipe_comment_photo recipe_comment_sub_photo" src="imm/cristian.jpg" alt="Cristian Teatini">
+                                    </a>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>Cristian</strong> <span class="recipe_comment_when">adesso</span></h5>
+                                        <h6 class="recipe_comment_txt">
+														Chi poteva essere... Il solito cuoco -.-
+													</h6>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- commento singolo -->
+                        <div class="media">
+                            <a class="pull-left" href="personal_profile.php">
+                                <img class="media-object img-circle recipe_comment_photo" src="imm/obama.jpg" alt="President Barack Obama">
+                            </a>
+                            <div class="media-body">
+                                <h5 class="media-heading"><strong>President Obama</strong> <span class="recipe_comment_when">ieri</span></h5>
+                                <h6 class="recipe_comment_txt">
+												Wow! I love it, tonight skewers throughout the white house! I SWEAR, great job guys
+											</h6>
+                                <!-- Rispondi -->
+                                <div class="recipe_comment_reply">
+                                    <a href=""><span>Rispondi</span></a>
+                                    <a href=""><i class="fa fa-thumbs-o-up"></i></a>
+                                    <a href=""><i class="fa fa-thumbs-o-down"></i></a>
+                                </div>
+
+                                <!-- commento di commento -->
+                                <div class="media">
+                                    <a class="pull-left" href="personal_profile.php">
+                                        <img class="media-object img-circle recipe_comment_photo recipe_comment_sub_photo" src="imm/matt.jpg" alt="Matteo Bolognesi">
+                                    </a>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>Matteo</strong> <span class="recipe_comment_when">adesso</span></h5>
+                                        <h6 class="recipe_comment_txt">
+														thanks Mr. President
+													</h6>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- end recipe -->
+
+        <!-- CONSIGLIATE -->
+
+        <!-- title -->
+        <div class="row tasty_container text-center">
+            <div class="col-md-4">
+                <hr class="recipe_title_bar"></hr>
+            </div>
+            <div class="col-md-4">
+                <h3 class="recipe_title_text">Consigliate</h3></div>
+            <div class="col-md-4">
+                <hr class="recipe_title_bar"></hr>
+            </div>
+        </div>
+
+        <!-- Card Like -->
+        <div class="row tasty_container tasty_container_margin text-center">
+
+            <!-- card 1 -->
+            <div class="card">
+                <div class="thumbnail no-padding no-border card_info no-border-radius">
+                    <div class="card_img"></div>
+                    <div class="caption color_caption">
+                        <div class="container-fluid">
+
+                            <!-- icone + valori -->
+                            <div class="row text-right">
+                                <i class="fa fa-heart card_icon"> 30</i>
+                                <i class="fa fa-comment card_icon"> 112</i>
+                                <i class="fa fa-eye card_icon"> 90</i>
+                                <i class="fa fa-cutlery card_icon"> 8</i>
+                            </div>
+
+                            <!-- tipo portata -->
+                            <div class="row">
+                                <span><h6 class="card_reach">Primi piatti</h6></span>
+                            </div>
+
+                            <!-- titolo portata -->
+                            <div class="row">
+                                <span class="text-uppercase"><h5 class="no-margin card_title">Tagliatelle alla Thai</h5></span>
+                            </div>
+
+                            <!-- profile -->
+                            <div class="row card_profile">
+                                <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
+                                <div class="card_profile_name pull-left">
+                                    <h6>Matteo Bolognesi</h6></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- fine card -->
+
+            <!-- card 2 -->
+            <div class="card">
+                <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#BC922B;">
+                    <div class="card_img" style="background-image: url('imm/arrosto_tb.jpg');"></div>
+                    <div class="caption color_caption">
+                        <div class="container-fluid">
+
+                            <!-- icone + valori -->
+                            <div class="row text-right">
+                                <i class="fa fa-heart card_icon"> 30</i>
+                                <i class="fa fa-comment card_icon"> 112</i>
+                                <i class="fa fa-eye card_icon"> 90</i>
+                                <i class="fa fa-cutlery card_icon"> 8</i>
+                            </div>
+
+                            <!-- tipo portata -->
+                            <div class="row">
+                                <span><h6 class="card_reach">Secondi piatti</h6></span>
+                            </div>
+
+                            <!-- titolo portata -->
+                            <div class="row">
+                                <span class="text-uppercase"><h5 class="no-margin card_title">tagliata con patate al forno</h5></span>
+                            </div>
+
+                            <!-- profile -->
+                            <div class="row card_profile">
+                                <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
+                                <div class="card_profile_name pull-left">
+                                    <h6>Matteo Bolognesi</h6></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- fine card -->
+
+            <!-- card 3 -->
+            <div class="card">
+                <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#FFB555;">
+                    <div class="card_img" style="background-image: url('imm/pizza_tb.jpg');"></div>
+                    <div class="caption color_caption">
+                        <div class="container-fluid">
+
+                            <!-- icone + valori -->
+                            <div class="row text-right">
+                                <i class="fa fa-heart card_icon"> 30</i>
+                                <i class="fa fa-comment card_icon"> 112</i>
+                                <i class="fa fa-eye card_icon"> 90</i>
+                                <i class="fa fa-cutlery card_icon"> 8</i>
+                            </div>
+
+                            <!-- tipo portata -->
+                            <div class="row">
+                                <span><h6 class="card_reach">Pizza</h6></span>
+                            </div>
+
+                            <!-- titolo portata -->
+                            <div class="row">
+                                <span class="text-uppercase"><h5 class="no-margin card_title">Pizza La parmigiana</h5></span>
+                            </div>
+
+                            <!-- profile -->
+                            <div class="row card_profile">
+                                <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
+                                <div class="card_profile_name pull-left">
+                                    <h6>Matteo Bolognesi</h6></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- fine card -->
+
+            <!-- card 4 -->
+            <div class="card">
+                <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#B37D4C;">
+                    <div class="card_img" style="background-image: url('imm/snack_tb.jpg');"></div>
+                    <div class="caption color_caption">
+                        <div class="container-fluid">
+
+                            <!-- icone + valori -->
+                            <div class="row text-right">
+                                <i class="fa fa-heart card_icon"> 30</i>
+                                <i class="fa fa-comment card_icon"> 112</i>
+                                <i class="fa fa-eye card_icon"> 90</i>
+                                <i class="fa fa-cutlery card_icon"> 8</i>
+                            </div>
+
+                            <!-- tipo portata -->
+                            <div class="row">
+                                <span><h6 class="card_reach">Dolci</h6></span>
+                            </div>
+
+                            <!-- titolo portata -->
+                            <div class="row">
+                                <span class="text-uppercase"><h5 class="no-margin card_title">Bocconcini al cocco</h5></span>
+                            </div>
+
+                            <!-- profile -->
+                            <div class="row card_profile">
+                                <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
+                                <div class="card_profile_name pull-left">
+                                    <h6>Matteo Bolognesi</h6></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- fine card -->
+        </div>
+
+    </div>
+</div>
