@@ -22,34 +22,42 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         // il caricamento della categorie viene eseguito ad ogni
         // ingresso nello stato in cui si crea una ricetta
         $scope.recipeCategories = Recipe.recipeCategories;
-        $scope.selected_category = $scope.recipeCategories[0];
+
         // espongo il tipo di dosaggio preso sempre dal servizio dedicato alle ricette
         $scope.dosageTypes = Recipe.dosagesTypes;
-        $scope.selected_dosage_type = $scope.dosageTypes[0];
 
-        $scope.dosagesFor;
-        $scope.desscription;
-        
-        $scope.dominantColor;
         
         // Ritorna il colore dominante del canvas che contiene
         // la prima delle immagini caricate
         $scope.getCoverImageDominanatColor = function () {
-            var coverImageCanvas = angular.element($('#myCanvas'))[0];
-            console.log(coverImageCanvas);
+            var coverImageCanvas = angular.element($('#myCanvas'))[0];// analizzo la prima immagine...
+            console.log(coverImageCanvas);// test
             var colorThief = new ColorThief();
-            console.log(colorThief.getColor(coverImageCanvas));
-            $scope.dominantColor = colorThief.getColor(coverImageCanvas)
+            console.log(colorThief.getColor(coverImageCanvas));// test
+            $scope.recipeToCreate.dominantColor = $scope.rgbToHex(colorThief.getColor(coverImageCanvas))
+            console.log($scope.rgbToHex($scope.recipeToCreate.dominantColor))// test
         };
-        
+
+        /**
+         * Funzione che converte una array di colori RGB in hex.
+         * Fonte: http://codepen.io/TepigMC/pen/jnmkv
+         */
+        $scope.rgbToHex = function (rgb) {
+            var r = parseInt(rgb[0]),
+                g = parseInt(rgb[1]),
+                b = parseInt(rgb[2]);
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
         $scope.recipeToCreate = {
-                title: "",
-                dosagesFor: "",
-                dosagesType: "",
-                category: "",
-                description: "",
-                coverImageUrl: ""
-            };
+            title: "",
+            dosagesFor: "",
+            dosagesType: "",
+            category: "",
+            description: "",
+            coverImageUrl: "",
+            dominantColor: ""
+        };
 		
         // TODO: bisogna memorizzare degli oggetti più complessi...
         $scope.ingredient_groups =
@@ -76,7 +84,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     }]
                 });
         };
-        
+
         $scope.removeIngredientGroup = function (group_index) {
             $scope.ingredient_groups.splice(group_index, 1);
         };
@@ -88,36 +96,19 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 type: ""
             });
         };
-        
+
+        /**
+         * Rimuovi un ingrediente da un gruppo di ingredienti.
+         */
         $scope.removeIngredient = function (group_index, ingredient_index) {
             $scope.ingredient_groups[group_index].ingredients.splice(ingredient_index, 1);
         };
 
-        
-
-        $scope.addRecipe = function () {
-            // preparo l'oggetto ricetta da spedire al server...
-            /*
-            $scope.recipeToCreate = {
-                title: $scope.title,
-                dosagesFor: $scope.dosagesFor,
-                dosagesType: $scope.selected_dosage_type,
-                category: $scope.selected_category,
-                description: $scope.description,
-                coverImageUrl: ''
-            };
-            */
-            
-            $scope.recipeToCreate.title = $scope.title;
-            $scope.recipeToCreate.description = $scope.description;
-            $scope.recipeToCreate.dosagesFor = $scope.dosagesFor;
-            $scope.recipeToCreate.dosagesType = $scope.selected_dosage_type;
-            $scope.recipeToCreate.category = $scope.selected_category;
-            console.log($scope.recipeToCreate);
-
-            Recipe.create($scope.recipeToCreate, function (response) {
-                $state.go('dashboard');
-            });
+        /**
+         * Esegui l'upload di tutte le immagini in attesa di upload.
+         */
+        $scope.uploadAllImages = function () {
+            uploader.uploadAll();
         };
         
         // File uploading (configuration)
@@ -125,28 +116,28 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         var uploader = $scope.uploader = new FileUploader({
             url: '/api/v1/recipe/image',
             alias: 'avatar',
-            //autoUpload: true,
             headers: {
-                    Authorization: 'Bearer ' + Auth.getToken(),
-                    'x-csrf-token': $http.defaults.headers.common['x-csrf-token']
-                }
+                Authorization: 'Bearer ' + Auth.getToken(),
+                'x-csrf-token': $http.defaults.headers.common['x-csrf-token']
+            }
         });
 
         // FILTERS
 
         uploader.filters.push({
             name: 'customFilter',
-            fn: function(item /*{File|FileLikeObject}*/, options) {
+            fn: function (item /*{File|FileLikeObject}*/, options) {
                 return this.queue.length < 10;
             }
         });
 
         // CALLBACKS
 
-        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+        uploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {
             console.info('onWhenAddingFileFailed', item, filter, options);
         };
-        uploader.onAfterAddingFile = function(fileItem) {
+
+        uploader.onAfterAddingFile = function (fileItem) {
             console.info('onAfterAddingFile', fileItem);
             /*
             * Il seguente codice viene eseguito dopo che un file è stato
@@ -160,10 +151,9 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             // Create a file reader
             var reader = new FileReader();
             // Set the image once loaded into file reader
-            reader.onload = function(e)
-            {
+            reader.onload = function (e) {
                 img.src = e.target.result;
-        
+
                 var canvas = document.createElement("canvas");
                 //var canvas = $("<canvas>", {"id":"testing"})[0];
                 var ctx = canvas.getContext("2d");
@@ -174,64 +164,78 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 var MAX_HEIGHT = 1024;
                 var width = img.width;
                 var height = img.height;
-        
+
                 if (width > height) {
-                if (width > MAX_WIDTH) {
-                    height *= MAX_WIDTH / width;
-                    width = MAX_WIDTH;
-                }
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
                 } else {
-                if (height > MAX_HEIGHT) {
-                    width *= MAX_HEIGHT / height;
-                    height = MAX_HEIGHT;
-                }
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
                 }
                 canvas.width = width;
                 canvas.height = height;
                 var ctx = canvas.getContext("2d");
                 // Transofm the file to Canvas
                 ctx.drawImage(img, 0, 0, width, height);
-        
+
                 dataUrl = canvas.toDataURL("image/jpeg", 0.7);
                 
                 // Transofm to blob
                 var blob = dataURItoBlob(dataUrl);
                 fileItem._file = blob;
-                
+
             }
             // Load files into file reader
             reader.readAsDataURL(file);
         };
-        uploader.onAfterAddingAll = function(addedFileItems) {
+
+        uploader.onAfterAddingAll = function (addedFileItems) {
             console.info('onAfterAddingAll', addedFileItems);
         };
-        uploader.onBeforeUploadItem = function(item) {
+
+        uploader.onBeforeUploadItem = function (item) {
             console.info('onBeforeUploadItem', item);
-            
-            
         };
-        uploader.onProgressItem = function(fileItem, progress) {
+
+        uploader.onProgressItem = function (fileItem, progress) {
             console.info('onProgressItem', fileItem, progress);
         };
-        uploader.onProgressAll = function(progress) {
+
+        uploader.onProgressAll = function (progress) {
             console.info('onProgressAll', progress);
         };
-        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+
+        uploader.onSuccessItem = function (fileItem, response, status, headers) {
             console.info('onSuccessItem', fileItem, response, status, headers);
             // salvo il nome che il server ha dato al file
             $scope.recipeToCreate.coverImageUrl = response;
         };
-        uploader.onErrorItem = function(fileItem, response, status, headers) {
+
+        uploader.onErrorItem = function (fileItem, response, status, headers) {
             console.info('onErrorItem', fileItem, response, status, headers);
         };
-        uploader.onCancelItem = function(fileItem, response, status, headers) {
+
+        uploader.onCancelItem = function (fileItem, response, status, headers) {
             console.info('onCancelItem', fileItem, response, status, headers);
         };
-        uploader.onCompleteItem = function(fileItem, response, status, headers) {
+
+        uploader.onCompleteItem = function (fileItem, response, status, headers) {
             console.info('onCompleteItem', fileItem, response, status, headers);
         };
-        uploader.onCompleteAll = function() {
+
+        uploader.onCompleteAll = function () {
             console.info('onCompleteAll');
+            
+            // ottengo il colore dominante dell'immagine di copertina
+            $scope.getCoverImageDominanatColor();
+            // dopo aver caricato le immagini carico la ricetta
+            Recipe.create($scope.recipeToCreate, function (response) {
+                $state.go('dashboard');
+            });
         };
 
         console.info('uploader', uploader);
@@ -260,8 +264,8 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 ia[i] = byteString.charCodeAt(i);
             }
 
-            return new Blob([ia], {type:mimeString});
+            return new Blob([ia], { type: mimeString });
         }
-        
+
 
     }]);

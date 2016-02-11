@@ -48,7 +48,7 @@
 
         <!-- basic card -->
         <div class="card" ng-repeat="recipe in recipes">
-            <div class="thumbnail no-padding no-border card_info no-border-radius">
+            <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:{{recipe.dominantColor}}">
                 <!-- card image -->
                 <div class="card_img" style="background-image:url('{{recipe.coverImageUrl}}')"></div>
 

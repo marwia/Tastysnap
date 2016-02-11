@@ -45,19 +45,6 @@
             </div>
         </div>
         
-        <!-- RIGA 4 - COLORE DOMINANTE -->
-        <div class="row c_recipe_row">
-            <!-- colore domaninate -->
-            <div class="col-md-4 c_recipe_left">
-                <span>Ottieni il colore dominante</span>
-            </div>
-            <!-- Carica immagini -->
-            <div class="col-md-8 c_recipe_right">
-                <!-- Aggiungi un nuovo gruppo di ingredienti -->
-                <button type="button" class="btn btn-default" ng-click="getCoverImageDominanatColor()" style="background-color: rgb( {{dominantColor[0]}}, {{dominantColor[1]}}, {{dominantColor[2]}} )">Ottieni colore dominante</button>
-            </div>
-        </div>
-        
         <!-- RIGA 5 - IMMAGINI SELEZIONATE -->
         <div class="row c_recipe_row">
             <!-- colore domaninate -->
@@ -94,12 +81,6 @@
                                 <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
                             </td>
                             <td nowrap>
-                                <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
-                                    <span class="glyphicon glyphicon-upload"></span> Carica
-                                </button>
-                                <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
-                                    <span class="glyphicon glyphicon-ban-circle"></span> Annulla
-                                </button>
                                 <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
                                     <span class="glyphicon glyphicon-trash"></span> Rimuovi
                                 </button>
@@ -117,7 +98,7 @@
                 <span>Titolo ricetta</span>
             </div>
             <div class="col-md-8 c_recipe_right">
-                <input type="text" class="form-control" name="title" ng-model="title" />
+                <input type="text" class="form-control" name="title" ng-model="recipeToCreate.title" />
             </div>
         </div>
         
@@ -128,7 +109,7 @@
                 <span>Categoria</span>
             </div>
             <div class="col-md-8 c_recipe_right">
-                <my-dropdown data-menu-type="button" select-val="selected_category = selectedVal" preselected-item="selected_category" data-dropdown-data="recipeCategories"></my-dropdown>
+                <my-dropdown data-menu-type="button" select-val="recipeToCreate.category = selectedVal" preselected-item="recipeCategories[0]" data-dropdown-data="recipeCategories"></my-dropdown>
             </div>
         </div>
         
@@ -150,12 +131,12 @@
                     <div class="row">
                         <div class="col-xs-2">
                             <label class="control-label">Dosi per</label>
-                            <input type="text" class="form-control" name="dosages_for" id="dosages_for" ng-model="dosagesFor" />
+                            <input type="text" class="form-control" name="dosages_for" id="dosages_for" ng-model="recipeToCreate.dosagesFor" />
                         </div>
                         <div class="col-xs-2">
                             <label class="control-label">Tipologia</label>
                             <br>
-                            <my-dropdown data-menu-type="button" select-val="selected_dosage_type = selectedVal" preselected-item="selected_dosage_type"
+                            <my-dropdown data-menu-type="button" select-val="recipeToCreate.dosagesType = selectedVal" preselected-item="dosageTypes[0]"
                             data-dropdown-data="dosageTypes"></my-dropdown>
                         </div>
                     </div>
@@ -265,7 +246,7 @@
                 <span>Descrivi qui<br/> il procedimento della ricetta</span>
             </div>
             <div class="col-md-8 c_recipe_right">
-                <textarea class="form-control" name="review" rows="8" ng-model="description"></textarea>
+                <textarea class="form-control" name="review" rows="8" ng-model="recipeToCreate.description"></textarea>
             </div>
         </div>
         
@@ -273,7 +254,7 @@
         <div class="row c_recipe_row">
             <div class="col-md-4 c_recipe_left"></div>
             <div class="col-md-8 c_recipe_right text-right">
-                <form editable-form ng-submit="addRecipe()" role="form">
+                <form editable-form ng-submit="uploadAllImages()" role="form">
                     <!-- AZIONI RELATIVE ALLA RICETTA -->
                     <button type="button" class="btn btn-danger">Cancella</button>
                     <button type="submit" class="btn btn-primary">Invia</button>
