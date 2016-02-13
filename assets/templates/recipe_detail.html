@@ -13,6 +13,7 @@
             <div class="col-md-8 col-sm-8 recipe_col_8 recipe_sp_1 recipe_generic_con">
                 <!-- +aggiungi - condividi -->
                 <div class="recipe_sp_1_1 text-right">
+                    <span ng-show="isRecipeAuthor(detailedRecipe)" ng-click="deleteCurrentRecipe()"><i class="fa fa-trash-o"></i> Elimina</span>
                     <span><i class="fa fa-plus"></i> Aggiungi a</span>
                     <span><i class="fa fa-share-alt"></i> Condividi</span>
                 </div>
