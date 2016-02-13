@@ -52,6 +52,7 @@ angular.module('appRoutes', []).config([
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
+                    console.log("on enter");
                 }]
             })
 
@@ -92,6 +93,7 @@ angular.module('appRoutes', []).config([
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
+                    console.log("on enter");
                 }]
             })
 
