@@ -1,3 +1,10 @@
+<!-- Colorazione dinamica della colonna di sinistra -->
+<style>
+    .recipe_col_4 {
+        background-color: {{detailedRecipe.dominantColor}}
+    }
+</style>
+
 <div class="row background">
     <div class="container-fluid">
         <div class="row recipe tasty_container">
@@ -11,15 +18,15 @@
                 </div>
                 <!-- profilo -->
                 <div class="recipe_sp_1_2">
-                    <a href="personal_profile.php"><img src="imm/matt.jpg" class="img-circle recipe_profile_photo pull-left"></a>
+                    <a href="dashboard/profile/{{detailedRecipe.author.id}}"><img src="{{detailedRecipe.author.facebookImageUrl}}" class="img-circle recipe_profile_photo pull-left"></a>
                     <div class="recipe_div_profile_name pull-left">
-                        <h5 class="recipe_profile_name no-margin"><strong>Matteo Bolognesi</strong></h5>
+                        <h5 class="recipe_profile_name no-margin"><strong>{{detailedRecipe.author.name}} {{detailedRecipe.author.surname}}</strong></h5>
                         <h6 class="recipe_profile_edited no-margin">1 settimana fa</h6>
                     </div>
                 </div>
                 <!-- portata + titolo -->
                 <div class="recipe_sp_1_3">
-                    <h6 class="no-margin">Secondi Piatti</h6>
+                    <h6 class="no-margin">{{detailedRecipe.category}}</h6>
                     <h1 class="no-margin">{{detailedRecipe.title}}</h1>
                 </div>
 
@@ -325,13 +332,13 @@
                     <span class="recipe_sp_spons_title">SPONSORIZZATE</span>
 
                     <div class="recipe_sp_spons">
-                        <img src="imm/sponsor.jpg" class="img-responsive">
+                        <img src="images/sponsor.jpg" class="img-responsive">
                         <h5><strong>NUOVA COLLEZIONE BARILLA</strong></h5>
                         <h6>Scopri la qualità della nostra pasta ottenuto unicamente dal nostro grano 100% italiano.</h6>
                     </div>
 
                     <div class="recipe_sp_spons">
-                        <img src="imm/sponsor1.png" class="img-responsive">
+                        <img src="images/sponsor1.png" class="img-responsive">
                         <h5><strong>COCA-COLA</strong></h5>
                         <h6>La nuova coca-cola senza zuccheri aggiunti!</h6>
                     </div>
