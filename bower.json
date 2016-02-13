@@ -9,7 +9,6 @@
     "angular-ui-router": "latest",
     "angular-cookies": "latest",
     "angular-bootstrap": "latest",
-    "angular-loading-bar": "latest",
     "angular-animate": "latest",
     "angular-xeditable": "~0.1.9",
     "angular-file-upload": "~2.2.0",
