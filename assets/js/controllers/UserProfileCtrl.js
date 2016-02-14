@@ -13,6 +13,7 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
     function ($scope, User, $state, Recipe) {
         // Espongo gli elementi del User service
         $scope.user = User.user;//utente del profilo
+        $scope.getUserProfileImage = User.getUserProfileImage;//metodo per ottenere l'immagine del profilo
         
         // Espongo il metodo per determinare lo stato dell'app
         $scope.getCurrentState = function () {

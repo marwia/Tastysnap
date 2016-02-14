@@ -4,7 +4,7 @@
         <div class="container-fluid text-center prof_personal_info">
             <!-- profile photo -->
             <div class="row">
-                <img src="{{user.facebookImageUrl}}" alt="{{user.name}} {{user.surname}}" class="img-circle profile_photo">
+                <img src="{{ getUserProfileImage(user) }}" alt="{{user.name}} {{user.surname}}" class="img-circle profile_photo">
             </div>
             <!-- profile name -->
             <div class="row">

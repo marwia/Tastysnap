@@ -43,6 +43,7 @@ angular.module('appRoutes', []).config([
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
                             recipePromise: ['Recipe', function (recipes) {
+                                console.log("resolve dash");
                                 return recipes.getAll();
                             }]
                         }
@@ -84,6 +85,7 @@ angular.module('appRoutes', []).config([
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
                             postPromise: ['Recipe', function (recipes) {
+                                console.log("resolve home");
                                 return recipes.getAll();
                             }]
                         }

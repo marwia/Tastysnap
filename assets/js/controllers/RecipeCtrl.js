@@ -12,7 +12,8 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
     '$uibModal',
     '$log',
     '$state', // gestione degli stati dell'app (ui-router)
-    function ($scope, Recipe, Auth, $uibModal, $log, $state) {
+    'User',
+    function ($scope, Recipe, Auth, $uibModal, $log, $state, User) {
 
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
         $scope.isLoggedIn = Auth.isLoggedIn;
@@ -20,6 +21,9 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
         // espongo allo scope le ricette del servizio Recipe
         $scope.recipes = Recipe.recipes;
         $scope.detailedRecipe = Recipe.detailedRecipe;
+        
+        // espongo i metodi del servizio User
+        $scope.getUserProfileImage = User.getUserProfileImage;
         
         /**
          * Verifica se l'utente loggatto attualmente è l'autore della ricetta.

@@ -45,7 +45,7 @@
 
     <!-- CARD -->
     <div class="row tasty_container text-center">
-
+        
         <!-- basic card -->
         <div class="card" ng-repeat="recipe in recipes">
             <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:{{recipe.dominantColor}}">
@@ -90,7 +90,7 @@
 
                         <!-- profile -->
                         <div class="row">
-                            <img src="{{ recipe.author.facebookImageUrl }}" class="img-circle card_profile_photo pull-left">
+                            <img src="{{ getUserProfileImage(recipe.author) }}" class="img-circle card_profile_photo pull-left">
                             <div class="card_profile_name pull-left">
                                 <a href="dashboard/profile/{{recipe.author.id}}">
                                 <h6>{{recipe.author.name}} {{recipe.author.surname}}</h6>
