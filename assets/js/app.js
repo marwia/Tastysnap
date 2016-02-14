@@ -27,3 +27,9 @@ myApp.run(function($http) {
         $http.defaults.withCredentials = true;
         });
 });
+
+myApp.config(['$animateProvider', function($animateProvider){
+  // restrict animation to elements with the bi-animate css class with a regexp.
+  // note: "bi-*" is our css namespace at @Bringr.
+  $animateProvider.classNameFilter(/^((?!(fa-spinner)).)*$/);
+}]);
