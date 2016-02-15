@@ -31,7 +31,8 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 animation: $scope.animationsEnabled,
                 templateUrl: 'templates/my_modal.html',
                 controller: 'ModalInstanceCtrl',
-                //size: size,
+                // classe aggiuntiva a modal-dialog (ci imposto la dmensione) modal-add-recipe-to-collection
+                size: 'add-recipe-to-collection',
                 resolve: {
                     items: function () {
                         return $scope.items;

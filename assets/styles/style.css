@@ -14,7 +14,8 @@
 *   -- 8. HOME LOADED (home, quando l'utente è loggato)
 *   -- 9. RECIPE (stile della ricetta)
 *   -- 10.PERSONAL CARD (card profili delle persone)
-*   -- 11.CREAETE RECIPE 
+*   -- 11.CREAETE RECIPE
+*   -- 12.MODAL - aggingi card alla raccolta + crea raccolta
 */
 
 /* ------------------------------------------------------------   1    ------------------------------------------------------ */
@@ -1229,4 +1230,11 @@ img.profile_card_img{
 .c_recipe_right{
     background-color:white;
     padding-bottom: 30px;
+}
+
+/* ------------------------------------------------------------------ 12 -------------------------------------------------------- */
+/* ---------------------------------------------------- MODAL ADD CARD IN COLLECTION -------------------------------------------- */
+
+.modal-add-recipe-to-collection{
+    width:700px;
 }
