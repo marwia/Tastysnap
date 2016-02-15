@@ -1,37 +1,133 @@
 <div class="modal-header">
-    <h3 class="modal-title">Aggiungi <strong>{{ selectedRecipe.title }}</strong> a una raccolta</h3>
+    <h3 class="modal-title text-center">Aggiungi <strong>{{ selectedRecipe.title }}</strong> a una raccolta</h3>
 </div>
 <div class="modal-body">
     
-    <div class="col-md-5">
-        Card
-    </div>
-    <div class="col-md-7">
-        list
-    </div>
-    
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-</div>
+    <!-- CONTINER CARD -->
+    <div class="col-md-5 text-center">
+        <!-- Anteprima della card che aggiungerò alla collection -->
+        <!-- basic card -->
+        <div class="card no-margin">
+            <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:{{recipe.dominantColor}}">
+                <!-- card image -->
+                <div class="card_img" style="background-image:url('{{recipe.coverImageUrl}}')"></div>
+                    
+                <div class="caption color_caption">
+                    <div class="container-fluid">
+                    
+                        <!-- icone + valori -->
+                        <div class="row text-right">
+                            <i class="fa fa-heart card_icon"> {{recipe.votesCount}}</i>
+                            <i class="fa fa-comment card_icon"> {{recipe.commentsCount}}</i>
+                            <i class="fa fa-eye card_icon"> {{recipe.viewsCount}}</i>
+                            <i class="fa fa-cutlery card_icon"> {{recipe.trialsCount}}</i>
+                        </div>
+                        
+                        <!-- tipo portata -->
+                        <div class="row">
+                            <span><h6 class="card_reach">{{recipe.category}}</h6></span>
+                        </div>
 
-<!--
-<div class="modal-header">
-    <h3 class="modal-title">Aggiungi <strong>{{ selectedRecipe.title }}</strong> a una raccolta</h3>
-</div>
-<div class="modal-body">
-    <ul>
-        <li ng-repeat="item in items">
-            <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
-        </li>
-    </ul>
-    Selected: <b>{{ selected.item }}</b>
+                        <!-- titolo portata -->
+                        <div class="row">
+                           <h5 class="no-margin card_title text-uppercase">
+                               <a href="dashboard/recipe/{{recipe.id}}">{{recipe.title}}</a>
+                           </h5>
+                        </div>
+
+                        <!-- profile -->
+                        <div class="row">
+                            <img src="{{ getUserProfileImage(recipe.author) }}" class="img-circle card_profile_photo pull-left">
+                            <div class="card_profile_name pull-left">
+                                <a href="dashboard/profile/{{recipe.author.id}}">
+                                <h6>{{recipe.author.name}} {{recipe.author.surname}}</h6>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <!-- fine card -->
+    </div>
     
-    Matteo, ora sai cosa fare... procedi con lo stile!
+    <!-- CONTAINER LISTA COLLECTION -->
+    <div class="col-md-7">
+        <div class="container-fluid">
+            <!-- search collection input -->
+            <div class="row modal-add-recipe-to-collection_row">
+                <input type="text" class="form-control" placeholder="Cerca una raccolta">
+            </div>
+            
+            <!-- add new collection -->
+            <div class="row modal-add-recipe-to-collection_row modal-add-recipe-to-collection_media_container">
+                
+                <!-- Aggiungi una nuova collection! -->
+                <div class="media modal-add-recipe-to-collection_media">
+                    <div class="media-left media-middle">
+                        <a href="#">
+                            <!-- questa dovrebbe essere la foto della sua ricetta che deve caricare, che dici? o ci mettiamo una generica -->
+                            <div class="media-object modal-add-recipe-to-collection_img" style="background-image:url('http://www.tastysnap.com/preview/imm/spaghetti_tb.jpg')" title="Crea una nuova raccolta!">
+                                <div class="modal-add-recipe-to-collection_img_new">
+                                    <span class="glyphicon glyphicon-plus gly_share_size modal-add-recipe-to-collection_img_new_plus"></span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading no-margin">
+                            <input type="text" class="form-control modal-add-recipe-to-collection_img_new_input" placeholder="Nuova Raccolta">
+                        </h4>
+                    </div>
+                </div>
+                
+                <!-- ng repeat media (collection) -->
+                <div class="media modal-add-recipe-to-collection_media">
+                    <div class="media-left media-middle" title="Aggiungi TITOLO RICETTA a {{ selectedRecipe.title }}">
+                        <a href="#">
+                            <div class="media-object modal-add-recipe-to-collection_img" style="background-image:url('http://www.tastysnap.com/preview/imm/thai_tb.jpg')"></div>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">Aperitivo con le amiche di Carlos</h4>
+                    </div>
+                </div>
+                <!-- fine ng-repeat -->
+                
+                <!-- dopo che hai fatto ng-repeat sulle collection, queste alrtre due le puoi eliminare che non servono cavallo -->
+                <div class="media modal-add-recipe-to-collection_media">
+                    <div class="media-left media-middle">
+                        <a href="#">
+                            <div class="media-object modal-add-recipe-to-collection_img" style="background-image:url('http://www.tastysnap.com/preview/imm/spaghetti_tb.jpg')"></div>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">Cena con gli amici</h4>
+                    </div>
+                </div>
+                
+                <div class="media modal-add-recipe-to-collection_media">
+                    <div class="media-left media-middle">
+                        <a href="#">
+                            <div class="media-object modal-add-recipe-to-collection_img" style="background-image:url('http://www.tastysnap.com/preview/imm/pizza_tb.jpg')"></div>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">Menu pizza!</h4>
+                    </div>
+                </div>
+                
+            </div>
+
+            
+        </div>
+    </div>
+    
+    <div class="clearfix"></div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Chiudi</button>
+    <button class="btn btn-primary" type="button" ng-click="ok()">Aggiungi</button>
 </div>
--->
