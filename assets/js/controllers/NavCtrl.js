@@ -18,8 +18,9 @@ angular.module('NavCtrl', []).controller('NavCtrl', [
         //$scope.currentUser = Auth.currentUser;
         $scope.logOut = Auth.logOut;
         
-        // Espongo i metodi del User service
+        // Espongo i metodi e oggetti del User service
         $scope.currentUser = User.currentUser;
+        $scope.getUserProfileImage = User.getUserProfileImage;
     
         // Any function returning a promise object can be used to load values asynchronously
         /**

@@ -40,6 +40,17 @@ angular.module('RecipeService', [])
         });
     };
     
+    o.delete = function (recipeId, successCallback, errorCallback) {
+        return $http.delete(
+            server_prefix + '/recipe/'+recipeId,
+            {
+                headers: {
+                    Authorization: 'Bearer ' + Auth.getToken()
+                }
+            })
+            .then(successCallback, errorCallback);
+    }
+    
     /**
      * Metodo per richiedere una una ricetta tramite il suo id.
      */

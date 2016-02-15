@@ -26,12 +26,23 @@ module.exports = {
     dosagesType : { 
         type: 'String', 
         required: true,
-        enum: ['persons', 'units'] },
+        enum: ['persone', 'unità'] },
     
     category : { 
         type: 'String',
         required: true,
-        enum: ['first courses', 
+        enum: ['primi piatti', 
+        'secondi piatti', 
+        'zuppe', 
+        'insalate',
+        'antipasti e stuzzichini', 
+        'dessert and torte', 
+        'bevande', 
+        'cocktails',
+        'contorni',
+        'marmellate e conserve',
+        'salse']
+        /*enum: ['first courses', 
         'second courses', 
         'soups', 
         'salads',
@@ -41,7 +52,7 @@ module.exports = {
         'cocktails',
         'side dishes',
         'jams and preserves',
-        'sauces']
+        'sauces']*/
     },
     
     // Url which represents the main image of the recipe

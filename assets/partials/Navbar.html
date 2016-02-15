@@ -30,7 +30,7 @@
         
         <!-- Dropdown menu example  -->
         <div uib-dropdown ng-show="isLoggedIn()">
-            <img alt="{{ currentUser.name }}" src="{{ currentUser.facebookImageUrl }}" id="single-button" uib-dropdown-toggle class="top_menu_profile img-circle pull-right">
+            <img alt="{{ currentUser.name }}" src="{{ getUserProfileImage(currentUser) }}" id="single-button" uib-dropdown-toggle class="top_menu_profile img-circle pull-right">
             <ul uib-dropdown-menu class="top_menu_profile_dropdown" role="menu" aria-labelledby="single-button">
                 <li role="menuitem"><a href="#">Action</a></li>
                 <li role="menuitem"><a href="#">Another action</a></li>

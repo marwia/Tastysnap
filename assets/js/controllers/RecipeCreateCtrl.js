@@ -139,12 +139,18 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         uploader.onAfterAddingFile = function (fileItem) {
             console.info('onAfterAddingFile', fileItem);
+            // era qui...
+        };
+
+        uploader.onAfterAddingAll = function (addedFileItems) {
+            console.info('onAfterAddingAll', addedFileItems);
+           
             /*
             * Il seguente codice viene eseguito dopo che un file è stato
             * aggiunto alla coda e serve a ridimensionare l'immagine
             * e ridurre la sua qualità.
             */
-            var file = fileItem._file;
+            var file = addedFileItems[0]._file;
             var dataUrl = "";
             // Create an image
             var img = document.createElement("img");
@@ -186,15 +192,19 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 
                 // Transofm to blob
                 var blob = dataURItoBlob(dataUrl);
-                fileItem._file = blob;
+                if (blob.size == 0) {
+                    alert("Errore nel blob!");
+                }
+                addedFileItems[0]._file = blob;
 
             }
             // Load files into file reader
-            reader.readAsDataURL(file);
-        };
+            //code before the pause
+            setTimeout(function () {
+                //do what you need here
+                reader.readAsDataURL(file);
+            }, 2000);
 
-        uploader.onAfterAddingAll = function (addedFileItems) {
-            console.info('onAfterAddingAll', addedFileItems);
         };
 
         uploader.onBeforeUploadItem = function (item) {

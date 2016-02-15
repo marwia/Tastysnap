@@ -12,7 +12,7 @@
 
 var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload',
 				'AuthService', 'PostService', 'RecipeService', 'UserService',
-				'angular-loading-bar', 'ngAnimate', 'appRoutes', 
+				'ngAnimate', 'appRoutes', 
 				'AuthCtrl', 'MainCtrl', 'MasterCtrl', 'NavCtrl', 'PostsCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl',
                 'ModalInstanceCtrl']);
@@ -27,3 +27,10 @@ myApp.run(function($http) {
         $http.defaults.withCredentials = true;
         });
 });
+
+myApp.config(['$animateProvider', function($animateProvider){
+  // restrict animation to elements with the bi-animate css class with a regexp.
+  // note: "bi-*" is our css namespace at @Bringr.
+  $animateProvider.classNameFilter(/^((?!(fa-spinner)).)*$/);
+  //$animateProvider.classNameFilter(/^((?!(fa-spinner|class2|class3)).)*$/);
+}]);

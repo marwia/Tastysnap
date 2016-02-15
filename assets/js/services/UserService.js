@@ -13,8 +13,8 @@ angular.module('UserService', [])
         
         // service body
         var service = {
-            currentUser : {},
-            user : {}
+            currentUser: {},
+            user: {}
         };
         
         /**
@@ -24,6 +24,23 @@ angular.module('UserService', [])
             return $http.get(server_prefix + '/user/' + Auth.currentUser().id).success(function (data) {
                 angular.copy(data, service.currentUser);
             });
+        };
+        
+        /**
+         * Metodo per richiedere l'immagine di profile dell'utente
+         * loggato. E' necessaria in quanto l'utente può avere una o più
+         * immagini a secondo del metodo di iscrizione usato.
+         */
+        service.getUserProfileImage = function (user) {
+            if (user != null) {
+                if (user.facebookImageUrl != null)
+                    return user.facebookImageUrl;
+                if (user.googleImageUrl != null)
+                    return user.googleImageUrl;
+                if (user.twitterImageUrl != null)
+                    return user.twitterImageUrl;
+            }
+            return null;
         };
         
         /**

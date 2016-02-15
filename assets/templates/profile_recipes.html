@@ -35,14 +35,14 @@
 
                         <!-- titolo portata -->
                         <div class="row">
-                            <a href="dashboard/recipe/{{recipe.id}}">
-                                <span class="text-uppercase"><h5 class="no-margin card_title">{{recipe.title}}</h5></span>
-                            </a>
+                            <h5 class="no-margin card_title text-uppercase">
+                               <a href="dashboard/recipe/{{recipe.id}}">{{recipe.title}}</a>
+                            </h5>
                         </div>
 
                         <!-- profile -->
                         <div class="row">
-                            <img src="{{ recipe.author.facebookImageUrl }}" class="img-circle card_profile_photo pull-left">
+                            <img src="{{ getUserProfileImage(recipe.author) }}" class="img-circle card_profile_photo pull-left">
                             <div class="card_profile_name pull-left">
                                 <a href="dashboard/profile/{{recipe.author.id}}">
                                 <h6>{{recipe.author.name}} {{recipe.author.surname}}</h6>
