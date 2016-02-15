@@ -1240,7 +1240,7 @@ img.profile_card_img{
 }
 
 .modal-add-recipe-to-collection_row{
-    margin: 5px auto 5px auto;
+    margin: 5px -15px 5px -15px;
 }
 
 .modal-add-recipe-to-collection_img{
@@ -1276,11 +1276,29 @@ img.profile_card_img{
 
 .modal-add-recipe-to-collection_img_new_input{
     height: 64px !important;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    color: rgb(41,41,41);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.modal-add-recipe-to-collection_img_new_input:focus{
+    border: 0;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
 
 .modal-add-recipe-to-collection_img_new_input::-webkit-input-placeholder {
-	color: inerith;
+	color: rgb(41,41,41);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
 }
+
 .modal-add-recipe-to-collection_img_new_input:-moz-placeholder { /* Firefox 18- */
 	color: inerith;
 }
@@ -1300,6 +1318,10 @@ img.profile_card_img{
     padding-bottom: 5px;
     border-bottom: 1px solid rgb(233, 233, 233);
     border-top: 1px solid rgb(233, 233, 233);
+}
+
+.modal-add-recipe-to-collection_title{
+    margin-top:14px;
 }
 
 @media screen and (max-width: 720px){
