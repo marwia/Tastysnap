@@ -905,12 +905,8 @@ tr.recipe_sp_3_tr{
 }
 
 .recipe_sp_spons_con{
-	border-top: 1px solid gray;
+	border-top: 1px solid white;
     padding-top: 8px;
-}
-
-.recipe_sp_spons_con > span{
-	color:gray;
 }
 
 .recipe_sp_spons{
@@ -1028,7 +1024,9 @@ tr.recipe_sp_3_tr{
 		width:100%;
 		text-align:center;
 	}
-	
+    span.recipe_sp_spons_title{
+        color:white !important;
+    }
 	.recipe_sp_3{
 		width:50%;
 		float:left;
