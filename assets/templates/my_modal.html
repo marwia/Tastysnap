@@ -65,7 +65,7 @@
             <div class="row modal-add-recipe-to-collection_row modal-add-recipe-to-collection_media_container">
                 
                 <!-- Aggiungi una nuova collection! -->
-                <div class="media modal-add-recipe-to-collection_media">
+                <div class="media modal-add-recipe-to-collection_media modal-add-recipe-to-collection_new_media">
                     <div class="media-left media-middle">
                         <a href="#">
                             <div class="media-object modal-add-recipe-to-collection_img" style="background-image:url('{{selectedRecipe.coverImageUrl}}')" title="Crea una nuova raccolta!">
@@ -83,42 +83,56 @@
                 </div>
                 
                 <!-- ng repeat media (collection) -->
-                <div class="media modal-add-recipe-to-collection_media">
-                    <!-- manca di mettere il nome della raccolta nel title -->
-                    <div class="media-left media-middle" title="Aggiungi {{selectedRecipe.title}} a NOME COLLECTION">
-                        <a href="#">
-                            <div class="media-object modal-add-recipe-to-collection_img" style="background-image:url('http://www.tastysnap.com/preview/imm/thai_tb.jpg')"></div>
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading modal-add-recipe-to-collection_title">Aperitivo con le amiche di Carlos</h4>
-                    </div>
+                <div class="radio">
+                    <label class="modal-add-recipe-to-collection_label">
+                        <input type="radio" class="modal-add-recipe-to-collection_radio" name="optionsRadios" id="optionsRadios1" value="option1">
+                        <div class="media modal-add-recipe-to-collection_media">
+                            <!-- manca di mettere il nome della raccolta nel title -->
+                            <div class="media-left media-middle" title="Aggiungi {{selectedRecipe.title}} a NOME COLLECTION">
+                                <a href="#">
+                                    <div class="media-object modal-add-recipe-to-collection_img" style="background-image:url('http://www.tastysnap.com/preview/imm/thai_tb.jpg')"></div>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading modal-add-recipe-to-collection_title">Aperitivo con le amiche di Carlos</h4>
+                            </div>
+                        </div>
+                    </label>
                 </div>
                 <!-- fine ng-repeat -->
                 
                 <!-- dopo che hai fatto ng-repeat sulle collection, queste alrtre due le puoi eliminare che non servono cavallo -->
-                <div class="media modal-add-recipe-to-collection_media">
-                    <div class="media-left media-middle">
-                        <a href="#">
-                            <div class="media-object modal-add-recipe-to-collection_img" style="background-image:url('http://www.tastysnap.com/preview/imm/spaghetti_tb.jpg')"></div>
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading modal-add-recipe-to-collection_title">Cena con gli amici</h4>
-                    </div>
+                <div class="radio">
+                    <label class="modal-add-recipe-to-collection_label">
+                        <input type="radio" class="modal-add-recipe-to-collection_radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                        <div class="media modal-add-recipe-to-collection_media">
+                            <div class="media-left media-middle">
+                                <a href="#">
+                                    <div class="media-object modal-add-recipe-to-collection_img" style="background-image:url('http://www.tastysnap.com/preview/imm/spaghetti_tb.jpg')"></div>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading modal-add-recipe-to-collection_title">Cena con gli amici</h4>
+                            </div>
+                        </div>
+                    </label>
                 </div>
                 
-                <div class="media modal-add-recipe-to-collection_media">
-                    <div class="media-left media-middle">
-                        <a href="#">
-                            <div class="media-object modal-add-recipe-to-collection_img" style="background-image:url('http://www.tastysnap.com/preview/imm/pizza_tb.jpg')"></div>
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading modal-add-recipe-to-collection_title">Menu pizza!</h4>
-                    </div>
+                <div class="radio">
+                    <label class="modal-add-recipe-to-collection_label">
+                        <input type="radio" class="modal-add-recipe-to-collection_radio" name="optionsRadios" id="optionsRadios3" value="option3">
+                        <div class="media modal-add-recipe-to-collection_media">
+                            <div class="media-left media-middle">
+                                <a href="#">
+                                    <div class="media-object modal-add-recipe-to-collection_img" style="background-image:url('http://www.tastysnap.com/preview/imm/pizza_tb.jpg')"></div>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading modal-add-recipe-to-collection_title">Menu pizza!</h4>
+                            </div>
+                        </div>
+                    </label>
                 </div>
-                
             </div>
         </div>
     </div>
