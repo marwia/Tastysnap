@@ -7,49 +7,7 @@
     <div class="col-xs-12 col-sm-5 col-md-5 text-center">
         <!-- Anteprima della card che aggiungerò alla collection -->
         <!-- basic card -->
-        <div class="card no-margin">
-            <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:{{selectedRecipe.dominantColor}}">
-                <!-- card image -->
-                <div class="card_img" style="background-image:url('{{selectedRecipe.coverImageUrl}}')"></div>
-                    
-                <div class="caption color_caption">
-                    <div class="container-fluid">
-                    
-                        <!-- icone + valori -->
-                        <div class="row text-right">
-                            <i class="fa fa-heart card_icon"> {{selectedRecipe.votesCount}}</i>
-                            <i class="fa fa-comment card_icon"> {{selectedRecipe.commentsCount}}</i>
-                            <i class="fa fa-eye card_icon"> {{selectedRecipe.viewsCount}}</i>
-                            <i class="fa fa-cutlery card_icon"> {{selectedRecipe.trialsCount}}</i>
-                        </div>
-                        
-                        <!-- tipo portata -->
-                        <div class="row">
-                            <span><h6 class="card_reach">{{selectedRecipe.category}}</h6></span>
-                        </div>
-
-                        <!-- titolo portata -->
-                        <div class="row">
-                           <h5 class="no-margin card_title text-uppercase">
-                               <a href="dashboard/recipe/{{selectedRecipe.id}}">{{selectedRecipe.title}}</a>
-                           </h5>
-                        </div>
-
-                        <!-- profile -->
-                        <div class="row">
-                            <img src="{{ getUserProfileImage(selectedRecipe.author) }}" class="img-circle card_profile_photo pull-left">
-                            <div class="card_profile_name pull-left">
-                                <a href="dashboard/profile/{{selectedRecipe.author.id}}">
-                                <h6>{{selectedRecipe.author.name}} {{selectedRecipe.author.surname}}</h6>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            
-        </div>
+        <recipe-card recipe="selectedRecipe"></recipe-card> 
         <!-- fine card -->
     </div>
     
