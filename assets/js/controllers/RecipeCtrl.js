@@ -100,7 +100,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                         //$uibModalInstance.dismiss('cancel');
                     };
                 },
-                size: 'sm'
+                size: ''
             });
         };
 

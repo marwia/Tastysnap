@@ -20,7 +20,6 @@
             <div class="glyphicon glyphicon-search pull-left top_menu_search_label"></div>
             <input type="text" ng-model="asyncSelected" class="form-control pull-left top_menu_search_input top_menu_search" placeholder="Cerca" uib-typeahead="recipe.title for recipe in getLocation($viewValue)"
             typeahead-loading="loadingLocations" typeahead-no-results="noResults" class="form-control">
-
         </form>
         
         <!-- Tastysnap Logo -->
@@ -29,7 +28,7 @@
         </a>
         
         <!-- Dropdown menu example  -->
-        <div uib-dropdown ng-show="isLoggedIn()">
+        <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
             <img alt="{{ currentUser.name }}" src="{{ getUserProfileImage(currentUser) }}" id="single-button" uib-dropdown-toggle class="top_menu_profile img-circle pull-right">
             <ul uib-dropdown-menu class="top_menu_profile_dropdown" role="menu" aria-labelledby="single-button">
                 <li role="menuitem"><a href="#">Action</a></li>
@@ -41,8 +40,7 @@
         </div>
         
         <!-- MENU -->        
-		<a href="#" ng-hide="active"><div class="glyphicon glyphicon-comment pull-right top_menu_item"><span class="badge badge-notify">42</span></div></a>
-		<a href="#" ng-hide="active"><div class="glyphicon glyphicon-bell pull-right top_menu_item"></div></a>
-
+		<a href="#" ng-hide="active" class="top_menu_notify_icon"><div class="glyphicon glyphicon-comment pull-right top_menu_item"><span class="badge badge-notify">42</span></div></a>
+		<a href="#" ng-hide="active" class="top_menu_notify_icon"><div class="glyphicon glyphicon-bell pull-right top_menu_item"></div></a>
     </div>
 </nav>

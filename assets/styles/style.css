@@ -167,6 +167,32 @@ body {
     padding: 2px 1px 5px 1px;
 }
 
+/* classi da dare, quando l'utente preme il pulsante per ricercare, ma solo se siamo sul mobile */
+
+
+/* da dare alla classe: .tastysnap_logo */
+.tastysnap_logo_mobile{
+    left:auto;
+    right:5px;
+}
+
+/* da dare alla classe: .top_menu_notify_icon */
+.top_menu_notify_icon_mobile{
+    display: none;
+}
+
+/* da dare alla classe: .top_menu_dropdown */
+.top_menu_dropdown_mobile{
+    display: none;
+}
+
+/* da dare alla classe: .top_menu_search */
+.top_menu_search_mobile{
+    display: block;
+    width:calc(100% - 110px);
+}
+
+
 
 /* ---------------------------------------------------------------   3    ------------------------------------------------ */
 /* -------------------------------------------------------------   LOGIN ------------------------------------------------- */
@@ -268,6 +294,10 @@ body {
 	transition: all 0.3s ease-in-out;
 }
 
+.card_container_img{
+    position:relative;
+}
+
 .card_img{
 	width: 100%;
     height: auto;
@@ -287,7 +317,7 @@ body {
 
 .card_share{
 	width: 100%;
-    height:233px;
+    height: 100%;
 	background-color:rgba(0,0,0,0.5);
 	color:white;
 	display:none;
@@ -986,6 +1016,10 @@ tr.recipe_sp_3_tr{
 	-ms-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
+}
+
+.recipe_span_pointer{
+    cursor:pointer;
 }
 
 @media screen and (min-width: 768px){

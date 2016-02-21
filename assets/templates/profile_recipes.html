@@ -1,56 +1,59 @@
 <!-- basic card -->
         <div class="card" ng-repeat="recipe in recipes">
             <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:{{recipe.dominantColor}}">
-                <!-- card image -->
-                <div class="card_img" style="background-image:url('{{recipe.coverImageUrl}}')"></div>
+                
+                <div class="card_container_img">
+                    <!-- card image -->
+                    <div class="card_img" style="background-image:url('{{recipe.coverImageUrl}}')"></div>
 
-                <!-- card share -->
-                <div class="container-fluid card_share">
-                    <div class="cont_row_share">
-                        <div class="row text-center">
-                            <div class="col-xs-6"><span class="glyphicon glyphicon-heart-empty gly_share_size"></span></div>
-                            <div class="col-xs-6"><span class="glyphicon glyphicon-share-alt gly_share_size"></span></div>
-                        </div>
-                        <div class="row text-center">
-                            <span class="glyphicon glyphicon-plus gly_share_size">
+                    <!-- card share -->
+                    <div class="container-fluid card_share">
+                        <div class="cont_row_share">
+                            <div class="row text-center">
+                                <div class="col-xs-6"><span class="glyphicon glyphicon-heart-empty gly_share_size"></span></div>
+                                <div class="col-xs-6"><span class="glyphicon glyphicon-share-alt gly_share_size"></span></div>
+                            </div>
+                            <div class="row text-center">
+                                <span class="glyphicon glyphicon-plus gly_share_size">
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="caption color_caption">
-                        <div class="container-fluid">
-                        
-                            <!-- icone + valori -->
-                            <div class="row text-right">
-                                <i class="fa fa-heart card_icon"> {{recipe.votesCount}}</i>
-                                <i class="fa fa-comment card_icon"> {{recipe.commentsCount}}</i>
-                                <i class="fa fa-eye card_icon"> {{recipe.viewsCount}}</i>
-                                <i class="fa fa-cutlery card_icon"> {{recipe.trialsCount}}</i>
-                            </div>
-                            
-                            <!-- tipo portata -->
-                            <div class="row">
-                                <span><h6 class="card_reach">{{recipe.category}}</h6></span>
-                        </div>
-
-                        <!-- titolo portata -->
-                        <div class="row">
-                            <h5 class="no-margin card_title text-uppercase">
-                               <a href="dashboard/recipe/{{recipe.id}}">{{recipe.title}}</a>
-                            </h5>
-                        </div>
-
-                        <!-- profile -->
-                        <div class="row">
-                            <img src="{{ getUserProfileImage(recipe.author) }}" class="img-circle card_profile_photo pull-left">
-                            <div class="card_profile_name pull-left">
-                                <a href="dashboard/profile/{{recipe.author.id}}">
-                                <h6>{{recipe.author.name}} {{recipe.author.surname}}</h6>
-                                </a>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
+                    
+                <div class="caption color_caption">
+                    <div class="container-fluid">
+                    
+                        <!-- icone + valori -->
+                        <div class="row text-right">
+                            <i class="fa fa-heart card_icon"> {{recipe.votesCount}}</i>
+                            <i class="fa fa-comment card_icon"> {{recipe.commentsCount}}</i>
+                            <i class="fa fa-eye card_icon"> {{recipe.viewsCount}}</i>
+                            <i class="fa fa-cutlery card_icon"> {{recipe.trialsCount}}</i>
+                        </div>
+                        
+                        <!-- tipo portata -->
+                        <div class="row">
+                            <span><h6 class="card_reach">{{recipe.category}}</h6></span>
+                    </div>
+
+                    <!-- titolo portata -->
+                    <div class="row">
+                        <h5 class="no-margin card_title text-uppercase">
+                            <a href="dashboard/recipe/{{recipe.id}}">{{recipe.title}}</a>
+                        </h5>
+                    </div>
+
+                    <!-- profile -->
+                    <div class="row">
+                        <img src="{{ getUserProfileImage(recipe.author) }}" class="img-circle card_profile_photo pull-left">
+                        <div class="card_profile_name pull-left">
+                            <a href="dashboard/profile/{{recipe.author.id}}">
+                            <h6>{{recipe.author.name}} {{recipe.author.surname}}</h6>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+        </div>
         <!-- fine card -->

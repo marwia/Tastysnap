@@ -49,18 +49,21 @@
         <!-- basic card -->
         <div class="card" ng-repeat="recipe in recipes">
             <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:{{recipe.dominantColor}}">
-                <!-- card image -->
-                <div class="card_img" style="background-image:url('{{recipe.coverImageUrl}}')"></div>
+                <!-- contenitore card img -->
+                <div class="card_container_img">
+                    <!-- card image -->
+                    <div class="card_img" style="background-image:url('{{recipe.coverImageUrl}}')"></div>
 
-                <!-- card share -->
-                <div class="container-fluid card_share">
-                    <div class="cont_row_share">
-                        <div class="row text-center">
-                            <div class="col-xs-6"><span class="glyphicon glyphicon-heart-empty gly_share_size"></span></div>
-                            <div class="col-xs-6"><span class="glyphicon glyphicon-share-alt gly_share_size"></span></div>
-                        </div>
-                        <div class="row text-center">
-                            <span class="glyphicon glyphicon-plus gly_share_size" ng-click="open(recipe)"></span>
+                    <!-- card share -->
+                    <div class="container-fluid card_share">
+                        <div class="cont_row_share">
+                            <div class="row text-center">
+                                <div class="col-xs-6"><span class="glyphicon glyphicon-heart-empty gly_share_size"></span></div>
+                                <div class="col-xs-6"><span class="glyphicon glyphicon-share-alt gly_share_size"></span></div>
+                            </div>
+                            <div class="row text-center">
+                                <span class="glyphicon glyphicon-plus gly_share_size" ng-click="open(recipe)"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
