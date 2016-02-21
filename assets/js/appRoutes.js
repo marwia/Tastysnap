@@ -162,7 +162,8 @@ angular.module('appRoutes', []).config([
                         }
                     },
                     'profile_content@dashboard.profile': {
-                        templateUrl: 'templates/profile_recipes.html'
+                        templateUrl: 'templates/profile_recipes.html',
+                        controller: 'RecipeCtrl'
                     }
                 }
             })
