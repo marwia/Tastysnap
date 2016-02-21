@@ -50,11 +50,11 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
         // materiale per la modale...
         $scope.items = ['item1', 'item2', 'item3'];
 
-        $scope.open = function (selectedRecipe) {
+        $scope.openCollectionSelectionModal = function (selectedRecipe) {
 
             var modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: 'templates/my_modal.html',
+                templateUrl: 'templates/recipe_collection_selection_modal.html',
                 controller: 'ModalInstanceCtrl',
                 // classe aggiuntiva a modal-dialog (ci imposto la dmensione) modal-add-recipe-to-collection
                 size: 'add-recipe-to-collection',
@@ -80,10 +80,13 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 animation: true,
                 templateUrl: 'templates/recipe_elimination_modal.html',
                 controller: function ($uibModalInstance, $scope) {
+                    // passaggio paramteri
                     $scope.loading = false;
-                    console.log("loading", $scope.loading);
+                    $scope.selectedRecipe = selectedRecipe;
+                    // azioni possibili all'interno della modale
                     $scope.ok = function () {
                         $scope.loading = true
+                        
                         Recipe.delete(selectedRecipe.id,
                             function (response) {
                                 setTimeout(function () {
@@ -97,8 +100,11 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                                 // errore
                                 $scope.loading = false;
                             });
-                        //$uibModalInstance.dismiss('cancel');
                     };
+                    
+                    $scope.cancel = function () {
+                        $uibModalInstance.dismiss('cancel');
+                    }; 
                 },
                 size: ''
             });
