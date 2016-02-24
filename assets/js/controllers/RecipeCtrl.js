@@ -109,6 +109,33 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 size: ''
             });
         };
+        
+         // MODALE PER GESTIRE LA CONDIVISIONE DI UNA RICETTA
+        
+        $scope.openShareModal = function (selectedRecipe) {
+            $uibModal.open({
+                animation: true,
+                templateUrl: 'templates/recipe_share_modal.html',
+                controller: function ($uibModalInstance, $scope) {
+                    // passaggio paramteri
+                    $scope.loading = false;
+                    $scope.selectedRecipe = selectedRecipe;
+                    // azioni possibili all'interno della modale
+                    $scope.ok = function () {
+                        // todo
+                        
+                       $uibModalInstance.dismiss('cancel');
+                    };
+                    
+                    $scope.cancel = function () {
+                        // to do
+                        $uibModalInstance.dismiss('cancel');
+                    }; 
+                },
+                size: ''
+            });
+        };
+
 
 
     }]);

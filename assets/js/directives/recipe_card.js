@@ -15,7 +15,8 @@ angular.module('sampleApp')
             restrict: 'E',
             scope: {
                 recipe: '=recipe',
-                openCollectionModal: '&'
+                openCollectionModal: '&',
+                openShareModal: '&'
             },
             link: function (scope, element, attrs) {
                 scope.getUserProfileImage = User.getUserProfileImage;
