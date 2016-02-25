@@ -11,6 +11,7 @@
  * Prese da https://github.com/balderdashy/sails/blob/master/lib/hooks/blueprints/actions/find.js
  */
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+var md5 = require('md5');
 
 module.exports = {
     /**
@@ -92,68 +93,68 @@ module.exports = {
      *
      * @apiUse InvalidTokenError
      */
-    find: function (req, res, next) {        
+    find: function (req, res, next) {
         Recipe.find()
-        .where( actionUtil.parseCriteria(req) )
-        .limit( actionUtil.parseLimit(req) )
-        .skip( actionUtil.parseSkip(req) )
-        .sort( actionUtil.parseSort(req) )
-        .populate('author')
-        .populate('views')
-        .populate('votes')
-        .populate('comments')
-        .populate('trials')
-        .exec( function(err, foundRecipes) {
-            if(err){ return next(err); }
+            .where(actionUtil.parseCriteria(req))
+            .limit(actionUtil.parseLimit(req))
+            .skip(actionUtil.parseSkip(req))
+            .sort(actionUtil.parseSort(req))
+            .populate('author')
+            .populate('views')
+            .populate('votes')
+            .populate('comments')
+            .populate('trials')
+            .exec(function (err, foundRecipes) {
+                if (err) { return next(err); }
             
-            // array di appoggio
-            var recipes = new Array();
+                // array di appoggio
+                var recipes = new Array();
             
-            // conto gli elementi delle collection
-            for (var i in foundRecipes) {
-                foundRecipes[i].viewsCount = foundRecipes[i].views.length;
-                foundRecipes[i].votesCount = foundRecipes[i].votes.length;
-                foundRecipes[i].commentsCount = foundRecipes[i].comments.length;
-                foundRecipes[i].trialsCount = foundRecipes[i].trials.length;
+                // conto gli elementi delle collection
+                for (var i in foundRecipes) {
+                    foundRecipes[i].viewsCount = foundRecipes[i].views.length;
+                    foundRecipes[i].votesCount = foundRecipes[i].votes.length;
+                    foundRecipes[i].commentsCount = foundRecipes[i].comments.length;
+                    foundRecipes[i].trialsCount = foundRecipes[i].trials.length;
 
-                /**
-                 * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
-                 * delle associazioni vengono automaticamente tolte quando si esegue
-                 * il seguente metodo.
-                 */
-                var obj = foundRecipes[i].toObject();
-                delete obj.description;// tolgo la descrizione della ricetta
-                recipes.push(obj);
-            }
-            return res.json(recipes);
-        });
+                    /**
+                     * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
+                     * delle associazioni vengono automaticamente tolte quando si esegue
+                     * il seguente metodo.
+                     */
+                    var obj = foundRecipes[i].toObject();
+                    delete obj.description;// tolgo la descrizione della ricetta
+                    recipes.push(obj);
+                }
+                return res.json(recipes);
+            });
     },
 
-     /**
-     * @api {get} /recipe/:id Get a Recipe
-     * @apiName GetRecipe
-     * @apiGroup Recipe
-     *
-     * @apiDescription Serve per caricare tutti i dettagli di una ricetta.
-     *
-     * @apiParam {String} id Recipe id.
-     *
-     * @apiSuccess {json} recipe JSON that represents the recipe object.
-     *
-     * @apiSuccessExample {json} Success-Response-Example:
-     *     HTTP/1.1 200 OK
-     *     {
-     *     "recipe": 
-     *       {
-     *         "createdAt": "2015-08-11T18:58:46.329Z",
-     *         "updatedAt": "2015-08-11T18:58:46.329Z",
-     *         "id": "55ca45e69b4246110b319cb1"
-     *       }
-     *     }
-     *
-     * @apiErrorExample Error-Response:
-     *     HTTP/1.1 404 Not Found
-     */
+    /**
+    * @api {get} /recipe/:id Get a Recipe
+    * @apiName GetRecipe
+    * @apiGroup Recipe
+    *
+    * @apiDescription Serve per caricare tutti i dettagli di una ricetta.
+    *
+    * @apiParam {String} id Recipe id.
+    *
+    * @apiSuccess {json} recipe JSON that represents the recipe object.
+    *
+    * @apiSuccessExample {json} Success-Response-Example:
+    *     HTTP/1.1 200 OK
+    *     {
+    *     "recipe": 
+    *       {
+    *         "createdAt": "2015-08-11T18:58:46.329Z",
+    *         "updatedAt": "2015-08-11T18:58:46.329Z",
+    *         "id": "55ca45e69b4246110b319cb1"
+    *       }
+    *     }
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 404 Not Found
+    */
 
     /**
      * @api {post} /recipe Create a new Recipe
@@ -199,19 +200,19 @@ module.exports = {
      * @apiUse InvalidTokenError
      */
     create: function (req, res, next) {
-      var user = req.payload;
+        var user = req.payload;
 
-      var recipe = req.body;
-      // setto l'autore della ricetta
-      recipe.author = user;
-      // tolgo dall'oggetto ricetta elementi 'particolari'
-      //delete recipe.coverImageUrl;
-      delete recipe.coverImageFd;
+        var recipe = req.body;
+        // setto l'autore della ricetta
+        recipe.author = user;
+        // tolgo dall'oggetto ricetta elementi 'particolari'
+        //delete recipe.coverImageUrl;
+        delete recipe.coverImageFd;
 
-      Recipe.create(recipe).exec(function(err, recipe){
-        if(err){ return next(err); }
-        return res.json(recipe);
-      });
+        Recipe.create(recipe).exec(function (err, recipe) {
+            if (err) { return next(err); }
+            return res.json(recipe);
+        });
     },
     
     /**
@@ -264,9 +265,9 @@ module.exports = {
      */
     uploadCoverImage: function (req, res) {
         var recipe = req.recipe;
-        
+
         var coverImage = req.file('coverImage');
-        if(!coverImage) {return res.badRequest('No file was found'); }
+        if (!coverImage) { return res.badRequest('No file was found'); }
 
         coverImage.upload({
             // don't allow the total upload size to exceed ~10MB
@@ -277,11 +278,11 @@ module.exports = {
             if (err) {
                 return res.negotiate(err);
             }
-            
+
             console.log(uploadedFiles[0]);
         
             // If no files were uploaded, respond with an error.
-            if (uploadedFiles.length === 0){
+            if (uploadedFiles.length === 0) {
                 return res.badRequest('No file was uploaded');
             }
             
@@ -296,10 +297,10 @@ module.exports = {
                 // Grab the first file and use it's `fd` (file descriptor)
                 coverImageFd: uploadedFiles[0].fd
             })
-            .exec(function (err, updatedRecipes) {
-                if (err) return res.negotiate(err);
+                .exec(function (err, updatedRecipes) {
+                    if (err) return res.negotiate(err);
                     return res.json(updatedRecipes[0]);
-            });
+                });
         });
     },
 
@@ -380,35 +381,35 @@ module.exports = {
      * @apiUse NoPermissionError
      */
     
-     /**
-     * @api {get} /recipe/categories Get all recipe cetegories
-     * @apiName GetRecipeCategories
-     * @apiGroup Recipe
-     *
-     * @apiDescription Serve per ottenere la lista delle categorie di ricette.
-     * 
-     * @apiSuccess {json} recipe JSON that represents the recipe categories object.
-     *
-     * @apiSuccessExample {json} Success-Response-Example:
-     *     HTTP/1.1 200 OK
-     *     {
-     *          "type": "string",
-     *          "enum": [
-     *               "first courses",
-     *               "second courses",
-     *               "soups",
-     *               "salads",
-     *               "appetizers and snacks",
-     *               "desserts and cakes",
-     *               "beverages",
-     *               "cocktails",
-     *               "side dishes",
-     *               "jams and preserves",
-     *               "sauces"
-     *          ]
-     *      }
-     *
-     */
+    /**
+    * @api {get} /recipe/categories Get all recipe cetegories
+    * @apiName GetRecipeCategories
+    * @apiGroup Recipe
+    *
+    * @apiDescription Serve per ottenere la lista delle categorie di ricette.
+    * 
+    * @apiSuccess {json} recipe JSON that represents the recipe categories object.
+    *
+    * @apiSuccessExample {json} Success-Response-Example:
+    *     HTTP/1.1 200 OK
+    *     {
+    *          "type": "string",
+    *          "enum": [
+    *               "first courses",
+    *               "second courses",
+    *               "soups",
+    *               "salads",
+    *               "appetizers and snacks",
+    *               "desserts and cakes",
+    *               "beverages",
+    *               "cocktails",
+    *               "side dishes",
+    *               "jams and preserves",
+    *               "sauces"
+    *          ]
+    *      }
+    *
+    */
     getRecipeCategories: function (req, res) {
         return res.json(sails.models.recipe.definition.category);
     },
@@ -439,27 +440,51 @@ module.exports = {
     },
     
     /**
-     * Upload avatar for currently logged-in user
-     *
-    * (POST /recipe/:recipe/image)
+    * @api {post} /recipe/image Upload a new image for a recipe
+    * @apiName UploadRecipeImage
+    * @apiGroup Recipe
+    *
+    * @apiDescription Serve per caricare una o più immagini ad una 
+    * data ricetta.
+    *
+    * (POST /recipe/image)
     */
     uploadImage: function (req, res) {
-        console.log("REQ FILE: "+req.file);
-        console.log("REQ: "+req);
+        // setting allowed file types
+        var allowedTypes = ['image/jpeg', 'image/png'];
+        // skipper default upload directory .tmp/uploads/
+        var allowedDir = "../../assets/images";
 
         req.file('avatar').upload({
             // don't allow the total upload size to exceed ~10MB
             maxBytes: 10000000,
             // put the image in the assets folder (only development)
-            dirname: sails.config.appPath + '/assets/images'
-        },function whenDone(err, uploadedFiles) {
+            dirname: sails.config.appPath + '/assets/images',
+            saveAs: function (file, cb) {
+                var d = new Date();
+                var extension = file.filename.split('.').pop();
+                
+                if (extension == 'blob') { extension = 'jpg'; }
+                // generating unique filename with extension
+                var uuid = md5(d.getMilliseconds()) + "." + extension;
+
+                // seperate allowed and disallowed file types
+                if (allowedTypes.indexOf(file.headers['content-type']) === -1) {
+                    // save as disallowed files default upload path
+                    cb(null, uuid);
+                } else {
+                    // save as allowed files
+                    cb(null, allowedDir + "/" + uuid);
+                }
+            }
+        }, function whenDone(err, uploadedFiles) {
             if (err) {
-            return res.negotiate(err);
+                return res.negotiate(err);
             }
 
             // If no files were uploaded, respond with an error.
-            if (uploadedFiles.length === 0){
-            return res.badRequest('No file was uploaded');
+            if (uploadedFiles.length === 0) {
+                return res.badRequest('No file was uploaded');
             }
             
             // get the file name from a path
@@ -467,24 +492,8 @@ module.exports = {
             var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
             console.log(fileUrl);
             return res.ok(fileUrl);
-
-            /*
-            // Save the "fd" and the url where the avatar for a user can be accessed
-            User.update(req.session.me, {
-
-            // Generate a unique URL where the avatar can be downloaded.
-            avatarUrl: require('util').format('%s/user/avatar/%s', sails.getBaseUrl(), req.session.me),
-
-            // Grab the first file and use it's `fd` (file descriptor)
-            avatarFd: uploadedFiles[0].fd
-            })
-            .exec(function (err){
-            if (err) return res.negotiate(err);
-            return res.ok();
-            });
-            */
         });
     },
-	
+
 };
 

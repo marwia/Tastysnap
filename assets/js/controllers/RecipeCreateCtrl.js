@@ -56,7 +56,8 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             category: "",
             description: "",
             coverImageUrl: "",
-            dominantColor: ""
+            dominantColor: "",
+            blurredCoverImageUrl: "",
         };
 		
         // TODO: bisogna memorizzare degli oggetti più complessi...
@@ -139,72 +140,48 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         uploader.onAfterAddingFile = function (fileItem) {
             console.info('onAfterAddingFile', fileItem);
-            // era qui...
-        };
-
-        uploader.onAfterAddingAll = function (addedFileItems) {
-            console.info('onAfterAddingAll', addedFileItems);
-           
             /*
             * Il seguente codice viene eseguito dopo che un file è stato
             * aggiunto alla coda e serve a ridimensionare l'immagine
             * e ridurre la sua qualità.
             */
-            var file = addedFileItems[0]._file;
-            var dataUrl = "";
-            // Create an image
-            var img = document.createElement("img");
+            var file = fileItem._file;
+            
+            // Crea il canvas
+            var canvas = document.createElement("canvas");
             // Create a file reader
             var reader = new FileReader();
+            
             // Set the image once loaded into file reader
             reader.onload = function (e) {
+                // Create an image
+                var img = document.createElement("img");
+                img.onload = onLoadImage;
                 img.src = e.target.result;
+            }
 
-                var canvas = document.createElement("canvas");
-                //var canvas = $("<canvas>", {"id":"testing"})[0];
-                var ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0);
-        
-                // Set Width and Height
-                var MAX_WIDTH = 1024;
-                var MAX_HEIGHT = 1024;
-                var width = img.width;
-                var height = img.height;
+            reader.readAsDataURL(file);
 
-                if (width > height) {
-                    if (width > MAX_WIDTH) {
-                        height *= MAX_WIDTH / width;
-                        width = MAX_WIDTH;
-                    }
-                } else {
-                    if (height > MAX_HEIGHT) {
-                        width *= MAX_HEIGHT / height;
-                        height = MAX_HEIGHT;
-                    }
-                }
-                canvas.width = width;
-                canvas.height = height;
-                var ctx = canvas.getContext("2d");
-                // Transofm the file to Canvas
-                ctx.drawImage(img, 0, 0, width, height);
-
-                dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+            function onLoadImage() {
+                // Setta le massime dimensioni
+                var sizes = setImageSize(this, 1024, 1024);
+                canvas.width = sizes.width;
+                canvas.height = sizes.height;
+                
+                // Trasforma il file in canvas
+                canvas.getContext("2d").drawImage(this, 0, 0, sizes.width, sizes.height);
+                
+                // Comprimi il canvas in JPEG e riduci qualità
+                var dataUrl = canvas.toDataURL("image/jpeg", 0.7);
                 
                 // Transofm to blob
                 var blob = dataURItoBlob(dataUrl);
-                if (blob.size == 0) {
-                    alert("Errore nel blob!");
-                }
-                addedFileItems[0]._file = blob;
-
+                fileItem._file = blob;
             }
-            // Load files into file reader
-            //code before the pause
-            setTimeout(function () {
-                //do what you need here
-                reader.readAsDataURL(file);
-            }, 2000);
+        };
 
+        uploader.onAfterAddingAll = function (addedFileItems) {
+            console.info('onAfterAddingAll', addedFileItems);
         };
 
         uploader.onBeforeUploadItem = function (item) {
@@ -242,13 +219,76 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             
             // ottengo il colore dominante dell'immagine di copertina
             $scope.getCoverImageDominanatColor();
-            // dopo aver caricato le immagini carico la ricetta
-            Recipe.create($scope.recipeToCreate, function (response) {
-                $state.go('dashboard');
-            });
+            
+            // prendo la prima immagine
+            var file = uploader.queue[0]._file;
+
+            // Crea il canvas
+            var canvas = document.createElement("canvas");
+            // Create a file reader
+            var reader = new FileReader();
+            // Set the image once loaded into file reader
+            reader.onload = function (e) {
+                // Create an image
+                var img = document.createElement("img");
+                img.onload = onLoadImage;
+                img.src = e.target.result;
+            }
+
+            reader.readAsDataURL(file);
+
+            function onLoadImage() {
+                canvas.width = this.width;
+                canvas.height = this.height;
+                
+                // Aggiungo la sfocatura e trasferisco l'immagine sul canvas
+                StackBlur.image(this, canvas, 70, false);
+
+                // Comprimi il canvas in JPEG e riduci qualità
+                var dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+
+                // Transofm to blob
+                var blob = dataURItoBlob(dataUrl);
+
+                Recipe.uploadBlurImage(blob, function (response) {
+                    console.info("ok")
+                    $scope.recipeToCreate.blurredCoverImageUrl = response;
+                    // dopo aver caricato le immagini carico la ricetta
+                    Recipe.create($scope.recipeToCreate, function (response) {
+                        $state.go('dashboard');
+                    });
+                }, function (response) {
+                    console.info("error", response)
+                });
+            }
         };
 
         console.info('uploader', uploader);
+        
+        
+        // Helpers
+
+        /**
+         * Ricava le dimensioni dell'immagine riducendola proporzionalmente.
+         */
+        var setImageSize = function (img, MAX_WIDTH, MAX_HEIGHT) {
+            var width = img.width;
+            var height = img.height;
+
+            if (width > height) {
+                if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                }
+            } else {
+                if (height > MAX_HEIGHT) {
+                    width *= MAX_HEIGHT / height;
+                    height = MAX_HEIGHT;
+                }
+            }
+
+            return { width: width, height: height };
+        }
         
         /**
          * Converts data uri to Blob. Necessary for uploading.

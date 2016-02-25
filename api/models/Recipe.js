@@ -61,6 +61,9 @@ module.exports = {
     coverImageFd : { type: 'String' },
     
     dominantColor : { type: 'String', hexColor: true },
+    
+    // Url which represents the blurred main image of the recipe
+    blurredCoverImageUrl : { type: 'String', url: true },
 
     // Reference to User
     author : { 
