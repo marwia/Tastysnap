@@ -57,13 +57,13 @@ module.exports = {
     
     // Url which represents the main image of the recipe
     coverImageUrl : { type: 'String', url: true },
-    // cover image file descriptor (full image path)
-    coverImageFd : { type: 'String' },
     
     dominantColor : { type: 'String', hexColor: true },
     
     // Url which represents the blurred main image of the recipe
     blurredCoverImageUrl : { type: 'String', url: true },
+    
+    otherImageUrl : { type: 'Array' },
 
     // Reference to User
     author : { 

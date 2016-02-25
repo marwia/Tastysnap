@@ -214,95 +214,6 @@ module.exports = {
             return res.json(recipe);
         });
     },
-    
-    /**
-     * @api {put} /recipe/:recipe/upload_cover_image Upload the cover image
-     * @apiName UploadCoverImage
-     * @apiGroup Recipe
-     *
-     * @apiDescription Serve per caricare l'immagine principale per una ricetta
-     * Ogni richiesta necessità di autenticazione e di essere l'autore della
-     * ricetta che si sta modificando.
-     * Le richieste devono essere con codifica <strong>
-     * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
-     *
-     * @apiUse TokenHeader
-     *
-     * @apiParam {File} coverImage Cover image file.
-     *
-     * @apiSuccess {json} recipe JSON that represents the recipe object.
-     *
-     * @apiSuccessExample {json} Success-Response-Example:
-     *     HTTP/1.1 200 OK
-     *     {
-     *     "recipe": 
-     *       {
-     *         "createdAt": "2015-08-11T18:58:46.329Z",
-     *         "updatedAt": "2015-08-11T18:58:46.329Z",
-     *         "id": "55ca45e69b4246110b319cb1"
-     *       }
-     *     }
-     *
-     * @apiUse TokenFormatError
-     *
-     * @apiUse NoAuthHeaderError
-     *
-     * @apiUse InvalidTokenError
-     * 
-     * @apiError message Breve descrizione dell'errore che ha riscontrato il server.
-     *
-     * @apiErrorExample Error-Response:
-     *     HTTP/1.1 400 Bad Request
-     *     {
-     *       "message": "No file was found"
-     *     }
-     * 
-     * @apiErrorExample Error-Response:
-     *     HTTP/1.1 400 Bad Request
-     *     {
-     *       "message": "No file was uploaded"
-     *     }
-     */
-    uploadCoverImage: function (req, res) {
-        var recipe = req.recipe;
-
-        var coverImage = req.file('coverImage');
-        if (!coverImage) { return res.badRequest('No file was found'); }
-
-        coverImage.upload({
-            // don't allow the total upload size to exceed ~10MB
-            maxBytes: 10000000,
-            // put the image in the assets folder (only development)
-            dirname: sails.config.appPath + '/assets/images'
-        }, function whenDone(err, uploadedFiles) {
-            if (err) {
-                return res.negotiate(err);
-            }
-
-            console.log(uploadedFiles[0]);
-        
-            // If no files were uploaded, respond with an error.
-            if (uploadedFiles.length === 0) {
-                return res.badRequest('No file was uploaded');
-            }
-            
-            // get the file name from a path
-            var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
-            // Save the "fd" and the url where the avatar for a user can be accessed
-            Recipe.update(recipe.id, {
-                
-                // Generate a unique URL where the avatar can be downloaded.
-                coverImageUrl: require('util').format('%s%s', sails.getBaseUrl(), '/assets/images/' + filename),
-            
-                // Grab the first file and use it's `fd` (file descriptor)
-                coverImageFd: uploadedFiles[0].fd
-            })
-                .exec(function (err, updatedRecipes) {
-                    if (err) return res.negotiate(err);
-                    return res.json(updatedRecipes[0]);
-                });
-        });
-    },
 
     /**
      * @api {delete} /recipe Delete a Recipe
@@ -439,39 +350,140 @@ module.exports = {
         return res.json(sails.models.recipe.definition.dosagesType);
     },
     
-    /**
-    * @api {post} /recipe/image Upload a new image for a recipe
-    * @apiName UploadRecipeImage
-    * @apiGroup Recipe
-    *
-    * @apiDescription Serve per caricare una o più immagini ad una 
-    * data ricetta.
-    *
-    * (POST /recipe/image)
-    */
-    uploadImage: function (req, res) {
-        // setting allowed file types
-        var allowedTypes = ['image/jpeg', 'image/png'];
-        // skipper default upload directory .tmp/uploads/
-        var allowedDir = "../../assets/images";
+    /********************************************************************************************
+     * 
+     *                          UPLOADING DELLE IMMAGINI PER LE RICETTE
+     * 
+     ********************************************************************************************/
+     
+     /**
+     * @api {put} /recipe/:recipe/upload_cover_image Upload the cover image
+     * @apiName UploadCoverImage
+     * @apiGroup Recipe
+     *
+     * @apiDescription Serve per caricare l'immagine principale per una ricetta
+     * Ogni richiesta necessità di autenticazione e di essere l'autore della
+     * ricetta che si sta modificando.
+     * Le richieste devono essere con codifica <strong>
+     * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
+     *
+     * @apiUse TokenHeader
+     *
+     * @apiParam {File} coverImage Cover image file.
+     *
+     * @apiSuccess {json} recipe JSON that represents the recipe object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+     *     "recipe": 
+     *       {
+     *         "createdAt": "2015-08-11T18:58:46.329Z",
+     *         "updatedAt": "2015-08-11T18:58:46.329Z",
+     *         "id": "55ca45e69b4246110b319cb1"
+     *       }
+     *     }
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     * 
+     * @apiError message Breve descrizione dell'errore che ha riscontrato il server.
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 400 Bad Request
+     *     {
+     *       "message": "No file was found"
+     *     }
+     * 
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 400 Bad Request
+     *     {
+     *       "message": "No file was uploaded"
+     *     }
+     */
+    uploadCoverImage: function (req, res) {
+        var recipe = req.recipe;
 
-        req.file('avatar').upload({
+        var coverImage = req.file('image');
+        if (!coverImage) { return res.badRequest('No file was found'); }
+
+        coverImage.upload({
             // don't allow the total upload size to exceed ~10MB
             maxBytes: 10000000,
-            // put the image in the assets folder (only development)
-            dirname: sails.config.appPath + '/assets/images',
             saveAs: function (file, cb) {
                 var d = new Date();
                 var extension = file.filename.split('.').pop();
-                
+
                 if (extension == 'blob') { extension = 'jpg'; }
                 // generating unique filename with extension
                 var uuid = md5(d.getMilliseconds()) + "." + extension;
 
+                console.log(file.headers['content-type']);
                 // seperate allowed and disallowed file types
                 if (allowedTypes.indexOf(file.headers['content-type']) === -1) {
-                    // save as disallowed files default upload path
-                    cb(null, uuid);
+                    // don't accept not allowed file types
+                    return res.badRequest('Not supported file type');
+                } else {
+                    // save as allowed files
+                    cb(null, allowedDir + "/" + uuid);
+                }
+            }
+        }, function whenDone(err, uploadedFiles) {
+            if (err) { return res.negotiate(err); }
+        
+            // If no files were uploaded, respond with an error.
+            if (uploadedFiles.length === 0) { return res.badRequest('No file was uploaded'); }
+            
+            // get the file name from a path
+            var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
+            var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
+            
+            Recipe.update(recipe.id, {
+                
+                // Generate a unique URL where the avatar can be downloaded.
+                coverImageUrl: fileUrl,
+                
+            }).exec(function (err, updatedRecipes) {
+                    if (err) return res.negotiate(err);
+                    return res.json(updatedRecipes[0]);
+                });
+        });
+    },
+
+    
+    /**
+    * @api {put} /recipe/:recipe/upload_blurred_cover_image Upload a new image for a recipe
+    * @apiName UploadBlurredRecipeImage
+    * @apiGroup Recipe
+    *
+    * @apiDescription Serve per caricare l'immagine di copertina sfocata.
+    *
+    */
+    uploadBlurredCoverImage: function (req, res) {
+        var recipe = req.recipe;
+        
+        var blurredCoverImage = req.file('image');
+        if (!blurredCoverImage) { return res.badRequest('No file was found'); }
+        
+        blurredCoverImage.upload({
+            // don't allow the total upload size to exceed ~10MB
+            maxBytes: 10000000,
+            saveAs: function (file, cb) {
+                var d = new Date();
+                var extension = file.filename.split('.').pop();
+
+                if (extension == 'blob') { extension = 'jpg'; }
+                // generating unique filename with extension
+                var uuid = md5(d.getMilliseconds()) + "." + extension;
+
+                console.log(file.headers['content-type']);
+                // seperate allowed and disallowed file types
+                if (allowedTypes.indexOf(file.headers['content-type']) === -1) {
+                    // don't accept not allowed file types
+                    return res.badRequest('Not supported file type');
                 } else {
                     // save as allowed files
                     cb(null, allowedDir + "/" + uuid);
@@ -491,9 +503,28 @@ module.exports = {
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
             var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
             console.log(fileUrl);
-            return res.ok(fileUrl);
+            
+            Recipe.update(recipe.id, {
+                
+                // Generate a unique URL where the avatar can be downloaded.
+                blurredCoverImageUrl: fileUrl,
+                
+            }).exec(function (err, updatedRecipes) {
+                    if (err) return res.negotiate(err);
+                    return res.json(updatedRecipes[0]);
+                });
         });
-    },
+    }
+
 
 };
+
+/**
+ * Codice in comune
+ */
+    
+// setting allowed file types
+var allowedTypes = ['image/jpeg', 'image/png'];
+// skipper default upload directory .tmp/uploads/
+var allowedDir = sails.config.appPath + "/assets/images";
 

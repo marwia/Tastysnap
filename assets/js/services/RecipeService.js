@@ -102,12 +102,14 @@ angular.module('RecipeService', [])
          * Servizio per caricare l'immagine sfocata della ricetta.
          * Attenzione non funziona con IE <= 9
          */
-        o.uploadBlurImage = function (file, successCallback, errorCallback) {
+        o.uploadBlurImage = function (file, recipe, successCallback, errorCallback) {
 
             var fd = new FormData();
-            fd.append('avatar', file);
+            fd.append('image', file);
+            
+            var url = server_prefix + "/recipe/"+ recipe.id + "/upload_blurred_cover_image";
 
-            $http.post(server_prefix + "/recipe/image", fd, {
+            $http.put(url, fd, {
                 transformRequest: angular.identity,
                 headers: { 
                     'Content-Type': undefined,

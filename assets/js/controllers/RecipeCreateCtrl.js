@@ -29,13 +29,14 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         
         // Ritorna il colore dominante del canvas che contiene
         // la prima delle immagini caricate
-        $scope.getCoverImageDominanatColor = function () {
-            var coverImageCanvas = angular.element($('#myCanvas'))[0];// analizzo la prima immagine...
-            console.log(coverImageCanvas);// test
+        $scope.getCoverImageDominanatColor = function (canvas) {
+            //var coverImageCanvas = angular.element($('#myCanvas'))[0];// analizzo la prima immagine...
+            //console.log(coverImageCanvas);// test
             var colorThief = new ColorThief();
-            console.log(colorThief.getColor(coverImageCanvas));// test
-            $scope.recipeToCreate.dominantColor = $scope.rgbToHex(colorThief.getColor(coverImageCanvas))
-            console.log($scope.rgbToHex($scope.recipeToCreate.dominantColor))// test
+            //console.log(colorThief.getColor(coverImageCanvas));// test
+            $scope.recipeToCreate.dominantColor = $scope.rgbToHex(colorThief.getColor(canvas))
+            console.log($scope.recipeToCreate.dominantColor);
+            //console.log($scope.rgbToHex($scope.recipeToCreate.dominantColor))// test
         };
 
         /**
@@ -109,14 +110,20 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
          * Esegui l'upload di tutte le immagini in attesa di upload.
          */
         $scope.uploadAllImages = function () {
-            uploader.uploadAll();
+            
+            Recipe.create($scope.recipeToCreate, function (response) {
+                $scope.recipeToCreate = response.data;
+                
+                // carico l'immagine di copertina
+                coverImageUploader.uploadAll();
+            });
         };
         
         // File uploading (configuration)
         
-        var uploader = $scope.uploader = new FileUploader({
-            url: '/api/v1/recipe/image',
-            alias: 'avatar',
+        var coverImageUploader = $scope.uploader = new FileUploader({
+            alias: 'image',
+            method: 'put',
             headers: {
                 Authorization: 'Bearer ' + Auth.getToken(),
                 'x-csrf-token': $http.defaults.headers.common['x-csrf-token']
@@ -125,20 +132,23 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         // FILTERS
 
-        uploader.filters.push({
+        coverImageUploader.filters.push({
             name: 'customFilter',
             fn: function (item /*{File|FileLikeObject}*/, options) {
-                return this.queue.length < 10;
+                var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+
+                return '|jpg|png|jpeg|'.indexOf(type) !== -1
+                    && this.queue.length < 1; // max 1 image
             }
         });
 
         // CALLBACKS
 
-        uploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {
+        coverImageUploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {
             console.info('onWhenAddingFileFailed', item, filter, options);
         };
 
-        uploader.onAfterAddingFile = function (fileItem) {
+        coverImageUploader.onAfterAddingFile = function (fileItem) {
             console.info('onAfterAddingFile', fileItem);
             /*
             * Il seguente codice viene eseguito dopo che un file è stato
@@ -171,6 +181,9 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 // Trasforma il file in canvas
                 canvas.getContext("2d").drawImage(this, 0, 0, sizes.width, sizes.height);
                 
+                // ottengo il colore dominante dell'immagine di copertina
+                $scope.getCoverImageDominanatColor(canvas);
+                
                 // Comprimi il canvas in JPEG e riduci qualità
                 var dataUrl = canvas.toDataURL("image/jpeg", 0.7);
                 
@@ -180,49 +193,45 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             }
         };
 
-        uploader.onAfterAddingAll = function (addedFileItems) {
+        coverImageUploader.onAfterAddingAll = function (addedFileItems) {
             console.info('onAfterAddingAll', addedFileItems);
         };
 
-        uploader.onBeforeUploadItem = function (item) {
+        coverImageUploader.onBeforeUploadItem = function (item) {
             console.info('onBeforeUploadItem', item);
+            // aggiorno dinamicamente l'url per l'upload
+            item.url = '/api/v1/recipe/' + $scope.recipeToCreate.id + '/upload_cover_image';
         };
 
-        uploader.onProgressItem = function (fileItem, progress) {
+        coverImageUploader.onProgressItem = function (fileItem, progress) {
             console.info('onProgressItem', fileItem, progress);
         };
 
-        uploader.onProgressAll = function (progress) {
+        coverImageUploader.onProgressAll = function (progress) {
             console.info('onProgressAll', progress);
         };
 
-        uploader.onSuccessItem = function (fileItem, response, status, headers) {
+        coverImageUploader.onSuccessItem = function (fileItem, response, status, headers) {
             console.info('onSuccessItem', fileItem, response, status, headers);
-            // salvo il nome che il server ha dato al file
-            $scope.recipeToCreate.coverImageUrl = response;
         };
 
-        uploader.onErrorItem = function (fileItem, response, status, headers) {
+        coverImageUploader.onErrorItem = function (fileItem, response, status, headers) {
             console.info('onErrorItem', fileItem, response, status, headers);
         };
 
-        uploader.onCancelItem = function (fileItem, response, status, headers) {
+        coverImageUploader.onCancelItem = function (fileItem, response, status, headers) {
             console.info('onCancelItem', fileItem, response, status, headers);
         };
 
-        uploader.onCompleteItem = function (fileItem, response, status, headers) {
+        coverImageUploader.onCompleteItem = function (fileItem, response, status, headers) {
             console.info('onCompleteItem', fileItem, response, status, headers);
         };
 
-        uploader.onCompleteAll = function () {
+        coverImageUploader.onCompleteAll = function () {
             console.info('onCompleteAll');
             
-            // ottengo il colore dominante dell'immagine di copertina
-            $scope.getCoverImageDominanatColor();
-            
             // prendo la prima immagine
-            var file = uploader.queue[0]._file;
-
+            var file = coverImageUploader.queue[0]._file;
             // Crea il canvas
             var canvas = document.createElement("canvas");
             // Create a file reader
@@ -250,20 +259,18 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 // Transofm to blob
                 var blob = dataURItoBlob(dataUrl);
 
-                Recipe.uploadBlurImage(blob, function (response) {
+                Recipe.uploadBlurImage(blob, $scope.recipeToCreate, function (response) {
                     console.info("ok")
-                    $scope.recipeToCreate.blurredCoverImageUrl = response;
-                    // dopo aver caricato le immagini carico la ricetta
-                    Recipe.create($scope.recipeToCreate, function (response) {
-                        $state.go('dashboard');
-                    });
+                    $scope.recipeToCreate = response.data;
+                    
+                    $state.go("dashboard.home");
                 }, function (response) {
                     console.info("error", response)
                 });
             }
         };
 
-        console.info('uploader', uploader);
+        console.info('uploader', coverImageUploader);
         
         
         // Helpers

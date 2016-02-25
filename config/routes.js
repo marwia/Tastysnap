@@ -142,14 +142,16 @@ var apiRoutes = addGlobalPrefix({
   
   // definisco solo le azioni non standard
   
-  'put /recipe/:id/upload_cover_image': 'RecipeController.uploadCoverImage',
+  'put /recipe/:recipe/upload_cover_image': 'RecipeController.uploadCoverImage',
+  
+  'put /recipe/:recipe/upload_blurred_cover_image': 'RecipeController.uploadBlurredCoverImage',
+  
+  'put /recipe/:recipe/upload_image': 'RecipeController.uploadImage',
   
   'get /recipe/categories': 'RecipeController.getRecipeCategories',
   
   'get /recipe/dosage_types': 'RecipeController.getRecipeDosageTypes',
   
-  'post /recipe/image': 'RecipeController.uploadImage',
-
   /***************************************************************************
   *                                                                          *
   * Voti a ricette.                                                          *

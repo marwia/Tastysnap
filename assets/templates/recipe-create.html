@@ -1,3 +1,9 @@
+<style>
+    .c_recipe_row {
+        background-color: {{recipeToCreate.dominantColor}};
+    }
+    </style>
+
 <div class="tasty_container tasty_container_margin">
 <div class="panel panel-default no-border">
     <div class="panel-body no-padding">
@@ -28,7 +34,7 @@
         <div class="row c_recipe_row">
             <!-- foto -->
             <div class="col-md-4 c_recipe_left">
-                <span>Foto</span>
+                <span>Immagine di copertina</span>
             </div>
             <!-- Carica immagini -->
             <div class="col-md-8 c_recipe_right">
@@ -36,7 +42,7 @@
                     <div class="row">
                         <div class="col-xs-8">
                             <div class="fileUpload btn btn-primary">
-                                <span>Aggiungi immagine</span>
+                                <span>Seleziona immagine</span>
                                 <input type="file" class="upload" nv-file-select="" uploader="uploader" />
                             </div>
                         </div>
@@ -49,7 +55,7 @@
         <div class="row c_recipe_row">
             <!-- colore domaninate -->
             <div class="col-md-4 c_recipe_left">
-                <span>Immagini selezionate</span>
+                <span>Immagine selezionata</span>
                 <p>Numero: {{ uploader.queue.length }}</p>
             </div>
             <!-- Carica immagini -->
