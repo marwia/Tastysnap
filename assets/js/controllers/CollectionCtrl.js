@@ -1,27 +1,26 @@
 /**
- * assets/js/controllers/RecipeCtrl.js
+ * assets/js/controllers/CollectionCtrl.js
  *
  * Mariusz Wiazowski
  *
- * Controller usato per interagire con le ricette.
+ * Controller usato per interagire con le collection.
  */
-angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
+angular.module('CollectionCtrl', []).controller('CollectionCtrl', [
     '$scope',
-    'Recipe',
-    'Auth',
     'Collection',
+    'Auth',
     '$uibModal',
     '$log',
     '$state', // gestione degli stati dell'app (ui-router)
     'User',
-    function ($scope, Recipe, Auth, Collection, $uibModal, $log, $state, User) {
+    function ($scope, Collection, Auth, $uibModal, $log, $state, User) {
 
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
         $scope.isLoggedIn = Auth.isLoggedIn;
 	
         // espongo allo scope le ricette del servizio Recipe
-        $scope.recipes = Recipe.recipes;
-        $scope.detailedRecipe = Recipe.detailedRecipe;
+        $scope.collections = Collection.collections;
+        $scope.detailedCollection = Collection.detailedCollection;
         
         // espongo i metodi del servizio User
         $scope.getUserProfileImage = User.getUserProfileImage;
@@ -29,15 +28,16 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
         /**
          * Verifica se l'utente loggatto attualmente è l'autore della ricetta.
          */
-        $scope.isRecipeAuthor = function (recipe) {
+        $scope.isCollectionAuthor = function (collection) {
             if (Auth.isLoggedIn) {
-                if (Auth.currentUser().id == recipe.author.id) {
+                if (Auth.currentUser().id == collection.author.id) {
                     return true;
                 }
             }
             return false;
         }
-
+        
+        /*
         $scope.deleteCurrentRecipe = function () {
             console.log("elimino la ricetta");
             Recipe.delete($scope.detailedRecipe.id,
@@ -46,8 +46,9 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 }, function (response) {
                     // errore
                 });
-        }
-    
+        }*/
+        
+        /*
         // materiale per la modale...
         $scope.items = ['item1', 'item2', 'item3'];
 
@@ -56,17 +57,14 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'templates/recipe_collection_selection_modal.html',
-                controller: 'CollectionSelectionModalCtrl',
+                controller: 'ModalInstanceCtrl',
                 // classe aggiuntiva a modal-dialog (ci imposto la dmensione) modal-add-recipe-to-collection
                 size: 'add-recipe-to-collection',
                 resolve: {
                     items: function () {
                         return $scope.items;
                     },
-                    selectedRecipe: selectedRecipe,
-                    collections: function () {
-                        return Collection.getUserCollections(Auth.currentUser.id);
-                    }
+                    selectedRecipe: selectedRecipe
                 }
             });
 
@@ -139,6 +137,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 size: ''
             });
         };
+        */
 
 
 
