@@ -1,10 +1,48 @@
 <div class="modal-header">
-    <h3 class="modal-title">Attenzione</h3>
+    <h3 class="modal-title text-center">Condividi <strong>{{ selectedRecipe.title }}</strong></h3>
 </div>
 <div class="modal-body">
-    Sei sicuro di voler condividere la ricetta?
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="ok()">OK <i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
-    <button class="btn btn-warning" type="button" ng-click="cancel()">Annulla</button>
+    
+    <!-- CONTINER CARD -->
+    <div class="col-xs-12 col-sm-5 col-md-5 text-center">
+        <!-- Anteprima della card che aggiungerò alla collection -->
+        <!-- basic card -->
+        <recipe-card recipe="selectedRecipe"></recipe-card> 
+        <!-- fine card -->
+    </div>
+    
+    <!-- CONTAINER LISTA COLLECTION -->
+    <div class="col-xs-12 col-sm-7 col-md-7">
+        <div class="container-fluid">
+            
+            <div class="row modal-add-recipe-to-collection_row">
+                
+                <!-- Condividi con Facebook -->
+                <div class="media modal-add-recipe-to-collection_media modal-add-recipe-to-collection_new_media">
+                    <div class="media-left media-middle">
+                        <a href="#">
+                            <div class="media-object modal-add-recipe-to-collection_img img-circle" style="background-image:url('http://vignette2.wikia.nocookie.net/candy-crush-saga/images/e/e4/600px-Facebook_icon_2013.svg.png/revision/latest?cb=20140104072901')" title="Condividi su Facebook"></div>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading modal-add-recipe-to-collection_title">Condividi con Facebook</h4>
+                    </div>
+                </div>
+                
+                <!-- Condividi con Twitter -->
+                <div class="media modal-add-recipe-to-collection_media modal-add-recipe-to-collection_new_media">
+                    <div class="media-left media-middle">
+                        <a href="#">
+                            <div class="media-object modal-add-recipe-to-collection_img img-circle" style="background-image:url('http://vignette4.wikia.nocookie.net/simpsons/images/1/11/Twitter_bird_icon.png/revision/latest?cb=20111228065136')" title="Condividi su Twitter"></div>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading modal-add-recipe-to-collection_title">Condividi con Twitter</h4>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
 </div>
