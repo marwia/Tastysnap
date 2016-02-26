@@ -30,7 +30,29 @@
             </div>
         </div>
         
-        <!-- RIGA 3 - FOTO -->
+        <!-- RIGA 3 - TITOLO RICETTA -->
+        <div class="row c_recipe_row">
+            <!-- titolo ricetta -->
+            <div class="col-md-4 c_recipe_left">
+                <span>Titolo ricetta</span>
+            </div>
+            <div class="col-md-8 c_recipe_right">
+                <input type="text" class="form-control" name="title" ng-model="recipeToCreate.title" />
+            </div>
+        </div>
+        
+        <!-- RIGA 4 - CATEGORIA -->
+        <div class="row c_recipe_row">
+            <!-- categoria ricetta -->
+            <div class="col-md-4 c_recipe_left">
+                <span>Categoria</span>
+            </div>
+            <div class="col-md-8 c_recipe_right">
+                <my-dropdown data-menu-type="button" select-val="recipeToCreate.category = selectedVal" preselected-item="recipeCategories[0]" data-dropdown-data="recipeCategories"></my-dropdown>
+            </div>
+        </div>
+        
+        <!-- RIGA 5 - FOTO -->
         <div class="row c_recipe_row">
             <!-- foto -->
             <div class="col-md-4 c_recipe_left">
@@ -41,9 +63,12 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-xs-8">
-                            <div class="fileUpload btn btn-primary">
+                            <div nv-file-drop class="well my-drop-zone text-center" nv-file-over="" uploader="coverImageUploader">
+                                <h5>Trascina un'immagine oppure usa il seguente pulsante</h5>
+                                <div class="fileUpload btn btn-primary">
                                 <span>Seleziona immagine</span>
-                                <input type="file" class="upload" nv-file-select="" uploader="uploader" />
+                                <input type="file" class="upload" nv-file-select="" uploader="coverImageUploader" />
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -51,12 +76,12 @@
             </div>
         </div>
         
-        <!-- RIGA 5 - IMMAGINI SELEZIONATE -->
+        <!-- RIGA 6 - IMMAGINI SELEZIONATE -->
         <div class="row c_recipe_row">
             <!-- colore domaninate -->
             <div class="col-md-4 c_recipe_left">
                 <span>Immagine selezionata</span>
-                <p>Numero: {{ uploader.queue.length }}</p>
+                <p>Numero: {{ coverImageUploader.queue.length }}</p>
             </div>
             <!-- Carica immagini -->
             <div class="col-md-8 c_recipe_right">
@@ -64,19 +89,19 @@
                     <thead>
                         <tr>
                             <th width="50%">Nome</th>
-                            <th ng-show="uploader.isHTML5">Dimensioni</th>
-                            <th ng-show="uploader.isHTML5">Progesso</th>
+                            <th ng-show="coverImageUploader.isHTML5">Dimensioni</th>
+                            <th ng-show="coverImageUploader.isHTML5">Progesso</th>
                             <th>Stato</th>
                             <th>Azioni</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="item in uploader.queue">
+                        <tr ng-repeat="item in coverImageUploader.queue">
                             <td><strong>{{ item.file.name }}</strong>
-                            <div ng-show="uploader.isHTML5" ng-thumb="{ file: item._file, height: 50 }"></div>
+                            <div ng-show="coverImageUploader.isHTML5" ng-thumb="{ file: item._file, height: 50 }"></div>
                             </td>
-                            <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                            <td ng-show="uploader.isHTML5">
+                            <td ng-show="coverImageUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                            <td ng-show="coverImageUploader.isHTML5">
                                 <div class="progress" style="margin-bottom: 0;">
                                     <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
                                 </div>
@@ -97,29 +122,77 @@
             </div>
         </div>
         
-        <!-- RIGA 6 - TITOLO RICETTA -->
+        <!-- RIGA 5 - FOTO -->
         <div class="row c_recipe_row">
-            <!-- titolo ricetta -->
+            <!-- foto -->
             <div class="col-md-4 c_recipe_left">
-                <span>Titolo ricetta</span>
+                <span>Ulteriori immagini</span>
             </div>
+            <!-- Carica immagini -->
             <div class="col-md-8 c_recipe_right">
-                <input type="text" class="form-control" name="title" ng-model="recipeToCreate.title" />
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div nv-file-drop class="well my-drop-zone text-center" nv-file-over="" uploader="otherImageUploader">
+                                <h5>Trascina un'immagine oppure usa il seguente pulsante</h5>
+                                <div class="fileUpload btn btn-primary">
+                                <span>Seleziona immagine</span>
+                                <input type="file" class="upload" nv-file-select="" uploader="otherImageUploader" />
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
-        <!-- RIGA 7 - CATEGORIA -->
+        <!-- RIGA 6 - IMMAGINI SELEZIONATE -->
         <div class="row c_recipe_row">
-            <!-- categoria ricetta -->
+            <!-- colore domaninate -->
             <div class="col-md-4 c_recipe_left">
-                <span>Categoria</span>
+                <span>Immagine selezionata</span>
+                <p>Numero: {{ otherImageUploader.queue.length }}</p>
             </div>
+            <!-- Carica immagini -->
             <div class="col-md-8 c_recipe_right">
-                <my-dropdown data-menu-type="button" select-val="recipeToCreate.category = selectedVal" preselected-item="recipeCategories[0]" data-dropdown-data="recipeCategories"></my-dropdown>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="50%">Nome</th>
+                            <th ng-show="otherImageUploader.isHTML5">Dimensioni</th>
+                            <th ng-show="otherImageUploader.isHTML5">Progesso</th>
+                            <th>Stato</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in otherImageUploader.queue">
+                            <td><strong>{{ item.file.name }}</strong>
+                            <div ng-show="otherImageUploader.isHTML5" ng-thumb="{ file: item._file, height: 50 }"></div>
+                            </td>
+                            <td ng-show="otherImageUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                            <td ng-show="otherImageUploader.isHTML5">
+                                <div class="progress" style="margin-bottom: 0;">
+                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                            </td>
+                            <td nowrap>
+                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                    <span class="glyphicon glyphicon-trash"></span> Rimuovi
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         
-        <!-- RIGA 7.5 - INGREDIENTI -->
+        <!-- RIGA 7 - INGREDIENTI -->
         <div class="row c_recipe_row">
             <!-- vuoto -->
             <div class="col-md-4 c_recipe_left"></div>
@@ -272,76 +345,3 @@
     <!-- /panel-body -->
 </div>
 <!-- /panel -->
-
-
-<div class="panel panel-default">
-    <div class="panel-body">
-        <form id="movieForm" method="post">
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-xs-8">
-                        <label class="control-label">Movie title</label>
-                        <input type="text" class="form-control" name="title" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-xs-4">
-                        <label class="control-label">Director</label>
-                        <input type="text" class="form-control" name="director" />
-                    </div>
-
-                    <div class="col-xs-4">
-                        <label class="control-label">Writer</label>
-                        <input type="text" class="form-control" name="writer" />
-                    </div>
-
-                    <div class="col-xs-4">
-                        <label class="control-label">Producer</label>
-                        <input type="text" class="form-control" name="producer" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <label class="control-label">Website</label>
-                        <input type="text" class="form-control" name="website" />
-                    </div>
-
-                    <div class="col-xs-6">
-                        <label class="control-label">Youtube trailer</label>
-                        <input type="text" class="form-control" name="trailer" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label">Procedimento</label>
-                <textarea class="form-control" name="review" rows="8"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label">Rating</label>
-                <div>
-                    <label class="radio-inline">
-                        <input type="radio" name="rating" value="terrible" /> Terrible
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="rating" value="watchable" /> Watchable
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="rating" value="best" /> Best ever
-                    </label>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-default">Validate</button>
-        </form>
-
-    </div>
-</div>
-</div>

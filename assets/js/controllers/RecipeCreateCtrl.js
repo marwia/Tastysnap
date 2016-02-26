@@ -26,17 +26,12 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         // espongo il tipo di dosaggio preso sempre dal servizio dedicato alle ricette
         $scope.dosageTypes = Recipe.dosagesTypes;
 
-        
         // Ritorna il colore dominante del canvas che contiene
         // la prima delle immagini caricate
         $scope.getCoverImageDominanatColor = function (canvas) {
-            //var coverImageCanvas = angular.element($('#myCanvas'))[0];// analizzo la prima immagine...
-            //console.log(coverImageCanvas);// test
             var colorThief = new ColorThief();
-            //console.log(colorThief.getColor(coverImageCanvas));// test
             $scope.recipeToCreate.dominantColor = $scope.rgbToHex(colorThief.getColor(canvas))
             console.log($scope.recipeToCreate.dominantColor);
-            //console.log($scope.rgbToHex($scope.recipeToCreate.dominantColor))// test
         };
 
         /**
@@ -121,7 +116,16 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         
         // File uploading (configuration)
         
-        var coverImageUploader = $scope.uploader = new FileUploader({
+        var coverImageUploader = $scope.coverImageUploader = new FileUploader({
+            alias: 'image',
+            method: 'put',
+            headers: {
+                Authorization: 'Bearer ' + Auth.getToken(),
+                'x-csrf-token': $http.defaults.headers.common['x-csrf-token']
+            }
+        });
+        
+        var otherImageUploader = $scope.otherImageUploader = new FileUploader({
             alias: 'image',
             method: 'put',
             headers: {
@@ -131,30 +135,33 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         });
 
         // FILTERS
-
-        coverImageUploader.filters.push({
-            name: 'customFilter',
+        var coverImageFilter = {
+            name: 'coverImageFilter',
             fn: function (item /*{File|FileLikeObject}*/, options) {
                 var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
 
-                return '|jpg|png|jpeg|'.indexOf(type) !== -1
+                return '|jpg|png|jpeg|'.indexOf(type) !== -1 // filter file type
                     && this.queue.length < 1; // max 1 image
             }
-        });
+        }
+        
+        var otherImageFilter = {
+            name: 'otherImageFilter',
+            fn: function (item /*{File|FileLikeObject}*/, options) {
+                var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
 
-        // CALLBACKS
-
-        coverImageUploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {
-            console.info('onWhenAddingFileFailed', item, filter, options);
-        };
-
-        coverImageUploader.onAfterAddingFile = function (fileItem) {
-            console.info('onAfterAddingFile', fileItem);
-            /*
-            * Il seguente codice viene eseguito dopo che un file è stato
-            * aggiunto alla coda e serve a ridimensionare l'immagine
-            * e ridurre la sua qualità.
-            */
+                return '|jpg|png|jpeg|'.indexOf(type) !== -1 // filter file type
+                    && this.queue.length < 10; // max 10 images
+            }
+        }
+        
+        /**
+         * Serve a ridurre la qualità e la risoluzione di un elemento del 
+         * file uploader.
+         * @param {FileItem} fileItem
+         * @param {Function} successCallback(canvas)
+         */
+        function reduceImageSizeAndQuality(fileItem, successCallback) {
             var file = fileItem._file;
             
             // Crea il canvas
@@ -181,16 +188,33 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 // Trasforma il file in canvas
                 canvas.getContext("2d").drawImage(this, 0, 0, sizes.width, sizes.height);
                 
-                // ottengo il colore dominante dell'immagine di copertina
-                $scope.getCoverImageDominanatColor(canvas);
-                
                 // Comprimi il canvas in JPEG e riduci qualità
                 var dataUrl = canvas.toDataURL("image/jpeg", 0.7);
                 
                 // Transofm to blob
                 var blob = dataURItoBlob(dataUrl);
                 fileItem._file = blob;
+                
+                if (successCallback)
+                    successCallback(canvas);
             }
+        }
+        
+        // Set filters
+        coverImageUploader.filters.push(coverImageFilter);
+       
+        // CALLBACKS
+
+        coverImageUploader.onWhenAddingFileFailed = function (item /*{File|FileLikeObject}*/, filter, options) {
+            console.info('onWhenAddingFileFailed', item, filter, options);
+        };
+
+        coverImageUploader.onAfterAddingFile = function (fileItem) {
+            console.info('onAfterAddingFile', fileItem);
+            reduceImageSizeAndQuality(fileItem, function (canvas) {
+                // ottengo il colore dominante dell'immagine di copertina
+                $scope.getCoverImageDominanatColor(canvas);
+            });
         };
 
         coverImageUploader.onAfterAddingAll = function (addedFileItems) {
@@ -261,9 +285,15 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
                 Recipe.uploadBlurImage(blob, $scope.recipeToCreate, function (response) {
                     console.info("ok")
-                    $scope.recipeToCreate = response.data;
+                    //$scope.recipeToCreate = response.data;
+                    console.info($scope.recipeToCreate);
+                    // upload other images
+                    if (otherImageUploader.queue.length > 0) {
+                        otherImageUploader.uploadAll();
+                    } else {
+                        $state.go("dashboard.recipe", {id: $scope.recipeToCreate.id});
+                    }
                     
-                    $state.go("dashboard.home");
                 }, function (response) {
                     console.info("error", response)
                 });
@@ -272,11 +302,35 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         console.info('uploader', coverImageUploader);
         
+        // Other image uploader
+        
+        otherImageUploader.filters.push(otherImageFilter);
+        
+        otherImageUploader.onAfterAddingFile = function (fileItem) {
+            console.info('onAfterAddingFile', fileItem);
+            reduceImageSizeAndQuality(fileItem);
+        };
+        
+        otherImageUploader.onBeforeUploadItem = function (item) {
+            console.info('onBeforeUploadItem', item);
+            // aggiorno dinamicamente l'url per l'upload
+            item.url = '/api/v1/recipe/' + $scope.recipeToCreate.id + '/upload_image';
+        };
+        
+        otherImageUploader.onCompleteAll = function () {
+            console.info("otherImageUploader - onCompleteAll");
+            $state.go("dashboard.recipe", {id: $scope.recipeToCreate.id});
+        }
+        
         
         // Helpers
 
         /**
          * Ricava le dimensioni dell'immagine riducendola proporzionalmente.
+         * @param {Image} img
+         * @param {Int} MAX_WIDTH
+         * @param {Int} MAX_HEIGHT
+         * @return {Object} sizes
          */
         var setImageSize = function (img, MAX_WIDTH, MAX_HEIGHT) {
             var width = img.width;

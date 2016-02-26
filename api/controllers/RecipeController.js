@@ -514,6 +514,65 @@ module.exports = {
                     return res.json(updatedRecipes[0]);
                 });
         });
+    },
+    
+    /**
+    * @api {put} /recipe/:recipe/upload_image Upload a new image for a recipe
+    * @apiName UploadRecipeImage
+    * @apiGroup Recipe
+    *
+    * @apiDescription Serve per caricare ulteriori immagini ad una ricetta.
+    *
+    */
+    uploadImage: function (req, res) {
+        var recipe = req.recipe;
+        
+        var image = req.file('image');
+        if (!image) { return res.badRequest('No file was found'); }
+        
+        image.upload({
+            // don't allow the total upload size to exceed ~10MB
+            maxBytes: 10000000,
+            saveAs: function (file, cb) {
+                var d = new Date();
+                var extension = file.filename.split('.').pop();
+
+                if (extension == 'blob') { extension = 'jpg'; }
+                // generating unique filename with extension
+                var uuid = md5(d.getMilliseconds()) + "." + extension;
+
+                console.log(file.headers['content-type']);
+                // seperate allowed and disallowed file types
+                if (allowedTypes.indexOf(file.headers['content-type']) === -1) {
+                    // don't accept not allowed file types
+                    return res.badRequest('Not supported file type');
+                } else {
+                    // save as allowed files
+                    cb(null, allowedDir + "/" + uuid);
+                }
+            }
+        }, function whenDone(err, uploadedFiles) {
+            if (err) {
+                return res.negotiate(err);
+            }
+
+            // If no files were uploaded, respond with an error.
+            if (uploadedFiles.length === 0) {
+                return res.badRequest('No file was uploaded');
+            }
+            
+            // get the file name from a path
+            var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
+            var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
+            console.log(fileUrl);
+            
+            Recipe.findOne(recipe.id).exec(function (err, recipe) {
+                    if (err) return res.negotiate(err);
+                    recipe.otherImageUrls.add(fileUrl);
+                    recipe.save();
+                    return res.json(recipe);
+                });
+        });
     }
 
 
