@@ -1333,7 +1333,7 @@ img.profile_card_img{
 }
 
 .modal-add-recipe-to-collection_img_new_input::-webkit-input-placeholder {
-	color: rgb(41,41,41);
+	color: gray;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 18px;
     font-weight: 500;
@@ -1367,14 +1367,6 @@ img.profile_card_img{
 
 .modal-add-recipe-to-collection_title{
     margin-top:14px;
-}
-
-.modal-add-recipe-to-collection_radio{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    margin: auto !important;
 }
 
 .modal-add-recipe-to-collection_label{
