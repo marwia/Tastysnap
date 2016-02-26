@@ -63,7 +63,7 @@ module.exports = {
     // Url which represents the blurred main image of the recipe
     blurredCoverImageUrl : { type: 'String', url: true },
     
-    otherImageUrl : { type: 'Array' },
+    otherImageUrls : { type: 'Array' },
 
     // Reference to User
     author : { 
