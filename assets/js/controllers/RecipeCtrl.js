@@ -42,7 +42,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
             console.log("elimino la ricetta");
             Recipe.delete($scope.detailedRecipe.id,
                 function (response) {
-                    $state.go('dashboard');
+                    $state.go('app');
                 }, function (response) {
                     // errore
                 });
@@ -92,7 +92,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                                     //do what you need here
                                     $scope.loading = false;
                                     $uibModalInstance.dismiss('cancel');
-                                    $state.go('dashboard');
+                                    $state.go('app');
                                 }, 2000);
                                 
                             }, function (response) {

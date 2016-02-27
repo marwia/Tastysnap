@@ -291,7 +291,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     if (otherImageUploader.queue.length > 0) {
                         otherImageUploader.uploadAll();
                     } else {
-                        $state.go("dashboard.recipe", {id: $scope.recipeToCreate.id});
+                        $state.go("app.recipe", {id: $scope.recipeToCreate.id});
                     }
                     
                 }, function (response) {
@@ -319,7 +319,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         
         otherImageUploader.onCompleteAll = function () {
             console.info("otherImageUploader - onCompleteAll");
-            $state.go("dashboard.recipe", {id: $scope.recipeToCreate.id});
+            $state.go("app.recipe", {id: $scope.recipeToCreate.id});
         }
         
         

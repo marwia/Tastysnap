@@ -24,26 +24,26 @@
         <!-- buttons -->
         <div class="row text-center profile_menu">
             
-            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'dashboard.profile'}">
-                <a href="/dashboard/profile/{{ user.id }}">
+            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile'}">
+                <a href="/app/profile/{{ user.id }}">
                     <span>{{user.recipesCount}}<br>RICETTE</span>
                 </a>
             </div>
 
-            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'dashboard.profile.collections'}">
-                <a href="/dashboard/profile/{{ user.id }}/collections">
+            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.collections'}">
+                <a href="/app/profile/{{ user.id }}/collections">
                     <span>{{user.collectionsCount}}<br>RACCOLTE</span>
                 </a>
             </div>
 
-            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'dashboard.profile.following'}">
-                <a href="/dashboard/profile/{{ user.id }}/following">
+            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.following'}">
+                <a href="/app/profile/{{ user.id }}/following">
                     <span>{{user.followingCount}}<br>FOLLOWING</span>
                 </a>
             </div>
 
-            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'dashboard.profile.followers'}">
-                <a href="/dashboard/profile/{{ user.id }}/followers">
+            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.followers'}">
+                <a href="/app/profile/{{ user.id }}/followers">
                     <span>{{user.followersCount}}<br>FOLLOWERS</span>
                 </a>
             </div>

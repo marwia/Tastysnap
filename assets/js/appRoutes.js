@@ -20,15 +20,18 @@ angular.module('appRoutes', []).config([
 
         // Dichiaro i vari stati dell'app
         $stateProvider
-        // DASHBOARD STATE WITH 3 VIEWS ========================================
-            .state('dashboard', {
-                url: '/dashboard',
+
+        /**
+         * Stato genitore organizzato in 3 view.
+         */
+            .state('app', {
+                url: '/app',
                 views: {
                     '': {
-                        templateUrl: 'templates/dashboard.html',
+                        templateUrl: 'templates/app.html',
                         controller: 'MasterCtrl'
                     },
-                    'navbar@dashboard': {
+                    'navbar@app': {
                         templateUrl: 'partials/navbar.html',
                         resolve: {
                             userPromise: ['User', function (user) {
@@ -36,31 +39,19 @@ angular.module('appRoutes', []).config([
                             }]
                         }
                     },
-                    'sidebar@dashboard': { templateUrl: 'partials/sidebar.html' },
-                    'content@dashboard': {
-                        templateUrl: 'templates/home.html',
-                        controller: 'RecipeCtrl',
-                        // ogni volta che parte da questo stato farà questa funzione
-                        resolve: {
-                            recipePromise: ['Recipe', function (recipes) {
-                                console.log("resolve dash");
-                                return recipes.getAll();
-                            }]
-                        }
-                    }
+                    'sidebar@app': { templateUrl: 'partials/sidebar.html' }
                 },
                 onEnter: ['$state', 'Auth', function ($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
-                    console.log("on enter");
                 }]
             })
 
-            .state('dashboard.recipe-create', {
+            .state('app.recipe-create', {
                 url: '/recipe_create',
                 views: {
-                    'content@dashboard': {
+                    'content@app': {
                         templateUrl: 'templates/recipe-create.html',
                         controller: 'RecipeCreateCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
@@ -76,10 +67,10 @@ angular.module('appRoutes', []).config([
                 }
             })
 
-            .state('dashboard.home', {
+            .state('app.home', {
                 url: '/home',
                 views: {
-                    'content@dashboard': {
+                    'content@app': {
                         templateUrl: 'templates/home.html',
                         controller: 'RecipeCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
@@ -99,10 +90,10 @@ angular.module('appRoutes', []).config([
                 }]
             })
 
-            .state('dashboard.post', {
+            .state('app.post', {
                 url: '/post/{id}',
                 views: {
-                    'content@dashboard': {
+                    'content@app': {
                         templateUrl: 'templates/post.html',
                         controller: 'PostsCtrl',
                         resolve: {
@@ -115,17 +106,17 @@ angular.module('appRoutes', []).config([
                 }
             })
 
-            .state('dashboard.index2', {
+            .state('app.index2', {
                 url: '/index2',
                 views: {
-                    'content@dashboard': { templateUrl: 'templates/rdash.html' }
+                    'content@app': { templateUrl: 'templates/rdash.html' }
                 }
             })
 
-            .state('dashboard.tables', {
+            .state('app.tables', {
                 url: '/tables',
                 views: {
-                    'content@dashboard': { templateUrl: 'templates/tables.html' }
+                    'content@app': { templateUrl: 'templates/tables.html' }
                 }
             })
 
@@ -139,17 +130,17 @@ angular.module('appRoutes', []).config([
                         Auth.saveToken($stateParams.token);
                     }
                     if (Auth.isLoggedIn()) {
-                        $state.go('dashboard');
+                        $state.go('app.home');
                     }
                 }]
             })
                 
         // PROFILE PAGE ==========================================================
         // PROFILE ROOT (DEFAULT)
-            .state('dashboard.profile', {
+            .state('app.profile', {
                 url: '/profile/{id}',
                 views: {
-                    'content@dashboard': {
+                    'content@app': {
                         templateUrl: 'templates/profile.html',
                         controller: 'UserProfileCtrl',
                         resolve: {
@@ -161,45 +152,45 @@ angular.module('appRoutes', []).config([
                             }]
                         }
                     },
-                    'profile_content@dashboard.profile': {
+                    'profile_content@app.profile': {
                         templateUrl: 'templates/profile_recipes.html',
                         controller: 'RecipeCtrl'
                     }
                 }
             })
         // PROFILE COLLECTIONS
-            .state('dashboard.profile.collections', {
+            .state('app.profile.collections', {
                 url: '/collections',
                 views: {
-                    'profile_content@dashboard.profile': {
+                    'profile_content@app.profile': {
                         templateUrl: 'templates/profile_collections.html'
                     }
                 }
             })
         // PROFILE FOLLOWERS
-            .state('dashboard.profile.followers', {
+            .state('app.profile.followers', {
                 url: '/followers',
                 views: {
-                    'profile_content@dashboard.profile': {
+                    'profile_content@app.profile': {
                         templateUrl: 'templates/profile_followers.html'
                     }
                 }
             })
         // PROFILE FOLLOWING
-            .state('dashboard.profile.following', {
+            .state('app.profile.following', {
                 url: '/following',
                 views: {
-                    'profile_content@dashboard.profile': {
+                    'profile_content@app.profile': {
                         templateUrl: 'templates/profile_following.html'
                     }
                 }
             })
 
         // RECIPE PAGE =======================================================
-            .state('dashboard.recipe', {
+            .state('app.recipe', {
                 url: '/recipe/{id}',
                 views: {
-                    'content@dashboard': {
+                    'content@app': {
                         templateUrl: 'templates/recipe_detail.html',
                         controller: 'RecipeCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
@@ -216,7 +207,7 @@ angular.module('appRoutes', []).config([
                 
         $urlRouterProvider.otherwise(function ($injector, $location) {
             var $state = $injector.get("$state");
-                $state.go("dashboard");
+            $state.go("app.home");
         });
                 
 
