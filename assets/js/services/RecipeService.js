@@ -49,7 +49,7 @@ angular.module('RecipeService', [])
                     }
                 })
                 .then(successCallback, errorCallback);
-        }
+        };
     
         /**
          * Metodo per richiedere una una ricetta tramite il suo id.
@@ -106,15 +106,15 @@ angular.module('RecipeService', [])
 
             var fd = new FormData();
             fd.append('image', file);
-            
-            var url = server_prefix + "/recipe/"+ recipe.id + "/upload_blurred_cover_image";
+
+            var url = server_prefix + "/recipe/" + recipe.id + "/upload_blurred_cover_image";
 
             $http.put(url, fd, {
                 transformRequest: angular.identity,
-                headers: { 
+                headers: {
                     'Content-Type': undefined,
                     Authorization: 'Bearer ' + Auth.getToken()
-                    }
+                }
             })
                 .success(function (data) {
                     successCallback(data);
@@ -123,33 +123,46 @@ angular.module('RecipeService', [])
                     errorCallback(err);
                     console.log(err);
                 });
-        }
+        };
 
-        /*
-        o.upvote = function(post) {
-            return $http.put( server_prefix+'/post/' + post.id + '/upvote', null, {
-                headers: {Authorization: 'Bearer '+auth.getToken()}
-            }).success(function(data){
-                post.upvotes += 1;
-            });
+
+        o.upvote = function (recipe) {
+            return $http.put(server_prefix + '/recipe/' + recipe.id + '/upvote', null, {
+                headers: { Authorization: 'Bearer ' + Auth.getToken() }
+            })
+                .success(function (response) {
+                    recipe.votes.push(response.data);
+                })
+                .error(function (response) {
+                    console.log(response);
+                });
         };
         
-        o.get = function(id) {
-            return $http.get( server_prefix+'/post/' + id).then(function(res){
+        o.checkVote = function (recipe) {
+            return $http.get(server_prefix + 'recipe/' + recipe.id + '/vote').success(
+                function (response) {
+                    recipe.userVote = response.data.value;
+                }
+            );
+        };
+
+        /*
+        o.get = function (id) {
+            return $http.get(server_prefix + '/post/' + id).then(function (res) {
                 return res.data;
             });
         };
-        
-        o.addComment = function(id, comment) {
-            return $http.post( server_prefix+'/post/' + id + '/comment', comment, {
-                headers: {Authorization: 'Bearer '+auth.getToken()}
+
+        o.addComment = function (id, comment) {
+            return $http.post(server_prefix + '/post/' + id + '/comment', comment, {
+                headers: { Authorization: 'Bearer ' + auth.getToken() }
             });
         };
-        
-        o.upvoteComment = function(post, comment) {
-            return $http.put( server_prefix+'/post/' + post.id + '/comment/'+ comment.id + '/upvote', null, {
-                headers: {Authorization: 'Bearer '+auth.getToken()}
-            }).success(function(data){
+
+        o.upvoteComment = function (post, comment) {
+            return $http.put(server_prefix + '/post/' + post.id + '/comment/' + comment.id + '/upvote', null, {
+                headers: { Authorization: 'Bearer ' + auth.getToken() }
+            }).success(function (data) {
                 comment.upvotes += 1;
             });
         };

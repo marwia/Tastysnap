@@ -36,7 +36,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 }
             }
             return false;
-        }
+        };
 
         $scope.deleteCurrentRecipe = function () {
             console.log("elimino la ricetta");
@@ -46,8 +46,16 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 }, function (response) {
                     // errore
                 });
-        }
-    
+        };
+               
+        $scope.upvoteRecipe = function (recipe) {
+            console.log("ciao");  
+            //Recipe.upvote(recipe);
+        };
+
+        $scope.checkVote = function (recipe) {
+            Recipe.checkvote(recipe);
+        };
 
         $scope.openCollectionSelectionModal = function (selectedRecipe) {
 
@@ -85,7 +93,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                     // azioni possibili all'interno della modale
                     $scope.ok = function () {
                         $scope.loading = true
-                        
+
                         Recipe.delete(selectedRecipe.id,
                             function (response) {
                                 setTimeout(function () {
@@ -94,22 +102,22 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                                     $uibModalInstance.dismiss('cancel');
                                     $state.go('app');
                                 }, 2000);
-                                
+
                             }, function (response) {
                                 // errore
                                 $scope.loading = false;
                             });
                     };
-                    
+
                     $scope.cancel = function () {
                         $uibModalInstance.dismiss('cancel');
-                    }; 
+                    };
                 },
                 size: ''
             });
         };
         
-         // MODALE PER GESTIRE LA CONDIVISIONE DI UNA RICETTA
+        // MODALE PER GESTIRE LA CONDIVISIONE DI UNA RICETTA
         
         $scope.openShareModal = function (selectedRecipe) {
             $uibModal.open({
@@ -123,17 +131,19 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                     $scope.ok = function () {
                         // todo
                         
-                       $uibModalInstance.dismiss('cancel');
+                        $uibModalInstance.dismiss('cancel');
                     };
-                    
+
                     $scope.cancel = function () {
                         // to do
                         $uibModalInstance.dismiss('cancel');
-                    }; 
+                    };
                 },
                 size: ''
             });
         };
+
+
 
 
 
