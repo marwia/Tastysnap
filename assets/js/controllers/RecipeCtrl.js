@@ -48,13 +48,17 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 });
         };
                
-        $scope.upvoteRecipe = function (recipe) {
-            console.log("ciao");  
-            //Recipe.upvote(recipe);
+        $scope.toggleUpvoteRecipe = function (recipe) {
+            if (recipe.userVote == 1) {
+                Recipe.deleteVote(recipe);
+            } else {
+                Recipe.upvote(recipe);
+            }
+            
         };
 
         $scope.checkVote = function (recipe) {
-            Recipe.checkvote(recipe);
+            Recipe.checkVote(recipe);
         };
 
         $scope.openCollectionSelectionModal = function (selectedRecipe) {

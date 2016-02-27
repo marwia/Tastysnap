@@ -127,24 +127,43 @@ angular.module('RecipeService', [])
 
 
         o.upvote = function (recipe) {
-            return $http.put(server_prefix + '/recipe/' + recipe.id + '/upvote', null, {
+            return $http.post(server_prefix + '/recipe/' + recipe.id + '/upvote', null, {
                 headers: { Authorization: 'Bearer ' + Auth.getToken() }
             })
-                .success(function (response) {
-                    recipe.votes.push(response.data);
+                .success(function (data) {
+                    recipe.votes.push(data);// opzionale...
+                    recipe.userVote = data.value;
+                    recipe.votesCount += 1;
                 })
-                .error(function (response) {
-                    console.log(response);
+                .error(function (err) {
+                    console.log(err);
                 });
         };
         
-        o.checkVote = function (recipe) {
-            return $http.get(server_prefix + 'recipe/' + recipe.id + '/vote').success(
-                function (response) {
-                    recipe.userVote = response.data.value;
-                }
-            );
+        o.deleteVote = function (recipe) {
+            return $http.delete(server_prefix + '/recipe/' + recipe.id + '/vote', {
+                headers: { Authorization: 'Bearer ' + Auth.getToken() }
+            })
+                .success(function (data) {
+                    recipe.userVote = 0;
+                    recipe.votesCount -= 1;
+                })
+                .error(function (err) {
+                    console.log(err);
+                });
         };
+
+        o.checkVote = function (recipe) {
+            return $http.get(server_prefix + '/recipe/' + recipe.id + '/voted',
+                {
+                    headers: { Authorization: 'Bearer ' + Auth.getToken() }
+                }).success(
+                    function (data) {
+                        recipe.userVote = data.value;
+                    }
+                    );
+        };
+        
 
         /*
         o.get = function (id) {

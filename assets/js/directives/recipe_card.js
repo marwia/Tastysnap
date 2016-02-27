@@ -13,11 +13,16 @@ angular.module('sampleApp')
         
         return {
             restrict: 'E',
+            //scope: true,
+            
             scope: {
                 recipe: '=recipe',
                 openCollectionModal: '&',
-                openShareModal: '&'
+                openShareModal: '&',
+                upvoteRecipe: '&'
             },
+            
+            //controller: 'RecipeCtrl',
             link: function (scope, element, attrs) {
                 scope.getUserProfileImage = User.getUserProfileImage;
             },
