@@ -1349,8 +1349,9 @@ img.profile_card_img{
     border-top: 1px solid rgb(233, 233, 233);
 }
 
-.modal-add-recipe-to-collection_new_media{
-    *margin-left:20px;
+.modal-add-recipe-to-collection_container_media{
+    max-height: 400px;
+    overflow-y: scroll;
 }
 
 .modal-add-recipe-to-collection_title{
