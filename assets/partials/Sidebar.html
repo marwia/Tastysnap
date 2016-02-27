@@ -39,7 +39,7 @@
             </div>
         </div>
         
-        <a href="/dashboard/recipe_create" class="btn btn-warning btn-circle btn-lg sidebar_create_recipe">
+        <a href="/app/recipe_create" class="btn btn-warning btn-circle btn-lg sidebar_create_recipe">
             <i class="fa fa-pencil"></i>
         </a>
         
@@ -48,7 +48,7 @@
 
         <li class="sidebar-title"><span>PRINCIPALE</span></li>
         <li class="sidebar-list">
-            <a href="/dashboard/home" ng-class="{'active': getCurrentState() == 'dashboard.home'}">Home <span class="menu-icon fa fa-home"></span></a>
+            <a href="/app/home/most_recent" ng-class="{'active': getCurrentState().indexOf('app.home') > -1}">Home <span class="menu-icon fa fa-home"></span></a>
         </li>
         <li class="sidebar-list">
             <a href="#">Attività <span class="menu-icon fa fa-users"></span></a>

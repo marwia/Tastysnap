@@ -18,7 +18,7 @@ angular.module('AuthCtrl', []).controller('AuthCtrl', [
 			Auth.register($scope.user).error(function(error){
 				$scope.error = error;
 			}).then(function(){
-				$state.go('dashboard');
+				$state.go('app.home.most_recent');
 			});
 		};
 
@@ -27,7 +27,7 @@ angular.module('AuthCtrl', []).controller('AuthCtrl', [
 			Auth.logIn($scope.user).error(function(error){
 				$scope.error = error;
 			}).then(function(){
-				$state.go('dashboard');
+				$state.go('app.home.most_recent');
 			});
 			
 		};

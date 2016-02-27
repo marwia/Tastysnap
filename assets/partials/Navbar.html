@@ -23,7 +23,7 @@
         </form>
         
         <!-- Tastysnap Logo -->
-        <a href="/dashboard/home">
+        <a href="/app/home/most_recent">
             <img alt="TastySnap" src="images/logo.png" class="tastysnap_logo">
         </a>
         
@@ -33,7 +33,7 @@
             <ul uib-dropdown-menu class="top_menu_profile_dropdown" role="menu" aria-labelledby="single-button">
                 <li role="menuitem"><a href="#">Action</a></li>
                 <li role="menuitem"><a href="#">Another action</a></li>
-                <li role="menuitem"><a href="/dashboard/profile/{{ currentUser.id }}">Profilo</a></li>
+                <li role="menuitem"><a href="/app/profile/{{ currentUser.id }}">Profilo</a></li>
                 <li class="divider"></li>
                 <li role="menuitem"><a href="/login" ng-click="logOut()">Esci</a></li>
             </ul>
