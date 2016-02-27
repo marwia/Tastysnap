@@ -1,29 +1,5 @@
-<!--
-<div class="modal-header">
-    <h3 class="modal-title">Attenzione</h3>
-</div>
-<div class="modal-body">
-    Sei sicuro di voler eliminare la ricetta?
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="ok()">OK <i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
-    <button class="btn btn-warning" type="button" ng-click="cancel()">Annulla</button>
-</div>
--->
-
 <div class="modal-header">
     <h3 class="modal-title text-center">Eliminazione di <strong>{{ selectedRecipe.title }}</strong></h3>
-</div>
-<div class="modal-body">
-    
-    <!-- CONTINER CARD -->
-    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <!-- Anteprima della card che aggiungerò alla collection -->
-        <!-- basic card -->
-        <recipe-card recipe="selectedRecipe"></recipe-card> 
-        <!-- fine card -->
-    </div>
-    <div class="clearfix"></div>
 </div>
 <div class="modal-footer">
     <button class="btn btn-danger" type="button" ng-click="ok()">Elimina <i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
