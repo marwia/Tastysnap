@@ -67,11 +67,28 @@ angular.module('appRoutes', []).config([
                 }
             })
 
+            // HOME
             .state('app.home', {
                 url: '/home',
                 views: {
                     'content@app': {
                         templateUrl: 'templates/home.html',
+                        controller: 'UserHomeCtrl'
+                    }
+                },
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                    if (!Auth.isLoggedIn()) {
+                        $state.go('login');
+                    }
+                }]
+            })
+            
+            // HOME MOST RECENT
+            .state('app.home.most_recent', {
+                url: '/most_recent',
+                views: {
+                    'home_content@app.home': {
+                        templateUrl: 'templates/home_most_recent.html',
                         controller: 'RecipeCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
@@ -81,13 +98,37 @@ angular.module('appRoutes', []).config([
                             }]
                         }
                     }
-                },
-                onEnter: ['$state', 'Auth', function ($state, Auth) {
-                    if (!Auth.isLoggedIn()) {
-                        $state.go('login');
+                }
+            })
+            
+            // HOME MOST TASTED
+            .state('app.home.most_tasted', {
+                url: '/most_tasted',
+                views: {
+                    'home_content@app.home': {
+                        templateUrl: 'templates/home_most_tasted.html'
                     }
-                    console.log("on enter");
-                }]
+                }
+            })
+            
+            // HOME TRENDING
+            .state('app.home.trending', {
+                url: '/trending',
+                views: {
+                    'home_content@app.home': {
+                        templateUrl: 'templates/home_trending.html'
+                    }
+                }
+            })
+            
+            // HOME MOST COMMENTED
+            .state('app.home.most_commented', {
+                url: '/most_commented',
+                views: {
+                    'home_content@app.home': {
+                        templateUrl: 'templates/home_most_commented.html'
+                    }
+                }
             })
 
             .state('app.post', {
@@ -207,7 +248,7 @@ angular.module('appRoutes', []).config([
                 
         $urlRouterProvider.otherwise(function ($injector, $location) {
             var $state = $injector.get("$state");
-            $state.go("app.home");
+            $state.go("app.home.most_recent");
         });
                 
 
