@@ -39,6 +39,9 @@ angular.module('CollectionService', [])
             });
         };
 
+        /**
+         * Metodo per cancellare una collection.
+         */
         o.delete = function (collectionId, successCallback, errorCallback) {
             return $http.delete(
                 server_prefix + '/collection/' + collectionId,
@@ -50,9 +53,8 @@ angular.module('CollectionService', [])
                 .then(successCallback, errorCallback);
         }
     
-        
         /**
-         * Metodo per richiedere una una ricetta tramite il suo id.
+         * Metodo per richiedere una una collection tramite il suo id.
          */
         o.getCollection= function (collectionId) {
             return $http.get(server_prefix + '/collection/' + collectionId).success(function (data) {

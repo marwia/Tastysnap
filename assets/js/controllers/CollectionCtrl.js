@@ -26,7 +26,7 @@ angular.module('CollectionCtrl', []).controller('CollectionCtrl', [
         $scope.getUserProfileImage = User.getUserProfileImage;
         
         /**
-         * Verifica se l'utente loggatto attualmente è l'autore della ricetta.
+         * Verifica se l'utente loggatto attualmente è l'autore della collection.
          */
         $scope.isCollectionAuthor = function (collection) {
             if (Auth.isLoggedIn) {

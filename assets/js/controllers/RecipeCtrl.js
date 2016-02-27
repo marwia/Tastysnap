@@ -48,8 +48,6 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 });
         }
     
-        // materiale per la modale...
-        $scope.items = ['item1', 'item2', 'item3'];
 
         $scope.openCollectionSelectionModal = function (selectedRecipe) {
 
@@ -60,9 +58,6 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 // classe aggiuntiva a modal-dialog (ci imposto la dmensione) modal-add-recipe-to-collection
                 size: 'add-recipe-to-collection',
                 resolve: {
-                    items: function () {
-                        return $scope.items;
-                    },
                     selectedRecipe: selectedRecipe,
                     collections: function () {
                         return Collection.getUserCollections(Auth.currentUser.id);
@@ -70,8 +65,8 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 }
             });
 
-            modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
+            modalInstance.result.then(function () {
+                $log.info('Modal dismissed with success at: ' + new Date());
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
             });
