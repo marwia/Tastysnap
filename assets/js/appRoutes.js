@@ -48,11 +48,11 @@ angular.module('appRoutes', []).config([
                 }]
             })
 
-            .state('app.recipe-create', {
+            .state('app.recipe_create', {
                 url: '/recipe_create',
                 views: {
                     'content@app': {
-                        templateUrl: 'templates/recipe-create.html',
+                        templateUrl: 'templates/recipe_create.html',
                         controller: 'RecipeCreateCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
@@ -128,36 +128,6 @@ angular.module('appRoutes', []).config([
                     'home_content@app.home': {
                         templateUrl: 'templates/home_most_commented.html'
                     }
-                }
-            })
-
-            .state('app.post', {
-                url: '/post/{id}',
-                views: {
-                    'content@app': {
-                        templateUrl: 'templates/post.html',
-                        controller: 'PostsCtrl',
-                        resolve: {
-                            post: ['$stateParams', 'posts', function ($stateParams, posts) {
-                                console.log("carico il post");
-                                return posts.get($stateParams.id);
-                            }]
-                        }
-                    }
-                }
-            })
-
-            .state('app.index2', {
-                url: '/index2',
-                views: {
-                    'content@app': { templateUrl: 'templates/rdash.html' }
-                }
-            })
-
-            .state('app.tables', {
-                url: '/tables',
-                views: {
-                    'content@app': { templateUrl: 'templates/tables.html' }
                 }
             })
 
