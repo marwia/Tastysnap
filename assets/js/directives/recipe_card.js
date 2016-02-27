@@ -19,7 +19,7 @@ angular.module('sampleApp')
                 recipe: '=recipe',
                 openCollectionModal: '&',
                 openShareModal: '&',
-                upvoteRecipe: '&'
+                toggleUpvoteRecipe: '&'
             },
             
             //controller: 'RecipeCtrl',
