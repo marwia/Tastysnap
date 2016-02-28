@@ -298,7 +298,7 @@ module.exports = {
                 // Array con id di ricette viste
                 var viewedRecipes = new Array();
 
-                for (var i in foundUser.votes) {
+                for (var i in foundUser.viewedRecipes) {
                     viewedRecipes.push(foundUser.viewedRecipes[i].recipe)
                 }
 
@@ -370,7 +370,7 @@ module.exports = {
                 // Array con id di ricette provate
                 var triedRecipes = new Array();
 
-                for (var i in foundUser.votes) {
+                for (var i in foundUser.triedRecipes) {
                     triedRecipes.push(foundUser.triedRecipes[i].recipe)
                 }
 

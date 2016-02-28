@@ -37,26 +37,26 @@ module.exports = {
 	*
 	* @apiUse InvalidTokenError
 	*/
-	create: function (req, res, next) {
-		var user = req.payload;
+    create: function (req, res, next) {
+        var user = req.payload;
 	
-		// completo l'oggetto voteRecipe
-		var tryRecipe = {user: user, recipe: req.recipe.id };
+        // completo l'oggetto voteRecipe
+        var tryRecipe = { user: user, recipe: req.recipe.id };
 	
-		//cerco se c'è gia uno stesso vote
-		TryRecipe.find().where({ user: user.id, recipe: req.recipe.id })
-		.exec(function (err, tryRecipes) {
-			if(err){ return next(err); }
-	
-			if(tryRecipes.length == 0){// non trovato, quindi ne posso creare uno
-			TryRecipe.create(tryRecipe).exec(function (err, tryRecipeCreated){
-				if(err){ return next(err); }
-	
-				return res.json(tryRecipeCreated);
-			});
-			}  else { return res.json(voteRecipes[0]); }
-		});
-  	},
+        //cerco se c'è gia uno stesso vote
+        TryRecipe.find().where({ user: user.id, recipe: req.recipe.id })
+            .exec(function (err, tryRecipes) {
+                if (err) { return next(err); }
+
+                if (tryRecipes.length == 0) {// non trovato, quindi ne posso creare uno
+                    TryRecipe.create(tryRecipe).exec(function (err, tryRecipeCreated) {
+                        if (err) { return next(err); }
+
+                        return res.json(tryRecipeCreated);
+                    });
+                } else { return res.json(tryRecipes[0]); }
+            });
+    },
 		
 	/**
 	* @api {delete} /recipe/:recipe/try Delete a try related to a Recipe
@@ -83,17 +83,17 @@ module.exports = {
 	*
 	* @apiUse NoRecipeError
 	*/
-	destroy: function (req, res, next) {
-		var user = req.payload;
-	
-		var tryRecipeToDelete = {user: user.id, recipe: req.recipe.id};
-	
-		TryRecipe.destroy(tryRecipeToDelete).exec(function (err){
-			if(err){ return next(err); }
-	
-			return res.send(204, null);// eliminato
-		})
-	},
+    destroy: function (req, res, next) {
+        var user = req.payload;
+
+        var tryRecipeToDelete = { user: user.id, recipe: req.recipe.id };
+
+        TryRecipe.destroy(tryRecipeToDelete).exec(function (err) {
+            if (err) { return next(err); }
+
+            return res.send(204, null);// eliminato
+        })
+    },
 		
 	/**
 	* @api {get} /recipe/:recipe/try List the trials for a Recipe
@@ -125,16 +125,16 @@ module.exports = {
 	*
 	* @apiUse NoRecipeError
 	*/
-	find: function (req, res, next) {
-		TryRecipe.find().where({ recipe: req.recipe.id })
-			.populate('user').populate('details')
-			.exec( function (err, tryRecipes) {
-				
-			if(err){ return next(err); }
-		
-			return res.json(tryRecipes);
-		})
-	},
+    find: function (req, res, next) {
+        TryRecipe.find().where({ recipe: req.recipe.id })
+            .populate('user').populate('details')
+            .exec(function (err, tryRecipes) {
+
+                if (err) { return next(err); }
+
+                return res.json(tryRecipes);
+            })
+    },
 
 	/**
 	* @api {get} /recipe/:recipe/tried Check if you tried a Recipe
@@ -170,16 +170,16 @@ module.exports = {
 	*
 	* @apiUse NoRecipeError
 	*/
-	checkTry: function (req, res, next) {
-		var user = req.payload;
-	
-		TryRecipe.find().where({ recipe: req.recipe.id, user: user.id }).populate('details').exec( function (err, tryRecipes) {
-			if(err){ return next(err); }
-		
-			if(tryRecipes.length == 0) {
-				return res.status(404).send('Not found');// HTTP status 404: NotFound
-			} else { return res.json(tryRecipes[0]); }
-		});
-	}
+    checkTry: function (req, res, next) {
+        var user = req.payload;
+
+        TryRecipe.find().where({ recipe: req.recipe.id, user: user.id }).populate('details').exec(function (err, tryRecipes) {
+            if (err) { return next(err); }
+
+            if (tryRecipes.length == 0) {
+                return res.status(404).send('Not found');// HTTP status 404: NotFound
+            } else { return res.json(tryRecipes[0]); }
+        });
+    }
 };
 
