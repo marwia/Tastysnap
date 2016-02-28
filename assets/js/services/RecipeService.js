@@ -46,7 +46,26 @@ angular.module('RecipeService', [])
          */
         o.getUserUpvotedRecipes = function (userId) {
             return $http.get(server_prefix + '/user/' + userId + '/upvoted_recipe').success(function (data) {
-                console.log("eccolo", data);
+                angular.copy(data, o.recipes);
+            });
+        };
+        
+        /**
+         * Metodo per richiedere una lista di ricette viste 
+         * da un dato utente.
+         */
+        o.getUserViewedRecipes = function (userId) {
+            return $http.get(server_prefix + '/user/' + userId + '/viewed_recipe').success(function (data) {
+                angular.copy(data, o.recipes);
+            });
+        };
+        
+        /**
+         * Metodo per richiedere una lista di ricette provate 
+         * da un dato utente.
+         */
+        o.getUserTriedRecipes = function (userId) {
+            return $http.get(server_prefix + '/user/' + userId + '/tried_recipe').success(function (data) {
                 angular.copy(data, o.recipes);
             });
         };
