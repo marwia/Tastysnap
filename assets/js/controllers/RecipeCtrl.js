@@ -47,6 +47,8 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                     // errore
                 });
         };
+        
+        
                
         $scope.toggleUpvoteRecipe = function (recipe) {
             if (recipe.userVote == 1) {
@@ -56,10 +58,39 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
             }
             
         };
-
+        
         $scope.checkVote = function (recipe) {
             Recipe.checkVote(recipe);
         };
+        
+        
+        
+        $scope.toggleTryRecipe = function (recipe) {
+            if (recipe.userTry) {
+                Recipe.deleteTry(recipe);
+            } else {
+                Recipe.createTry(recipe);
+            }
+            
+        };
+
+        $scope.checkTry = function (recipe) {
+            Recipe.checkTry(recipe);
+        };
+        
+        
+        $scope.viewRecipe = function (recipe) {
+            Recipe.createView(recipe);
+        };
+        
+        /**
+         * Inizializzazione di un dettaglio di una ricetta.
+         */
+        $scope.initDetailedRecipe = function (recipe) {
+            Recipe.createView(recipe);
+            Recipe.checkTry(recipe);
+        }
+
 
         $scope.openCollectionSelectionModal = function (selectedRecipe) {
 

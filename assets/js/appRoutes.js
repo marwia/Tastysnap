@@ -158,7 +158,7 @@ angular.module('appRoutes', []).config([
                 views: {
                     'content@app': {
                         templateUrl: 'templates/viewed_recipes.html',
-                        controller: 'UserHomeCtrl',
+                        controller: 'RecipeCtrl',
                         resolve: {
                             recipePromise: ['Recipe', 'Auth', function (recipes, Auth) {
                                 return recipes.getUserViewedRecipes(Auth.currentUser().id);
@@ -179,7 +179,7 @@ angular.module('appRoutes', []).config([
                 views: {
                     'content@app': {
                         templateUrl: 'templates/followed_collections.html',
-                        controller: 'UserHomeCtrl'
+                        controller: 'RecipeCtrl'
                     }
                 },
                 onEnter: ['$state', 'Auth', function ($state, Auth) {
@@ -195,7 +195,7 @@ angular.module('appRoutes', []).config([
                 views: {
                     'content@app': {
                         templateUrl: 'templates/tasted_recipes.html',
-                        controller: 'UserHomeCtrl',
+                        controller: 'RecipeCtrl',
                         resolve: {
                             recipePromise: ['Recipe', 'Auth', function (recipes, Auth) {
                                 return recipes.getUserTriedRecipes(Auth.currentUser().id);
