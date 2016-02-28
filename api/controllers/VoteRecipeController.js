@@ -148,7 +148,7 @@ module.exports = {
     destroy: function (req, res, next) {
         var user = req.payload;
 
-        var voteRecipeToDelete = { author: user.id, recipe: req.recipe };
+        var voteRecipeToDelete = { author: user.id, recipe: req.recipe.id };
 
         VoteRecipe.destroy(voteRecipeToDelete).exec(function (err) {
             if (err) { return next(err); }
@@ -190,7 +190,7 @@ module.exports = {
      */
     findUpvotes: function (req, res, next) {
         
-        VoteRecipe.find().where({ recipe: req.recipe, value: 1 }).populate('author').exec(function (err, voteRecipes) {
+        VoteRecipe.find().where({ recipe: req.recipe.id, value: 1 }).populate('author').exec(function (err, voteRecipes) {
             if (err) { return next(err); }
 
             return res.json(voteRecipes);
@@ -230,7 +230,7 @@ module.exports = {
      */
     findDownvotes: function (req, res, next) {
         
-        VoteRecipe.find().where({ recipe: req.recipe, value: -1 }).populate('author').exec(function (err, voteRecipes) {
+        VoteRecipe.find().where({ recipe: req.recipe.id, value: -1 }).populate('author').exec(function (err, voteRecipes) {
             if (err) { return next(err); }
 
             return res.json(voteRecipes);
@@ -275,7 +275,7 @@ module.exports = {
     checkVote: function (req, res, next) {
         var user = req.payload;
 
-        VoteRecipe.find().where({ recipe: req.recipe, author: user.id }).exec(function (err, voteRecipes) {
+        VoteRecipe.find().where({ recipe: req.recipe.id, author: user.id }).exec(function (err, voteRecipes) {
             if (err) { return next(err); }
 
             if (voteRecipes.length == 0) {
