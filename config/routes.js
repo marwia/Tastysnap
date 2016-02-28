@@ -134,6 +134,8 @@ var apiRoutes = addGlobalPrefix({
 
   'get /user/:user/following/:target_user': 'UserController.isFollowing',
   
+  'get /user/:id/upvoted_recipe': 'UserController.findUserUpvotedRecipes',
+  
   /***************************************************************************
   *                                                                          *
   * Ricette.                                                                 *

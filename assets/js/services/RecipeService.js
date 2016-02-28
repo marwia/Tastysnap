@@ -39,6 +39,17 @@ angular.module('RecipeService', [])
                 angular.copy(data, o.recipes);
             });
         };
+        
+        /**
+         * Metodo per richiedere una lista di ricette preferite 
+         * (con upvote dato dall'utente) di un dato utente.
+         */
+        o.getUserUpvotedRecipes = function (userId) {
+            return $http.get(server_prefix + '/user/' + userId + '/upvoted_recipe').success(function (data) {
+                console.log("eccolo", data);
+                angular.copy(data, o.recipes);
+            });
+        };
 
         o.delete = function (recipeId, successCallback, errorCallback) {
             return $http.delete(

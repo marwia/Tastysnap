@@ -58,16 +58,16 @@
         </li>
         <li class="sidebar-title"><span>I TUOI GUSTI</span></li>
         <li class="sidebar-list">
-            <a href="#">Ricette preferite<span class="menu-icon fa fa-heart"></span></a>
+            <a href="/app/favorite_recipes" ng-class="{'active': getCurrentState().indexOf('app.favorite_recipes') > -1}">Ricette preferite<span class="menu-icon fa fa-heart"></span></a>
         </li>
         <li class="sidebar-list">
-            <a href="#">Ricette viste <span class="menu-icon fa fa-eye"></span></a>
+            <a href="/app/viewed_recipes" ng-class="{'active': getCurrentState().indexOf('app.viewed_recipes') > -1}">Ricette viste <span class="menu-icon fa fa-eye"></span></a>
         </li>
         <li class="sidebar-list">
-            <a href="#">Raccolte che segui <span class="menu-icon fa fa-th"></span></a>
+            <a href="/app/followed_collections" ng-class="{'active': getCurrentState().indexOf('app.followed_collections') > -1}">Raccolte che segui <span class="menu-icon fa fa-th"></span></a>
         </li>
         <li class="sidebar-list">
-            <a href="#">Ricette provate <span class="menu-icon fa fa-cutlery"></span></a>
+            <a href="/app/tasted_recipes" ng-class="{'active': getCurrentState().indexOf('app.tasted_recipes') > -1}">Ricette provate <span class="menu-icon fa fa-cutlery"></span></a>
         </li>
     </ul>
 </div>
