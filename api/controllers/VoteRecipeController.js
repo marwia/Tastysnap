@@ -148,10 +148,7 @@ module.exports = {
     destroy: function (req, res, next) {
         var user = req.payload;
 
-        var recipeId = req.param("recipe");
-        if (!recipeId) { return res.badRequest(); }
-
-        var voteRecipeToDelete = { author: user.id, recipe: recipeId };
+        var voteRecipeToDelete = { author: user.id, recipe: req.recipe };
 
         VoteRecipe.destroy(voteRecipeToDelete).exec(function (err) {
             if (err) { return next(err); }
@@ -192,10 +189,8 @@ module.exports = {
      * @apiUse NoRecipeError
      */
     findUpvotes: function (req, res, next) {
-        var recipeId = req.param("recipe");
-        if (!recipeId) { return res.badRequest(); }
-
-        VoteRecipe.find().where({ recipe: recipeId, value: 1 }).populate('author').exec(function (err, voteRecipes) {
+        
+        VoteRecipe.find().where({ recipe: req.recipe, value: 1 }).populate('author').exec(function (err, voteRecipes) {
             if (err) { return next(err); }
 
             return res.json(voteRecipes);
@@ -234,10 +229,8 @@ module.exports = {
      * @apiUse NoRecipeError
      */
     findDownvotes: function (req, res, next) {
-        var recipeId = req.param("recipe");
-        if (!recipeId) { return res.badRequest(); }
         
-        VoteRecipe.find().where({ recipe: recipeId, value: -1 }).populate('author').exec(function (err, voteRecipes) {
+        VoteRecipe.find().where({ recipe: req.recipe, value: -1 }).populate('author').exec(function (err, voteRecipes) {
             if (err) { return next(err); }
 
             return res.json(voteRecipes);
@@ -282,10 +275,7 @@ module.exports = {
     checkVote: function (req, res, next) {
         var user = req.payload;
 
-        var recipeId = req.param("recipe");
-        if (!recipeId) { return res.badRequest(); }
-
-        VoteRecipe.find().where({ recipe: recipeId, author: user.id }).exec(function (err, voteRecipes) {
+        VoteRecipe.find().where({ recipe: req.recipe, author: user.id }).exec(function (err, voteRecipes) {
             if (err) { return next(err); }
 
             if (voteRecipes.length == 0) {
