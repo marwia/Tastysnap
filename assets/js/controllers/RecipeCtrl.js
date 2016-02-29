@@ -177,9 +177,32 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 size: ''
             });
         };
+        
+        //funzione che restiruisce il colore bianco o nero a seonda dell'input
+        $scope.textColor = function (recipe){
+            //inizializzo la varibile a bianco, quindi il testo dobrebbe esseren nero.
+            var c = "#FFFFFF";
+            
+            //recupero il colore dominante della ricetta
+            c = recipe.dominantColor;
+            
+            //calcolo se restituire il colore bianco o nero
+            c = c.substring(1);      // strip #
+            var rgb = parseInt(c, 16);   // convert rrggbb to decimal
+            var r = (rgb >> 16) & 0xff;  // extract red
+            var g = (rgb >>  8) & 0xff;  // extract green
+            var b = (rgb >>  0) & 0xff;  // extract blue
 
-
-
-
-
+            var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+            
+            //return del colore
+            if(luma < 40){
+                //return bianco
+                return "#FFFFFF";
+            }else{
+                //return nero
+                return "#FFFFFF";
+            }
+        };
+        
     }]);
