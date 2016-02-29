@@ -29,7 +29,14 @@
                     <a href="app/profile/{{detailedRecipe.author.id}}"><img src="{{ getUserProfileImage(detailedRecipe.author) }}" class="img-circle recipe_profile_photo pull-left"></a>
                     <div class="recipe_div_profile_name pull-left">
                         <h5 class="recipe_profile_name no-margin"><strong>{{detailedRecipe.author.name}} {{detailedRecipe.author.surname}}</strong></h5>
-                        <h6 class="recipe_profile_edited no-margin">1 settimana fa</h6>
+                        <h6 class="recipe_profile_edited no-margin">
+                            1 settimana fa
+                            <script>
+                                var moment = require('moment');
+                                moment().format();
+                                document.write("data: " + moment);
+                            </script>
+                        </h6>
                     </div>
                 </div>
                 <!-- portata + titolo -->
