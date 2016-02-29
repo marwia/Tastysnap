@@ -207,7 +207,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
         };
         
         $scope.formatDate = function (recipe) {
-
+            moment.locale("it");
             return moment(recipe.createdAt).fromNow(); 
         }
         
