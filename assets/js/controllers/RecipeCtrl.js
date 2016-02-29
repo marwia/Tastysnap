@@ -181,7 +181,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
         //funzione che restiruisce il colore bianco o nero a seonda dell'input
         $scope.textColor = function (recipe){
             //inizializzo la varibile a bianco, quindi il testo dobrebbe esseren nero.
-            var c = "#FFFFFF";
+            var c = "#000000";
             
             //recupero il colore dominante della ricetta
             c = recipe.dominantColor;
@@ -192,11 +192,12 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
             var r = (rgb >> 16) & 0xff;  // extract red
             var g = (rgb >>  8) & 0xff;  // extract green
             var b = (rgb >>  0) & 0xff;  // extract blue
-
+            
             var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
             
-            //return del colore
-            if(luma < 40){
+            //sensibilità, valore basso poco sensibile, credo da 0 a 200
+            // impostata a 150
+            if(luma < 150){
                 //return bianco
                 return "#FFFFFF";
             }else{
