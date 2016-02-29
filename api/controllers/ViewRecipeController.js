@@ -14,14 +14,14 @@ module.exports = {
         var user = req.payload;
 
         // completo l'oggetto viewRecipe
-        var viewRecipe = {user: user, recipe: req.recipe.id };
+        var viewRecipe = {user: user.id, recipe: req.recipe.id };
 
         //cerco se c'è gia uno stesso vote
-        ViewRecipe.find().where({ author: user.id, recipe: req.recipe.id })
+        ViewRecipe.find().where(viewRecipe)
             .exec(function (err, viewRecipes) {
                 if (err) { return next(err); }
                 
-                if (viewRecipes.length == 1) {
+                if (viewRecipes.length > 0) {
                     return res.json(200, viewRecipes[0]) 
                 } else {
                     ViewRecipe.create(viewRecipe).exec(function (err, viewRecipeCreated) {
