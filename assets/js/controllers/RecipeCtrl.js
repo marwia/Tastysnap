@@ -201,7 +201,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 return "#FFFFFF";
             }else{
                 //return nero
-                return "#FFFFFF";
+                return "#000000";
             }
         };
         
