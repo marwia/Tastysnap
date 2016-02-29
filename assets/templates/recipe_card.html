@@ -11,12 +11,12 @@
                         <div class="cont_row_share">
                             <div class="row text-center">
                                 <div class="col-xs-6">
-                                    <span class="glyphicon  gly_share_size" ng-class="(recipe.userVote == 1) ? 'glyphicon-heart tasty_icon_active' : 'glyphicon-heart-empty'" ng-click="toggleUpvoteRecipe(recipe)"></span>
+                                    <span class="glyphicon gly_share_size tasty_icon" ng-class="(recipe.userVote == 1) ? 'glyphicon-heart tasty_icon_active' : 'glyphicon-heart-empty'" ng-click="toggleUpvoteRecipe(recipe)" title="mi piace!"></span>
                                 </div>
-                                <div class="col-xs-6"><span class="glyphicon glyphicon-share-alt gly_share_size" ng-click="openShareModal(recipe)"></span></div>
+                                <div class="col-xs-6"><span class="glyphicon glyphicon-share-alt gly_share_size tasty_icon" ng-click="openShareModal(recipe)" title="condividi {{recipe.title}}"></span></div>
                             </div>
                             <div class="row text-center">
-                                <span class="glyphicon glyphicon-plus gly_share_size" ng-click="openCollectionModal(recipe)"></span>
+                                <span class="glyphicon glyphicon-plus gly_share_size tasty_icon" ng-click="openCollectionModal(recipe)" title="aggiungi {{recipe.title}} ad una raccolta!"></span>
                             </div>
                         </div>
                     </div>
