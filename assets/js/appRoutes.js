@@ -130,6 +130,85 @@ angular.module('appRoutes', []).config([
                     }
                 }
             })
+            
+            // FAVORITE RECIPES
+            .state('app.favorite_recipes', {
+                url: '/favorite_recipes',
+                views: {
+                    'content@app': {
+                        templateUrl: 'templates/favorite_recipes.html',
+                        controller: 'RecipeCtrl',
+                        resolve: {
+                            recipePromise: ['Recipe', 'Auth', function (recipes, Auth) {
+                                return recipes.getUserUpvotedRecipes(Auth.currentUser().id);
+                            }]
+                        }
+                    }
+                },
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                    if (!Auth.isLoggedIn()) {
+                        $state.go('login');
+                    }
+                }]
+            })
+            
+            // VIEWED RECIPES
+            .state('app.viewed_recipes', {
+                url: '/viewed_recipes',
+                views: {
+                    'content@app': {
+                        templateUrl: 'templates/viewed_recipes.html',
+                        controller: 'RecipeCtrl',
+                        resolve: {
+                            recipePromise: ['Recipe', 'Auth', function (recipes, Auth) {
+                                return recipes.getUserViewedRecipes(Auth.currentUser().id);
+                            }]
+                        }
+                    }
+                },
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                    if (!Auth.isLoggedIn()) {
+                        $state.go('login');
+                    }
+                }]
+            })
+            
+            // FOLLOWED COLLECTIONS
+            .state('app.followed_collections', {
+                url: '/followed_collections',
+                views: {
+                    'content@app': {
+                        templateUrl: 'templates/followed_collections.html',
+                        controller: 'RecipeCtrl'
+                    }
+                },
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                    if (!Auth.isLoggedIn()) {
+                        $state.go('login');
+                    }
+                }]
+            })
+            
+            // TASTED RECIPES
+            .state('app.tasted_recipes', {
+                url: '/tasted_recipes',
+                views: {
+                    'content@app': {
+                        templateUrl: 'templates/tasted_recipes.html',
+                        controller: 'RecipeCtrl',
+                        resolve: {
+                            recipePromise: ['Recipe', 'Auth', function (recipes, Auth) {
+                                return recipes.getUserTriedRecipes(Auth.currentUser().id);
+                            }]
+                        }
+                    }
+                },
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                    if (!Auth.isLoggedIn()) {
+                        $state.go('login');
+                    }
+                }]
+            })
 
         // LOGIN PAGE ==========================================================
             .state('login', {

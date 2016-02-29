@@ -79,6 +79,24 @@ module.exports = {
       collection: 'collection',
       via: 'followers'
     },
+    
+    // Reference to many votes of recipes
+    votes : {
+      collection: 'voteRecipe',
+      via: 'author'
+    },
+    
+    // Reference to many votes of recipes
+    viewedRecipes : {
+      collection: 'viewRecipe',
+      via: 'user'
+    },
+    
+    // Reference to many tried recipes
+    triedRecipes : {
+      collection: 'tryRecipe',
+      via: 'user'
+    },
 
     // Override toJSON method to remove password from API
     toJSON: function() {

@@ -134,6 +134,12 @@ var apiRoutes = addGlobalPrefix({
 
   'get /user/:user/following/:target_user': 'UserController.isFollowing',
   
+  'get /user/:id/upvoted_recipe': 'UserController.findUserUpvotedRecipes',
+  
+  'get /user/:id/viewed_recipe': 'UserController.findUserViewedRecipes',
+  
+  'get /user/:id/tried_recipe': 'UserController.findUserTriedRecipes',
+  
   /***************************************************************************
   *                                                                          *
   * Ricette.                                                                 *
@@ -172,7 +178,7 @@ var apiRoutes = addGlobalPrefix({
   
   /***************************************************************************
   *                                                                          *
-  * Prove di ricette.                                                          *
+  * Prove di ricette.                                                        *
   *                                                                          *
   ***************************************************************************/
 
@@ -191,6 +197,14 @@ var apiRoutes = addGlobalPrefix({
   'put /recipe/:recipe/try/detail': 'TryRecipeDetailController.update',
   
   'get /try/detail/typologies': 'TryRecipeDetailController.getTryDetailTypologies',
+  
+  /***************************************************************************
+  *                                                                          *
+  * View di ricette.                                                         *
+  *                                                                          *
+  ***************************************************************************/
+  
+  'post /recipe/:recipe/view': 'ViewRecipeController.create',
 
   /***************************************************************************
   *                                                                          *

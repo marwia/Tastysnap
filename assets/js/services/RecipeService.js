@@ -39,6 +39,36 @@ angular.module('RecipeService', [])
                 angular.copy(data, o.recipes);
             });
         };
+        
+        /**
+         * Metodo per richiedere una lista di ricette preferite 
+         * (con upvote dato dall'utente) di un dato utente.
+         */
+        o.getUserUpvotedRecipes = function (userId) {
+            return $http.get(server_prefix + '/user/' + userId + '/upvoted_recipe').success(function (data) {
+                angular.copy(data, o.recipes);
+            });
+        };
+        
+        /**
+         * Metodo per richiedere una lista di ricette viste 
+         * da un dato utente.
+         */
+        o.getUserViewedRecipes = function (userId) {
+            return $http.get(server_prefix + '/user/' + userId + '/viewed_recipe').success(function (data) {
+                angular.copy(data, o.recipes);
+            });
+        };
+        
+        /**
+         * Metodo per richiedere una lista di ricette provate 
+         * da un dato utente.
+         */
+        o.getUserTriedRecipes = function (userId) {
+            return $http.get(server_prefix + '/user/' + userId + '/tried_recipe').success(function (data) {
+                angular.copy(data, o.recipes);
+            });
+        };
 
         o.delete = function (recipeId, successCallback, errorCallback) {
             return $http.delete(
@@ -127,24 +157,116 @@ angular.module('RecipeService', [])
 
 
         o.upvote = function (recipe) {
-            return $http.put(server_prefix + '/recipe/' + recipe.id + '/upvote', null, {
+            return $http.post(server_prefix + '/recipe/' + recipe.id + '/upvote', null, {
                 headers: { Authorization: 'Bearer ' + Auth.getToken() }
             })
-                .success(function (response) {
-                    recipe.votes.push(response.data);
+                .success(function (data) {
+                    recipe.votes.push(data);// opzionale...
+                    recipe.userVote = data.value;
+                    recipe.votesCount += 1;
                 })
-                .error(function (response) {
-                    console.log(response);
+                .error(function (err) {
+                    console.log(err);
+                });
+        };
+
+        o.deleteVote = function (recipe) {
+            return $http.delete(server_prefix + '/recipe/' + recipe.id + '/vote', {
+                headers: { Authorization: 'Bearer ' + Auth.getToken() }
+            })
+                .success(function (data) {
+                    recipe.userVote = 0;
+                    recipe.votesCount -= 1;
+                })
+                .error(function (err) {
+                    console.log(err);
+                });
+        };
+
+        o.checkVote = function (recipe) {
+            return $http.get(server_prefix + '/recipe/' + recipe.id + '/voted',
+                {
+                    headers: { Authorization: 'Bearer ' + Auth.getToken() }
+                }).success(
+                    function (data) {
+                        recipe.userVote = data.value;
+                    }
+                    );
+        };
+        
+        /**
+         * Servizio per comunicare che una ricetta è stata provata (assaggiata)
+         * dall'utente loggato.
+         * Disponibile solo su un dettaglio di una ricetta.
+         */
+        o.createTry = function (recipe) {
+            return $http.post(
+                server_prefix + '/recipe/' + recipe.id + '/try', null,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                })
+                .success(function (data) {
+                    recipe.userTry = data;
+                    recipe.trials.push(data);
                 });
         };
         
-        o.checkVote = function (recipe) {
-            return $http.get(server_prefix + 'recipe/' + recipe.id + '/vote').success(
-                function (response) {
-                    recipe.userVote = response.data.value;
-                }
-            );
+        /**
+         * Servizio per annullare un assaggio di una ricetta.
+         * Disponibile solo su un dettaglio di una ricetta.
+         */
+        o.deleteTry = function (recipe) {
+            return $http.delete(
+                server_prefix + '/recipe/' + recipe.id + '/try',
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                })
+                .success(function (data) {
+                    recipe.userTry = null;
+                    // elimino l'elemento corretto dall'array
+                    for (var i in recipe.trials) {
+                        if (recipe.trials[i].user = Auth.currentUser().id) {
+                            recipe.trials.splice(i, 1);
+                            break;
+                        }
+                    }
+                });
         };
+
+        o.checkTry = function (recipe) {
+            return $http.get(server_prefix + '/recipe/' + recipe.id + '/tried',
+                {
+                    headers: { Authorization: 'Bearer ' + Auth.getToken() }
+                }).success(function (data) {
+                        recipe.userTry = data;
+                });
+        };
+        
+         /**
+         * Servizio per comunicare che una ricetta è stata vista
+         * dall'utente loggato.
+         * Disponibile solo su un dettaglio di una ricetta.
+         */
+        o.createView = function (recipe) {
+            return $http.post(
+                server_prefix + '/recipe/' + recipe.id + '/view', null,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                })
+                .success(function (data, status) {
+                    if (status == 201) {// new view
+                        recipe.views.push(data);
+                    }
+                    recipe.userView = data;
+                });
+        };
+        
 
         /*
         o.get = function (id) {

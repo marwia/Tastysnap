@@ -113,6 +113,10 @@ module.exports.policies = {
     'findDownvotes' : 'findRecipe'
   },
   
+  'ViewRecipeController' : {
+      'create' : ['isAuthorized', 'findRecipe']
+  },
+  
   'TryRecipeController' : {
     'create' : ['isAuthorized', 'findRecipe'],
     'find' : 'findRecipe',

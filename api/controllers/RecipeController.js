@@ -113,7 +113,7 @@ module.exports = {
                 // conto gli elementi delle collection
                 for (var i in foundRecipes) {
                     foundRecipes[i].viewsCount = foundRecipes[i].views.length;
-                    foundRecipes[i].votesCount = foundRecipes[i].votes.length;
+                    foundRecipes[i].votesCount = foundRecipes[i].votes.length;// aggiungere verifica sul value positivo
                     foundRecipes[i].commentsCount = foundRecipes[i].comments.length;
                     foundRecipes[i].trialsCount = foundRecipes[i].trials.length;
 

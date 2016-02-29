@@ -10,7 +10,7 @@
     }
 </style>
 
-<div class="row background">
+<div class="row background" ng-init="initDetailedRecipe(detailedRecipe)">
     <div class="container-fluid">
         <div class="row recipe tasty_container">
 
@@ -88,13 +88,18 @@
                             <td><i class="fa fa-heart recipe_sp_2_2_icon"></i></td>
                             <td><i class="fa fa-comment recipe_sp_2_2_icon"></i></td>
                             <td><i class="fa fa-eye recipe_sp_2_2_icon"></i></td>
-                            <td><i class="fa fa-cutlery recipe_sp_2_2_icon"></i></td>
+                            <td>
+                                <span class="fa-stack fa-lg" ng-click="toggleTryRecipe(detailedRecipe)">
+                                    <i class="fa fa-cutlery fa-stack-1x"></i>
+                                    <i class="fa fa-ban fa-stack-2x text-danger" ng-hide="detailedRecipe.userTry == null"></i>
+                                </span>
+                           </td>
                         </tr>
                         <tr>
-                            <td>30</td>
-                            <td>112</td>
-                            <td>90</td>
-                            <td>8</td>
+                            <td>{{detailedRecipe.votes.length}}</td>
+                            <td>{{detailedRecipe.comments.length}}</td>
+                            <td>{{detailedRecipe.views.length}}</td>
+                            <td>{{detailedRecipe.trials.length}}</td>
                         </tr>
                     </table>
                 </div>

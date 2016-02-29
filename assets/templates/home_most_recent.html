@@ -20,7 +20,9 @@
             recipe="recipe" 
             open-collection-modal="openCollectionSelectionModal(recipe)"
             open-share-modal="openShareModal(recipe)"
-            ng-repeat="recipe in recipes"></recipe-card> 
+            toggle-upvote-recipe="toggleUpvoteRecipe(recipe)"
+            ng-repeat="recipe in recipes"
+            ng-init="checkVote(recipe)"></recipe-card> 
         <!-- fine card -->
 
     </div>

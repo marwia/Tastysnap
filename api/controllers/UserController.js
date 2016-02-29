@@ -47,24 +47,24 @@ module.exports = {
      *       "message": "Please fill out all fields"
      *     }
      */
-  	create: function (req, res) {
-      if (!req.body.username || !req.body.password) {
-        return res.status(400).json({message: 'Please fill out all fields'});
-      }
-
-      //delete req.body.password;
-
-      User.create(req.body).exec(function (err, user) {
-        if (err) {
-          return res.json(err.status, {err: err});
+    create: function (req, res) {
+        if (!req.body.username || !req.body.password) {
+            return res.status(400).json({ message: 'Please fill out all fields' });
         }
-        // If user created successfuly we return user and token as response
-        if (user) {
-          // NOTE: payload is { id: user.id}
-          console.log(user);
-          res.json(200, {user: user, token: jwToken.issue({id: user.id})});
-        }
-      });
+
+        //delete req.body.password;
+
+        User.create(req.body).exec(function (err, user) {
+            if (err) {
+                return res.json(err.status, { err: err });
+            }
+            // If user created successfuly we return user and token as response
+            if (user) {
+                // NOTE: payload is { id: user.id}
+                console.log(user);
+                res.json(200, { user: user, token: jwToken.issue({ id: user.id }) });
+            }
+        });
     },
     
     /**
@@ -96,40 +96,40 @@ module.exports = {
      */
     find: function (req, res, next) {
         User.find()
-        .where( actionUtil.parseCriteria(req) )
-        .limit( actionUtil.parseLimit(req) )
-        .skip( actionUtil.parseSkip(req) )
-        .sort( actionUtil.parseSort(req) )
-        .populate('recipes')
-        .populate('collections')
-        .populate('followers')
-        .populate('following')
-        .populate('followingCollections')
-        .exec( function(err, foundUsers) {
-            if(err){ return next(err); }
+            .where(actionUtil.parseCriteria(req))
+            .limit(actionUtil.parseLimit(req))
+            .skip(actionUtil.parseSkip(req))
+            .sort(actionUtil.parseSort(req))
+            .populate('recipes')
+            .populate('collections')
+            .populate('followers')
+            .populate('following')
+            .populate('followingCollections')
+            .exec(function (err, foundUsers) {
+                if (err) { return next(err); }
             
-            // array di appoggio
-            var users = new Array();
+                // array di appoggio
+                var users = new Array();
             
-            // conto gli elementi delle collection
-            for (var i in foundUsers) {
-                foundUsers[i].recipesCount = foundUsers[i].recipes.length;
-                foundUsers[i].collectionsCount = foundUsers[i].collections.length;
-                foundUsers[i].followersCount = foundUsers[i].followers.length;
-                foundUsers[i].followingCount = foundUsers[i].following.length;
-                foundUsers[i].followingCollectionsCount = foundUsers[i].followingCollections.length;
+                // conto gli elementi delle collection
+                for (var i in foundUsers) {
+                    foundUsers[i].recipesCount = foundUsers[i].recipes.length;
+                    foundUsers[i].collectionsCount = foundUsers[i].collections.length;
+                    foundUsers[i].followersCount = foundUsers[i].followers.length;
+                    foundUsers[i].followingCount = foundUsers[i].following.length;
+                    foundUsers[i].followingCollectionsCount = foundUsers[i].followingCollections.length;
                 
-                /**
-                 * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
-                 * delle associazioni vengono automaticamente tolte quando si esegue
-                 * il seguente metodo.
-                 */
-                var obj = foundUsers[i].toObject();
-                users.push(obj);
-            }
+                    /**
+                     * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
+                     * delle associazioni vengono automaticamente tolte quando si esegue
+                     * il seguente metodo.
+                     */
+                    var obj = foundUsers[i].toObject();
+                    users.push(obj);
+                }
 
-            return res.json(users);
-        });
+                return res.json(users);
+            });
     },
     
     /**
@@ -163,35 +163,253 @@ module.exports = {
      */
     findOne: function (req, res, next) {
         var userId = req.param('id');
-        if(!userId) { return next(); }
-        
+        if (!userId) { return next(); }
+
         User.findOne(userId)
-        .populate('recipes')
-        .populate('collections')
-        .populate('followers')
-        .populate('following')
-        .populate('followingCollections')
-        .exec( function(err, foundUser) {
-            if(err){ return next(err); }
+            .populate('recipes')
+            .populate('collections')
+            .populate('followers')
+            .populate('following')
+            .populate('followingCollections')
+            .exec(function (err, foundUser) {
+                if (err) { return next(err); }
+
+                if (!foundUser) { return res.notFound({ error: 'No user found' }); }
             
-            if(!foundUser) { return res.notFound({error: 'No user found'}); }
+                // conto gli elementi delle collection
+                foundUser.recipesCount = foundUser.recipes.length;
+                foundUser.collectionsCount = foundUser.collections.length;
+                foundUser.followersCount = foundUser.followers.length;
+                foundUser.followingCount = foundUser.following.length;
+                foundUser.followingCollectionsCount = foundUser.followingCollections.length;
             
-            // conto gli elementi delle collection
-            foundUser.recipesCount = foundUser.recipes.length;
-            foundUser.collectionsCount = foundUser.collections.length;
-            foundUser.followersCount = foundUser.followers.length;
-            foundUser.followingCount = foundUser.following.length;
-            foundUser.followingCollectionsCount = foundUser.followingCollections.length;
+                /**
+                 * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
+                 * delle associazioni vengono automaticamente tolte quando si esegue
+                 * il seguente metodo.
+                 */
+                var obj = foundUser.toObject();
+
+                return res.json(obj);
+            });
+    },
+    
+    /**
+     * @api {get} /user/:id/upvoted_recipe Get a User favorite recipe list
+     * @apiName getUserUpvotedRecipes
+     * @apiGroup User
+     *
+     * @apiDescription Serve per richiedere la lista delle ricette
+     * preferite di un utente.
+     *
+     * @apiParam {String} id User id.
+     *
+     * @apiSuccess {[RecipeObject]} recipeList JSON that represents the list of recipes.
+     *
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     */
+    findUserUpvotedRecipes: function (req, res, next) {
+        var userId = req.param('id');
+        if (!userId) { return next(); }
+
+        User.findOne(userId)
+            .populate('votes')
+            .exec(function (err, foundUser) {
+                if (err) { return next(err); }
+
+                if (!foundUser) { return res.notFound({ error: 'No user found' }); }
             
-            /**
-             * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
-             * delle associazioni vengono automaticamente tolte quando si esegue
-             * il seguente metodo.
-             */
-            var obj = foundUser.toObject();
- 
-            return res.json(obj);
-        });
+                // Array con voti positivi, cioè con le ricette preferite
+                var positiveVotes = new Array();
+
+                for (var i in foundUser.votes) {
+                    if (foundUser.votes[i].value > 0) {
+                        positiveVotes.push(foundUser.votes[i].recipe)
+                    }
+                }
+
+                // Copiato dal RecipeController.js
+                Recipe.find()
+                    .where({id: positiveVotes})// varia solo questa
+                    .limit(actionUtil.parseLimit(req))
+                    .skip(actionUtil.parseSkip(req))
+                    .sort(actionUtil.parseSort(req))
+                    .populate('author')
+                    .populate('views')
+                    .populate('votes')
+                    .populate('comments')
+                    .populate('trials')
+                    .exec(function (err, foundRecipes) {
+                        if (err) { return next(err); }
+            
+                        // array di appoggio
+                        var recipes = new Array();
+            
+                        // conto gli elementi delle collection
+                        for (var i in foundRecipes) {
+                            foundRecipes[i].viewsCount = foundRecipes[i].views.length;
+                            foundRecipes[i].votesCount = foundRecipes[i].votes.length;// aggiungere verifica sul value positivo
+                            foundRecipes[i].commentsCount = foundRecipes[i].comments.length;
+                            foundRecipes[i].trialsCount = foundRecipes[i].trials.length;
+
+                            /**
+                             * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
+                             * delle associazioni vengono automaticamente tolte quando si esegue
+                             * il seguente metodo.
+                             */
+                            var obj = foundRecipes[i].toObject();
+                            delete obj.description;// tolgo la descrizione della ricetta
+                            recipes.push(obj);
+                        }
+                        return res.json(recipes);
+                    });
+            });
+    },
+    
+    /**
+     * @api {get} /user/:id/viewed_recipe Get a User viewed recipe list
+     * @apiName getUserViewedRecipes
+     * @apiGroup User
+     *
+     * @apiDescription Serve per richiedere la lista delle ricette
+     * viste (consultate) da un utente.
+     *
+     * @apiParam {String} id User id.
+     *
+     * @apiSuccess {[RecipeObject]} recipeList JSON that represents the list of recipes.
+     *
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     */
+    findUserViewedRecipes: function (req, res, next) {
+        var userId = req.param('id');
+        if (!userId) { return next(); }
+
+        User.findOne(userId)
+            .populate('viewedRecipes')
+            .exec(function (err, foundUser) {
+                if (err) { return next(err); }
+
+                if (!foundUser) { return res.notFound({ error: 'No user found' }); }
+            
+                // Array con id di ricette viste
+                var viewedRecipes = new Array();
+
+                for (var i in foundUser.viewedRecipes) {
+                    viewedRecipes.push(foundUser.viewedRecipes[i].recipe)
+                }
+
+                // Copiato dal RecipeController.js
+                Recipe.find()
+                    .where({id: viewedRecipes})// varia solo questa
+                    .limit(actionUtil.parseLimit(req))
+                    .skip(actionUtil.parseSkip(req))
+                    .sort(actionUtil.parseSort(req))
+                    .populate('author')
+                    .populate('views')
+                    .populate('votes')
+                    .populate('comments')
+                    .populate('trials')
+                    .exec(function (err, foundRecipes) {
+                        if (err) { return next(err); }
+            
+                        // array di appoggio
+                        var recipes = new Array();
+            
+                        // conto gli elementi delle collection
+                        for (var i in foundRecipes) {
+                            foundRecipes[i].viewsCount = foundRecipes[i].views.length;
+                            foundRecipes[i].votesCount = foundRecipes[i].votes.length;// aggiungere verifica sul value positivo
+                            foundRecipes[i].commentsCount = foundRecipes[i].comments.length;
+                            foundRecipes[i].trialsCount = foundRecipes[i].trials.length;
+
+                            /**
+                             * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
+                             * delle associazioni vengono automaticamente tolte quando si esegue
+                             * il seguente metodo.
+                             */
+                            var obj = foundRecipes[i].toObject();
+                            delete obj.description;// tolgo la descrizione della ricetta
+                            recipes.push(obj);
+                        }
+                        return res.json(recipes);
+                    });
+            });
+    },
+    
+    /**
+     * @api {get} /user/:id/tried_recipe Get a User tried recipe list
+     * @apiName getUserTriedRecipes
+     * @apiGroup User
+     *
+     * @apiDescription Serve per richiedere la lista delle ricette
+     * provate (assaggiate) da un utente.
+     *
+     * @apiParam {String} id User id.
+     *
+     * @apiSuccess {[RecipeObject]} recipeList JSON that represents the list of recipes.
+     *
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     */
+    findUserTriedRecipes: function (req, res, next) {
+        var userId = req.param('id');
+        if (!userId) { return next(); }
+
+        User.findOne(userId)
+            .populate('triedRecipes')
+            .exec(function (err, foundUser) {
+                if (err) { return next(err); }
+
+                if (!foundUser) { return res.notFound({ error: 'No user found' }); }
+            
+                // Array con id di ricette provate
+                var triedRecipes = new Array();
+
+                for (var i in foundUser.triedRecipes) {
+                    triedRecipes.push(foundUser.triedRecipes[i].recipe)
+                }
+
+                // Copiato dal RecipeController.js
+                Recipe.find()
+                    .where({id: triedRecipes})// varia solo questa
+                    .limit(actionUtil.parseLimit(req))
+                    .skip(actionUtil.parseSkip(req))
+                    .sort(actionUtil.parseSort(req))
+                    .populate('author')
+                    .populate('views')
+                    .populate('votes')
+                    .populate('comments')
+                    .populate('trials')
+                    .exec(function (err, foundRecipes) {
+                        if (err) { return next(err); }
+            
+                        // array di appoggio
+                        var recipes = new Array();
+            
+                        // conto gli elementi delle collection
+                        for (var i in foundRecipes) {
+                            foundRecipes[i].viewsCount = foundRecipes[i].views.length;
+                            foundRecipes[i].votesCount = foundRecipes[i].votes.length;// aggiungere verifica sul value positivo
+                            foundRecipes[i].commentsCount = foundRecipes[i].comments.length;
+                            foundRecipes[i].trialsCount = foundRecipes[i].trials.length;
+
+                            /**
+                             * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
+                             * delle associazioni vengono automaticamente tolte quando si esegue
+                             * il seguente metodo.
+                             */
+                            var obj = foundRecipes[i].toObject();
+                            delete obj.description;// tolgo la descrizione della ricetta
+                            recipes.push(obj);
+                        }
+                        return res.json(recipes);
+                    });
+            });
     },
 
     /**
@@ -221,20 +439,20 @@ module.exports = {
         var userToFollow = req.user;
 
         // seguire se stessi non è permesso
-        if(user.id == userToFollow.id) { return res.badRequest(); }
+        if (user.id == userToFollow.id) { return res.badRequest(); }
 
         // ricarico l'utente corrente (con l'array dei following) (necessario...)
-        User.findOne(user.id).populate('following').exec( function (err, foundUser) {
+        User.findOne(user.id).populate('following').exec(function (err, foundUser) {
             // seguire più volte non è permesso
-            if(foundUser.isFollowingUser(userToFollow.id) == true) { return res.badRequest(); }
+            if (foundUser.isFollowingUser(userToFollow.id) == true) { return res.badRequest(); }
 
             foundUser.following.add(userToFollow.id);
 
             foundUser.save(function (err, saved) {
-                if(err){ return next(err); }
+                if (err) { return next(err); }
                 return res.send(204, null);// OK - No Content
             });
-        });   
+        });
     },
 
     /**
@@ -263,11 +481,11 @@ module.exports = {
         var userToFollow = req.user;
 
         // ricarico l'utente corrente (necessario...)
-        User.findOne(user.id).exec( function (err, foundUser) {
+        User.findOne(user.id).exec(function (err, foundUser) {
             user.following.remove(userToFollow.id);
 
             user.save(function (err, saved) {
-                if(err){ return next(err); }
+                if (err) { return next(err); }
                 return res.send(204, null);// OK - No Content
             });
         });
@@ -289,8 +507,8 @@ module.exports = {
     getFollowers: function (req, res, next) {
         var requestedUser = req.user;
 
-        User.findOne(requestedUser.id).populate('followers').exec( function(err, foundUser) {
-            if(err){ return next(err); }
+        User.findOne(requestedUser.id).populate('followers').exec(function (err, foundUser) {
+            if (err) { return next(err); }
             return res.json(foundUser.followers);
         });
     },
@@ -311,8 +529,8 @@ module.exports = {
     getFollowing: function (req, res, next) {
         var requestedUser = req.user;
 
-        User.findOne(requestedUser.id).populate('following').exec( function(err, foundUser) {
-            if(err){ return next(err); }
+        User.findOne(requestedUser.id).populate('following').exec(function (err, foundUser) {
+            if (err) { return next(err); }
             return res.json(foundUser.following);
         });
     },
@@ -345,11 +563,11 @@ module.exports = {
         var targetUser = req.user;
 
         // ricarico l'utente corrente (necessario...)
-        User.findOne(user.id).populate('following').exec( function (err, foundUser) {
-            if(err){ return next(err); }
+        User.findOne(user.id).populate('following').exec(function (err, foundUser) {
+            if (err) { return next(err); }
 
             // seguire più volte non è permesso
-            if(foundUser.isFollowingUser(targetUser.id) == false) { return res.notFound(); }
+            if (foundUser.isFollowingUser(targetUser.id) == false) { return res.notFound(); }
 
             return res.send(204, null);// OK - No Content
         });
@@ -377,18 +595,18 @@ module.exports = {
      */
     isFollowing: function (req, res, next) {
         var targetUser = req.param('target_user');
-        if(!targetUser) { return res.badRequest(); }
+        if (!targetUser) { return res.badRequest(); }
         var user = req.user;
 
         // ricarico l'utente corrente (necessario...)
-        User.findOne(user.id).populate('following').exec( function (err, foundUser) {
-            if(err){ return next(err); }
+        User.findOne(user.id).populate('following').exec(function (err, foundUser) {
+            if (err) { return next(err); }
             // seguire più volte non è permesso
-            if(foundUser.isFollowingUser(targetUser) == false) { return res.notFound(); }
+            if (foundUser.isFollowingUser(targetUser) == false) { return res.notFound(); }
 
             return res.send(204, null);// OK - No Content
         });
     },
-	
+
 };
 
