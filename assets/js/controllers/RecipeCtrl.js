@@ -206,4 +206,9 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
             }
         };
         
+        $scope.formatDate = function (recipe) {
+
+            return moment(recipe.createdAt).fromNow(); 
+        }
+        
     }]);
