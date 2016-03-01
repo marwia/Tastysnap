@@ -20,8 +20,13 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
         $scope.isLoggedIn = Auth.isLoggedIn;
 	
         // espongo allo scope le ricette del servizio Recipe
-        $scope.recipes = Recipe.recipes;
         $scope.detailedRecipe = Recipe.detailedRecipe;
+        $scope.recipes = Recipe.recipes;
+        
+        $scope.getTextColor = Recipe.getTextColor;
+        $scope.checkTry = Recipe.checkTry;
+        $scope.viewRecipe = Recipe.createView;      
+        $scope.checkVote = Recipe.checkVote;
         
         // espongo i metodi del servizio User
         $scope.getUserProfileImage = User.getUserProfileImage;
@@ -29,27 +34,8 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
         /**
          * Verifica se l'utente loggatto attualmente è l'autore della ricetta.
          */
-        $scope.isRecipeAuthor = function (recipe) {
-            if (Auth.isLoggedIn) {
-                if (Auth.currentUser().id == recipe.author.id) {
-                    return true;
-                }
-            }
-            return false;
-        };
-
-        $scope.deleteCurrentRecipe = function () {
-            console.log("elimino la ricetta");
-            Recipe.delete($scope.detailedRecipe.id,
-                function (response) {
-                    $state.go('app');
-                }, function (response) {
-                    // errore
-                });
-        };
-        
-        
-               
+        $scope.isRecipeAuthor = Recipe.isRecipeAuthor;
+             
         $scope.toggleUpvoteRecipe = function (recipe) {
             if (recipe.userVote == 1) {
                 Recipe.deleteVote(recipe);
@@ -58,39 +44,6 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
             }
             
         };
-        
-        $scope.checkVote = function (recipe) {
-            Recipe.checkVote(recipe);
-        };
-        
-        
-        
-        $scope.toggleTryRecipe = function (recipe) {
-            if (recipe.userTry) {
-                Recipe.deleteTry(recipe);
-            } else {
-                Recipe.createTry(recipe);
-            }
-            
-        };
-
-        $scope.checkTry = function (recipe) {
-            Recipe.checkTry(recipe);
-        };
-        
-        
-        $scope.viewRecipe = function (recipe) {
-            Recipe.createView(recipe);
-        };
-        
-        /**
-         * Inizializzazione di un dettaglio di una ricetta.
-         */
-        $scope.initDetailedRecipe = function (recipe) {
-            Recipe.createView(recipe);
-            Recipe.checkTry(recipe);
-        }
-
 
         $scope.openCollectionSelectionModal = function (selectedRecipe) {
 
@@ -112,43 +65,6 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 $log.info('Modal dismissed with success at: ' + new Date());
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
-            });
-        };
-        
-        // MODALE PER CONFERMARE L'ELIMINAZIONE DI UNA RICETTA
-        
-        $scope.openEliminationModal = function (selectedRecipe) {
-            $uibModal.open({
-                animation: true,
-                templateUrl: 'templates/recipe_elimination_modal.html',
-                controller: function ($uibModalInstance, $scope) {
-                    // passaggio paramteri
-                    $scope.loading = false;
-                    $scope.selectedRecipe = selectedRecipe;
-                    // azioni possibili all'interno della modale
-                    $scope.ok = function () {
-                        $scope.loading = true
-
-                        Recipe.delete(selectedRecipe.id,
-                            function (response) {
-                                setTimeout(function () {
-                                    //do what you need here
-                                    $scope.loading = false;
-                                    $uibModalInstance.dismiss('cancel');
-                                    $state.go('app');
-                                }, 2000);
-
-                            }, function (response) {
-                                // errore
-                                $scope.loading = false;
-                            });
-                    };
-
-                    $scope.cancel = function () {
-                        $uibModalInstance.dismiss('cancel');
-                    };
-                },
-                size: 'sm'
             });
         };
         
@@ -177,38 +93,5 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 size: ''
             });
         };
-        
-        //funzione che restiruisce il colore bianco o nero a seonda dell'input
-        $scope.textColor = function (recipe){
-            //inizializzo la varibile a bianco, quindi il testo dobrebbe esseren nero.
-            var c = "#000000";
-            
-            //recupero il colore dominante della ricetta
-            c = recipe.dominantColor;
-            
-            //calcolo se restituire il colore bianco o nero
-            c = c.substring(1);      // strip #
-            var rgb = parseInt(c, 16);   // convert rrggbb to decimal
-            var r = (rgb >> 16) & 0xff;  // extract red
-            var g = (rgb >>  8) & 0xff;  // extract green
-            var b = (rgb >>  0) & 0xff;  // extract blue
-            
-            var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
-            
-            //sensibilità, valore basso poco sensibile, credo da 0 a 200
-            // impostata a 150
-            if(luma < 150){
-                //return bianco
-                return "#FFFFFF";
-            }else{
-                //return nero
-                return "#000000";
-            }
-        };
-        
-        $scope.formatDate = function (recipe) {
-            moment.locale("it");
-            return moment(recipe.createdAt).fromNow(); 
-        }
         
     }]);

@@ -15,6 +15,46 @@ angular.module('RecipeService', [])
             recipeCategories: [],
             dosagesTypes: []
         };
+        
+        /**
+         * Verifica se l'utente loggatto attualmente è l'autore della ricetta.
+         */
+        o.isRecipeAuthor = function (recipe) {
+            if (Auth.isLoggedIn) {
+                if (Auth.currentUser().id == recipe.author.id) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        
+        //funzione che restiruisce il colore bianco o nero a seonda dell'input
+        o.getTextColor = function (recipe){
+            //inizializzo la varibile a bianco, quindi il testo dobrebbe esseren nero.
+            var c = "#000000";
+            
+            //recupero il colore dominante della ricetta
+            c = recipe.dominantColor;
+            
+            //calcolo se restituire il colore bianco o nero
+            c = c.substring(1);      // strip #
+            var rgb = parseInt(c, 16);   // convert rrggbb to decimal
+            var r = (rgb >> 16) & 0xff;  // extract red
+            var g = (rgb >>  8) & 0xff;  // extract green
+            var b = (rgb >>  0) & 0xff;  // extract blue
+            
+            var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+            
+            //sensibilità, valore basso poco sensibile, credo da 0 a 200
+            // impostata a 150
+            if(luma < 150){
+                //return bianco
+                return "#FFFFFF";
+            }else{
+                //return nero
+                return "#000000";
+            }
+        };
 
         /**
          * Metodo per richiedere una lista di ricette.
