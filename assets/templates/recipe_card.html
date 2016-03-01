@@ -22,7 +22,7 @@
                     </div>
                 </div>
                     
-                <div class="caption color_caption">
+                <div class="caption color_caption" ng-style="cardFontStyle">
                     <div class="container-fluid">
                     
                         <!-- icone + valori -->
@@ -40,8 +40,8 @@
 
                         <!-- titolo portata -->
                         <div class="row">
-                           <h5 class="no-margin card_title text-uppercase">
-                               <a href="app/recipe/{{recipe.id}}">{{recipe.title}}</a>
+                           <h5 class="no-margin card_title text-uppercase" >
+                               <a href="app/recipe/{{recipe.id}}" ng-style="cardFontStyle">{{recipe.title}}</a>
                            </h5>
                         </div>
 
@@ -50,7 +50,7 @@
                             <img src="{{ getUserProfileImage(recipe.author) }}" class="img-circle card_profile_photo pull-left">
                             <div class="card_profile_name pull-left">
                                 <a href="app/profile/{{recipe.author.id}}">
-                                <h6>{{recipe.author.name}} {{recipe.author.surname}}</h6>
+                                <h6 ng-style="cardFontStyle">{{recipe.author.name}} {{recipe.author.surname}}</h6>
                                 </a>
                             </div>
                         </div>

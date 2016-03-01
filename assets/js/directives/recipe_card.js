@@ -9,7 +9,7 @@
  */
 
 angular.module('sampleApp')
-    .directive('recipeCard', ['User', function (User) {
+    .directive('recipeCard', ['User', 'Recipe', function (User, Recipe) {
         
         return {
             restrict: 'E',
@@ -25,6 +25,10 @@ angular.module('sampleApp')
             //controller: 'RecipeCtrl',
             link: function (scope, element, attrs) {
                 scope.getUserProfileImage = User.getUserProfileImage;
+                scope.getTextColor = Recipe.getTextColor;
+                
+                // oggetto che rappresenta lo stile del font della card
+                scope.cardFontStyle = {color: scope.getTextColor(scope.recipe)};
             },
             templateUrl: 'templates/recipe_card.html'
         };
