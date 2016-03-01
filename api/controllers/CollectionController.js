@@ -7,6 +7,7 @@
 
 // libreria per gestire gli array
 var _ = require('lodash');
+var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
 
@@ -31,6 +32,37 @@ module.exports = {
      *     HTTP/1.1 200 OK
      *
      */
+    find: function (req, res, next) {
+        Collection.find()
+            .where(actionUtil.parseCriteria(req))
+            .limit(actionUtil.parseLimit(req))
+            .skip(actionUtil.parseSkip(req))
+            .sort(actionUtil.parseSort(req))
+            .populate('author')
+            .populate('followers')
+            .populate('views')
+            .exec(function (err, foundCollections) {
+                if (err) { return next(err); }
+            
+                // array di appoggio
+                var collections = new Array();
+            
+                // conto gli elementi delle collection
+                for (var i in foundCollections) {
+                    foundCollections[i].viewsCount = foundCollections[i].views.length;
+                    foundCollections[i].followersCount = foundCollections[i].followers.length;
+
+                    /**
+                     * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
+                     * delle associazioni vengono automaticamente tolte quando si esegue
+                     * il seguente metodo.
+                     */
+                    var obj = foundCollections[i].toObject();
+                    collections.push(obj);
+                }
+                return res.json(collections);
+            });
+    },
 
 
     /**

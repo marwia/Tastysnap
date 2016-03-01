@@ -24,7 +24,7 @@ module.exports = {
   	// Reference to User
   	author : { 
     	model :'user',
-      required : true
+        required : true
     },
 
   	// Reference to many Recipes
@@ -37,6 +37,12 @@ module.exports = {
     followers : {
       collection: 'User',
       via: 'followingCollections'
+    },
+    
+    // Reference to many Views
+    views : {
+      collection: 'ViewCollection',
+      via: 'collection'
     },
 
     findRecipe : function (recipeId) {
