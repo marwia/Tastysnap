@@ -20,6 +20,4 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
             return $state.current.name;
         }
         
-        // espongo allo scope le ricette del servizio Recipe
-        $scope.recipes = Recipe.recipes;
     }]);

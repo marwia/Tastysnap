@@ -28,14 +28,7 @@ angular.module('CollectionCtrl', []).controller('CollectionCtrl', [
         /**
          * Verifica se l'utente loggatto attualmente è l'autore della collection.
          */
-        $scope.isCollectionAuthor = function (collection) {
-            if (Auth.isLoggedIn) {
-                if (Auth.currentUser().id == collection.author.id) {
-                    return true;
-                }
-            }
-            return false;
-        }
+        $scope.isCollectionAuthor = Collection.isCollectionAuthor;
         
         /*
         $scope.deleteCurrentRecipe = function () {

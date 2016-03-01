@@ -14,6 +14,18 @@ angular.module('CollectionService', [])
             collections: [],
             detailedCollection: {}, // one collection 
         };
+        
+        /**
+         * Verifica se l'utente loggatto attualmente è l'autore della collection.
+         */
+        o.isCollectionAuthor = function (collection) {
+            if (Auth.isLoggedIn) {
+                if (Auth.currentUser().id == collection.author.id) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         /**
          * Metodo per richiedere una lista di collection.
