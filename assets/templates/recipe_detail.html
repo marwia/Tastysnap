@@ -2,7 +2,7 @@
 <style>
     .recipe_col_4{
         background-color: {{detailedRecipe.dominantColor}};
-        color: {{textColor(detailedRecipe)}};
+        color: {{getTextColor(detailedRecipe)}};
     }
     
     body {
@@ -12,7 +12,7 @@
     }
 </style>
 
-<div class="row background" ng-init="initDetailedRecipe(detailedRecipe)">
+<div class="row background" ng-init="initDetailedRecipe(detailedRecipe)" ng-controller="RecipeDetailCtrl">
     <div class="container-fluid">
         <div class="row recipe tasty_container">
 
