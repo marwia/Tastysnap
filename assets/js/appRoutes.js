@@ -253,7 +253,13 @@ angular.module('appRoutes', []).config([
                 url: '/collections',
                 views: {
                     'profile_content@app.profile': {
-                        templateUrl: 'templates/profile_collections.html'
+                        templateUrl: 'templates/profile_collections.html',
+                        controller: 'CollectionCtrl',
+                        resolve: {
+                            collectionPromise: ['Collection', '$stateParams', function (recipes, $stateParams) {
+                                return recipes.getUserCollections($stateParams.id);
+                            }]
+                        }
                     }
                 }
             })
