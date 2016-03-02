@@ -718,6 +718,10 @@ body {
     width: 100%;
 }
 
+.profile_button_item A:hover{
+    text-decoration:none;
+}
+
 .profile_button_item A span{
     color:white;
 }
