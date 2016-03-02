@@ -92,9 +92,14 @@ angular.module('appRoutes', []).config([
                         controller: 'RecipeCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
+                            // stampa le card delle ricette
                             postPromise: ['Recipe', function (recipes) {
                                 console.log("resolve home");
                                 return recipes.getAll();
+                            }],
+                            // stampa le collection
+                            collectionPromise: ['Collection', '$stateParams', function (recipes, $stateParams) {
+                                return recipes.getUserCollections($stateParams.id);
                             }]
                         }
                     }
@@ -106,7 +111,17 @@ angular.module('appRoutes', []).config([
                 url: '/most_tasted',
                 views: {
                     'home_content@app.home': {
-                        templateUrl: 'templates/home_most_tasted.html'
+                        templateUrl: 'templates/home_most_tasted.html',
+                        controller: 'RecipeCtrl',
+                        // ogni volta che parte da questo stato farà questa funzione
+                        resolve: {
+                            //stampa delle ricette
+                            //TODO - stampa delle ricette piu assaggiate
+                            postPromise: ['Recipe', function (recipes) {
+                                console.log("resolve home");
+                                return recipes.getAll();
+                            }]
+                        }
                     }
                 }
             })
@@ -116,7 +131,17 @@ angular.module('appRoutes', []).config([
                 url: '/trending',
                 views: {
                     'home_content@app.home': {
-                        templateUrl: 'templates/home_trending.html'
+                        templateUrl: 'templates/home_trending.html',
+                        controller: 'RecipeCtrl',
+                        // ogni volta che parte da questo stato farà questa funzione
+                        resolve: {
+                            //stampa delle ricette
+                            //TODO - stampa delle ricette piu assaggiate
+                            postPromise: ['Recipe', function (recipes) {
+                                console.log("resolve home");
+                                return recipes.getAll();
+                            }]
+                        }
                     }
                 }
             })
@@ -126,7 +151,17 @@ angular.module('appRoutes', []).config([
                 url: '/most_commented',
                 views: {
                     'home_content@app.home': {
-                        templateUrl: 'templates/home_most_commented.html'
+                        templateUrl: 'templates/home_most_commented.html',
+                        controller: 'RecipeCtrl',
+                        // ogni volta che parte da questo stato farà questa funzione
+                        resolve: {
+                            //stampa delle ricette
+                            //TODO - stampa delle ricette piu assaggiate
+                            postPromise: ['Recipe', function (recipes) {
+                                console.log("resolve home");
+                                return recipes.getAll();
+                            }]
+                        }
                     }
                 }
             })
