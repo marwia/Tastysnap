@@ -95,6 +95,10 @@ angular.module('appRoutes', []).config([
                             postPromise: ['Recipe', function (recipes) {
                                 console.log("resolve home");
                                 return recipes.getAll();
+                            }],
+                            
+                            collectionPromise: ['Collection', '$stateParams', function (recipes, $stateParams) {
+                                return recipes.getUserCollections($stateParams.id);
                             }]
                         }
                     }
