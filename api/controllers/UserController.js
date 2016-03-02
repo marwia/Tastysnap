@@ -439,7 +439,7 @@ module.exports = {
         var userToFollow = req.user;
 
         // seguire se stessi non è permesso
-        if (user.id == userToFollow.id) { return res.badRequest(); }
+        //if (user.id == userToFollow.id) { return res.badRequest(); }
 
         // ricarico l'utente corrente (con l'array dei following) (necessario...)
         User.findOne(user.id).populate('following').exec(function (err, foundUser) {
@@ -481,10 +481,10 @@ module.exports = {
         var userToFollow = req.user;
 
         // ricarico l'utente corrente (necessario...)
-        User.findOne(user.id).exec(function (err, foundUser) {
-            user.following.remove(userToFollow.id);
+        User.findOne(user.id).populate('following').exec(function (err, foundUser) {
+            foundUser.following.remove(userToFollow.id);
 
-            user.save(function (err, saved) {
+            foundUser.save(function (err, saved) {
                 if (err) { return next(err); }
                 return res.send(204, null);// OK - No Content
             });

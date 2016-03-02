@@ -21,8 +21,8 @@ angular.module('UserService', [])
          * Metodo per richiedere l'utente correntemente loggato.
          */
         service.getCurrentUser = function () {
-            return $http.get(server_prefix + '/user/' + Auth.currentUser().id).success(function (data) {
-                angular.copy(data, service.currentUser);
+            return $http.get(server_prefix + '/user/' + Auth.currentUser().id).then(function (response) {
+                angular.copy(response.data, service.currentUser);
             });
         };
         
@@ -46,10 +46,68 @@ angular.module('UserService', [])
         /**
          * Metodo per richiedere l'utente tramite id.
          */
-        service.getUserById = function (id) {
-            return $http.get(server_prefix + '/user/' + id).success(function (data) {
-                angular.copy(data, service.user);
+        service.getUserById = function (userId) {
+            return $http.put(server_prefix + '/user/' + userId).then(function (response) {
+                angular.copy(response.data, service.user);
             });
+        };
+        
+        /**
+         * Metodo per seguire un utente.
+         * Ovviamente l'operazione viene eseguita a nome dell'utente
+         * correntemente loggato.
+         */
+        service.followUser = function (userToFollow, successCallback) {
+            return $http.put(server_prefix + '/user/' + userToFollow.id + '/follow',
+                null,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                }).then(function (response) {
+                    service.currentUser.following += 1;
+                    userToFollow.followers += 1;
+
+                    userToFollow.isFollowed = true;
+                    successCallback();
+                });
+        };
+        
+        /**
+         * Metodo per smettere di seguire un utente.
+         * Ovviamente l'operazione viene eseguita a nome dell'utente
+         * correntemente loggato.
+         */
+        service.unfollowUser = function (userToUnfollow, successCallback) {
+            return $http.delete(server_prefix + '/user/' + userToUnfollow.id + '/follow',
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                }).then(function (response) {
+                    service.currentUser.following -= 1;
+                    userToUnfollow.followers -= 1;
+
+                    userToUnfollow.isFollowed = false;
+                    successCallback();
+                });
+        };
+        
+        /**
+         * Metodo per smettere di seguire un utente.
+         * Ovviamente l'operazione viene eseguita a nome dell'utente
+         * correntemente loggato.
+         */
+        service.areYouFollowing = function (userToCheck) {
+            return $http.get(server_prefix + '/user/following/' + userToCheck.id,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                }).then(function (response) {
+
+                    userToCheck.isFollowed = true;
+                });
         };
 
 

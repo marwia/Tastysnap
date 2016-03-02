@@ -15,8 +15,8 @@
                 </span>
             </div>
             <!-- profile follow -->
-            <div class="row prof_personal_info_item">
-                <button type="button" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-user"></span>SEGUI</button>
+            <div class="row prof_personal_info_item" ng-init="checkIsFollowed(user)">
+                <button type="button" class="btn btn-warning btn-sm" ng-click="toggleFollow(user)" ng-mouseenter="onMouseEnter()" data-ng-mouseleave="toggleAction()"><span class="glyphicon glyphicon-user"></span> {{action}}</button>
             </div>
         </div>
 

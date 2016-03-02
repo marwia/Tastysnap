@@ -15,9 +15,38 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
         $scope.user = User.user;//utente del profilo
         $scope.getUserProfileImage = User.getUserProfileImage;//metodo per ottenere l'immagine del profilo
         
+        $scope.action = "SEGUI";
         // Espongo il metodo per determinare lo stato dell'app
         $scope.getCurrentState = function () {
             return $state.current.name;
         }
+        
+        $scope.toggleFollow = function (user) {
+            if (user.isFollowed == true) {
+                User.unfollowUser(user, function () {
+                    //fatto
+                })
+            } else {
+                User.followUser(user, function () {
+                    //fatto
+                })
+            }
+        }
+        
+        $scope.onMouseEnter = function () {
+            if ($scope.user.isFollowed == true) {
+                $scope.action = "SMETTI DI SEGUIRE";
+            }
+        }
+        
+        $scope.toggleAction = function () {
+            if ($scope.user.isFollowed == true) {
+                $scope.action = "STAI SEGUENDO";
+            } else {
+                $scope.action = "SEGUI";
+            }
+        }
+        
+        $scope.checkIsFollowed = User.areYouFollowing;
         
     }]);
