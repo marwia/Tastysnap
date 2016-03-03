@@ -76,10 +76,16 @@ body {
 a{
     color:white;
     text-decoration: none;
+    
+    -webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
 }
 
 a:hover{
-    color:white;
+    color: #FF8E2A;
     text-decoration: none;
 }
 
@@ -589,22 +595,6 @@ a:hover{
 
 /* --------------------------------------------------------------------- 6 -------------------------------------------------------- */
 /* ------------------------------------------------------------- COLLECTION STYLE ------------------------------------------------- */
-
-.collection_body{
-    background: url("imm/spiedini_blur.jpg") no-repeat center center fixed; /* example */
-	background-size:cover;
-}
-
-.collection_container{
-    width: 100%;
-	margin: 120px auto 40px auto;
-	
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-ms-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
-}
 
 .collection_profile_photo{
 	width:50px;

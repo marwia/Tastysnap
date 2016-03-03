@@ -333,6 +333,23 @@ angular.module('appRoutes', []).config([
                     }
                 }
             })
+            
+            // COLLECTION PAGE =======================================================
+            .state('app.collection', {
+                url: '/collection/{id}',
+                views: {
+                    'content@app': {
+                        templateUrl: 'templates/collection_detail.html',
+                        controller: 'CollectionCtrl',
+                        // ogni volta che parte da questo stato farà questa funzione
+                        resolve: {
+                            collectionPromise: ['Collection', '$stateParams', function (collections, $stateParams) {
+                                return collections.getCollection($stateParams.id);
+                            }]
+                        }
+                    }
+                }
+            })
 
         // DEFAULT PAGE ==========================================================
                 

@@ -1,0 +1,40 @@
+<!-- Immagine sfocata a tutto sfondo -->
+<style>
+    body {
+        *background: url("{{detailedCollection.blurredCoverImageUrl}}") no-repeat center center fixed;
+        background: url("http://www.tastysnap.com/preview/imm/spiedini_blur.jpg") no-repeat center center fixed;
+        background-size: cover;
+        padding: 50px 0 0 0;
+    }
+</style>
+
+<!-- Parte Superiore - Intestazione -->
+<div class="row tasty_container tasty_container_margin">
+    <!-- Col Collection Profile -->
+    <div class="col-md-12 collection_main_info">
+        <a href="app/profile/{{detailedCollection.author.id}}"><img src="{{ getUserProfileImage(detailedCollection.author) }}" class="img-circle collection_profile_photo pull-left"></a>
+        <div class="collection_div_profile_name pull-left">
+            <h5 class="collection_profile_name no-margin"><strong>{{detailedCollection.author.name}}</strong></h5>
+            <h6 class="collection_profile_edited no-margin">Ultima modifica {{formatDate(detailedCollection)}}</h6>
+        </div>
+    </div>
+
+    <!-- Row Titolo -->
+    <div class="col-md-12 collection_main_info">
+        <span class="text-uppercase">
+            <h1 class="no-margin collection_title"><strong>{{detailedCollection.title}}</strong></h1>
+        </span>
+    </div>
+
+    <!-- Row Like -->
+    <div class="col-md-12 collection_main_info">
+        <h5><div class="glyphicon glyphicon-eye-open collection_info_item pull-left"><span class="collection_info_item_count">112</span></div></h5>
+        <h5><div class="glyphicon glyphicon-heart collection_info_item pull-left"><span class="collection_info_item_count">2345</span></div></h5>
+        <h5><div class="glyphicon glyphicon-share-alt collection_info_item pull-left"><span class="collection_info_item_count">Condividi</span></div></h5>
+    </div>
+</div>
+
+<!-- Contenitore Card -->
+<div class="row tasty_container tasty_container_margin text-center">
+    
+</div>

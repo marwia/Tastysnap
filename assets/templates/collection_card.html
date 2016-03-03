@@ -9,7 +9,9 @@
     <!-- div che contiene titolo - profilo - like -->
     <div class="container-fluid card_collection_content">
         <!-- titolo -->
-        <div class="row collection_card_title">{{collection.title}}</div>
+        <div class="row collection_card_title">
+            <a href="app/collection/{{collection.id}}">{{collection.title}}</a>
+        </div>
         <!-- profilo -->
         <div class="row collection_card_profile">
             <img src="{{ getUserProfileImage(collection.author) }}" class="img-circle collection_card_profile_photo pull-left">
