@@ -1,347 +1,353 @@
 <style>
     .c_recipe_row {
-        background-color: {{recipeToCreate.dominantColor}};
+        background-color: {
+            {
+                recipeToCreate.dominantColor
+            }
+        }
+        ;
     }
-    </style>
+</style>
 
 <div class="tasty_container tasty_container_margin">
-<div class="panel panel-default no-border">
-    <div class="panel-body no-padding">
-        
-        <!-- RIGA 1 - TITOLO -->
-        <div class="row c_recipe_row">
-            <!-- vuoto -->
-            <div class="col-md-4 c_recipe_left"></div>
-            <!-- titolo -->
-            <div class="col-md-8 c_recipe_right">
-                <div class="page-header">
-                    <h1><small>Inserisci la ricetta</small>
-                <br>DAI SFOGO ALLA TUA CREATIVIT&Aacute; </h1>
-                </div>
-            </div>
-        </div>
-        
-        <!-- RIGA 2 - SOTTOTITOLO -->
-        <div class="row c_recipe_row">
-            <!-- vuoto -->
-            <div class="col-md-4 c_recipe_left"></div>
-            <div class="col-md-8 c_recipe_right">
-                <h3>INFORMAZIONI GENERALI</h3>
-            </div>
-        </div>
-        
-        <!-- RIGA 3 - TITOLO RICETTA -->
-        <div class="row c_recipe_row">
-            <!-- titolo ricetta -->
-            <div class="col-md-4 c_recipe_left">
-                <span>Titolo ricetta</span>
-            </div>
-            <div class="col-md-8 c_recipe_right">
-                <input type="text" class="form-control" name="title" ng-model="recipeToCreate.title" />
-            </div>
-        </div>
-        
-        <!-- RIGA 4 - CATEGORIA -->
-        <div class="row c_recipe_row">
-            <!-- categoria ricetta -->
-            <div class="col-md-4 c_recipe_left">
-                <span>Categoria</span>
-            </div>
-            <div class="col-md-8 c_recipe_right">
-                <my-dropdown data-menu-type="button" select-val="recipeToCreate.category = selectedVal" preselected-item="recipeCategories[0]" data-dropdown-data="recipeCategories"></my-dropdown>
-            </div>
-        </div>
-        
-        <!-- RIGA 5 - FOTO -->
-        <div class="row c_recipe_row">
-            <!-- foto -->
-            <div class="col-md-4 c_recipe_left">
-                <span>Immagine di copertina</span>
-            </div>
-            <!-- Carica immagini -->
-            <div class="col-md-8 c_recipe_right">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-xs-8">
-                            <div nv-file-drop class="well my-drop-zone text-center" nv-file-over="" uploader="coverImageUploader">
-                                <h5>Trascina un'immagine oppure usa il seguente pulsante</h5>
-                                <div class="fileUpload btn btn-primary">
-                                <span>Seleziona immagine</span>
-                                <input type="file" class="upload" nv-file-select="" uploader="coverImageUploader" />
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- RIGA 6 - IMMAGINI SELEZIONATE -->
-        <div class="row c_recipe_row">
-            <!-- colore domaninate -->
-            <div class="col-md-4 c_recipe_left">
-                <span>Immagine selezionata</span>
-                <p>Numero: {{ coverImageUploader.queue.length }}</p>
-            </div>
-            <!-- Carica immagini -->
-            <div class="col-md-8 c_recipe_right">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th width="50%">Nome</th>
-                            <th ng-show="coverImageUploader.isHTML5">Dimensioni</th>
-                            <th ng-show="coverImageUploader.isHTML5">Progesso</th>
-                            <th>Stato</th>
-                            <th>Azioni</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="item in coverImageUploader.queue">
-                            <td><strong>{{ item.file.name }}</strong>
-                            <div ng-show="coverImageUploader.isHTML5" ng-thumb="{ file: item._file, height: 50 }"></div>
-                            </td>
-                            <td ng-show="coverImageUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                            <td ng-show="coverImageUploader.isHTML5">
-                                <div class="progress" style="margin-bottom: 0;">
-                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                            </td>
-                            <td nowrap>
-                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                                    <span class="glyphicon glyphicon-trash"></span> Rimuovi
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- RIGA 5 - FOTO -->
-        <div class="row c_recipe_row">
-            <!-- foto -->
-            <div class="col-md-4 c_recipe_left">
-                <span>Ulteriori immagini</span>
-            </div>
-            <!-- Carica immagini -->
-            <div class="col-md-8 c_recipe_right">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-xs-8">
-                            <div nv-file-drop class="well my-drop-zone text-center" nv-file-over="" uploader="otherImageUploader">
-                                <h5>Trascina un'immagine oppure usa il seguente pulsante</h5>
-                                <div class="fileUpload btn btn-primary">
-                                <span>Seleziona immagine</span>
-                                <input type="file" class="upload" nv-file-select="" uploader="otherImageUploader" />
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- RIGA 6 - IMMAGINI SELEZIONATE -->
-        <div class="row c_recipe_row">
-            <!-- colore domaninate -->
-            <div class="col-md-4 c_recipe_left">
-                <span>Immagine selezionata</span>
-                <p>Numero: {{ otherImageUploader.queue.length }}</p>
-            </div>
-            <!-- Carica immagini -->
-            <div class="col-md-8 c_recipe_right">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th width="50%">Nome</th>
-                            <th ng-show="otherImageUploader.isHTML5">Dimensioni</th>
-                            <th ng-show="otherImageUploader.isHTML5">Progesso</th>
-                            <th>Stato</th>
-                            <th>Azioni</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="item in otherImageUploader.queue">
-                            <td><strong>{{ item.file.name }}</strong>
-                            <div ng-show="otherImageUploader.isHTML5" ng-thumb="{ file: item._file, height: 50 }"></div>
-                            </td>
-                            <td ng-show="otherImageUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                            <td ng-show="otherImageUploader.isHTML5">
-                                <div class="progress" style="margin-bottom: 0;">
-                                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                                </div>
-                            </td>
-                            <td class="text-center">
-                                <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                                <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                                <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                            </td>
-                            <td nowrap>
-                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                                    <span class="glyphicon glyphicon-trash"></span> Rimuovi
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- RIGA 7 - INGREDIENTI -->
-        <div class="row c_recipe_row">
-            <!-- vuoto -->
-            <div class="col-md-4 c_recipe_left"></div>
-            <div class="col-md-8 c_recipe_right">
-                <h3>INGREDIENTI</h3>
-            </div>
-        </div>
-       
-       <!-- RIGA 8 - INGREDIENTI -->
-        <div class="row c_recipe_row">
-            <!-- ingredienti -->
-            <div class="col-md-4 c_recipe_left"></div>
-            <div class="col-md-8 c_recipe_right">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-xs-2">
-                            <label class="control-label">Dosi per</label>
-                            <input type="text" class="form-control" name="dosages_for" id="dosages_for" ng-model="recipeToCreate.dosagesFor" />
-                        </div>
-                        <div class="col-xs-2">
-                            <label class="control-label">Tipologia</label>
-                            <br>
-                            <my-dropdown data-menu-type="button" select-val="recipeToCreate.dosagesType = selectedVal" preselected-item="dosageTypes[0]"
-                            data-dropdown-data="dosageTypes"></my-dropdown>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- RIGA 9 - GRUPPI DI INGREDIENTI -->
-        <div class="row c_recipe_row">
-            <!-- categoria ricetta -->
-            <div class="col-md-4 c_recipe_left">
-                <span>Ingredienti</span>
-            </div>
-            <div class="col-md-8 c_recipe_right">
-                <!-- GRUPPI DI INGREDIENTI -->
-                <div class="col-md-12 well" ng-repeat="ingredient_group in ingredient_groups">
+    <div class="panel panel-default no-border">
+        <div class="panel-body no-padding">
 
+            <!-- RIGA 1 - TITOLO -->
+            <div class="row c_recipe_row">
+                <!-- vuoto -->
+                <div class="col-md-4 c_recipe_left"></div>
+                <!-- titolo -->
+                <div class="col-md-8 c_recipe_right">
+                    <div class="page-header">
+                        <h1><small>Inserisci la ricetta</small>
+                <br>DAI SFOGO ALLA TUA CREATIVIT&Aacute; </h1>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGA 2 - SOTTOTITOLO -->
+            <div class="row c_recipe_row">
+                <!-- vuoto -->
+                <div class="col-md-4 c_recipe_left"></div>
+                <div class="col-md-8 c_recipe_right">
+                    <h3>INFORMAZIONI GENERALI</h3>
+                </div>
+            </div>
+
+            <!-- RIGA 3 - TITOLO RICETTA -->
+            <div class="row c_recipe_row">
+                <!-- titolo ricetta -->
+                <div class="col-md-4 c_recipe_left">
+                    <span>Titolo ricetta</span>
+                </div>
+                <div class="col-md-8 c_recipe_right">
+                    <input type="text" class="form-control" name="title" ng-model="recipeToCreate.title" />
+                </div>
+            </div>
+
+            <!-- RIGA 4 - CATEGORIA -->
+            <div class="row c_recipe_row">
+                <!-- categoria ricetta -->
+                <div class="col-md-4 c_recipe_left">
+                    <span>Categoria</span>
+                </div>
+                <div class="col-md-8 c_recipe_right">
+                    <my-dropdown data-menu-type="button" select-val="recipeToCreate.category = selectedVal" preselected-item="recipeCategories[0]"
+                    data-dropdown-data="recipeCategories"></my-dropdown>
+                </div>
+            </div>
+
+            <!-- RIGA 5 - FOTO -->
+            <div class="row c_recipe_row">
+                <!-- foto -->
+                <div class="col-md-4 c_recipe_left">
+                    <span>Immagine di copertina</span>
+                </div>
+                <!-- Carica immagini -->
+                <div class="col-md-8 c_recipe_right">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-xs-4">
-                                <label class="control-label">Titolo gruppo ingredienti</label>
-                                <input type="text" class="form-control" name="director" ng-model="ingredient_group.title" />
+                            <div class="col-xs-8">
+                                <div nv-file-drop class="well my-drop-zone text-center" nv-file-over="" uploader="coverImageUploader">
+                                    <h5>Trascina un'immagine oppure usa il seguente pulsante</h5>
+                                    <div class="fileUpload btn btn-primary">
+                                        <span>Seleziona immagine</span>
+                                        <input type="file" class="upload" nv-file-select="" uploader="coverImageUploader" />
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-xs-2">
-                                <label class="control-label"> </label>
-                                <br>
-                                <button type="button" class="btn btn-danger" ng-click="removeIngredientGroup($index)">Rimuovi</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- INGREDIENTI DI CIASCUN GRUPPO -->
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <table class="table table-bordered table-hover table-condensed">
-                                <tr style="font-weight: bold">
-                                    <td style="width: 25%">Nome</td>
-                                    <td style="width: 25%">Quantità</td>
-                                    <td style="width: 25%">Tipo</td>
-                                    <td style="width: 25%">Opzioni</td>
-                                </tr>
-                                <tr ng-repeat="ingredient2 in ingredient_group.ingredients">
-                                    <td>
-                                        <!-- editable username (text with validation) -->
-                                        <span editable-text="ingredient2.name" e-name="name" e-form="rowform" e-required>
-                                        {{ ingredient2.name || 'vuoto' }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <!-- editable status (select-local) -->
-                                        <span editable-text="ingredient2.quantity" e-name="quantity" e-form="rowform" e-required>
-                                        {{ ingredient2.quantity || 'vuoto' }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <!-- editable group (select-remote) -->
-                                        <span editable-text="ingredient2.type" e-name="type" e-form="rowform" e-required>
-                                        {{ ingredient2.type || 'vuoto' }}
-                                        </span>
-                                    </td>
-                                    <td style="white-space: nowrap">
-                                        <!-- form -->
-                                        <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline">
-                                            <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
-                                                Salva
-                                            </button>
-                                            <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
-                                                Annulla
-                                            </button>
-                                        </form>
-                                        <div class="buttons" ng-show="!rowform.$visible">
-                                            <button class="btn btn-primary" ng-click="rowform.$show()">Modifica</button>
-                                            <button class="btn btn-danger" ng-click="removeIngredient($parent.$index, $index)">Elimina</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                            <button class="btn btn-default" ng-click="addIngredient($index)">Aggiungi ingrediente</button>
-                            <br>
-
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- RIGA 10 - Aggiungi un nuovo gruppo di ingredienti -->
-        <div class="row c_recipe_row">
-            <div class="col-md-4 c_recipe_left"></div>
-            <div class="col-md-8 c_recipe_right">
-                <button type="button" class="btn btn-warning" ng-click="addIngredientGroup()">Aggiungi gruppo ingredienti</button>
-            </div>
-        </div>
-        
-        <!-- RIGA 10.5 - INGREDIENTI -->
-        <div class="row c_recipe_row">
-            <!-- vuoto -->
-            <div class="col-md-4 c_recipe_left"></div>
-            <div class="col-md-8 c_recipe_right">
-                <h3>PREPARAZIONE</h3>
-            </div>
-        </div>
-       
-        <!-- RIGA 11 - PROCEDIMENTO -->
-        <div class="row c_recipe_row">
-            <div class="col-md-4 c_recipe_left">
-                <span>Descrivi qui<br/> il procedimento della ricetta</span>
-            </div>
-            <div class="col-md-8 c_recipe_right">
-                <textarea class="form-control" name="review" rows="8" ng-model="recipeToCreate.description"></textarea>
-            </div>
-        </div>
-        
-        <!-- RIGA 12 - PROCEDIMENTO -->
-        <div class="row c_recipe_row">
-            <div class="col-md-4 c_recipe_left"></div>
-            <div class="col-md-8 c_recipe_right text-right">
-                <form editable-form ng-submit="uploadAllImages()" role="form">
-                    <!-- AZIONI RELATIVE ALLA RICETTA -->
-                    <button type="button" class="btn btn-danger">Cancella</button>
-                    <button type="submit" class="btn btn-primary">Invia</button>
-                </form>
-            </div>
-        </div>
 
+            <!-- RIGA 6 - IMMAGINI SELEZIONATE -->
+            <div class="row c_recipe_row">
+                <!-- colore domaninate -->
+                <div class="col-md-4 c_recipe_left">
+                    <span>Immagine selezionata</span>
+                    <p>Numero: {{ coverImageUploader.queue.length }}</p>
+                </div>
+                <!-- Carica immagini -->
+                <div class="col-md-8 c_recipe_right">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50%">Nome</th>
+                                <th ng-show="coverImageUploader.isHTML5">Dimensioni</th>
+                                <th ng-show="coverImageUploader.isHTML5">Progesso</th>
+                                <th>Stato</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in coverImageUploader.queue">
+                                <td><strong>{{ item.file.name }}</strong>
+                                    <div ng-show="coverImageUploader.isHTML5" ng-thumb="{ file: item._file, height: 50 }"></div>
+                                </td>
+                                <td ng-show="coverImageUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                <td ng-show="coverImageUploader.isHTML5">
+                                    <div class="progress" style="margin-bottom: 0;">
+                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                </td>
+                                <td nowrap>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                        <span class="glyphicon glyphicon-trash"></span> Rimuovi
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- RIGA 5 - FOTO -->
+            <div class="row c_recipe_row">
+                <!-- foto -->
+                <div class="col-md-4 c_recipe_left">
+                    <span>Ulteriori immagini</span>
+                </div>
+                <!-- Carica immagini -->
+                <div class="col-md-8 c_recipe_right">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <div nv-file-drop class="well my-drop-zone text-center" nv-file-over="" uploader="otherImageUploader">
+                                    <h5>Trascina un'immagine oppure usa il seguente pulsante</h5>
+                                    <div class="fileUpload btn btn-primary">
+                                        <span>Seleziona immagine</span>
+                                        <input type="file" class="upload" nv-file-select="" uploader="otherImageUploader" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGA 6 - IMMAGINI SELEZIONATE -->
+            <div class="row c_recipe_row">
+                <!-- colore domaninate -->
+                <div class="col-md-4 c_recipe_left">
+                    <span>Immagine selezionata</span>
+                    <p>Numero: {{ otherImageUploader.queue.length }}</p>
+                </div>
+                <!-- Carica immagini -->
+                <div class="col-md-8 c_recipe_right">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50%">Nome</th>
+                                <th ng-show="otherImageUploader.isHTML5">Dimensioni</th>
+                                <th ng-show="otherImageUploader.isHTML5">Progesso</th>
+                                <th>Stato</th>
+                                <th>Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in otherImageUploader.queue">
+                                <td><strong>{{ item.file.name }}</strong>
+                                    <div ng-show="otherImageUploader.isHTML5" ng-thumb="{ file: item._file, height: 50 }"></div>
+                                </td>
+                                <td ng-show="otherImageUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                                <td ng-show="otherImageUploader.isHTML5">
+                                    <div class="progress" style="margin-bottom: 0;">
+                                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                                    <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                                    <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                                </td>
+                                <td nowrap>
+                                    <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                        <span class="glyphicon glyphicon-trash"></span> Rimuovi
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- RIGA 7 - INGREDIENTI -->
+            <div class="row c_recipe_row">
+                <!-- vuoto -->
+                <div class="col-md-4 c_recipe_left"></div>
+                <div class="col-md-8 c_recipe_right">
+                    <h3>INGREDIENTI</h3>
+                </div>
+            </div>
+
+            <!-- RIGA 8 - INGREDIENTI -->
+            <div class="row c_recipe_row">
+                <!-- ingredienti -->
+                <div class="col-md-4 c_recipe_left"></div>
+                <div class="col-md-8 c_recipe_right">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <label class="control-label">Dosi per</label>
+                                <input type="text" class="form-control" name="dosages_for" id="dosages_for" ng-model="recipeToCreate.dosagesFor" />
+                            </div>
+                            <div class="col-xs-2">
+                                <label class="control-label">Tipologia</label>
+                                <br>
+                                <my-dropdown data-menu-type="button" select-val="recipeToCreate.dosagesType = selectedVal" preselected-item="dosageTypes[0]"
+                                data-dropdown-data="dosageTypes"></my-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGA 9 - GRUPPI DI INGREDIENTI -->
+            <div class="row c_recipe_row">
+                <!-- categoria ricetta -->
+                <div class="col-md-4 c_recipe_left">
+                    <span>Ingredienti</span>
+                </div>
+                <div class="col-md-8 c_recipe_right">                    
+                    <!-- GRUPPI DI INGREDIENTI -->
+                    <div class="col-md-12 well" ng-repeat="ingredient_group in ingredient_groups">
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <label class="control-label">Titolo gruppo ingredienti</label>
+                                    <input type="text" class="form-control" name="director" ng-model="ingredient_group.title" />
+                                </div>
+                                <div class="col-xs-2">
+                                    <label class="control-label"> </label>
+                                    <br>
+                                    <button type="button" class="btn btn-danger" ng-click="removeIngredientGroup($index)">Rimuovi</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- INGREDIENTI DI CIASCUN GRUPPO -->
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <table class="table table-bordered table-hover table-condensed">
+                                    <tr style="font-weight: bold">
+                                        <td style="width: 25%">Nome</td>
+                                        <td style="width: 25%">Quantità</td>
+                                        <td style="width: 25%">Tipo</td>
+                                        <td style="width: 25%">Opzioni</td>
+                                    </tr>
+                                    <tr ng-repeat="ingredient2 in ingredient_group.ingredients">
+                                        <td>
+                                            <!-- editable username (text with validation) -->
+                                            <span editable-text="ingredient2.name" e-uib-typeahead="product.name.long for product in searchProductsByName($viewValue)" e-name="name" e-form="rowform">
+                                                {{ ingredient2.name || 'vuoto' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <!-- editable status (select-local) -->
+                                            <span editable-text="ingredient2.quantity" e-name="quantity" e-form="rowform" e-required>
+                                                {{ ingredient2.quantity || 'vuoto' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <!-- editable group (select-remote) -->
+                                            <span editable-text="ingredient2.type" e-name="type" e-form="rowform" e-required>
+                                                {{ ingredient2.type || 'vuoto' }}
+                                            </span>
+                                        </td>
+                                        <td style="white-space: nowrap">
+                                            <!-- form -->
+                                            <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline">
+                                                <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+                                                    Salva
+                                                </button>
+                                                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default">
+                                                    Annulla
+                                                </button>
+                                            </form>
+                                            <div class="buttons" ng-show="!rowform.$visible">
+                                                <button class="btn btn-primary" ng-click="rowform.$show()">Modifica</button>
+                                                <button class="btn btn-danger" ng-click="removeIngredient($parent.$index, $index)">Elimina</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <button class="btn btn-default" ng-click="addIngredient($index)">Aggiungi ingrediente</button>
+                                <br>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGA 10 - Aggiungi un nuovo gruppo di ingredienti -->
+            <div class="row c_recipe_row">
+                <div class="col-md-4 c_recipe_left"></div>
+                <div class="col-md-8 c_recipe_right">
+                    <button type="button" class="btn btn-warning" ng-click="addIngredientGroup()">Aggiungi gruppo ingredienti</button>
+                </div>
+            </div>
+
+            <!-- RIGA 10.5 - INGREDIENTI -->
+            <div class="row c_recipe_row">
+                <!-- vuoto -->
+                <div class="col-md-4 c_recipe_left"></div>
+                <div class="col-md-8 c_recipe_right">
+                    <h3>PREPARAZIONE</h3>
+                </div>
+            </div>
+
+            <!-- RIGA 11 - PROCEDIMENTO -->
+            <div class="row c_recipe_row">
+                <div class="col-md-4 c_recipe_left">
+                    <span>Descrivi qui<br/> il procedimento della ricetta</span>
+                </div>
+                <div class="col-md-8 c_recipe_right">
+                    <textarea class="form-control" name="review" rows="8" ng-model="recipeToCreate.description"></textarea>
+                </div>
+            </div>
+
+            <!-- RIGA 12 - PROCEDIMENTO -->
+            <div class="row c_recipe_row">
+                <div class="col-md-4 c_recipe_left"></div>
+                <div class="col-md-8 c_recipe_right text-right">
+                    <form editable-form ng-submit="uploadAllImages()" role="form">
+                        <!-- AZIONI RELATIVE ALLA RICETTA -->
+                        <button type="button" class="btn btn-danger">Cancella</button>
+                        <button type="submit" class="btn btn-primary">Invia</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <!-- /panel-body -->
     </div>
-    <!-- /panel-body -->
-</div>
-<!-- /panel -->
+    <!-- /panel -->

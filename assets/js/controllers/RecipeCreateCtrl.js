@@ -9,11 +9,12 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
     '$scope', // lo scope
     '$state', // gestione degli stati dell'app (ui-router)
     'Recipe', // servizio per le ricette
+    'Product', // servizio per i prodotti
     'Auth', // servizio per l'autenticazione
     '$filter',
     'FileUploader', // per il file upload
     '$http',
-    function ($scope, $state, Recipe, Auth, $filter, FileUploader, $http) {
+    function ($scope, $state, Recipe, Product, Auth, $filter, FileUploader, $http) {
 
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
         $scope.isLoggedIn = Auth.isLoggedIn;
@@ -25,6 +26,8 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         // espongo il tipo di dosaggio preso sempre dal servizio dedicato alle ricette
         $scope.dosageTypes = Recipe.dosagesTypes;
+        
+        $scope.searchProductsByName = Product.searchProductsByName;
 
         // Ritorna il colore dominante del canvas che contiene
         // la prima delle immagini caricate

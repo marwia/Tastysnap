@@ -8,7 +8,7 @@
  */
 
 var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload',
-				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService',
+				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
 				'ngAnimate', 'appRoutes', 
 				'AuthCtrl', 'MasterCtrl', 'NavCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeDetailCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl', 'UserHomeCtrl', 'CollectionCtrl',
