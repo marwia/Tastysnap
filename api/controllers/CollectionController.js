@@ -78,41 +78,25 @@ module.exports = {
      */
     getRecipes: function (req, res, next) {
         var collection = req.collection;
-        /*
-         * Codice "magico": è in grado di far elencare le ricette di una collezione poplando 
-         * l'autore di ogni ricetta.
-         * Infatti in Sails le populate annidate non sono implementate.
-         * http://stackoverflow.com/questions/23446484/sails-js-populate-nested-associations
-         */
+
         Collection
             .findOne(collection.id)
-            .populate('author')
             .populate('recipes')
-            .then(function(collection) {
-                var recipeUsers = User.find({
-                    id: _.pluck(collection.recipes, 'author')
-                    //_.pluck: Retrieves the value of a 'user' property from all elements in the collection.comments collection.
-                })
-                .then(function(recipeUsers) {
-                    return recipeUsers;
-                });
-                return [collection, recipeUsers];
-            })
-            .spread(function(collection, recipeUsers) {
-                var recipeUsers = _.indexBy(recipeUsers, 'id');
-                //_.indexBy: Creates an object composed of keys generated from the results of running each element of the collection through the given callback. The corresponding value of each key is the last element responsible for generating the key
-                collection.recipes = _.map(collection.recipes, function(recipe) {
-                    recipe.author = recipeUsers[recipe.author].toJSON();
-                    return recipe;
-                });
-                res.json(collection.recipes);
-            })
-            .catch(function(err) {
-                if (err) {
-                    return next(err);
-                }
-            });
+            .exec(function (err, foundCollection) {
+                if (err) { return next(err); }
+                
+                // Array con id di ricette viste
+                var recipeIds = new Array();
 
+                for (var i in foundCollection.recipes) {
+                    if (foundCollection.recipes[i].id)// if exist
+                        recipeIds.push(foundCollection.recipes[i].id)
+                }
+                
+                // find recipes
+                RecipeService.find(req, res, next, recipeIds);
+
+        });
     },
 
 	/**
@@ -158,16 +142,16 @@ module.exports = {
      * @apiUse InvalidTokenError
      */
     create: function (req, res, next) {
-      var user = req.payload;
+        var user = req.payload;
 
-      var collection = req.body;
-      // setto l'autore della ricetta
-      collection.author = user;
+        var collection = req.body;
+        // setto l'autore della ricetta
+        collection.author = user;
 
-      Collection.create(collection).exec(function(err, createdCollection){
-        if(err){ return next(err); }
-        return res.json(createdCollection);
-      });
+        Collection.create(collection).exec(function (err, createdCollection) {
+            if (err) { return next(err); }
+            return res.json(createdCollection);
+        });
     },
 
     /**
@@ -277,24 +261,24 @@ module.exports = {
      * @apiUse NoPermissionError
      */
     addRecipe: function (req, res, next) {
-     	var recipeId = req.body.recipe_id;
-     	if(!recipeId) { return next(); }
+        var recipeId = req.body.recipe_id;
+        if (!recipeId) { return next(); }
 
-     	Recipe.findOne(recipeId).exec(function (err, recipe) {
-      		if(err){ return next(err); }
+        Recipe.findOne(recipeId).exec(function (err, recipe) {
+            if (err) { return next(err); }
 
-      		if(!recipe) { return res.notFound({error: 'No recipe found'}); }
+            if (!recipe) { return res.notFound({ error: 'No recipe found' }); }
 
-		    var newCollection = req.collection;
-		    newCollection.recipes.add(recipe.id);
+            var newCollection = req.collection;
+            newCollection.recipes.add(recipe.id);
 
             newCollection.save(function (err, saved) {
-                if(err){ return next(err); }
+                if (err) { return next(err); }
                 return res.json(saved);
             });
 
-    	});
-	    
+        });
+
     },
 
     /**
@@ -325,7 +309,7 @@ module.exports = {
      */
     removeRecipe: function (req, res, next) {
         var recipeId = req.body.recipe_id;
-        if(!recipeId) { return next(); }
+        if (!recipeId) { return next(); }
 
         var collection = req.collection;
         /*
@@ -334,9 +318,9 @@ module.exports = {
         */
         collection.recipes.remove(recipeId);
         collection.save(function (err, saved) {
-            if(err){ return next(err); }
+            if (err) { return next(err); }
             return res.send(204, null);// OK - No Content
-        });  
+        });
     },
 
     /**
@@ -368,17 +352,17 @@ module.exports = {
         var collectionToFollow = req.collection;
 
         // ricarico l'utente corrente (con l'array dei following) (necessario...)
-        User.findOne(user.id).populate('followingCollections').exec( function (err, foundUser) {
+        User.findOne(user.id).populate('followingCollections').exec(function (err, foundUser) {
             // seguire più volte non è permesso
-            if(foundUser.isFollowingCollection(collectionToFollow.id) == true) { return res.badRequest(); }
+            if (foundUser.isFollowingCollection(collectionToFollow.id) == true) { return res.badRequest(); }
 
             foundUser.followingCollections.add(collectionToFollow.id);
 
             foundUser.save(function (err, saved) {
-                if(err){ return next(err); }
+                if (err) { return next(err); }
                 return res.send(204, null);// OK - No Content
             });
-        });  
+        });
     },
 
     /**
@@ -409,15 +393,15 @@ module.exports = {
         var collectionTounfollow = req.collection;
 
         // ricarico l'utente corrente (con l'array dei following) (necessario...)
-        User.findOne(user.id).exec( function (err, foundUser) {
+        User.findOne(user.id).exec(function (err, foundUser) {
 
             foundUser.followingCollections.remove(collectionTounfollow.id);
 
             foundUser.save(function (err, saved) {
-                if(err){ return next(err); }
+                if (err) { return next(err); }
                 return res.send(204, null);// OK - No Content
             });
-        });  
+        });
     },
 
     /**
@@ -437,9 +421,9 @@ module.exports = {
         var collectionId = req.param('collection');
         if (!collectionId) { return next(); }
 
-        Collection.findOne(collectionId).populate('followers').exec( function(err, foundCollection) {
-            if(err){ return next(err); }
-            if(!foundCollection) { return res.notFound({error: 'No collection found'}); }
+        Collection.findOne(collectionId).populate('followers').exec(function (err, foundCollection) {
+            if (err) { return next(err); }
+            if (!foundCollection) { return res.notFound({ error: 'No collection found' }); }
             return res.json(foundCollection.followers);
         });
     },
@@ -472,15 +456,15 @@ module.exports = {
         var targetCollection = req.collection;
 
         // ricarico l'utente corrente (necessario...)
-        User.findOne(user.id).populate('followingCollections').exec( function (err, foundUser) {
-            if(err){ return next(err); }
+        User.findOne(user.id).populate('followingCollections').exec(function (err, foundUser) {
+            if (err) { return next(err); }
 
             // seguire più volte non è permesso
-            if(foundUser.isFollowingCollection(targetCollection.id) == false) { return res.notFound(); }
+            if (foundUser.isFollowingCollection(targetCollection.id) == false) { return res.notFound(); }
 
             return res.send(204, null);// OK - No Content
         });
     },
-	
+
 };
 

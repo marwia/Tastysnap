@@ -230,41 +230,9 @@ module.exports = {
                     }
                 }
 
-                // Copiato dal RecipeController.js
-                Recipe.find()
-                    .where({id: positiveVotes})// varia solo questa
-                    .limit(actionUtil.parseLimit(req))
-                    .skip(actionUtil.parseSkip(req))
-                    .sort(actionUtil.parseSort(req))
-                    .populate('author')
-                    .populate('views')
-                    .populate('votes')
-                    .populate('comments')
-                    .populate('trials')
-                    .exec(function (err, foundRecipes) {
-                        if (err) { return next(err); }
-            
-                        // array di appoggio
-                        var recipes = new Array();
-            
-                        // conto gli elementi delle collection
-                        for (var i in foundRecipes) {
-                            foundRecipes[i].viewsCount = foundRecipes[i].views.length;
-                            foundRecipes[i].votesCount = foundRecipes[i].votes.length;// aggiungere verifica sul value positivo
-                            foundRecipes[i].commentsCount = foundRecipes[i].comments.length;
-                            foundRecipes[i].trialsCount = foundRecipes[i].trials.length;
-
-                            /**
-                             * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
-                             * delle associazioni vengono automaticamente tolte quando si esegue
-                             * il seguente metodo.
-                             */
-                            var obj = foundRecipes[i].toObject();
-                            delete obj.description;// tolgo la descrizione della ricetta
-                            recipes.push(obj);
-                        }
-                        return res.json(recipes);
-                    });
+                // find recipes
+                RecipeService.find(req, res, next, positiveVotes);
+                
             });
     },
     
@@ -302,41 +270,8 @@ module.exports = {
                     viewedRecipes.push(foundUser.viewedRecipes[i].recipe)
                 }
 
-                // Copiato dal RecipeController.js
-                Recipe.find()
-                    .where({id: viewedRecipes})// varia solo questa
-                    .limit(actionUtil.parseLimit(req))
-                    .skip(actionUtil.parseSkip(req))
-                    .sort(actionUtil.parseSort(req))
-                    .populate('author')
-                    .populate('views')
-                    .populate('votes')
-                    .populate('comments')
-                    .populate('trials')
-                    .exec(function (err, foundRecipes) {
-                        if (err) { return next(err); }
-            
-                        // array di appoggio
-                        var recipes = new Array();
-            
-                        // conto gli elementi delle collection
-                        for (var i in foundRecipes) {
-                            foundRecipes[i].viewsCount = foundRecipes[i].views.length;
-                            foundRecipes[i].votesCount = foundRecipes[i].votes.length;// aggiungere verifica sul value positivo
-                            foundRecipes[i].commentsCount = foundRecipes[i].comments.length;
-                            foundRecipes[i].trialsCount = foundRecipes[i].trials.length;
-
-                            /**
-                             * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
-                             * delle associazioni vengono automaticamente tolte quando si esegue
-                             * il seguente metodo.
-                             */
-                            var obj = foundRecipes[i].toObject();
-                            delete obj.description;// tolgo la descrizione della ricetta
-                            recipes.push(obj);
-                        }
-                        return res.json(recipes);
-                    });
+                // find recipes
+                RecipeService.find(req, res, next, viewedRecipes);
             });
     },
     
@@ -374,41 +309,8 @@ module.exports = {
                     triedRecipes.push(foundUser.triedRecipes[i].recipe)
                 }
 
-                // Copiato dal RecipeController.js
-                Recipe.find()
-                    .where({id: triedRecipes})// varia solo questa
-                    .limit(actionUtil.parseLimit(req))
-                    .skip(actionUtil.parseSkip(req))
-                    .sort(actionUtil.parseSort(req))
-                    .populate('author')
-                    .populate('views')
-                    .populate('votes')
-                    .populate('comments')
-                    .populate('trials')
-                    .exec(function (err, foundRecipes) {
-                        if (err) { return next(err); }
-            
-                        // array di appoggio
-                        var recipes = new Array();
-            
-                        // conto gli elementi delle collection
-                        for (var i in foundRecipes) {
-                            foundRecipes[i].viewsCount = foundRecipes[i].views.length;
-                            foundRecipes[i].votesCount = foundRecipes[i].votes.length;// aggiungere verifica sul value positivo
-                            foundRecipes[i].commentsCount = foundRecipes[i].comments.length;
-                            foundRecipes[i].trialsCount = foundRecipes[i].trials.length;
-
-                            /**
-                             * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
-                             * delle associazioni vengono automaticamente tolte quando si esegue
-                             * il seguente metodo.
-                             */
-                            var obj = foundRecipes[i].toObject();
-                            delete obj.description;// tolgo la descrizione della ricetta
-                            recipes.push(obj);
-                        }
-                        return res.json(recipes);
-                    });
+                // find recipes
+                RecipeService.find(req, res, next, triedRecipes);
             });
     },
 
