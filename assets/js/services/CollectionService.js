@@ -41,9 +41,15 @@ angular.module('CollectionService', [])
          * una data collection
          */
         o.getDetailedCollectionRecipes = function () {
-            return $http.get(server_prefix + '/collection/' + o.detailedCollection.id + '/recipe').then(function (response) {
+            return $http.get(server_prefix + '/collection/' + o.detailedCollection.id + '/recipe')
+            .then(function (response) {
+                o.detailedCollection.recipes = [];
                 angular.copy(response.data, o.detailedCollection.recipes);
-            });
+                
+            }, function errorCallback(response) {
+     
+                    console.log(response);
+                });
         };
     
         /**

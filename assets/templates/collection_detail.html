@@ -14,7 +14,7 @@
     <div class="col-md-12 collection_main_info">
         <a href="app/profile/{{detailedCollection.author.id}}"><img src="{{ getUserProfileImage(detailedCollection.author) }}" class="img-circle collection_profile_photo pull-left"></a>
         <div class="collection_div_profile_name pull-left">
-            <h5 class="collection_profile_name no-margin"><strong>{{detailedCollection.author.name}}</strong></h5>
+            <h5 class="collection_profile_name no-margin"><strong>{{detailedCollection.author.name}} {{detailedCollection.author.surname}}</strong></h5>
             <h6 class="collection_profile_edited no-margin">Ultima modifica {{formatDate(detailedCollection)}}</h6>
         </div>
     </div>
@@ -28,8 +28,8 @@
 
     <!-- Row Like -->
     <div class="col-md-12 collection_main_info">
-        <h5><div class="glyphicon glyphicon-eye-open collection_info_item pull-left"><span class="collection_info_item_count">112</span></div></h5>
-        <h5><div class="glyphicon glyphicon-heart collection_info_item pull-left"><span class="collection_info_item_count">2345</span></div></h5>
+        <h5><div class="glyphicon glyphicon-eye-open collection_info_item pull-left"><span class="collection_info_item_count">{{detailedCollection.viewsCount}}</span></div></h5>
+        <h5><div class="glyphicon glyphicon-heart collection_info_item pull-left"><span class="collection_info_item_count">{{detailedCollection.followersCount}}</span></div></h5>
         <h5><div class="glyphicon glyphicon-share-alt collection_info_item pull-left"><span class="collection_info_item_count">Condividi</span></div></h5>
     </div>
 </div>

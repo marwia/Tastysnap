@@ -40,7 +40,6 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
 
         var init = function () {
             // inizializzazione del controller
-            console.log("init");
             Collection.getDetailedCollectionRecipes();
         };
         // and fire it after definition

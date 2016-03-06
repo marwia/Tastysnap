@@ -10,6 +10,45 @@ var _ = require('lodash');
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
+    
+    /**
+     * @api {get} /collection/:collection Get a Collection
+     * @apiName GetCollection
+     * @apiGroup Collection
+     *
+     * @apiDescription Serve per richiedere un collection in base all'id.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *
+     */
+    findOne: function (req, res, next) {
+        var collectionId = req.param('collection');
+        if (!collectionId) { return next(); }
+        
+        Collection.findOne(collectionId)
+            .populate('author')
+            .populate('followers')
+            .populate('views')
+            .exec(function (err, foundCollection) {
+                if (err) { return next(err); }
+
+                if (!foundCollection) { return res.notFound({ error: 'No collection found' }); }
+            
+                // conto gli elementi delle collection
+                foundCollection.followersCount = foundCollection.followers.length;
+                foundCollection.viewsCount = foundCollection.views.length;
+            
+                /**
+                 * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
+                 * delle associazioni vengono automaticamente tolte quando si esegue
+                 * il seguente metodo.
+                 */
+                var obj = foundCollection.toObject();
+
+                return res.json(obj);
+            });
+    },
 
     /**
      * @api {get} /collection List Collections

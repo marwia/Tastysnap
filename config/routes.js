@@ -227,6 +227,8 @@ var apiRoutes = addGlobalPrefix({
   * Collezioni di ricette.                                                   *
   *                                                                          *
   ***************************************************************************/
+  
+  'get /collection/:collection' : 'CollectionController.findOne',
 
   'put /collection/:collection/recipe' : 'CollectionController.addRecipe',
 
