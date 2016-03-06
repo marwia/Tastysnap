@@ -12,7 +12,7 @@
     }
 </style>
 
-<div class="row background" ng-init="initDetailedRecipe(detailedRecipe)" ng-controller="RecipeDetailCtrl">
+<div ng-init="initDetailedRecipe(detailedRecipe)" ng-controller="RecipeDetailCtrl">
     <div class="container-fluid">
         <div class="row recipe tasty_container">
 
@@ -37,7 +37,7 @@
                 <!-- portata + titolo -->
                 <div class="recipe_sp_1_3">
                     <h6 class="no-margin">{{detailedRecipe.category}}</h6>
-                    <h1 class="no-margin">{{detailedRecipe.title}}</h1>
+                    <h1 class="no-margin text-uppercase">{{detailedRecipe.title}}</h1>
                 </div>
 
                 <div class="clearfix"></div>
