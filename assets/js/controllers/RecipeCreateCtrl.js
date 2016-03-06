@@ -33,6 +33,8 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         // variabili per tenere traccia del completameto della crezione di una ricetta
         $scope.createSum = 1;
         $scope.createProgress = 0;
+        
+        $scope.isCreating = false;
 
         // Ritorna il colore dominante del canvas che contiene
         // la prima delle immagini caricate
@@ -122,6 +124,9 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
          */
         $scope.createRecipe = function () {
             
+            $scope.isCreating = true;
+            
+            setTimeout(function () {
             // calcolo del totale delle create che saranno eseguite
             $scope.createSum = 1 // ricetta stessa
                         + coverImageUploader.queue.length * 2 // immagine di copertina + quella sfocata
@@ -149,6 +154,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 otherImageUploader.uploadAll();
 
             });
+            }, 3000);
         };
         
         /**
