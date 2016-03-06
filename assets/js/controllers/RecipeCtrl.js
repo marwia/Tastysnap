@@ -94,4 +94,11 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
             });
         };
         
+        // gestione paging
+        $scope.skipValue = 0;
+        $scope.loadMore = function () {
+            $scope.skipValue += 30;
+            Recipe.getAll($scope.skipValue);
+        }
+        
     }]);
