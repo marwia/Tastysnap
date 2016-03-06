@@ -73,6 +73,34 @@ body {
     color: #FF8E2A !important;
 }
 
+.tasty_load_space{
+	margin:30px auto 30px auto;
+}
+
+.tasty_title_category{
+	color: white;
+}
+
+.tasty_title_bar{
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.tasty_title_text{
+	margin-top: 3px;
+    font-weight: 700;
+    font-size: 2.1em;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
 a{
     color:white;
     text-decoration: none;
@@ -85,7 +113,7 @@ a{
 }
 
 a:hover{
-    color: #FF8E2A;
+    color: #FF8E2A !important;
     text-decoration: none;
 }
 
@@ -357,18 +385,24 @@ a:hover{
 }
 
 .card:hover .card_share{
-	display:block;
+    opacity: 1;
+    background-color:rgba(0,0,0,0.7);
 }
 
 .card_share{
 	width: 100%;
     height: 100%;
-	background-color:rgba(0,0,0,0.5);
 	color:white;
-	display:none;
 	position:absolute;
 	top:0;
 	left:0;
+    opacity: 0;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
 }
 
 .gly_share_size{
@@ -764,34 +798,6 @@ a:hover{
 	padding-top: 102px;
 }
 
-.home_load_space{
-	margin:30px auto 30px auto;
-}
-
-.home_title_category{
-	color: white;
-}
-
-.home_title_bar{
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-ms-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
-}
-
-.home_title_text{
-	margin-top: 3px;
-    font-weight: 700;
-    font-size: 2.1em;
-	
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-ms-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
-}
-
 .home_navbar{
 	top: 50px;
 	z-index: 3;
@@ -983,6 +989,11 @@ tr.recipe_sp_3_tr{
     font-size: small;
     color: gray;
 }
+
+.recipe_ing_txt A{
+    color: gray;
+}
+
 .recipe_comment_con{
 	padding-bottom: 20px;
 }
