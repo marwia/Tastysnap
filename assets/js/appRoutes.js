@@ -66,6 +66,16 @@ angular.module('appRoutes', []).config([
                     }
                 }
             })
+            
+            // SEARCH
+            .state('app.search', {
+                url: '/search',
+                views: {
+                    'content@app': {
+                        templateUrl: 'templates/search.html',
+                    }
+                }
+            })
 
             // HOME
             .state('app.home', {
