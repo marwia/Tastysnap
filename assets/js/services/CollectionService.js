@@ -35,6 +35,16 @@ angular.module('CollectionService', [])
                 angular.copy(data, o.collections);
             });
         };
+        
+        /**
+         * Metodo per richiedere la lista di ricette di 
+         * una data collection
+         */
+        o.getDetailedCollectionRecipes = function () {
+            return $http.get(server_prefix + '/collection/' + o.detailedCollection.id + '/recipe').then(function (response) {
+                angular.copy(response.data, o.detailedCollection.recipes);
+            });
+        };
     
         /**
          * Metodo per richiedere una lista di collection di un dato utente.
@@ -87,6 +97,31 @@ angular.module('CollectionService', [])
                     }
                 })
                 .then(successCallback, errorCallback);
+        };
+        
+        /**
+         * Servizio per aggiungere
+         */
+        o.addRecipeToCollection = function (recipe, collection, successCallback) {
+            return $http.put(
+                server_prefix + '/collection/' + collection.id + '/recipe',
+                { recipe_id: recipe.id },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                })
+                .then(function(response) {
+                    
+                    //recipe = response.data;
+                    successCallback(response);
+                    
+                }, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    //alert("Errore: " + response);
+                    console.log(response);
+                });
         };
 
         return o;

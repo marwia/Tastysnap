@@ -313,8 +313,8 @@ angular.module('RecipeService', [])
                     recipe.userView = data;
                 });
         };
+       
         
-
         /*
         o.get = function (id) {
             return $http.get(server_prefix + '/post/' + id).then(function (res) {

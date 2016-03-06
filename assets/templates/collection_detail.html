@@ -1,8 +1,8 @@
 <!-- Immagine sfocata a tutto sfondo -->
 <style>
     body {
-        *background: url("{{detailedCollection.blurredCoverImageUrl}}") no-repeat center center fixed;
-        background: url("http://www.tastysnap.com/preview/imm/spiedini_blur.jpg") no-repeat center center fixed;
+        background: url("{{getCasulaCoverBlurredImage()}}") no-repeat center center fixed;
+        *background: url("http://www.tastysnap.com/preview/imm/spiedini_blur.jpg") no-repeat center center fixed;
         background-size: cover;
         padding: 50px 0 0 0;
     }
@@ -36,5 +36,10 @@
 
 <!-- Contenitore Card -->
 <div class="row tasty_container tasty_container_margin text-center">
-    
+    <recipe-card recipe="recipe" 
+            open-collection-modal="openCollectionSelectionModal(recipe)"
+            open-share-modal="openShareModal(recipe)"
+            toggle-upvote-recipe="toggleUpvoteRecipe(recipe)"
+            ng-repeat="recipe in detailedCollection.recipes"
+            ng-init="checkVote(recipe)"></recipe-card>
 </div>

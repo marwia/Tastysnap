@@ -350,7 +350,7 @@ angular.module('appRoutes', []).config([
                 views: {
                     'content@app': {
                         templateUrl: 'templates/collection_detail.html',
-                        controller: 'CollectionCtrl',
+                        controller: 'CollectionDetailCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
                             collectionPromise: ['Collection', '$stateParams', function (collections, $stateParams) {

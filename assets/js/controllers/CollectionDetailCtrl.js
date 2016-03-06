@@ -22,23 +22,28 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
         $scope.isLoggedIn = Auth.isLoggedIn;
         
         // espongo allo scope le collection del servizio Collection
-        $scope.collections = Collection.collections;
         $scope.detailedCollection = Collection.detailedCollection;
         
         // espongo i metodi del servizio User
         $scope.getUserProfileImage = User.getUserProfileImage;
-        
-         /**
-         * Inizializzazione di un dettaglio di una Collection.
-         */
-        $scope.initDetailedCollection = function (collection) {
-            Collection.createView(collection);
-            Collection.checkTry(collection);
-        }
-        
+
         $scope.formatDate = function (collection) {
             moment.locale("it");
-            return moment(collection.createdAt).fromNow(); 
-        }
+            return moment(collection.createdAt).fromNow();
+        };
         
+        $scope.getCasulaCoverBlurredImage = function () {
+            var idx = Math.floor(Math.random() * $scope.detailedCollection.recipes.length) + 0;
+            
+            return $scope.detailedCollection.recipes[idx].blurredCoverImageUrl;
+        };
+
+        var init = function () {
+            // inizializzazione del controller
+            console.log("init");
+            Collection.getDetailedCollectionRecipes();
+        };
+        // and fire it after definition
+        init();
+
     }]);

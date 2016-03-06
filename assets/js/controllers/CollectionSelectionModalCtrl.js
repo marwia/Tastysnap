@@ -12,7 +12,7 @@ angular.module('CollectionSelectionModalCtrl', [])
         function ($scope, $uibModalInstance, selectedRecipe, Collection) {
 
             $scope.ok = function () {
-                $uibModalInstance.close($scope.selected.item);
+                $uibModalInstance.close();
             };
 
             $scope.cancel = function () {
@@ -30,6 +30,14 @@ angular.module('CollectionSelectionModalCtrl', [])
                 description: "",
                 isPrivate: false
             };
+            
+            $scope.addRecipeToCollection = function (collection) {
+                Collection.addRecipeToCollection($scope.selectedRecipe,
+                collection, function success(response) {
+                    // close modal
+                    $uibModalInstance.close();
+                })
+            }
             
             /**
              * Metodo per creare una collection nuova.

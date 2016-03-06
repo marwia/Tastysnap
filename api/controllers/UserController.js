@@ -5,13 +5,6 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
-/**
- * Module dependencies
- * 
- * Prese da https://github.com/balderdashy/sails/blob/master/lib/hooks/blueprints/actions/find.js
- */
-var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
-
 module.exports = {
     /**
      * @api {post} /user Register a new User
