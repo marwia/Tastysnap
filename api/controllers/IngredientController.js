@@ -9,7 +9,7 @@ module.exports = {
 
 	 /**
  	  * @apiDefine NoIngredientError
-        *
+      *
  	  * @apiError NoIngredient The ingredient was not found.
  	  *
  	  * @apiErrorExample Error-Response:

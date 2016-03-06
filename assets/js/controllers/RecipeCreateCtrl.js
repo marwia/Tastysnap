@@ -10,11 +10,12 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
     '$state', // gestione degli stati dell'app (ui-router)
     'Recipe', // servizio per le ricette
     'Product', // servizio per i prodotti
+    'Ingredient', // servizio per gli ingredienti
     'Auth', // servizio per l'autenticazione
     '$filter',
     'FileUploader', // per il file upload
     '$http',
-    function ($scope, $state, Recipe, Product, Auth, $filter, FileUploader, $http) {
+    function ($scope, $state, Recipe, Product, Ingredient, Auth, $filter, FileUploader, $http) {
 
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
         $scope.isLoggedIn = Auth.isLoggedIn;
@@ -26,8 +27,12 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         // espongo il tipo di dosaggio preso sempre dal servizio dedicato alle ricette
         $scope.dosageTypes = Recipe.dosagesTypes;
-        
+
         $scope.searchProductsByName = Product.searchProductsByName;
+        
+        // variabili per tenere traccia del completameto della crezione di una ricetta
+        $scope.createSum = 1;
+        $scope.createProgress = 0;
 
         // Ritorna il colore dominante del canvas che contiene
         // la prima delle immagini caricate
@@ -62,12 +67,12 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         // TODO: bisogna memorizzare degli oggetti più complessi...
         $scope.ingredient_groups =
         [{
-            id: "0",
-            title: "",
+            name: "",
             ingredients: [{
                 name: "",
                 quantity: "",
-                type: ""
+                unitOfMeasue: "",
+                product: {}
             }]
         }];
 		
@@ -75,12 +80,12 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         $scope.addIngredientGroup = function () {
             $scope.ingredient_groups
                 .push({
-                    id: "0",
-                    title: "",
+                    name: "",
                     ingredients: [{
                         name: "",
                         quantity: "",
-                        type: ""
+                        unitOfMeasue: "",
+                        product: {}
                     }]
                 });
         };
@@ -93,8 +98,16 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             $scope.ingredient_groups[group_index].ingredients.push({
                 name: "",
                 quantity: "",
-                type: ""
+                unitOfMeasue: "",
+                product: {}
             });
+        };
+
+        $scope.onSelect = function ($item, $model, $label, ingredient) {
+            $scope.$item = $item;
+            $scope.$model = $model;
+            $scope.$label = $label;
+            ingredient.product = $item.id;
         };
 
         /**
@@ -107,15 +120,76 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         /**
          * Esegui l'upload di tutte le immagini in attesa di upload.
          */
-        $scope.uploadAllImages = function () {
+        $scope.createRecipe = function () {
             
+            // calcolo del totale delle create che saranno eseguite
+            $scope.createSum = 1 // ricetta stessa
+                        + coverImageUploader.queue.length * 2 // immagine di copertina + quella sfocata
+                        + otherImageUploader.queue.length // altre immagini
+                        + $scope.ingredient_groups.length; // gruppi di ingredienti
+            
+            for (var i in $scope.ingredient_groups) {
+                $scope.createSum += $scope.ingredient_groups[i].ingredients.length // numero di ingredienti di ogni gruppo
+            }
+            
+            
+            //crea ricetta
             Recipe.create($scope.recipeToCreate, function (response) {
+  
+                $scope.createProgress++;
+                //crea gruppi di ingredienti
+                console.info(response);
                 $scope.recipeToCreate = response.data;
-                
+                createIngredientGroups();
+ 
                 // carico l'immagine di copertina
                 coverImageUploader.uploadAll();
+                
+                // carico le altre immagini aggiuntive
+                otherImageUploader.uploadAll();
+
             });
         };
+        
+        /**
+         * Osserva la variabile che indica il progresso della creazione della ricetta.
+         */
+        $scope.$watch("createProgress", function(newValue, oldValue) {
+
+            if ($scope.createProgress >= $scope.createSum) {// fine della creazione della ricetta
+                $state.go("app.recipe", { id: $scope.recipeToCreate.id });
+            }
+        });
+        
+        /**
+         * Crea tutti gruppi di ingredienti per la ricetta.
+         */
+        function createIngredientGroups() {
+            for (var i = 0; i < $scope.ingredient_groups.length; i++) {
+                Ingredient.createIngredientGroup(
+                    $scope.recipeToCreate,
+                    $scope.ingredient_groups[i],
+                    createIngredients);// success
+            }
+        }
+
+        /**
+         * Crea tutti gli ingredienti per un gruppo di ingredienti.
+         */
+        function createIngredients(ingredientGroup) {
+            $scope.createProgress++;
+            for (var k = 0; k < ingredientGroup.ingredients.length; k++) {
+                                
+                //crea per ogni gruppo di ingredienti gli ingredienti
+                Ingredient.createIngredient(
+                    ingredientGroup.ingredients[k],
+                    ingredientGroup,
+                    function (response) {
+                        $scope.createProgress++;
+                        console.info(response);
+                    });
+            }
+        }
         
         // File uploading (configuration)
         
@@ -127,7 +201,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 'x-csrf-token': $http.defaults.headers.common['x-csrf-token']
             }
         });
-        
+
         var otherImageUploader = $scope.otherImageUploader = new FileUploader({
             alias: 'image',
             method: 'put',
@@ -147,7 +221,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     && this.queue.length < 1; // max 1 image
             }
         }
-        
+
         var otherImageFilter = {
             name: 'otherImageFilter',
             fn: function (item /*{File|FileLikeObject}*/, options) {
@@ -197,7 +271,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 // Transofm to blob
                 var blob = dataURItoBlob(dataUrl);
                 fileItem._file = blob;
-                
+
                 if (successCallback)
                     successCallback(canvas);
             }
@@ -251,6 +325,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         };
 
         coverImageUploader.onCompleteItem = function (fileItem, response, status, headers) {
+            $scope.createProgress++;
             console.info('onCompleteItem', fileItem, response, status, headers);
         };
 
@@ -287,16 +362,11 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 var blob = dataURItoBlob(dataUrl);
 
                 Recipe.uploadBlurImage(blob, $scope.recipeToCreate, function (response) {
-                    console.info("ok")
+                    $scope.createProgress++;
                     //$scope.recipeToCreate = response.data;
                     console.info($scope.recipeToCreate);
-                    // upload other images
-                    if (otherImageUploader.queue.length > 0) {
-                        otherImageUploader.uploadAll();
-                    } else {
-                        $state.go("app.recipe", {id: $scope.recipeToCreate.id});
-                    }
                     
+
                 }, function (response) {
                     console.info("error", response)
                 });
@@ -308,21 +378,24 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         // Other image uploader
         
         otherImageUploader.filters.push(otherImageFilter);
-        
+
         otherImageUploader.onAfterAddingFile = function (fileItem) {
             console.info('onAfterAddingFile', fileItem);
             reduceImageSizeAndQuality(fileItem);
         };
-        
+
         otherImageUploader.onBeforeUploadItem = function (item) {
             console.info('onBeforeUploadItem', item);
             // aggiorno dinamicamente l'url per l'upload
             item.url = '/api/v1/recipe/' + $scope.recipeToCreate.id + '/upload_image';
         };
         
+        otherImageUploader.onCompleteItem = function (fileItem, response, status, headers) {
+            $scope.createProgress++;
+        };
+
         otherImageUploader.onCompleteAll = function () {
             console.info("otherImageUploader - onCompleteAll");
-            $state.go("app.recipe", {id: $scope.recipeToCreate.id});
         }
         
         

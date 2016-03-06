@@ -54,7 +54,8 @@ module.exports = {
 		var recipe = req.recipe;
 		var ingredientGroup = req.body;
 		ingredientGroup.recipe = recipe;
-
+        ingredientGroup.ingredients = null;
+        
 		IngredientGroup.create(ingredientGroup).exec(function (err, created){
       		if(err){ return next(err); }
 

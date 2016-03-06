@@ -243,7 +243,7 @@
                             <div class="row">
                                 <div class="col-xs-4">
                                     <label class="control-label">Titolo gruppo ingredienti</label>
-                                    <input type="text" class="form-control" name="director" ng-model="ingredient_group.title" />
+                                    <input type="text" class="form-control" name="director" ng-model="ingredient_group.name" />
                                 </div>
                                 <div class="col-xs-2">
                                     <label class="control-label"> </label>
@@ -263,23 +263,23 @@
                                         <td style="width: 25%">Tipo</td>
                                         <td style="width: 25%">Opzioni</td>
                                     </tr>
-                                    <tr ng-repeat="ingredient2 in ingredient_group.ingredients">
+                                    <tr ng-repeat="ingredient in ingredient_group.ingredients">
                                         <td>
                                             <!-- editable username (text with validation) -->
-                                            <span editable-text="ingredient2.name" e-uib-typeahead="product.name.long for product in searchProductsByName($viewValue)" e-name="name" e-form="rowform">
-                                                {{ ingredient2.name || 'vuoto' }}
+                                            <span editable-text="ingredient.name" e-typeahead-editable="false" e-typeahead-on-select="onSelect($item, $model, $label, ingredient)" e-uib-typeahead="product.name.long for product in searchProductsByName($viewValue)" e-name="name" e-form="rowform">
+                                                {{ ingredient.name || 'vuoto' }}
                                             </span>
                                         </td>
                                         <td>
                                             <!-- editable status (select-local) -->
-                                            <span editable-text="ingredient2.quantity" e-name="quantity" e-form="rowform" e-required>
-                                                {{ ingredient2.quantity || 'vuoto' }}
+                                            <span editable-text="ingredient.quantity" e-ng-model="ingredient.quantity" e-name="quantity" e-form="rowform" e-required>
+                                                {{ ingredient.quantity || 'vuoto' }}
                                             </span>
                                         </td>
                                         <td>
                                             <!-- editable group (select-remote) -->
-                                            <span editable-text="ingredient2.type" e-name="type" e-form="rowform" e-required>
-                                                {{ ingredient2.type || 'vuoto' }}
+                                            <span editable-text="ingredient.unitOfMeasue" e-ng-model="ingredient.unitOfMeasue" e-name="unitOfMeasue" e-form="rowform" e-required>
+                                                {{ ingredient.unitOfMeasue || 'vuoto' }}
                                             </span>
                                         </td>
                                         <td style="white-space: nowrap">
@@ -339,7 +339,7 @@
             <div class="row c_recipe_row">
                 <div class="col-md-4 c_recipe_left"></div>
                 <div class="col-md-8 c_recipe_right text-right">
-                    <form editable-form ng-submit="uploadAllImages()" role="form">
+                    <form editable-form ng-submit="createRecipe()" role="form">
                         <!-- AZIONI RELATIVE ALLA RICETTA -->
                         <button type="button" class="btn btn-danger">Cancella</button>
                         <button type="submit" class="btn btn-primary">Invia</button>

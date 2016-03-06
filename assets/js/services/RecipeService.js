@@ -160,13 +160,20 @@ angular.module('RecipeService', [])
                         Authorization: 'Bearer ' + Auth.getToken()
                     }
                 })
-                .then(successCallback, function errorCallback(response) {
+                .then(function(response) {
+                    
+                    //recipe = response.data;
+                    successCallback(response);
+                    
+                }, function errorCallback(response) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     //alert("Errore: " + response);
                     console.log(response);
                 });
         };
+        
+        
     
         /**
          * Servizio per caricare l'immagine sfocata della ricetta.
