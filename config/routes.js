@@ -266,13 +266,15 @@ var apiRoutes = addGlobalPrefix({
   
   'get /ingredient/unit_of_measures': 'IngredientController.getIngredientUnitOfMeasure',
   
+  'get /ingredientgroup/:id/ingredients': 'IngredientController.getIngredientsGroupIngredients',
+  
   /***************************************************************************
   *                                                                          *
-  * Robba vecchia da cancellare.                                             *
+  * Prodotti                                                                 *
   *                                                                          *
   ***************************************************************************/
   
-  'get /product/categories': 'ProductController.getProductCategories',
+  'get /product/groups': 'ProductController.getProductGroups',
   
   /***************************************************************************
   *                                                                          *

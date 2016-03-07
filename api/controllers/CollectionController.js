@@ -124,7 +124,7 @@ module.exports = {
             .exec(function (err, foundCollection) {
                 if (err) { return next(err); }
                 
-                // Array con id di ricette viste
+                // Array con id di ricette
                 var recipeIds = new Array();
 
                 for (var i in foundCollection.recipes) {

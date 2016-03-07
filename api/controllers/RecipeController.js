@@ -157,6 +157,40 @@ module.exports = {
     * @apiErrorExample Error-Response:
     *     HTTP/1.1 404 Not Found
     */
+    findOne: function (req, res, next) {
+        var recipeId = req.param('id');
+        if (!recipeId) { return next(); }
+
+        Recipe.findOne(recipeId)
+            .populate('author')
+            .populate('views')
+            .populate('votes')
+            .populate('comments')
+            .populate('trials')
+            .populate('ingredientGroups')
+            .exec(function (err, foundRecipe) {
+                if (err) { return next(err); }
+
+                if (!foundRecipe) { return res.notFound({ error: 'No recipe found' }); }
+
+                // conteggi vari
+                foundRecipe.viewsCount = foundRecipe.views.length;
+                foundRecipe.votesCount = foundRecipe.votes.length;// aggiungere verifica sul value positivo
+                foundRecipe.commentsCount = foundRecipe.comments.length;
+                foundRecipe.trialsCount = foundRecipe.trials.length;
+
+                /**
+                 * Tolgo gli elementi popolati.
+                 */
+                var obj = foundRecipe.toObject();
+                delete obj.views;
+                delete obj.votes;
+                delete obj.comments;
+                delete obj.trials;
+                
+                return res.json(obj);
+            });
+    },
 
     /**
      * @api {post} /recipe Create a new Recipe
@@ -358,54 +392,54 @@ module.exports = {
      * 
      ********************************************************************************************/
      
-     /**
-     * @api {put} /recipe/:recipe/upload_cover_image Upload the cover image
-     * @apiName UploadCoverImage
-     * @apiGroup Recipe
-     *
-     * @apiDescription Serve per caricare l'immagine principale per una ricetta
-     * Ogni richiesta necessità di autenticazione e di essere l'autore della
-     * ricetta che si sta modificando.
-     * Le richieste devono essere con codifica <strong>
-     * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
-     *
-     * @apiUse TokenHeader
-     *
-     * @apiParam {File} coverImage Cover image file.
-     *
-     * @apiSuccess {json} recipe JSON that represents the recipe object.
-     *
-     * @apiSuccessExample {json} Success-Response-Example:
-     *     HTTP/1.1 200 OK
-     *     {
-     *     "recipe": 
-     *       {
-     *         "createdAt": "2015-08-11T18:58:46.329Z",
-     *         "updatedAt": "2015-08-11T18:58:46.329Z",
-     *         "id": "55ca45e69b4246110b319cb1"
-     *       }
-     *     }
-     *
-     * @apiUse TokenFormatError
-     *
-     * @apiUse NoAuthHeaderError
-     *
-     * @apiUse InvalidTokenError
-     * 
-     * @apiError message Breve descrizione dell'errore che ha riscontrato il server.
-     *
-     * @apiErrorExample Error-Response:
-     *     HTTP/1.1 400 Bad Request
-     *     {
-     *       "message": "No file was found"
-     *     }
-     * 
-     * @apiErrorExample Error-Response:
-     *     HTTP/1.1 400 Bad Request
-     *     {
-     *       "message": "No file was uploaded"
-     *     }
-     */
+    /**
+    * @api {put} /recipe/:recipe/upload_cover_image Upload the cover image
+    * @apiName UploadCoverImage
+    * @apiGroup Recipe
+    *
+    * @apiDescription Serve per caricare l'immagine principale per una ricetta
+    * Ogni richiesta necessità di autenticazione e di essere l'autore della
+    * ricetta che si sta modificando.
+    * Le richieste devono essere con codifica <strong>
+    * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
+    *
+    * @apiUse TokenHeader
+    *
+    * @apiParam {File} coverImage Cover image file.
+    *
+    * @apiSuccess {json} recipe JSON that represents the recipe object.
+    *
+    * @apiSuccessExample {json} Success-Response-Example:
+    *     HTTP/1.1 200 OK
+    *     {
+    *     "recipe": 
+    *       {
+    *         "createdAt": "2015-08-11T18:58:46.329Z",
+    *         "updatedAt": "2015-08-11T18:58:46.329Z",
+    *         "id": "55ca45e69b4246110b319cb1"
+    *       }
+    *     }
+    *
+    * @apiUse TokenFormatError
+    *
+    * @apiUse NoAuthHeaderError
+    *
+    * @apiUse InvalidTokenError
+    * 
+    * @apiError message Breve descrizione dell'errore che ha riscontrato il server.
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 400 Bad Request
+    *     {
+    *       "message": "No file was found"
+    *     }
+    * 
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 400 Bad Request
+    *     {
+    *       "message": "No file was uploaded"
+    *     }
+    */
     uploadCoverImage: function (req, res) {
         var recipe = req.recipe;
 
@@ -442,16 +476,16 @@ module.exports = {
             // get the file name from a path
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
             var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
-            
+
             Recipe.update(recipe.id, {
                 
                 // Generate a unique URL where the avatar can be downloaded.
                 coverImageUrl: fileUrl,
-                
+
             }).exec(function (err, updatedRecipes) {
-                    if (err) return res.negotiate(err);
-                    return res.json(updatedRecipes[0]);
-                });
+                if (err) return res.negotiate(err);
+                return res.json(updatedRecipes[0]);
+            });
         });
     },
 
@@ -466,10 +500,10 @@ module.exports = {
     */
     uploadBlurredCoverImage: function (req, res) {
         var recipe = req.recipe;
-        
+
         var blurredCoverImage = req.file('image');
         if (!blurredCoverImage) { return res.badRequest('No file was found'); }
-        
+
         blurredCoverImage.upload({
             // don't allow the total upload size to exceed ~10MB
             maxBytes: 10000000,
@@ -505,16 +539,16 @@ module.exports = {
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
             var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
             console.log(fileUrl);
-            
+
             Recipe.update(recipe.id, {
                 
                 // Generate a unique URL where the avatar can be downloaded.
                 blurredCoverImageUrl: fileUrl,
-                
+
             }).exec(function (err, updatedRecipes) {
-                    if (err) return res.negotiate(err);
-                    return res.json(updatedRecipes[0]);
-                });
+                if (err) return res.negotiate(err);
+                return res.json(updatedRecipes[0]);
+            });
         });
     },
     
@@ -528,10 +562,10 @@ module.exports = {
     */
     uploadImage: function (req, res) {
         var recipe = req.recipe;
-        
+
         var image = req.file('image');
         if (!image) { return res.badRequest('No file was found'); }
-        
+
         image.upload({
             // don't allow the total upload size to exceed ~10MB
             maxBytes: 10000000,
@@ -567,13 +601,13 @@ module.exports = {
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
             var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
             console.log(fileUrl);
-            
+
             Recipe.findOne(recipe.id).exec(function (err, recipe) {
-                    if (err) return res.negotiate(err);
-                    recipe.otherImageUrls.add(fileUrl);
-                    recipe.save();
-                    return res.json(recipe);
-                });
+                if (err) return res.negotiate(err);
+                recipe.otherImageUrls.add(fileUrl);
+                recipe.save();
+                return res.json(recipe);
+            });
         });
     }
 
