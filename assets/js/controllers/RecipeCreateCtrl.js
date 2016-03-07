@@ -73,7 +73,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             ingredients: [{
                 name: "",
                 quantity: "",
-                unitOfMeasue: "",
+                unitOfMeasure: "",
                 product: {}
             }]
         }];
@@ -86,7 +86,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     ingredients: [{
                         name: "",
                         quantity: "",
-                        unitOfMeasue: "",
+                        unitOfMeasure: "",
                         product: {}
                     }]
                 });
@@ -100,7 +100,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             $scope.ingredient_groups[group_index].ingredients.push({
                 name: "",
                 quantity: "",
-                unitOfMeasue: "",
+                unitOfMeasure: "",
                 product: {}
             });
         };

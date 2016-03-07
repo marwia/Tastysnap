@@ -11,7 +11,7 @@ module.exports = {
 
   	quantity : { type: 'Float', required: true },
 
-  	unitOfMeasue : { 
+  	unitOfMeasure : { 
   		type: 'String', 
   		required: true,
   		enum: ['kg', 'hg', 'dg', 'g', 'mg',
