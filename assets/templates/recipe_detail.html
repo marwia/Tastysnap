@@ -1,8 +1,18 @@
 <!-- Colorazione dinamica della colonna di sinistra -->
 <style>
-    .recipe_col_4{
-        background-color: {{detailedRecipe.dominantColor}};
-        color: {{getTextColor(detailedRecipe)}};
+    .recipe_col_4 {
+        background-color: {
+            {
+                detailedRecipe.dominantColor
+            }
+        }
+        ;
+        color: {
+            {
+                getTextColor(detailedRecipe)
+            }
+        }
+        ;
     }
     
     body {
@@ -47,7 +57,7 @@
             <div class="col-md-4 col-sm-4 recipe_col_4 no-padding">
                 <!-- immagine fissa ricetta -->
                 <!--<div class="recipe_sp_2_1" style="background-image:url('{{detailedRecipe.coverImageUrl}}')"></div>-->
-                
+
                 <!-- inizio fucking prova -->
                 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                     <!-- Indicators -->
@@ -96,7 +106,7 @@
                                 <span class="fa-stack fa-lg" ng-click="toggleTryRecipe(detailedRecipe)">
                                     <i class="fa fa-cutlery tasty_icon" ng-class="(detailedRecipe.userTry == null) ? 'tasty_icon_default' : 'tasty_icon_active'"></i>
                                 </span>
-                           </td>
+                            </td>
                         </tr>
                         <tr>
                             <td>{{detailedRecipe.votes.length}}</td>
@@ -116,159 +126,27 @@
                         <div class="recipe_sub_title">INGREDIENTI</div>
                     </div>
 
-                    <!-- impasto -->
-                    <div class="col-md-12">
-                        <h4>Impasto</h4></div>
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
-                                <div class="text-left">
-                                    <p class="recipe_ing_txt"><a href="">Farina 00 Barilla</a></p>
-                                </div>
-                            </div>
-                            <div class="col-xs-5 col-sm-5 col-md-5">
-                                <div class="text-right">
-                                    <p class="recipe_ing_txt">100 gr</p>
-                                </div>
-                            </div>
+                    <!-- gruppi di ingredienti -->
+                    <div ng-repeat="ingredientGroup in detailedRecipe.ingredientGroups">
+                        <div class="col-md-12">
+                            <h4>{{ingredientGroup.name}}</h4>
                         </div>
-
-                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
-                                <div class="text-left">
-                                    <p class="recipe_ing_txt">Lievito per dolci</p>
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient" ng-repeat="ingredient in ingredientGroup.ingredients">
+                                <div class="col-xs-7 col-sm-7 col-md-7">
+                                    <div class="text-left">
+                                        <p class="recipe_ing_txt"><a href="">{{ingredient.product.name.long}}</a></p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-xs-5 col-sm-5 col-md-5">
-                                <div class="text-right">
-                                    <p class="recipe_ing_txt">8 gr</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
-                                <div class="text-left">
-                                    <p class="recipe_ing_txt">Burro TreValli</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-5 col-sm-5 col-md-5">
-                                <div class="text-right">
-                                    <p class="recipe_ing_txt">400 gr</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
-                                <div class="text-left">
-                                    <p class="recipe_ing_txt">Sale</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-5 col-sm-5 col-md-5">
-                                <div class="text-right">
-                                    <p class="recipe_ing_txt">un pizzico</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
-                                <div class="text-left">
-                                    <p class="recipe_ing_txt">Uova</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-5 col-sm-5 col-md-5">
-                                <div class="text-right">
-                                    <p class="recipe_ing_txt">2</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
-                                <div class="text-left">
-                                    <p class="recipe_ing_txt">Yogurt</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-5 col-sm-5 col-md-5">
-                                <div class="text-right">
-                                    <p class="recipe_ing_txt">80 gr</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
-                                <div class="text-left">
-                                    <p class="recipe_ing_txt">Zucchero di canna</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-5 col-sm-5 col-md-5">
-                                <div class="text-right">
-                                    <p class="recipe_ing_txt">120 gr</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
-                                <div class="text-left">
-                                    <p class="recipe_ing_txt">Fecola di patate</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-5 col-sm-5 col-md-5">
-                                <div class="text-right">
-                                    <p class="recipe_ing_txt">40 gr</p>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <!-- copertura -->
-                    <div class="col-md-12">
-                        <h4>Copertura</h4></div>
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
-                                <div class="text-left">
-                                    <p class="recipe_ing_txt">Ciliegie</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-5 col-sm-5 col-md-5">
-                                <div class="text-right">
-                                    <p class="recipe_ing_txt">300 gr</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
-                                <div class="text-left">
-                                    <p class="recipe_ing_txt">Burro TreValli</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-5 col-sm-5 col-md-5">
-                                <div class="text-right">
-                                    <p class="recipe_ing_txt">25 gr</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient">
-                            <div class="col-xs-7 col-sm-7 col-md-7">
-                                <div class="text-left">
-                                    <p class="recipe_ing_txt">Lievito per dolci</p>
-                                </div>
-                            </div>
-                            <div class="col-xs-5 col-sm-5 col-md-5">
-                                <div class="text-right">
-                                    <p class="recipe_ing_txt">70 gr</p>
+                                <div class="col-xs-5 col-sm-5 col-md-5">
+                                    <div class="text-right">
+                                        <p class="recipe_ing_txt">{{ingredient.quantity}} {{ingredient.unitOfMeasure}}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                   
                 </div>
 
                 <!-- INGREDIENTI -->
@@ -326,12 +204,12 @@
 
                     <!-- VALORI NUTRIZIONALI -->
                     <div class="col-md-12 recipe_sp_3">
-                        <div class="recipe_sp_3_title">VALORI NUTRIZIONALI</div>
+                        <div class="recipe_sp_3_title" ng-click="calculateNutrientValues(detailedRecipe)">VALORI NUTRIZIONALI</div>
                         <div class="recipe_sp_3_con">
                             <table class="recipe_sp_3_table">
                                 <tr class="recipe_sp_3_tr">
                                     <td class="text-left"><strong>Valore energetico</strong></td>
-                                    <td class="text-right">378 kcal</td>
+                                    <td class="text-right">{{detailedRecipe.totalEnergy}} kcal</td>
                                 </tr>
 
                                 <tr class="recipe_sp_3_tr">
@@ -528,8 +406,8 @@
         <!-- end recipe -->
 
     </div>
- 
-        <!-- CONSIGLIATE -->
+
+    <!-- CONSIGLIATE -->
 
     <div class="container-fluid tasty_container">
         <!-- title -->
@@ -546,7 +424,7 @@
 
         <!-- Card Like -->
         <div class="row tasty_container_margin text-center">
-            
+
             <!-- card 1 -->
             <div class="card">
                 <div class="thumbnail no-padding no-border card_info no-border-radius">

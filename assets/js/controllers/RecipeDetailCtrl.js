@@ -10,13 +10,14 @@
 angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
     '$scope',
     'Recipe',
+    'Ingredient',
     'Auth',
     'Collection',
     '$uibModal',
     '$log',
     '$state', // gestione degli stati dell'app (ui-router)
     'User',
-    function ($scope, Recipe, Auth, Collection, $uibModal, $log, $state, User) {
+    function ($scope, Recipe, Ingredient, Auth, Collection, $uibModal, $log, $state, User) {
 
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
         $scope.isLoggedIn = Auth.isLoggedIn;
@@ -34,6 +35,7 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
         $scope.initDetailedRecipe = function (recipe) {
             Recipe.createView(recipe);
             Recipe.checkTry(recipe);
+            Ingredient.getIngredientGroupIngredients(recipe.ingredientGroups[0]);
         }
 
         $scope.deleteCurrentRecipe = function () {
@@ -94,6 +96,25 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
         $scope.formatDate = function (recipe) {
             moment.locale("it");
             return moment(recipe.createdAt).fromNow(); 
+        }
+        
+        $scope.calculateNutrientValues = function (recipe) {
+            // calcolo totale kcal
+            var totalEnergy = 0;
+            for (var idx in recipe.ingredientGroups) {
+                var ingredientGroup = recipe.ingredientGroups[idx];
+                
+                for (var idx2 in ingredientGroup.ingredients) {
+                    /**
+                     * DA MIGLIORARE URGENTEMENTE
+                     */
+                    var ingredient = ingredientGroup.ingredients[idx2];
+                    totalEnergy += ingredient.product.nutrients[4].value / 100 * ingredient.quantity
+                }
+            }
+            
+            recipe.totalEnergy = totalEnergy;
+                    
         }
         
     }]);

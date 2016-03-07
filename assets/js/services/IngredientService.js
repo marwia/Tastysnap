@@ -60,6 +60,26 @@ angular.module('IngredientService', [])
                 });
         };
         
+        /**
+         * Servizio per caricare la lista di ingredienti dato un gruppo.
+         */
+        o.getIngredientGroupIngredients = function (ingredientGroup) {
+            return $http.get(
+                server_prefix + '/ingredientgroup/' + ingredientGroup.id + '/ingredients')
+    
+                .then(function successCallback(response) {
+                    ingredientGroup.ingredients = [];
+                    console.info(response.data);
+                    angular.copy(response.data, ingredientGroup.ingredients);
+                    
+                }, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    //alert("Errore: " + response);
+                    console.log(response);
+                });
+        };
+        
 
         return o;
     }]);
