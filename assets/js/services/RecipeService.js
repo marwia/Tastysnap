@@ -59,15 +59,21 @@ angular.module('RecipeService', [])
         /**
          * Metodo per richiedere una lista di ricette.
          */
-        o.getAll = function (skip) {
+        o.getAll = function (skip, successCB, errorCB) {
             return $http.get(server_prefix + '/recipe',
             {
                 params: {
                     'skip': skip
                 }
             }).then(function (response) {
-                angular.extend(o.recipes, response.data);
-            });
+                //angular.extend(o.recipes, response.data);
+                for (var i=0; i<response.data.length; i++){
+                    o.recipes.push(response.data[i]);
+                }
+                if (successCB)
+                    successCB(response);
+                
+            }, errorCB);
         };
     
         /**

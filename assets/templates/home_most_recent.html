@@ -16,8 +16,12 @@
 <div class="row tasty_container text-center">
 
     <!-- basic card -->
-    <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
-    toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" ng-repeat="recipe in recipes" ng-init="checkVote(recipe)"></recipe-card>
+    <recipe-card recipe="recipe" 
+        open-collection-modal="openCollectionSelectionModal(recipe)" 
+        open-share-modal="openShareModal(recipe)"
+        toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" 
+        ng-repeat="recipe in recipes" 
+        g-init="checkVote(recipe)"></recipe-card>
     <!-- fine card -->
 
 </div>
@@ -25,7 +29,9 @@
 
 <!-- button carica altro -->
 <div class="row tasty_container text-center tasty_load_space">
-    <button class="btn btn-warning " ng-click="loadMore()">CARICA ALTRO</button>
+    <load-more-button elements="recipes"
+        on-click-function="getAll(skip, successCB, errorCB)"
+        step="30"></load-more-button>
 </div>
 
 <!-- title -->

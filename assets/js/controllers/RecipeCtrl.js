@@ -95,10 +95,23 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
         };
         
         // gestione paging
+        $scope.getAll = Recipe.getAll;
+        /*
         $scope.skipValue = 0;
+        $scope.isLoading = false;
+        
         $scope.loadMore = function () {
             $scope.skipValue += 30;
-            Recipe.getAll($scope.skipValue);
+            $scope.isLoading = true;
+            Recipe.getAll($scope.skipValue,
+                function (response) {
+                    $scope.isLoading = false;
+            });
         }
+        
+        $scope.hasMoreElements = function () {
+            return $scope.recipes.length % 30 == 0;
+        }
+        */
         
     }]);
