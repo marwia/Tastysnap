@@ -264,7 +264,7 @@ var apiRoutes = addGlobalPrefix({
   'delete /recipe/:recipe/ingredient_group/:ingredient_group/ingredient/:ingredient' : 'IngredientController.delete',
   
   
-  'get /ingredient/unit_of_measures': 'IngredientController.getIngredientUnitOfMeasure',
+  'get /ingredient/unit_of_measure': 'IngredientController.getIngredientUnitOfMeasure',
   
   'get /ingredientgroup/:id/ingredients': 'IngredientController.getIngredientsGroupIngredients',
   

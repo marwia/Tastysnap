@@ -283,7 +283,7 @@
                                         </td>
                                         <td>
                                             <!-- editable group (select-remote) -->
-                                            <span editable-text="ingredient.unitOfMeasure" e-ng-model="ingredient.unitOfMeasure" e-name="unitOfMeasure" e-form="rowform" e-required>
+                                            <span editable-text="ingredient.unitOfMeasure" e-typeahead-editable="false" e-ng-model="ingredient.unitOfMeasure" e-uib-typeahead="unit for unit in unitsOfMeasure | filter:$viewValue" e-name="unitOfMeasure" e-form="rowform">
                                                 {{ ingredient.unitOfMeasure || 'vuoto' }}
                                             </span>
                                         </td>

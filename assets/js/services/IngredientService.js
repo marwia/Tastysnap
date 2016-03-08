@@ -12,6 +12,7 @@ angular.module('IngredientService', [])
         // service body
         var o = {
             ingredients: [],
+            unitsOfMeasure: [],
         };
     
         /**
@@ -53,6 +54,25 @@ angular.module('IngredientService', [])
                     }
                 })
                 .then(successCallback, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    //alert("Errore: " + response);
+                    console.log(response);
+                });
+        };
+        
+        /**
+         * Servizio per caricare la lista delle unità di misura degli ingredienti
+         */
+        o.GetIngredientUnitOfMeasure = function () {
+            return $http.get(
+                server_prefix + '/ingredient/unit_of_measure')
+    
+                .then(function successCallback(response) {
+                    console.info(response.data);
+                    angular.copy(response.data.enum, o.unitsOfMeasure);
+                    
+                }, function errorCallback(response) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     //alert("Errore: " + response);

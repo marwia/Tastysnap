@@ -27,8 +27,10 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         // espongo il tipo di dosaggio preso sempre dal servizio dedicato alle ricette
         $scope.dosageTypes = Recipe.dosagesTypes;
-
+        // espongo il metodo per ricercare i prodotti per nome
         $scope.searchProductsByName = Product.searchProductsByName;
+        
+        $scope.unitsOfMeasure = Ingredient.unitsOfMeasure;
         
         // variabili per tenere traccia del completameto della crezione di una ricetta
         $scope.createSum = 1;
@@ -459,6 +461,13 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
             return new Blob([ia], { type: mimeString });
         }
+        
+        var init = function () {
+            // inizializzazione del controller
+            Ingredient.GetIngredientUnitOfMeasure();
+        };
+        // and fire it after definition
+        init();
 
 
     }]);

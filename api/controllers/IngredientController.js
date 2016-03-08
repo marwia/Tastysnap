@@ -261,7 +261,7 @@ module.exports = {
     *
     */
     getIngredientUnitOfMeasure: function (req, res) {
-        return res.json(sails.models.ingredient.definition.unitOfMeasue);
+        return res.json(sails.models.ingredient.definition.unitOfMeasure);
     },
 
     /**
