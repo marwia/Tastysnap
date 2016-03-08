@@ -15,8 +15,8 @@ module.exports = {
   		type: 'String', 
   		required: true,
   		enum: ['kg', 'hg', 'dg', 'g', 'mg',
-  			'l', 'dl', 'cl', 'ml',
-  			'drop', 'pinch', 'teaspoon', 'tablespoon', 'cup']
+  			'l', 'dl', 'cl', 'ml'
+             /*,'drop', 'pinch', 'teaspoon', 'tablespoon', 'cup'*/]// disabilitate per motivi tecnici
   	},
 
   	// Reference to Product
