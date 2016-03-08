@@ -1,18 +1,8 @@
 <!-- Colorazione dinamica della colonna di sinistra -->
 <style>
     .recipe_col_4 {
-        background-color: {
-            {
-                detailedRecipe.dominantColor
-            }
-        }
-        ;
-        color: {
-            {
-                getTextColor(detailedRecipe)
-            }
-        }
-        ;
+        background-color: {{detailedRecipe.dominantColor}};
+        color:{{getTextColor(detailedRecipe)}};
     }
     
     body {
