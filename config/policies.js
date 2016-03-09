@@ -54,10 +54,6 @@ module.exports.policies = {
     'isFollowing' : 'findUser'
   },
 
-  'PostController' : {
-    'create' : 'isAuthorized'
-  },
-
   'CollectionController' : {
     'create' : 'isAuthorized',
     'destroy' : ['isAuthorized', 'isCollectionAuthor'],

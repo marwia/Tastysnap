@@ -26,6 +26,14 @@ module.exports = {
       via: 'trial'
     }
 
-  }
+  },
+  
+   /***************************************************************************
+  *                                                                          *
+  * Nome dell'interfaccia di connessione al database relativo                *
+  * a questo modello.                                                        *
+  *                                                                          *
+  ***************************************************************************/
+  connection: 'someMongodbServer'
 };
 
