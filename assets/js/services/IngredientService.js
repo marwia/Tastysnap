@@ -117,6 +117,10 @@ angular.module('IngredientService', [])
             return null;
         }
 
+        /**
+         * Funzione per trovare un particolare tipo di porzione
+         * di un prodotto. Es.: 'cup'
+         */
         o.findPortion = function(product, portion_unit) {
             for (var i in product.portions) {
                 if (product.portions[i].code.localeCompare(portion_unit) == 0) {
@@ -148,7 +152,9 @@ angular.module('IngredientService', [])
                  */
                 if (ingredient_unit_of_measure.indexOf('g') > -1) {
 
-                    if (nutrient_unit_of_measure.localeCompare('g') == 0) {
+                    if (nutrient_unit_of_measure.localeCompare('g') == 0
+                        || nutrient_unit_of_measure.localeCompare('kcal') == 0) {
+
                         switch (ingredient_unit_of_measure) {
                             case 'kg':
                                 return 1000;
@@ -228,9 +234,20 @@ angular.module('IngredientService', [])
             }
         }
 
+        /**
+         * Funzione che calcola il valore di un particolare nutriente
+         * @param {Number} ing_quantity - quantità dell'ingrediente
+         * @param {String} ing_unit - unità di misura dell'ingrediente
+         * @param {String} nutrient_unit - unità di misura del prodotto
+         * @param {String} nutrient_val - valore del nutriente su 100g di prodotto
+         * @param {Object} product - L'oggetto che rappresenta il prodotto, 
+         * serve nel caso di un ingrediente espresso in volume.
+         * @return {Object} nutrient_val - Il valore del nutriente presente nell'ingrediente
+         * espresso nell'unità di misura del nutriente.
+         */
         o.getNutrientValue = function(ing_quantity, ing_unit, nutrient_unit, nutrient_val, product) {
             var scale_factor = o.scaleFactor(ing_unit, nutrient_unit)
-
+            console.info(scale_factor);
             if (ing_unit.indexOf('l') > -1) {
                 // ottengo la porzione di un bicchiere del prodotto
                 var cupPortion = o.findPortion(product, 'cup');
@@ -242,40 +259,51 @@ angular.module('IngredientService', [])
 
             // ottengo il valore grezzo
             var x = ing_quantity * scale_factor * nutrient_val;
+            console.info(x);
             // lo divido a secondo dell'unità
             if (nutrient_unit.localeCompare('mg') == 0) {
                 x = x / 1000;
             }
-            else if (nutrient_unit.localeCompare('g') == 0){
+            else if (nutrient_unit.localeCompare('g') == 0) {
                 x = x / 100;
             }
             else {
                 x = x / 10000;//microgrammi
             }
 
-            return { "val": x, "unit": nutrient_unit }
+            return { "value": x, "unit": nutrient_unit }
 
         }
         
-        o.calculateNutrientTotal = function (ingredientGroups, nutrient_code) {
+        /**
+         * Funzione che calcola il totale di un nutriente presente in tutti gli ingredienti
+         * di tutti i gruppi.
+         * @param {Array} ingredientGroups - Array di gruppi di ingredienti
+         * @param {String} nutrient_code - Codice del nutriente
+         * @return {Object} totale - Oggetto che rappresenta il totale di un nutriente
+         * presente negli ingredienti di una ricetta e la sua unità di misura
+         */
+        o.calculateNutrientTotal = function(ingredientGroups, nutrient_code) {
             var total = 0;
-            
+            var unit = "";
+
             for (var i in ingredientGroups) {
                 var ingredientGroup = ingredientGroups[i];
-                
+
                 for (var k in ingredientGroup.ingredients) {
-                    /**
-                     * DA MIGLIORARE URGENTEMENTE
-                     */
+
                     var ing = ingredientGroup.ingredients[k];
                     var nutrient = o.findNutrient(ing.product.nutrients, nutrient_code);
                     
-                    total += o.getNutrientValue(ing.quantity, 
-                    ing.unitOfMeasure, nutrient.units, nutrient.value, ing.product).val
+                    var nutrient_value = o.getNutrientValue(ing.quantity,
+                        ing.unitOfMeasure, nutrient.units, nutrient.value, ing.product);
+                        
+                    total += nutrient_value.value;
+                    unit = nutrient_value.unit;
                 }
             }
-            
-            return total;
+
+            return { "value": total, "unit": unit };
         }
 
         return o;
