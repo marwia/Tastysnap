@@ -100,20 +100,7 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
         
         $scope.calculateNutrientValues = function (recipe) {
             // calcolo totale kcal
-            var totalEnergy = 0;
-            for (var idx in recipe.ingredientGroups) {
-                var ingredientGroup = recipe.ingredientGroups[idx];
-                
-                for (var idx2 in ingredientGroup.ingredients) {
-                    /**
-                     * DA MIGLIORARE URGENTEMENTE
-                     */
-                    var ingredient = ingredientGroup.ingredients[idx2];
-                    totalEnergy += ingredient.product.nutrients[4].value / 100 * ingredient.quantity
-                }
-            }
-            
-            recipe.totalEnergy = totalEnergy;
+            recipe.totalEnergy = Ingredient.calculateNutrientTotal(recipe.ingredientGroups, '208');
                     
         }
         

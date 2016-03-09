@@ -140,13 +140,13 @@ angular.module('IngredientService', [])
              * In pratica i valori nutrizionali sono sempre o espressi
              * in peso oppure in kcal. Quindi serve solo a stare sicuri.
              */
-            if (nutrient_unit_of_measure.contains('g') == true
-                || nutrient_unit_of_measure.contains('kcal') == true) {
+            if (nutrient_unit_of_measure.indexOf('g') > -1
+                || nutrient_unit_of_measure.indexOf('kcal') > -1) {
 
                 /**
                  * Verifico che anche l'ingrediente sia in peso
                  */
-                if (ingredient_unit_of_measure.contains('g') == true) {
+                if (ingredient_unit_of_measure.indexOf('g') > -1) {
 
                     if (nutrient_unit_of_measure.localeCompare('g') == 0) {
                         switch (ingredient_unit_of_measure) {
@@ -178,7 +178,7 @@ angular.module('IngredientService', [])
                         }
                     }
 
-                    if (nutrient_unit_of_measure.contains('µ') == 0) {
+                    if (nutrient_unit_of_measure.indexOf('µ') > -1) {
                         switch (ingredient_unit_of_measure) {
                             case 'kg':
                                 return 100000;
@@ -207,7 +207,7 @@ angular.module('IngredientService', [])
                  * Es: 0.5l di latte = 0.5*1000/250 bicchieri, quindi
                  * 2 bicchieri * cupPortion.g è pari a circa 490g
                  */
-                if (ingredient_unit_of_measure.contains('l') == true) {
+                if (ingredient_unit_of_measure.indexOf('l') > -1) {
 
                     // converto il valore in ml è divido per un 'cup'
                     // 1 cup = 250ml
@@ -231,7 +231,7 @@ angular.module('IngredientService', [])
         o.getNutrientValue = function(ing_quantity, ing_unit, nutrient_unit, nutrient_val, product) {
             var scale_factor = o.scaleFactor(ing_unit, nutrient_unit)
 
-            if (ing_unit.contains('l') == true) {
+            if (ing_unit.indexOf('l') > -1) {
                 // ottengo la porzione di un bicchiere del prodotto
                 var cupPortion = o.findPortion(product, 'cup');
                 ing_quantity = ing_quantity * scale_factor * cupPortion.g;
@@ -268,10 +268,10 @@ angular.module('IngredientService', [])
                      * DA MIGLIORARE URGENTEMENTE
                      */
                     var ing = ingredientGroup.ingredients[k];
-                    var nutrient = o.findNutrient(ing.nutrients, nutrient_code);
+                    var nutrient = o.findNutrient(ing.product.nutrients, nutrient_code);
                     
-                    totalEnergy += o.getNutrientValue(ing.quantity, 
-                    ing.unitOfMeasure, nutrient.units, nutrient.value, ing.product)
+                    total += o.getNutrientValue(ing.quantity, 
+                    ing.unitOfMeasure, nutrient.units, nutrient.value, ing.product).val
                 }
             }
             

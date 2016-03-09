@@ -274,19 +274,7 @@ var apiRoutes = addGlobalPrefix({
   *                                                                          *
   ***************************************************************************/
   
-  'get /product/groups': 'ProductController.getProductGroups',
-  
-  /***************************************************************************
-  *                                                                          *
-  * Robba vecchia da cancellare.                                             *
-  *                                                                          *
-  ***************************************************************************/
-
-  'get /post/:post': 'PostController.getPost',
-
-  'put /post/:post/upvote': 'PostController.upvote',
-
-  'post /post/create': 'PostController.create',
+  'get /product/groups': 'ProductController.getProductGroups'
 
 });
 
