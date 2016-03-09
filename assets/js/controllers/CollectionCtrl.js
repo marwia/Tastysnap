@@ -30,6 +30,10 @@ angular.module('CollectionCtrl', []).controller('CollectionCtrl', [
          */
         $scope.isCollectionAuthor = Collection.isCollectionAuthor;
         
+        
+        //ricavo un immagine casuale di una ricetta per metterla come sfondo
+        $scope.getCasulaCoverBlurredImage = Collection.getCasulaCoverBlurredImage;
+        
         /*
         $scope.deleteCurrentRecipe = function () {
             console.log("elimino la ricetta");

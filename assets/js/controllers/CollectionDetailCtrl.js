@@ -32,11 +32,8 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
             return moment(collection.createdAt).fromNow();
         };
         
-        $scope.getCasulaCoverBlurredImage = function () {
-            var idx = Math.floor(Math.random() * $scope.detailedCollection.recipes.length) + 0;
-            
-            return $scope.detailedCollection.recipes[idx].blurredCoverImageUrl;
-        };
+        //ricavo un immagine casuale di una ricetta per metterla come sfondo
+        $scope.getCasulaCoverBlurredImage = Collection.getCasulaCoverBlurredImage;
 
         var init = function () {
             // inizializzazione del controller

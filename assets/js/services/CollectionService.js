@@ -129,6 +129,16 @@ angular.module('CollectionService', [])
                     console.log(response);
                 });
         };
+        
+        /**
+         * Servizio per ricavare la foto casuale di una sua ricetta data una collection
+        */
+        o.getCasulaCoverBlurredImage = function () {
+            var idx = Math.floor(Math.random() * o.detailedCollection.recipes.length) + 0;
+            
+            return o.detailedCollection.recipes[idx].blurredCoverImageUrl;
+        };
+        
 
         return o;
     }]);
