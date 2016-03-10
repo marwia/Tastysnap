@@ -1,8 +1,6 @@
 // assets/js/services/AuthService.js
 // Dichiaro un service per gestire l'autenticazione
 
-
-
 angular.module('AuthService', [])
         .factory('Auth', ['$http', '$window', function ($http, $window) {
             
@@ -43,7 +41,6 @@ angular.module('AuthService', [])
         if (auth.isLoggedIn()) {
             var token = auth.getToken();
             var payload = JSON.parse($window.atob(token.split('.')[1]));
-            console.log("payload", payload);
             return payload;
         }
     };

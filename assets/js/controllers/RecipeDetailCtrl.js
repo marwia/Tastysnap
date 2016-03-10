@@ -94,9 +94,9 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
         };
 
         //mi ritorna la data leggibile
-        $scope.formatDate = function(recipe) {
+        $scope.formatDate = function(date) {
             moment.locale("it");
-            return moment(recipe.createdAt).fromNow();
+            return moment(date).fromNow();
         }
 
         $scope.calculateNutrientValues = function(recipe) {
