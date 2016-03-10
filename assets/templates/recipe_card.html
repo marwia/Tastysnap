@@ -25,40 +25,40 @@
         </div>
 
         <div class="caption color_caption">
-            <div class="container-fluid">
-
+            <div class="container-fluid" style="position:relative;">
+                
+                <a href="app/recipe/{{recipe.id}}" class="card_link"></a>
+                
                 <!-- icone + valori -->
                 <div class="row text-right">
-                    <a ng-href="app/recipe/{{recipe.id}}">
-                        <i class="fa fa-heart card_icon" ng-style="cardFontStyle"> {{recipe.votesCount}}</i>
-                        <i class="fa fa-comment card_icon" ng-style="cardFontStyle"> {{recipe.commentsCount}}</i>
-                        <i class="fa fa-eye card_icon" ng-style="cardFontStyle"> {{recipe.viewsCount}}</i>
-                        <i class="fa fa-cutlery card_icon" ng-style="cardFontStyle"> {{recipe.trialsCount}}</i>
-                    </a>
+                    <i class="fa fa-heart card_icon" ng-style="cardFontStyle"> {{recipe.votesCount}}</i>
+                    <i class="fa fa-comment card_icon" ng-style="cardFontStyle"> {{recipe.commentsCount}}</i>
+                    <i class="fa fa-eye card_icon" ng-style="cardFontStyle"> {{recipe.viewsCount}}</i>
+                    <i class="fa fa-cutlery card_icon" ng-style="cardFontStyle"> {{recipe.trialsCount}}</i>
                 </div>
 
                 <!-- tipo portata -->
                 <div class="row">
                     <h6 class="card_reach">
-                        <a ng-href="app/recipe/{{recipe.id}}" ng-style="cardFontStyle">{{recipe.category}}</a>
+                        <span ng-style="cardFontStyle">{{recipe.category}}</span>
                     </h6>
                 </div>
 
                 <!-- titolo portata -->
                 <div class="row">
                     <h5 class="no-margin card_title text-uppercase">
-                        <a ng-href="app/recipe/{{recipe.id}}" ng-style="cardFontStyle">{{recipe.title}}</a>
+                        <span ng-style="cardFontStyle">{{recipe.title}}</span>
                     </h5>
                 </div>
 
                 <!-- profile -->
-                <div class="row">
-                    <img src="{{ getUserProfileImage(recipe.author) }}" class="img-circle card_profile_photo pull-left">
-                    <div class="card_profile_name pull-left">
-                        <a href="app/profile/{{recipe.author.id}}">
+                <div class="row recipe_profile_row">
+                    <a href="app/profile/{{recipe.author.id}}" class="card_link_profile">
+                        <img src="{{ getUserProfileImage(recipe.author) }}" class="img-circle card_profile_photo pull-left">
+                        <div class="card_profile_name pull-left">
                             <h6 ng-style="cardFontStyle">{{recipe.author.name}} {{recipe.author.surname}}</h6>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
 
             </div>
