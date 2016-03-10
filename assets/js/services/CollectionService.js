@@ -133,10 +133,14 @@ angular.module('CollectionService', [])
         /**
          * Servizio per ricavare la foto casuale di una sua ricetta data una collection
         */
-        o.getCasulaCoverBlurredImage = function (collection) {
-            var idx = Math.floor(Math.random() * collection.recipes.length) + 0;
-            
-            return collection.recipes[idx].blurredCoverImageUrl;
+        o.getRandomCoverBlurredImage = function (collection) {
+            if (collection.recipes) {
+                var idx = Math.floor(Math.random() * collection.recipes.length) + 0;
+                return collection.recipes[idx].blurredCoverImageUrl;
+            }
+            else {
+                return null;//or sample image...
+            }
         };
         
 

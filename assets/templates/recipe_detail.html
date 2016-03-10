@@ -79,10 +79,10 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>{{detailedRecipe.votes.length}}</td>
-                            <td>{{detailedRecipe.comments.length}}</td>
-                            <td>{{detailedRecipe.views.length}}</td>
-                            <td>{{detailedRecipe.trials.length}}</td>
+                            <td>{{detailedRecipe.votesCount}}</td>
+                            <td>{{detailedRecipe.commentsCount}}</td>
+                            <td>{{detailedRecipe.viewsCount}}</td>
+                            <td>{{detailedRecipe.trialsCount}}</td>
                         </tr>
                     </table>
                 </div>
@@ -126,22 +126,7 @@
                     </div>
                     <div class="col-md-12">
                         <p>
-                            Consectetur adipiscing elit. Ut quam lacus, fermentum vitae eros id, semper rutrum nibh. Vestibulum elementum leo vel eros
-                            hendrerit rutrum. Fusce aliquam fringilla leo, sit amet ullamcorper nisi sagittis vitae. Sed
-                            ut accumsan risus. Fusce eu ex ullamcorper, cursus ipsum vitae, hendrerit justo. Consectetur
-                            adipiscing elit. Ut quam lacus, fermentum vitae eros id, semper rutrum nibh. Vestibulum elementum
-                            leo vel eros hendrerit rutrum. Fusce aliquam fringilla leo, sit amet ullamcorper nisi sagittis
-                            vitae. Sed ut accumsan risus. Fusce eu ex ullamcorper, cursus ipsum vitae, hendrerit justo.
-                            <br/>
-                            <br/> Consectetur adipiscing elit. Ut quam lacus, fermentum vitae eros id, semper rutrum nibh. Vestibulum
-                            elementum leo vel eros hendrerit rutrum. Fusce aliquam fringilla leo, sit amet ullamcorper nisi
-                            sagittis vitae. Sed ut accumsan risus. Fusce eu ex ullamcorper, cursus ipsum vitae, hendrerit
-                            justo.
-                            <br/>
-                            <br/> Consectetur adipiscing elit. Ut quam lacus, fermentum vitae eros id, semper rutrum nibh. Vestibulum
-                            elementum leo vel eros hendrerit rutrum. Fusce aliquam fringilla leo, sit amet ullamcorper nisi
-                            sagittis vitae. Sed ut accumsan risus. Fusce eu ex ullamcorper, cursus ipsum vitae, hendrerit
-                            justo.
+                            {{detailedRecipe.description}}
                         </p>
                     </div>
                 </div>
@@ -174,7 +159,7 @@
 
                     <!-- VALORI NUTRIZIONALI -->
                     <div class="col-md-12 recipe_sp_3">
-                        <div class="recipe_sp_3_title" ng-click="calculateNutrientValues(detailedRecipe)">VALORI NUTRIZIONALI</div>
+                        <div class="recipe_sp_3_title" ng-click="calculateNutrientValues(detailedRecipe)" uib-tooltip="I valori espressi sono relativi all'insieme degli ingredienti che compongono la ricetta. I risultati sono da considerarsi come stime, pertanto i valori reali dei nutrienti potrebbero variare."><a href="">VALORI NUTRIZIONALI</a></div>
                         <div class="recipe_sp_3_con">
                             <table class="recipe_sp_3_table">
                                 <tr class="recipe_sp_3_tr">
@@ -189,37 +174,37 @@
 
                                 <tr class="recipe_sp_3_tr">
                                     <td class="text-left"><strong>Carboidrati</strong></td>
-                                    <td class="text-right">84gr</td>
+                                    <td class="text-right">{{detailedRecipe.totalCarbs.value}} {{detailedRecipe.totalCarbs.unit}}</td>
                                 </tr>
 
                                 <tr class="recipe_sp_3_tr">
                                     <td class="text-left recipe_sp_3_val_nut_sec"><strong>di cui zuccheri</strong></td>
-                                    <td class="text-right">8 gr</td>
+                                    <td class="text-right">{{detailedRecipe.totalSugar.value}} {{detailedRecipe.totalSugar.unit}}</td>
                                 </tr>
 
                                 <tr class="recipe_sp_3_tr">
                                     <td class="text-left"><strong>Grassi</strong></td>
-                                    <td class="text-right">20 gr</td>
+                                    <td class="text-right">{{detailedRecipe.totalFat.value}} {{detailedRecipe.totalFat.unit}}</td>
                                 </tr>
 
                                 <tr class="recipe_sp_3_tr">
                                     <td class="text-left recipe_sp_3_val_nut_sec"><strong>di cui saturi</strong></td>
-                                    <td class="text-right">5 gr</td>
+                                    <td class="text-right">{{detailedRecipe.totalFatSat.value}} {{detailedRecipe.totalFatSat.unit}}</td>
+                                </tr>
+
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left"><strong>Liquidi</strong></td>
+                                    <td class="text-right">{{detailedRecipe.totalWater.value}} {{detailedRecipe.totalWater.unit}}</td>
                                 </tr>
 
                                 <tr class="recipe_sp_3_tr">
                                     <td class="text-left"><strong>Fibre</strong></td>
-                                    <td class="text-right">6 gr</td>
+                                    <td class="text-right">{{detailedRecipe.totalFibers.value}} {{detailedRecipe.totalFibers.unit}}</td>
                                 </tr>
 
                                 <tr class="recipe_sp_3_tr">
                                     <td class="text-left"><strong>Sodio</strong></td>
-                                    <td class="text-right">0.7 gr</td>
-                                </tr>
-
-                                <tr class="recipe_sp_3_tr">
-                                    <td class="text-left"><strong>Sale</strong></td>
-                                    <td class="text-right">20 gr</td>
+                                    <td class="text-right">{{detailedRecipe.totalSod.value}} {{detailedRecipe.totalSod.unit}}</td>
                                 </tr>
                             </table>
                         </div>
@@ -262,7 +247,7 @@
                         <!-- nuovo commento (del profilo loggato) -->
                         <div class="media">
                             <a class="pull-left" href="personal_profile.php">
-                                <img class="media-object img-circle recipe_comment_photo" src="imm/matt.jpg" alt="Matteo Bolognesi">
+                                <img class="media-object img-circle recipe_comment_photo" src="getUserProfileImage()" alt="Matteo Bolognesi">
                             </a>
                             <div class="media-body">
                                 <input type="text" class="form-control recipe_comment_input" placeholder="scrivi cosa ne pensi...">

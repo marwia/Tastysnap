@@ -32,7 +32,7 @@ angular.module('CollectionCtrl', []).controller('CollectionCtrl', [
         
         
         //ricavo un immagine casuale di una ricetta per metterla come sfondo
-        $scope.getCasulaCoverBlurredImage = Collection.getCasulaCoverBlurredImage;
+        $scope.getRandomCoverBlurredImage = Collection.getRandomCoverBlurredImage;
         
         /*
         $scope.deleteCurrentRecipe = function () {
