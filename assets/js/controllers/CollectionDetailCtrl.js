@@ -33,7 +33,7 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
         };
         
         //ricavo un immagine casuale di una ricetta per metterla come sfondo
-        $scope.getCasulaCoverBlurredImage = Collection.getCasulaCoverBlurredImage;
+        $scope.getCasulaCoverBlurredImage = Collection.getCasulaCoverBlurredImage();
 
         var init = function () {
             // inizializzazione del controller
