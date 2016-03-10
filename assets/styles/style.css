@@ -903,9 +903,9 @@ ul.home_navbar{
 }
 
 .recipe_generic_con:hover{
-    -webkit-box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.87);
-	-moz-box-shadow:    0px 0px 10px 0px rgba(50, 50, 50, 0.87);
-	box-shadow:         0px 0px 10px 0px rgba(50, 50, 50, 0.87);
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.57);
+	-moz-box-shadow:    0px 0px 10px 0px rgba(50, 50, 50, 0.57);
+	box-shadow:         0px 0px 10px 0px rgba(50, 50, 50, 0.57);
 }
 
 .recipe_sub_title{

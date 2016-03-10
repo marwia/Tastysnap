@@ -265,7 +265,7 @@ angular.module('appRoutes', []).config([
                         Auth.saveToken($stateParams.token);
                     }
                     if (Auth.isLoggedIn()) {
-                        $state.go('app.home');
+                        $state.go('app.home.most_recent');
                     }
                 }]
             })

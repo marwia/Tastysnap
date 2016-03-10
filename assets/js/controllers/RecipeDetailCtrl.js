@@ -77,7 +77,7 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
                                 //do what you need here
                                 $scope.loading = false;
                                 $uibModalInstance.dismiss('cancel');
-                                $state.go('app.home');
+                                $state.go('app.home.most_recent');
 
                             }, function(response) {
                                 // errore
@@ -107,7 +107,11 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
             
             recipe.totalCarbs = Ingredient.calculateNutrientTotal(recipe.ingredientGroups, '205');
             
+            recipe.totalSugar = Ingredient.calculateNutrientTotal(recipe.ingredientGroups, '269');
+            
             recipe.totalFat = Ingredient.calculateNutrientTotal(recipe.ingredientGroups, '204');
+            
+            recipe.totalFatSat = Ingredient.calculateNutrientTotal(recipe.ingredientGroups, '606');
             
             recipe.totalWater = Ingredient.calculateNutrientTotal(recipe.ingredientGroups, '255');
             

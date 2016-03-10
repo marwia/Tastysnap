@@ -295,11 +295,13 @@ angular.module('IngredientService', [])
                     var ing = ingredientGroup.ingredients[k];
                     var nutrient = o.findNutrient(ing.product.nutrients, nutrient_code);
                     
-                    var nutrient_value = o.getNutrientValue(ing.quantity,
-                        ing.unitOfMeasure, nutrient.units, nutrient.value, ing.product);
+                    if (nutrient) {
+                        var nutrient_value = o.getNutrientValue(ing.quantity,
+                            ing.unitOfMeasure, nutrient.units, nutrient.value, ing.product);
                         
-                    total += nutrient_value.value;
-                    unit = nutrient_value.unit;
+                        total += nutrient_value.value;
+                        unit = nutrient_value.unit;
+                    }
                 }
             }
 
