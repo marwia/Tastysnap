@@ -69,12 +69,14 @@
                 <div class="recipe_sp_2_2">
                     <table class="recipe_sp_2_2_table">
                         <tr>
-                            <td><i class="fa fa-heart recipe_sp_2_2_icon"></i></td>
-                            <td><i class="fa fa-comment recipe_sp_2_2_icon"></i></td>
-                            <td><i class="fa fa-eye recipe_sp_2_2_icon"></i></td>
+                            <td><i class="fa fa-heart recipe_sp_2_2_icon" uib-tooltip="Persone che adorano questa ricetta"></i></td>
+                            <td><i class="fa fa-comment recipe_sp_2_2_icon" uib-tooltip="Numero di commenti"></i></td>
+                            <td><i class="fa fa-eye recipe_sp_2_2_icon" uib-tooltip="Numero di visualizzazioni"></i></td>
                             <td>
                                 <span class="fa-stack fa-lg" ng-click="toggleTryRecipe(detailedRecipe)">
-                                    <i class="fa fa-cutlery tasty_icon" ng-class="(detailedRecipe.userTry == null) ? 'tasty_icon_default' : 'tasty_icon_active'"></i>
+                                    <i class="fa fa-cutlery tasty_icon"
+                                       uib-tooltip="Persone che hanno provato questa ricetta"
+                                       ng-class="(detailedRecipe.userTry == null) ? 'tasty_icon_default' : 'tasty_icon_active'"></i>
                                 </span>
                             </td>
                         </tr>
