@@ -109,6 +109,18 @@ module.exports.policies = {
     'findDownvotes' : 'findRecipe'
   },
   
+  'VoteCommentController' : {
+    'create' : false,
+    'find' : false,
+    'findOne' : false,
+    'destroy' : ['isAuthorized', 'findComment'],// isAuthor è implicito
+    'createUpvote' : ['isAuthorized', 'findComment'],
+    'createDownvote' : ['isAuthorized', 'findComment'],
+    'checkVote' : ['isAuthorized', 'findComment'],
+    'findUpvotes' : 'findComment',
+    'findDownvotes' : 'findComment'
+  },
+  
   'ViewRecipeController' : {
       'create' : ['isAuthorized', 'findRecipe']
   },

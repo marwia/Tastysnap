@@ -221,6 +221,24 @@ var apiRoutes = addGlobalPrefix({
   'get /recipe/:recipe/comment' : 'CommentController.find',
 
   'get /recipe/:recipe/comment/:id' : 'CommentController.findOne',
+  
+  /***************************************************************************
+  *                                                                          *
+  * Voti a commenti                                                          *
+  *                                                                          *
+  ***************************************************************************/
+  
+  'post /comment/:comment/upvote': 'VotecommentController.createUpvote',
+
+  'post /comment/:comment/downvote': 'VotecommentController.createDownvote',
+
+  'delete /comment/:comment/vote': 'VotecommentController.destroy',
+
+  'get /comment/:comment/upvote': 'VotecommentController.findUpvotes',
+
+  'get /comment/:comment/downvote': 'VotecommentController.findDownvotes',
+
+  'get /comment/:comment/voted': 'VotecommentController.checkVote',
 
   /***************************************************************************
   *                                                                          *

@@ -229,11 +229,39 @@ module.exports = {
             .skip(actionUtil.parseSkip(req))
             .sort(actionUtil.parseSort(req))
             .populate('user')
-            .exec(function(err, comments) {
-            if (err) { return next(err); }
+            .populate('votes')
+            .exec(function(err, foundComments) {
+                if (err) { return next(err); }
 
-            return res.json(comments);
-        });
+                if (foundComments.length == 0) {
+                    return res.notFound({ error: 'No comment found' });
+                }
+
+                // array di appoggio
+                var comments = new Array();
+
+                // conto gli elementi delle collection
+                for (var i in foundComments) {
+                    
+                    foundComments[i].upvotesCount = 0;
+                    foundComments[i].downvotesCount = 0;
+                    for (var k in foundComments[i].votes) {
+                        if (foundComments[i].votes[k].value == 1) {
+                            foundComments[i].upvotesCount++;
+                        }
+                        else if (foundComments[i].votes[k].value == -1) {
+                            foundComments[i].downvotesCount++;
+                        }
+                    }
+                    /**
+                     * Tolgo gli elementi popolati
+                     */
+                    var obj = foundComments[i].toObject();
+                    delete obj.votes;
+                    comments.push(obj);
+                }
+                return res.json(comments);
+            });
     },
 
     /**
@@ -269,11 +297,34 @@ module.exports = {
         var commentId = req.param('id');
         if (!commentId) { return next(); }
 
-        Comment.findOne(commentId).populate('user').exec(function(err, comment) {
-            if (err) { return next(err); }
+        Comment.findOne(commentId)
+            .populate('user')
+            .populate('votes')
+            .exec(function(err, foundComment) {
+                if (err) { return next(err); }
 
-            return res.json(comment);
-        })
+                if (!foundComment) { return res.notFound({ error: 'No comment found' }); }
+
+                // conteggio dei voti
+                foundComment.upvotesCount = 0;
+                foundComment.downvotesCount = 0;
+                for (var k in foundComment.votes) {
+                    if (foundComment.votes[k].value > 0) {
+                        foundComment.upvotesCount++;
+                    }
+                    else {
+                        foundComment.downvotesCount++;
+                    }
+                }
+
+                /**
+                 * Tolgo gli elementi popolati.
+                 */
+                var obj = foundComment.toObject();
+                delete obj.votes
+
+                return res.json(obj);
+            });
     }
 
 

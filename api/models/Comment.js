@@ -25,7 +25,13 @@ module.exports = {
     recipe : { 
       model :'recipe',
       required : true
-    }
+    },
+    
+    // Reference to many Votes
+    votes : {
+      collection: 'voteComment',
+      via: 'comment'
+    },
 
   },
   /***************************************************************************

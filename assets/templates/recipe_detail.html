@@ -267,7 +267,7 @@
                         </div>
 
                         <!-- commento singolo -->
-                        <div class="media" ng-repeat="comment in detailedRecipe.comments">
+                        <div class="media" ng-repeat="comment in detailedRecipe.comments" ng-init="checkVote(comment)">
                             <a class="pull-left" href="">
                                 <img class="media-object img-circle recipe_comment_photo" src="{{ getUserProfileImage(comment.user) }}" alt="{{comment.user.name}} {{comment.user.surname}}">
                             </a>
@@ -279,8 +279,12 @@
                                 <!-- Rispondi -->
                                 <div class="recipe_comment_reply">
                                     <a href=""><span>Rispondi</span></a>
-                                    <a href=""><i class="fa fa-thumbs-o-up"></i></a>
-                                    <a href=""><i class="fa fa-thumbs-o-down"></i></a>
+                                    <a href="" ng-click="toggleUpvote(comment, comment.userUpvote)">
+                                        <i class="fa" ng-class="(comment.userUpvote == null) ? 'fa-thumbs-o-up' : 'fa-thumbs-up'"></i>{{comment.upvotesCount}}
+                                    </a>
+                                    <a href="" ng-click="toggleDownvote(comment, comment.userDownvote)">
+                                        <i class="fa" ng-class="(comment.userDownvote == null) ? 'fa-thumbs-o-down' : 'fa-thumbs-down'"></i>{{comment.downvotesCount}}
+                                    </a>
                                 </div>
                                 
                                 <!-- commento di commento -->
