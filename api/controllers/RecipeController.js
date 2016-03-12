@@ -106,6 +106,10 @@ module.exports = {
             .populate('trials')
             .exec(function (err, foundRecipes) {
                 if (err) { return next(err); }
+                
+                if (foundRecipes.length == 0) {
+                     return res.notFound({ error: 'No recipe found' }); 
+                }
             
                 // array di appoggio
                 var recipes = new Array();
@@ -113,7 +117,13 @@ module.exports = {
                 // conto gli elementi delle collection
                 for (var i in foundRecipes) {
                     foundRecipes[i].viewsCount = foundRecipes[i].views.length;
-                    foundRecipes[i].votesCount = foundRecipes[i].votes.length;// aggiungere verifica sul value positivo
+                    // calcolo dei voti positivi
+                    foundRecipes[i].votesCount = 0;
+                    for (var k in foundRecipes.votes) {
+                        if (foundRecipes.votes[k].value > 0) {
+                            foundRecipes[i].votesCount++;
+                        }
+                    }
                     foundRecipes[i].commentsCount = foundRecipes[i].comments.length;
                     foundRecipes[i].trialsCount = foundRecipes[i].trials.length;
 

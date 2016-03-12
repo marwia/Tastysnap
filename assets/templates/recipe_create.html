@@ -18,6 +18,7 @@
         
         <div class="panel-body no-padding" ng-hide="isCreating">
 
+            <form editable-form name="recipeForm" ng-submit="createRecipe()" role="form" novalidate>
             <!-- RIGA 1 - TITOLO -->
             <div class="row c_recipe_row">
                 <!-- vuoto -->
@@ -46,8 +47,13 @@
                 <div class="col-md-4 c_recipe_left">
                     <span>Titolo ricetta</span>
                 </div>
-                <div class="col-md-8 c_recipe_right">
-                    <input type="text" class="form-control" name="title" ng-model="recipeToCreate.title" />
+                <div class="col-md-8 c_recipe_right" ng-class="{ 'has-error': recipeForm.title.$touched && recipeForm.title.$invalid }">
+                    <input type="text" class="form-control" name="title" ng-model="recipeToCreate.title" ng-minlength="3"
+                        ng-maxlength="50"
+                        required />
+                    <div class="help-block" ng-messages="recipeForm.title.$error" ng-if="recipeForm.title.$touched">
+                        <div ng-messages-include="templates/validation_messages.html"></div>
+                    </div>
                 </div>
             </div>
 
@@ -344,14 +350,14 @@
             <div class="row c_recipe_row">
                 <div class="col-md-4 c_recipe_left"></div>
                 <div class="col-md-8 c_recipe_right text-right">
-                    <form editable-form ng-submit="createRecipe()" role="form">
+  
                         <!-- AZIONI RELATIVE ALLA RICETTA -->
                         <button type="button" class="btn btn-danger">Cancella</button>
                         <button type="submit" class="btn btn-primary">Invia</button>
-                    </form>
                 </div>
             </div>
 
+            </form>
         </div>
         <!-- /panel-body -->
     </div>

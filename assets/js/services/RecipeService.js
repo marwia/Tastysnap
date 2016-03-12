@@ -262,15 +262,21 @@ angular.module('RecipeService', [])
          */
         o.createTry = function(recipe) {
             return $http.post(
-                server_prefix + '/recipe/' + recipe.id + '/try', null,
+                server_prefix + '/recipe/' + recipe.id + '/try',
+                null,
                 {
                     headers: {
                         Authorization: 'Bearer ' + Auth.getToken()
                     }
                 })
-                .success(function(data) {
-                    recipe.userTry = data;
-                    recipe.trials.push(data);
+                .then(function(response) {
+                    recipe.userTry = response.data;
+                    // per ora non serve
+                    //recipe.trials.push(data);
+                    recipe.trialsCount++;
+                }
+                , function(response) {
+                    console.log(response);
                 });
         };
 
@@ -286,15 +292,20 @@ angular.module('RecipeService', [])
                         Authorization: 'Bearer ' + Auth.getToken()
                     }
                 })
-                .success(function(data) {
+                .then(function(response) {
                     recipe.userTry = null;
+                    recipe.trialsCount--;
                     // elimino l'elemento corretto dall'array
+                    /* per ora non serve
                     for (var i in recipe.trials) {
                         if (recipe.trials[i].user = Auth.currentUser().id) {
                             recipe.trials.splice(i, 1);
                             break;
                         }
-                    }
+                    }*/
+                }
+                , function(response) {
+                    console.log(response);
                 });
         };
 

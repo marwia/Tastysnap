@@ -1,7 +1,7 @@
 /**
- * VoteRecipeController.js
+ * VoteCommentController.js
  *
- * @description :: Server-side logic for managing likes for recipes.
+ * @description :: Server-side logic for managing likes for comments.
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
@@ -14,18 +14,18 @@ var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
     /**
-     * @api {post} /recipe/:recipe/upvote Upvote a Recipe
-     * @apiName UpvoteRecipe
-     * @apiGroup Vote Recipe
+     * @api {post} /comment/:comment/upvote Upvote a Comment
+     * @apiName UpvoteComment
+     * @apiGroup Vote Comment
      *
-     * @apiDescription Serve per dare un voto positivo (+1) ad una ricetta.
+     * @apiDescription Serve per dare un voto positivo (+1) ad un commento.
      * Visto che ogni voto deve avere un autore, si deve inviare qualsiasi
      * richiesta con il token del suo autore.<br>
      * Non sono richiesti parametri. 
      *
      * @apiUse TokenHeader
      *
-     * @apiSuccess {json} vote JSON that represents the vote object.
+     * @apiSuccess {json} vote JSON that represents the upvote object.
      *
      * @apiSuccessExample {json} Success-Response-Example:
      *     HTTP/1.1 200 OK
@@ -33,7 +33,7 @@ module.exports = {
      *      {
      *        "value": 1,
      *        "author": "55b275aa3e4935bc028d02c0",
-     *        "recipe": "55cc9b54e75edbb10e65089c",
+     *        "comment": "55cc9b54e75edbb10e65089c",
      *        "createdAt": "2015-09-09T09:53:20.041Z",
      *        "updatedAt": "2015-09-09T09:53:20.041Z",
      *        "id": "55f00190b6aecd11065cab85"
@@ -47,23 +47,23 @@ module.exports = {
      * @apiUse InvalidTokenError
      */
     createUpvote: function (req, res, next) {
-        sails.controllers.voterecipe.create(req, res, next, 1);
+        sails.controllers.votecomment.create(req, res, next, 1);
 
     },
 
     /**
-     * @api {post} /recipe/:recipe/downvote Downvote a Recipe
-     * @apiName DownvoteRecipe
-     * @apiGroup Vote Recipe
+     * @api {post} /comment/:comment/downvote Downvote a Comment
+     * @apiName DownvoteComment
+     * @apiGroup Vote Comment
      *
-     * @apiDescription Serve per dare un voto negativo (-1) ad una ricetta.
+     * @apiDescription Serve per dare un voto negativo (-1) ad un commento.
      * Visto che ogni voto deve avere un autore, si deve inviare qualsiasi
      * richiesta con il token del suo autore.<br>
      * Non sono richiesti parametri. 
      *
      * @apiUse TokenHeader
      *
-     * @apiSuccess {json} vote JSON that represents the vote object.
+     * @apiSuccess {json} vote JSON that represents the upvote object.
      *
      * @apiSuccessExample {json} Success-Response-Example:
      *     HTTP/1.1 200 OK
@@ -71,7 +71,7 @@ module.exports = {
      *      {
      *        "value": -1,
      *        "author": "55b275aa3e4935bc028d02c0",
-     *        "recipe": "55cc9b54e75edbb10e65089c",
+     *        "comment": "55cc9b54e75edbb10e65089c",
      *        "createdAt": "2015-09-09T09:53:20.041Z",
      *        "updatedAt": "2015-09-09T09:53:20.041Z",
      *        "id": "55f00190b6aecd11065cab85"
@@ -85,52 +85,53 @@ module.exports = {
      * @apiUse InvalidTokenError
      */
     createDownvote: function (req, res, next) {
-        sails.controllers.voterecipe.create(req, res, next, -1);
+        sails.controllers.votecomment.create(req, res, next, -1);
     },
 
-	/**
-   * Azione per creare un voto (+1 o -1) ad una ricetta.
+   /**
+   * Azione per creare un voto (+1 o -1) ad un commento.
    * Questa azione non premette di avere due voti della stessa persona.
    */
     create: function (req, res, next, value) {
         var user = req.payload;
 
-        // completo l'oggetto voteRecipe
-        var voteRecipe = { value: value, author: user, recipe: req.recipe.id };
+        // completo l'oggetto voteComment
+        var voteComment = { value: value, author: user, comment: req.comment.id };
 
         //cerco se c'è gia uno stesso vote
-        VoteRecipe.find().where({ author: user.id, recipe: req.recipe.id })
-            .exec(function (err, voteRecipes) {
+        VoteComment.find()
+            .where({ author: user.id, comment: req.comment.id })
+            .exec(function (err, voteComments) {
                 if (err) { return next(err); }
 
-                if (voteRecipes.length == 0) {// non trovato, quindi ne posso creare uno
-                    VoteRecipe.create(voteRecipe).exec(function (err, voteRecipeCreated) {
+                if (voteComments.length == 0) {// non trovato, quindi ne posso creare uno
+                    VoteComment.create(voteComment).exec(function (err, voteCommentCreated) {
                         if (err) { return next(err); }
 
-                        return res.json(voteRecipeCreated);
+                        return res.json(voteCommentCreated);
                     });
                 } else {// trovato!
-                    if (voteRecipes[0].value != voteRecipe.value) {// se diverso
-                        VoteRecipe.destroy(voteRecipes[0].id).exec(function (err) {// cancello quello vecchio
+                    if (voteComments[0].value != voteComment.value) {// se diverso
+                        VoteComment.destroy(voteComments[0].id).exec(function (err) {// cancello quello vecchio
                             if (err) { return next(err); }
-                            VoteRecipe.create(voteRecipe).exec(function (err, voteRecipeCreated) {
+                            VoteComment.create(voteComment).exec(function (err, voteCommentCreated) {
                                 if (err) { return next(err); }
 
-                                return res.json(voteRecipeCreated);
+                                return res.json(voteCommentCreated);
                             });
                         });
                     }// se uguale allora non faccio nulla
-                    else { return res.json(voteRecipes[0]); }
+                    else { return res.json(voteComments[0]); }
                 }
             });
     },
 
     /**
-     * @api {delete} /recipe/:recipe/vote Delete a generic vote from Recipe
-     * @apiName DeleteVoteRecipe
-     * @apiGroup Vote Recipe
+     * @api {delete} /comment/:comment/vote Delete a generic vote from Comment
+     * @apiName DeleteVoteComment
+     * @apiGroup Vote Comment
      *
-     * @apiDescription Serve eliminare un voto generico (positivo o negativo) ad una ricetta.
+     * @apiDescription Serve eliminare un voto generico (positivo o negativo) ad un commento.
      * Visto che ogni voto deve avere un autore, si deve inviare qualsiasi
      * richiesta con il token del suo autore.<br>
      * Non sono richiesti parametri. 
@@ -148,30 +149,32 @@ module.exports = {
      *
      * @apiUse NoPermissionError
      *
-     * @apiUse NoRecipeError
+     * @apiUse NoCommentError
      */
     destroy: function (req, res, next) {
         var user = req.payload;
 
-        var voteRecipeToDelete = { author: user.id, recipe: req.recipe.id };
+        var voteCommentToDelete = { author: user.id, comment: req.comment.id };
 
-        VoteRecipe.destroy(voteRecipeToDelete).exec(function (err) {
-            if (err) { return next(err); }
+        VoteComment
+            .destroy(voteCommentToDelete)
+            .exec(function (err) {
+                if (err) { return next(err); }
 
-            return res.send(204, null);// eliminato
-        });
+                return res.send(204, null);// eliminato
+            });
     },
 
     /**
-     * @api {get} /recipe/:recipe/upvote List the upvotes for a Recipe
-     * @apiName GetUpvotesRecipe
-     * @apiGroup Vote Recipe
+     * @api {get} /comment/:comment/upvote List the upvotes for a Comment
+     * @apiName GetUpvotesComment
+     * @apiGroup Vote Comment
      *
-     * @apiDescription Serve a richiedere la lista di voti positivi di una ricetta.
+     * @apiDescription Serve a richiedere la lista di voti positivi di un commento.
      * <br>
      * Non sono richiesti ne parametri ne le credenziali dell'utente. 
      *
-     * @apiSuccess {Array} vote_list Array that represents positive upvotes.
+     * @apiSuccess {Array} vote_list Array that represents positive votes
      *
      * @apiSuccessExample {json} Success-Response-Example:
      *     HTTP/1.1 200 OK
@@ -183,7 +186,7 @@ module.exports = {
      *        "updatedAt": "2015-07-24T17:28:10.577Z",
      *        "id": "55b275aa3e4935bc028d02c0"
      *    },
-     *      "recipe": "55cc9b54e75edbb10e65089c",
+     *      "comment": "55cc9b54e75edbb10e65089c",
      *      "value": 1,
      *      "createdAt": "2015-09-09T09:53:20.041Z",
      *      "updatedAt": "2015-09-09T09:53:20.041Z",
@@ -191,33 +194,33 @@ module.exports = {
      *    }
      *  ]
      *
-     * @apiUse NoRecipeError
+     * @apiUse NoCommentError
      */
     findUpvotes: function (req, res, next) {
         
-        VoteRecipe.find()
-            .where({ recipe: req.recipe.id, value: 1 })
+        VoteComment.find()
+            .where({ comment: req.comment.id, value: 1 })
             .limit(actionUtil.parseLimit(req))
             .skip(actionUtil.parseSkip(req))
             .sort(actionUtil.parseSort(req))
             .populate('author')
-            .exec(function (err, voteRecipes) {
+            .exec(function (err, voteComments) {
                 if (err) { return next(err); }
 
-                return res.json(voteRecipes);
+                return res.json(voteComments);
             });
     },
 
     /**
-     * @api {get} /recipe/:recipe/downvote List the downvotes for a Recipe
-     * @apiName GetDownvotesRecipe
-     * @apiGroup Vote Recipe
+     * @api {get} /comment/:comment/downvote List the downvotes for a Comment
+     * @apiName GetDownvotesComment
+     * @apiGroup Vote Comment
      *
-     * @apiDescription Serve a richiedere la lista di voti negativi di una ricetta.
+     * @apiDescription Serve a richiedere la lista di voti negativi di un commento.
      * <br>
      * Non sono richiesti ne parametri ne le credenziali dell'utente. 
      *
-     * @apiSuccess {Array} vote_list Array that represents negative upvotes.
+     * @apiSuccess {Array} vote_list Array that represents negative votes
      *
      * @apiSuccessExample {json} Success-Response-Example:
      *     HTTP/1.1 200 OK
@@ -229,7 +232,7 @@ module.exports = {
      *        "updatedAt": "2015-07-24T17:28:10.577Z",
      *        "id": "55b275aa3e4935bc028d02c0"
      *    },
-     *      "recipe": "55cc9b54e75edbb10e65089c",
+     *      "comment": "55cc9b54e75edbb10e65089c",
      *      "value": -1,
      *      "createdAt": "2015-09-09T09:53:20.041Z",
      *      "updatedAt": "2015-09-09T09:53:20.041Z",
@@ -237,42 +240,42 @@ module.exports = {
      *    }
      *  ]
      *
-     * @apiUse NoRecipeError
+     * @apiUse NoCommentError
      */
     findDownvotes: function (req, res, next) {
         
-        VoteRecipe.find()
-            .where({ recipe: req.recipe.id, value: -1 })
+        VoteComment.find()
+            .where({ comment: req.comment.id, value: -1 })
             .limit(actionUtil.parseLimit(req))
             .skip(actionUtil.parseSkip(req))
             .sort(actionUtil.parseSort(req))
             .populate('author')
-            .exec(function (err, voteRecipes) {
+            .exec(function (err, voteComments) {
                 if (err) { return next(err); }
 
-                return res.json(voteRecipes);
+                return res.json(voteComments);
             });
     },
 
     /**
-     * @api {get} /recipe/:recipe/vote Check if you voted a Recipe
-     * @apiName CheckVoteRecipe
-     * @apiGroup Vote Recipe
+     * @api {get} /comment/:comment/vote Check if you voted a Comment
+     * @apiName CheckVoteComment
+     * @apiGroup Vote Comment
      *
-     * @apiDescription Serve a controllare se l'utente ha votato una ricetta.
+     * @apiDescription Serve a controllare se l'utente ha votato un commento.
      * <br>
      * Necessita di autenticazione.
      *
      * @apiUse TokenHeader
      *
-     * @apiSuccess {json} vote JSON that represents the upvote object.
+     * @apiSuccess {json} vote JSON that represents the vote object.
      *
      * @apiSuccessExample {json} Success-Response-Example:
      *     HTTP/1.1 200 OK
      *  {
      *    value: 1
      *    author: "55b275aa3e4935bc028d02c0"
-     *    recipe: "55cc9b54e75edbb10e65089c"
+     *    comment: "55cc9b54e75edbb10e65089c"
      *    createdAt: "2015-09-09T19:53:12.315Z"
      *    updatedAt: "2015-09-09T19:53:12.315Z"
      *    id: "55f08e28a489ce62116cfacf"
@@ -287,19 +290,19 @@ module.exports = {
      *
      * @apiUse InvalidTokenError
      *
-     * @apiUse NoRecipeError
+     * @apiUse NoCommentError
      */
     checkVote: function (req, res, next) {
         var user = req.payload;
 
-        VoteRecipe.find()
-            .where({ recipe: req.recipe.id, author: user.id })
-            .exec(function (err, voteRecipes) {
+        VoteComment.find()
+            .where({ comment: req.comment.id, author: user.id })
+            .exec(function (err, voteComments) {
                 if (err) { return next(err); }
 
-                if (voteRecipes.length == 0) {
+                if (voteComments.length == 0) {
                     return res.status(404).send('Not found');// HTTP status 404: NotFound
-                } else { return res.json(voteRecipes[0]); }
+                } else { return res.json(voteComments[0]); }
             });
     }
 

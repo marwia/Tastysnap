@@ -18,6 +18,25 @@ angular.module('CommentCtrl', []).controller('CommentCtrl', [
         $scope.currentUser = User.currentUser
         $scope.getUserProfileImage = User.getUserProfileImage;
         
+        $scope.checkVote = Comment.checkVote;
+        $scope.toggleUpvote = function(comment, vote) {
+            if (comment.userUpvote != null) {
+                Comment.deleteVote(comment, vote);
+            }
+            else {
+                Comment.upvote(comment);
+            }
+        };
+        
+        $scope.toggleDownvote = function(comment, vote) {
+            if (comment.userDownvote != null) {
+                Comment.deleteVote(comment, vote);
+            }
+            else {
+                Comment.downvote(comment);
+            }
+        };
+        
         // Espongo i metodi del Comment service
         $scope.create = function () {
             Comment.create($scope.detailedRecipe, $scope.commentToCreate, function success(response) {

@@ -15,6 +15,7 @@
     "color-thief": "~2.0.1",
     "angular-spinkit": "^0.3.3",
     "stackblur-canvas": "^1.2.0",
-    "moment": "^2.11.2"
+    "moment": "^2.11.2",
+    "angular-messages": "^1.5.0"
   }
 }
