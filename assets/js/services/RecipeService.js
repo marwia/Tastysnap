@@ -4,7 +4,7 @@
  * Servizio per gestire le operazioni con il server che riguardano le ricette.
  */
 angular.module('RecipeService', [])
-    .factory('Recipe', ['$http', 'Auth', function($http, Auth) {
+    .factory('Recipe', ['$http', 'Auth', 'User', function($http, Auth, User) {
 
         var server_prefix = '/api/v1';
 
@@ -132,7 +132,18 @@ angular.module('RecipeService', [])
                         Authorization: 'Bearer ' + Auth.getToken()
                     }
                 })
-                .then(successCallback, errorCallback);
+                .then(function (response) {
+                    // remove the deleted recipe
+                    for (var i in o.recipes) {
+                        if (o.recipes[i].id == recipeId) {
+                            o.recipes.splice(i, 1);
+                        }
+                    }
+                    User.currentUser.recipesCount--;
+                    // call the cb
+                    if (successCallback)
+                        successCallback(response);
+                }, errorCallback);
         };
 
         /**
@@ -175,7 +186,8 @@ angular.module('RecipeService', [])
                     }
                 })
                 .then(function(response) {
-
+                    
+                    User.currentUser.recipesCount++;
                     //recipe = response.data;
                     successCallback(response);
 
