@@ -40,13 +40,16 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
         }
         
         $scope.toggleAction = function () {
-            if ($scope.user.isFollowed == true) {
-                $scope.action = "STAI SEGUENDO";
-            } else {
-                $scope.action = "SEGUI";
-            }
+            $scope.action = "";
         }
         
-        $scope.checkIsFollowed = User.areYouFollowing;
+        
+        // Inizializzazione del controller
+        var init = function () {
+            // verifico se l'utente visualizzato è seguito dall'utente loggato
+            User.areYouFollowing($scope.user, $scope.toggleAction());
+        }
+        
+        init();
         
     }]);

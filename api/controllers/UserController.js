@@ -182,6 +182,11 @@ module.exports = {
                  * il seguente metodo.
                  */
                 var obj = foundUser.toObject();
+                delete obj.recipes;
+                delete obj.collections;
+                delete obj.followers;
+                delete obj.following;
+                delete obj.followingCollections;
 
                 return res.json(obj);
             });

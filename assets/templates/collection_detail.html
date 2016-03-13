@@ -36,6 +36,7 @@
 
 <!-- Contenitore Card -->
 <div class="row tasty_container tasty_container_margin text-center">
+    <h4 class="no-margin collection_title text_center" ng-show="detailedCollection.recipes.length == 0">Nessuna ricetta presente</h4>
     <recipe-card recipe="recipe" 
             open-collection-modal="openCollectionSelectionModal(recipe)"
             open-share-modal="openShareModal(recipe)"

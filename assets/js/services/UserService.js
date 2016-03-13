@@ -47,9 +47,11 @@ angular.module('UserService', [])
          * Metodo per richiedere l'utente tramite id.
          */
         service.getUserById = function (userId) {
-            return $http.put(server_prefix + '/user/' + userId).then(function (response) {
-                angular.copy(response.data, service.user);
-            });
+            return $http.get(
+                server_prefix + '/user/' + userId
+                ).then(function (response) {
+                    angular.copy(response.data, service.user);
+                });
         };
         
         /**
@@ -89,7 +91,8 @@ angular.module('UserService', [])
                     userToUnfollow.followers -= 1;
 
                     userToUnfollow.isFollowed = false;
-                    successCallback();
+                    if (successCallback)
+                        successCallback(response);
                 });
         };
         
@@ -98,7 +101,7 @@ angular.module('UserService', [])
          * Ovviamente l'operazione viene eseguita a nome dell'utente
          * correntemente loggato.
          */
-        service.areYouFollowing = function (userToCheck) {
+        service.areYouFollowing = function (userToCheck, successCallback) {
             return $http.get(server_prefix + '/user/following/' + userToCheck.id,
                 {
                     headers: {
@@ -107,6 +110,8 @@ angular.module('UserService', [])
                 }).then(function (response) {
 
                     userToCheck.isFollowed = true;
+                    if (successCallback)
+                        successCallback(response);
                 });
         };
 
