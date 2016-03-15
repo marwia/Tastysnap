@@ -1100,6 +1100,22 @@ tr.recipe_sp_3_tr{
     cursor:pointer;
 }
 
+.recipe_comment_delete{
+    position:absolute;
+    right: 20px;
+    opacity:0;
+    -webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.media-body:hover .recipe_comment_delete{
+    color:black;
+    opacity:1;
+}
+
 @media screen and (min-width: 768px){
 	.recipe_col_8{
 		float: right;

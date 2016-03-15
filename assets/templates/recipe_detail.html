@@ -274,7 +274,7 @@
                                 <img class="media-object img-circle recipe_comment_photo" src="{{ getUserProfileImage(comment.user) }}" alt="{{comment.user.name}} {{comment.user.surname}}">
                             </a>
                             <div class="media-body">
-                                <h5 class="media-heading"><strong>{{comment.user.name}} {{comment.user.surname}}</strong> <span class="recipe_comment_when">{{formatDate(comment.createdAt)}}</span></h5>
+                                <h5 class="media-heading"><strong>{{comment.user.name}} {{comment.user.surname}}</strong> <span class="recipe_comment_when">{{formatDate(comment.createdAt)}}</span><a href="#" class="recipe_comment_delete">x</a></h5>
                                 <h6 class="recipe_comment_txt">
 												{{comment.body}}
 											</h6>
