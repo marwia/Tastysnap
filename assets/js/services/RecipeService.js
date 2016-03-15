@@ -137,6 +137,7 @@ angular.module('RecipeService', [])
                     for (var i in o.recipes) {
                         if (o.recipes[i].id == recipeId) {
                             o.recipes.splice(i, 1);
+                            break;
                         }
                     }
                     User.currentUser.recipesCount--;

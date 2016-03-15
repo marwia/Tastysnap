@@ -30,11 +30,11 @@ angular.module('CommentService', [])
                     // populo il campo user manualmente (il server non lo fa e non deve)
                     var createdComment = response.data;
                     createdComment.user = User.currentUser;
-                    
+
                     // push on top
                     recipe.commentsCount++;
                     recipe.comments.unshift(createdComment);
-                    
+
                     if (successCallback) {
                         successCallback(response);
                     }
@@ -46,7 +46,7 @@ angular.module('CommentService', [])
                     console.log(response);
                 });
         };
-        
+
         /**
          * Servizio per creare un voto positivo ad un commento.
          */
@@ -63,11 +63,18 @@ angular.module('CommentService', [])
                     // populo il campo user manualmente (il server non lo fa e non deve)
                     var createdUpvote = response.data;
                     createdUpvote.user = User.currentUser;
-                    
+
                     // push on top
                     comment.upvotesCount++;
                     comment.userUpvote = createdUpvote;
-                    
+
+                    // se esiste il downvote dello stesso utente allora 
+                    // devo cancellarlo
+                    if (comment.userDownvote) {
+                        comment.downvotesCount--;
+                        comment.userDownvote = null;
+                    }
+
                     if (successCallback) {
                         successCallback(response);
                     }
@@ -79,7 +86,7 @@ angular.module('CommentService', [])
                     console.log(response);
                 });
         };
-        
+
         /**
          * Servizio per creare un commento ad una ricetta.
          */
@@ -96,11 +103,18 @@ angular.module('CommentService', [])
                     // populo il campo user manualmente (il server non lo fa e non deve)
                     var createdDownvote = response.data;
                     createdDownvote.user = User.currentUser;
-                    
+
                     // push on top
                     comment.downvotesCount++;
                     comment.userDownvote = createdDownvote;
-                    
+
+                    // se esiste il upvote dello stesso utente allora 
+                    // devo cancellarlo
+                    if (comment.userUpvote) {
+                        comment.upvotesCount--;
+                        comment.userUpvote = null;
+                    }
+
                     if (successCallback) {
                         successCallback(response);
                     }
@@ -112,13 +126,13 @@ angular.module('CommentService', [])
                     console.log(response);
                 });
         };
-        
+
         o.deleteVote = function(comment, vote) {
             return $http.delete(
-                server_prefix + '/comment/' + comment.id + '/vote', 
+                server_prefix + '/comment/' + comment.id + '/vote',
                 {
-                    headers: { 
-                        Authorization: 'Bearer ' + Auth.getToken() 
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
                     }
                 })
                 .then(function(response) {
@@ -131,17 +145,17 @@ angular.module('CommentService', [])
                         comment.downvotesCount -= 1;
                     }
                 }
-                , function (response) {
+                , function(response) {
                     console.log(response);
                 });
         };
-        
+
         o.checkVote = function(comment) {
             return $http.get(
                 server_prefix + '/comment/' + comment.id + '/voted',
                 {
-                    headers: { 
-                        Authorization: 'Bearer ' + Auth.getToken() 
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
                     }
                 })
                 .then(function(response) {
@@ -152,29 +166,69 @@ angular.module('CommentService', [])
                         comment.userDownvote = response.data;
                     }
                 }
-                , function (response) {
+                , function(response) {
                     console.log(response);
                 });
         };
-        
-         /**
-         * Metodo per richiedere la lista di ricette di 
-         * una data collection
-         */
-        o.getRecipeComments = function (recipe) {
+
+        /**
+        * Metodo per richiedere la lista di ricette di 
+        * una data collection
+        */
+        o.getRecipeComments = function(recipe, limit, skip, successCB, errorCB) {
             return $http.get(
                 server_prefix + '/recipe/' + recipe.id + '/comment',
                 {
                     params: {
-                        'sort': 'createdAt DESC'
+                        'sort': 'createdAt DESC',
+                        'skip': skip,
+                        'limit': limit
                     }
                 })
-            .then(function (response) {
-                recipe.comments = [];
-                angular.copy(response.data, recipe.comments);
-                
-            }, function errorCallback(response) {
-     
+                .then(function(response) {
+
+                    if (skip) {
+                        for (var i = 0; i < response.data.length; i++) {
+                            recipe.comments.push(response.data[i]);
+                        }
+                    } else {
+                        recipe.comments = [];
+                        angular.extend(recipe.comments, response.data);
+                    }
+
+                    if (successCB)
+                        successCB(response);
+
+                }, function errorCallback(response) {
+
+                    console.info(response);
+                    if (errorCB)
+                        errorCB(response);
+                });
+        };
+
+        /**
+         * Funzione per eliminare un commento riguardante una ricetta.
+         */
+        o.delete = function(recipe, commentToDelete) {
+            return $http.delete(
+                server_prefix + '/comment/' + commentToDelete.id,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                })
+                .then(function(response) {
+
+                    recipe.commentsCount--;
+                    for (var i in recipe.comments) {
+                        if (recipe.comments[i].id == commentToDelete.id) {
+                            recipe.comments.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
+                , function(response) {
                     console.log(response);
                 });
         };

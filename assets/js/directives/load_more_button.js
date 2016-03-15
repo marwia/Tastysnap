@@ -21,8 +21,17 @@ angular.module('sampleApp')
             restrict: 'E',
             // isolated scope
             scope: {
+                /**
+                 * elementi attualmente caricati
+                 */
                 elements: '=',
+                /**
+                 * funzione da fare eseguire al click sul pulsante
+                 */
                 onClickFunction: '&',
+                /**
+                 * quanti richiedere ogni volta, il passo
+                 */
                 step: '=',
                 /**
                  * qui non si dichiarano ne funzioni ne
@@ -50,7 +59,12 @@ angular.module('sampleApp')
                 };
                 
                 $scope.hasMoreElements = function () {
-                    return $scope.elements.length % $scope.step == 0;
+                    if ($scope.elements) {
+                        return $scope.elements.length % $scope.step == 0;
+                    }
+                    else {
+                        return false;
+                    }
                 };
             }],
             templateUrl: 'templates/load_more_button.html'

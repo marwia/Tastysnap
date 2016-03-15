@@ -18,7 +18,13 @@ angular.module('CommentCtrl', []).controller('CommentCtrl', [
         $scope.currentUser = User.currentUser
         $scope.getUserProfileImage = User.getUserProfileImage;
         
+        // Espongo i metodi del Comment service
         $scope.checkVote = Comment.checkVote;
+        $scope.deleteComment = Comment.delete;
+        $scope.getRecipeComments = function (skip, successCB, errorCB) {
+            Comment.getRecipeComments($scope.detailedRecipe, 5, skip, successCB, errorCB);
+        }
+        
         $scope.toggleUpvote = function(comment, vote) {
             if (comment.userUpvote != null) {
                 Comment.deleteVote(comment, vote);
@@ -42,11 +48,11 @@ angular.module('CommentCtrl', []).controller('CommentCtrl', [
             Comment.create($scope.detailedRecipe, $scope.commentToCreate, function success(response) {
                 $scope.commentToCreate.body = "";
             })
-        }
+        };
         
         var init = function () {
             // inizializzazione del controller
-            Comment.getRecipeComments($scope.detailedRecipe);
+            Comment.getRecipeComments($scope.detailedRecipe, 5, 0);
         };
         // and fire it after definition
         init();
