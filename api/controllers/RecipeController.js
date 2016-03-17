@@ -12,6 +12,14 @@
  */
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 var md5 = require('md5');
+var fs = require('fs');
+
+// General configurations
+// setting allowed file types
+var allowedTypes = ['image/jpeg', 'image/png'];
+
+// skipper default upload directory .tmp/uploads/
+var localImagesDir = "./assets/images";
 
 module.exports = {
     /**
@@ -93,7 +101,7 @@ module.exports = {
      *
      * @apiUse InvalidTokenError
      */
-    find: function (req, res, next) {
+    find: function(req, res, next) {
         Recipe.find()
             .where(actionUtil.parseCriteria(req))
             .limit(actionUtil.parseLimit(req))
@@ -104,16 +112,16 @@ module.exports = {
             .populate('votes')
             .populate('comments')
             .populate('trials')
-            .exec(function (err, foundRecipes) {
+            .exec(function(err, foundRecipes) {
                 if (err) { return next(err); }
-                
+
                 if (foundRecipes.length == 0) {
-                     return res.notFound({ error: 'No recipe found' }); 
+                    return res.notFound({ error: 'No recipe found' });
                 }
-            
+
                 // array di appoggio
                 var recipes = new Array();
-            
+
                 // conto gli elementi delle collection
                 for (var i in foundRecipes) {
                     foundRecipes[i].viewsCount = foundRecipes[i].views.length;
@@ -139,8 +147,8 @@ module.exports = {
                 return res.json(recipes);
             });
     },
-    
-    
+
+
 
     /**
     * @api {get} /recipe/:id Get a Recipe
@@ -167,7 +175,7 @@ module.exports = {
     * @apiErrorExample Error-Response:
     *     HTTP/1.1 404 Not Found
     */
-    findOne: function (req, res, next) {
+    findOne: function(req, res, next) {
         var recipeId = req.param('id');
         if (!recipeId) { return next(); }
 
@@ -178,7 +186,7 @@ module.exports = {
             .populate('comments')
             .populate('trials')
             .populate('ingredientGroups')
-            .exec(function (err, foundRecipe) {
+            .exec(function(err, foundRecipe) {
                 if (err) { return next(err); }
 
                 if (!foundRecipe) { return res.notFound({ error: 'No recipe found' }); }
@@ -197,7 +205,7 @@ module.exports = {
                 delete obj.votes;
                 delete obj.comments;
                 delete obj.trials;
-                
+
                 return res.json(obj);
             });
     },
@@ -245,7 +253,7 @@ module.exports = {
      *
      * @apiUse InvalidTokenError
      */
-    create: function (req, res, next) {
+    create: function(req, res, next) {
         var user = req.payload;
 
         var recipe = req.body;
@@ -255,7 +263,7 @@ module.exports = {
         //delete recipe.coverImageUrl;
         delete recipe.coverImageFd;
 
-        Recipe.create(recipe).exec(function (err, recipe) {
+        Recipe.create(recipe).exec(function(err, recipe) {
             if (err) { return next(err); }
             return res.json(recipe);
         });
@@ -296,6 +304,50 @@ module.exports = {
      *
      * @apiUse NoPermissionError
      */
+    destroy: function(req, res, next) {
+        var recipe = req.recipe;
+
+        //eliminazione dei file
+        if (sails.config.environment === 'development') {
+            // eliminazione immagine di copertina
+            if (recipe.coverImageUrl != "") {
+                var filename = recipe.coverImageUrl.split('/').pop();
+                fs.unlink(localImagesDir + "/" + filename, function(err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    console.log("File deleted successfully!");
+                });
+            }
+            // eliminazione immagine di copertina sfocata
+            if (recipe.blurredCoverImageUrl != "") {
+                var filename = recipe.blurredCoverImageUrl.split('/').pop();
+                fs.unlink(localImagesDir + "/" + filename, function(err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    console.log("File deleted successfully!");
+                });
+            }
+            // eliminazione delle ulteriori immagini
+            for (var i in recipe.otherImageUrls) {
+                var fileUrl = recipe.otherImageUrls[i];
+                var filename = fileUrl.split('/').pop();
+                fs.unlink(localImagesDir + "/" + filename, function(err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    console.log("File deleted successfully!");
+                });
+
+            }
+        }
+
+        Recipe.destroy(recipe.id).exec(function(err) {
+            if (err) { return next(err); }
+            return res.send(204, null);// eliminata
+        });
+    },
 
     /**
      * @api {put} /recipe/:id Update a Recipe
@@ -337,7 +389,7 @@ module.exports = {
      *
      * @apiUse NoPermissionError
      */
-    
+
     /**
     * @api {get} /recipe/categories Get all recipe cetegories
     * @apiName GetRecipeCategories
@@ -367,10 +419,10 @@ module.exports = {
     *      }
     *
     */
-    getRecipeCategories: function (req, res) {
+    getRecipeCategories: function(req, res) {
         return res.json(sails.models.recipe.definition.category);
     },
-    
+
     /**
      * @api {get} /recipe/dosage_types Get recipe dosage types
      * @apiName GetRecipeDosageTypes
@@ -392,16 +444,16 @@ module.exports = {
      *      }
      *
      */
-    getRecipeDosageTypes: function (req, res) {
+    getRecipeDosageTypes: function(req, res) {
         return res.json(sails.models.recipe.definition.dosagesType);
     },
-    
+
     /********************************************************************************************
      * 
      *                          UPLOADING DELLE IMMAGINI PER LE RICETTE
      * 
      ********************************************************************************************/
-     
+
     /**
     * @api {put} /recipe/:recipe/upload_cover_image Upload the cover image
     * @apiName UploadCoverImage
@@ -450,7 +502,7 @@ module.exports = {
     *       "message": "No file was uploaded"
     *     }
     */
-    uploadCoverImage: function (req, res) {
+    uploadCoverImage: function(req, res) {
         var recipe = req.recipe;
 
         var coverImage = req.file('image');
@@ -459,7 +511,7 @@ module.exports = {
         coverImage.upload({
             // don't allow the total upload size to exceed ~10MB
             maxBytes: 10000000,
-            saveAs: function (file, cb) {
+            saveAs: function(file, cb) {
                 var d = new Date();
                 var extension = file.filename.split('.').pop();
 
@@ -474,32 +526,32 @@ module.exports = {
                     return res.badRequest('Not supported file type');
                 } else {
                     // save as allowed files
-                    cb(null, allowedDir + "/" + uuid);
+                    cb(null, localImagesDir + "/" + uuid);
                 }
             }
         }, function whenDone(err, uploadedFiles) {
             if (err) { return res.negotiate(err); }
-        
+
             // If no files were uploaded, respond with an error.
             if (uploadedFiles.length === 0) { return res.badRequest('No file was uploaded'); }
-            
+
             // get the file name from a path
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
             var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
 
             Recipe.update(recipe.id, {
-                
+
                 // Generate a unique URL where the avatar can be downloaded.
                 coverImageUrl: fileUrl,
 
-            }).exec(function (err, updatedRecipes) {
+            }).exec(function(err, updatedRecipes) {
                 if (err) return res.negotiate(err);
                 return res.json(updatedRecipes[0]);
             });
         });
     },
 
-    
+
     /**
     * @api {put} /recipe/:recipe/upload_blurred_cover_image Upload a new image for a recipe
     * @apiName UploadBlurredRecipeImage
@@ -508,7 +560,7 @@ module.exports = {
     * @apiDescription Serve per caricare l'immagine di copertina sfocata.
     *
     */
-    uploadBlurredCoverImage: function (req, res) {
+    uploadBlurredCoverImage: function(req, res) {
         var recipe = req.recipe;
 
         var blurredCoverImage = req.file('image');
@@ -517,7 +569,7 @@ module.exports = {
         blurredCoverImage.upload({
             // don't allow the total upload size to exceed ~10MB
             maxBytes: 10000000,
-            saveAs: function (file, cb) {
+            saveAs: function(file, cb) {
                 var d = new Date();
                 var extension = file.filename.split('.').pop();
 
@@ -532,7 +584,7 @@ module.exports = {
                     return res.badRequest('Not supported file type');
                 } else {
                     // save as allowed files
-                    cb(null, allowedDir + "/" + uuid);
+                    cb(null, localImagesDir + "/" + uuid);
                 }
             }
         }, function whenDone(err, uploadedFiles) {
@@ -544,24 +596,24 @@ module.exports = {
             if (uploadedFiles.length === 0) {
                 return res.badRequest('No file was uploaded');
             }
-            
+
             // get the file name from a path
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
             var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
             console.log(fileUrl);
 
             Recipe.update(recipe.id, {
-                
+
                 // Generate a unique URL where the avatar can be downloaded.
                 blurredCoverImageUrl: fileUrl,
 
-            }).exec(function (err, updatedRecipes) {
+            }).exec(function(err, updatedRecipes) {
                 if (err) return res.negotiate(err);
                 return res.json(updatedRecipes[0]);
             });
         });
     },
-    
+
     /**
     * @api {put} /recipe/:recipe/upload_image Upload a new image for a recipe
     * @apiName UploadRecipeImage
@@ -570,7 +622,7 @@ module.exports = {
     * @apiDescription Serve per caricare ulteriori immagini ad una ricetta.
     *
     */
-    uploadImage: function (req, res) {
+    uploadImage: function(req, res) {
         var recipe = req.recipe;
 
         var image = req.file('image');
@@ -579,7 +631,7 @@ module.exports = {
         image.upload({
             // don't allow the total upload size to exceed ~10MB
             maxBytes: 10000000,
-            saveAs: function (file, cb) {
+            saveAs: function(file, cb) {
                 var d = new Date();
                 var extension = file.filename.split('.').pop();
 
@@ -594,7 +646,7 @@ module.exports = {
                     return res.badRequest('Not supported file type');
                 } else {
                     // save as allowed files
-                    cb(null, allowedDir + "/" + uuid);
+                    cb(null, localImagesDir + "/" + uuid);
                 }
             }
         }, function whenDone(err, uploadedFiles) {
@@ -606,15 +658,19 @@ module.exports = {
             if (uploadedFiles.length === 0) {
                 return res.badRequest('No file was uploaded');
             }
-            
+
             // get the file name from a path
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
             var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
             console.log(fileUrl);
 
-            Recipe.findOne(recipe.id).exec(function (err, recipe) {
+            Recipe.findOne(recipe.id).exec(function(err, recipe) {
                 if (err) return res.negotiate(err);
-                recipe.otherImageUrls.add(fileUrl);
+                
+                if (recipe.otherImageUrls == null)
+                    recipe.otherImageUrls = new Array();
+                    
+                recipe.otherImageUrls.push(fileUrl);
                 recipe.save();
                 return res.json(recipe);
             });
@@ -627,9 +683,9 @@ module.exports = {
 /**
  * Codice in comune
  */
-    
+
 // setting allowed file types
 var allowedTypes = ['image/jpeg', 'image/png'];
 // skipper default upload directory .tmp/uploads/
-var allowedDir = sails.config.appPath + "/assets/images";
+var localImagesDir = sails.config.appPath + "/assets/images";
 

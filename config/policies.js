@@ -79,7 +79,7 @@ module.exports.policies = {
     'update' : ['isAuthorized', 'isRecipeAuthor'],
     'find' : true,
     'findOne' : ['attachUser','setRecipeViewed'],
-    'destroy' : ['isAuthorized', 'isRecipeAuthor'],
+    'destroy' : ['isAuthorized', 'isRecipeAuthor', 'findRecipe'],
     'uploadCoverImage' : ['isAuthorized', 'isRecipeAuthor'],
     'uploadBlurredCoverImage' : ['isAuthorized', 'isRecipeAuthor'],
     'uploadImage' : ['isAuthorized', 'isRecipeAuthor']
