@@ -65,6 +65,10 @@ module.exports.policies = {
     'getFollowers' : true,
     'areYouFollowing' : ['isAuthorized', 'findCollection']
   },
+  
+  'ViewCollectionController' : {
+      'create' : ['isAuthorized', 'findCollection']
+  },
 
   'CommentController' : {
     'create' : ['isAuthorized', 'findRecipe'],

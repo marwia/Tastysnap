@@ -17,12 +17,18 @@ module.exports = {
         var viewRecipe = {user: user.id, recipe: req.recipe.id };
 
         //cerco se c'è gia uno stesso vote
-        ViewRecipe.find().where(viewRecipe)
-            .exec(function (err, viewRecipes) {
+        ViewRecipe.findOne().where(viewRecipe)
+            .exec(function (err, view) {
                 if (err) { return next(err); }
                 
-                if (viewRecipes.length > 0) {
-                    return res.json(200, viewRecipes[0]) 
+                if (view != null) {
+                    ViewRecipe.update(viewRecipe, viewRecipe)
+                        .exec(function (err, updated) {
+                            if (err) { return next(err); }
+                            
+                            return res.json(200, updated[0]) 
+                        });
+                        
                 } else {
                     ViewRecipe.create(viewRecipe).exec(function (err, viewRecipeCreated) {
                         if (err) { return next(err); }

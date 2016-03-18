@@ -177,6 +177,27 @@ angular.module('CollectionService', [])
         };
         
         /**
+        * Servizio per comunicare che una raccolta è stata vista
+        * dall'utente loggato.
+        * Disponibile solo su un dettaglio di una raccolta.
+        */
+        o.createView = function(collection) {
+            return $http.post(
+                server_prefix + '/collection/' + collection.id + '/view', null,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                })
+                .then(function(response) {
+                    if (response.status == 201) {// new view
+                        collection.viewsCount++;
+                    }
+                    collection.userView = response.data;
+                });
+        };
+        
+        /**
          * Servizio per aggiungere una ricetta ad una raccolta
          */
         o.addRecipeToCollection = function (recipe, collection, successCallback) {

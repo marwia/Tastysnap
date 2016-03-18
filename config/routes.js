@@ -261,6 +261,14 @@ var apiRoutes = addGlobalPrefix({
   'get /collection/:collection/follower': 'CollectionController.getFollowers',
 
   'get /collection/:collection/following': 'CollectionController.areYouFollowing',
+  
+  /***************************************************************************
+  *                                                                          *
+  * View di ricette.                                                         *
+  *                                                                          *
+  ***************************************************************************/
+  
+  'post /collection/:collection/view': 'ViewCollectionController.create',
 
   /***************************************************************************
   *                                                                          *

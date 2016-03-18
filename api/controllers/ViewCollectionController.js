@@ -17,12 +17,19 @@ module.exports = {
         var viewCollection = {user: user.id, collection: req.collection.id };
 
         //cerco se c'è gia uno stesso vote
-        ViewCollection.find().where(viewCollection)
-            .exec(function (err, views) {
+        ViewCollection.findOne().where(viewCollection)
+            .exec(function (err, view) {
                 if (err) { return next(err); }
                 
-                if (views.length > 0) {
-                    return res.json(200, views[0]) 
+                // se lo trovo aggiorno la data di visualizzazione
+                if (view != null) {
+                    ViewCollection.update(viewCollection, viewCollection)
+                        .exec(function (err, updated) {
+                            if (err) { return next(err); }
+                            
+                            return res.json(200, updated[0]) 
+                        });
+                    
                 } else {
                     ViewCollection.create(viewCollection).exec(function (err, viewCollectionCreated) {
                         if (err) { return next(err); }

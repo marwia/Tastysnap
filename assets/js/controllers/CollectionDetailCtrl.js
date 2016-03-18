@@ -27,6 +27,14 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
         // espongo i metodi del servizio User
         $scope.getUserProfileImage = User.getUserProfileImage;
         
+        //ricavo un immagine casuale di una ricetta per metterla come sfondo
+        $scope.getRandomCoverBlurredImage = Collection.getRandomCoverBlurredImage;
+        
+        $scope.formatDate = function (collection) {
+            moment.locale("it");
+            return moment(collection.createdAt).fromNow();
+        };
+        
         /**
          * Gestione del pulsante per seguire la raccolta:
          */
@@ -56,16 +64,12 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
             $scope.action = "";
         }
 
-        $scope.formatDate = function (collection) {
-            moment.locale("it");
-            return moment(collection.createdAt).fromNow();
-        };
+        /**
+         * Inizializzazione del controller:
+         */
         
-        //ricavo un immagine casuale di una ricetta per metterla come sfondo
-        $scope.getRandomCoverBlurredImage = Collection.getRandomCoverBlurredImage;
-
         var init = function () {
-            // inizializzazione del controller
+            Collection.createView($scope.detailedCollection);
             Collection.getDetailedCollectionRecipes();
             Collection.areYouFollowing($scope.detailedCollection, $scope.toggleAction());
         };

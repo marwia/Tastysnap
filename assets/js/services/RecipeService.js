@@ -344,11 +344,11 @@ angular.module('RecipeService', [])
                         Authorization: 'Bearer ' + Auth.getToken()
                     }
                 })
-                .success(function(data, status) {
-                    if (status == 201) {// new view
-                        recipe.views.push(data);
+                .then(function(response) {
+                    if (response.status == 201) {// new view
+                        recipe.views.push(response.data);
                     }
-                    recipe.userView = data;
+                    recipe.userView = response.data;
                 });
         };
 
