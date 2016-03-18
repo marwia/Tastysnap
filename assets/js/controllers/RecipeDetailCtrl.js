@@ -31,15 +31,6 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
         // espongo i metodi del servizio User
         $scope.getUserProfileImage = User.getUserProfileImage;
 
-        /**
-        * Inizializzazione di un dettaglio di una ricetta.
-        */
-        $scope.initDetailedRecipe = function(recipe) {
-            Recipe.createView(recipe);
-            Recipe.checkTry(recipe);
-            Ingredient.getIngredientGroupIngredients(recipe.ingredientGroups[0]);
-        }
-
         $scope.deleteCurrentRecipe = function() {
             Recipe.delete($scope.detailedRecipe.id,
                 function(response) {
@@ -188,5 +179,21 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
             return array;
         }
         //fine carousel
+        
+        /**
+         * Inizializzazione del controller
+         */
+        function init() {
+            Recipe.createView($scope.detailedRecipe);
+            Recipe.checkTry($scope.detailedRecipe);
+            
+            for (var i in $scope.detailedRecipe.ingredientGroups) {
+                var group = $scope.detailedRecipe.ingredientGroups[i];
+                Ingredient.getIngredientGroupIngredients(group);
+            }
+            
+        }
+        
+        init();
 
     }]);

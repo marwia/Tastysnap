@@ -14,12 +14,14 @@ var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 var md5 = require('md5');
 var fs = require('fs');
 
-// General configurations
+/**
+ * Codice in comune
+ */
+
 // setting allowed file types
 var allowedTypes = ['image/jpeg', 'image/png'];
-
 // skipper default upload directory .tmp/uploads/
-var localImagesDir = "./assets/images";
+var localImagesDir = sails.config.appPath + "/assets/images";
 
 module.exports = {
     /**
@@ -680,12 +682,5 @@ module.exports = {
 
 };
 
-/**
- * Codice in comune
- */
 
-// setting allowed file types
-var allowedTypes = ['image/jpeg', 'image/png'];
-// skipper default upload directory .tmp/uploads/
-var localImagesDir = sails.config.appPath + "/assets/images";
 

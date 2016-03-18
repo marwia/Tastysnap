@@ -88,6 +88,13 @@ module.exports.policies = {
     'uploadBlurredCoverImage' : ['isAuthorized', 'isRecipeAuthor'],
     'uploadImage' : ['isAuthorized', 'isRecipeAuthor']
   },
+  
+  'RecipeStepController' : {
+    'create' : ['isAuthorized', 'isRecipeAuthor'],
+    'update' : ['isAuthorized', 'isRecipeAuthor'],
+    'destroy' : ['isAuthorized', 'isRecipeAuthor'],
+    'findSteps' : ['findRecipe'],
+  },
 
   'IngredientGroupController' : {
     'create' : ['isAuthorized', 'isRecipeAuthor'],

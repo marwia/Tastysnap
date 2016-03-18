@@ -160,6 +160,20 @@ var apiRoutes = addGlobalPrefix({
   
   /***************************************************************************
   *                                                                          *
+  * Passi di ricette.                                                        *
+  *                                                                          *
+  ***************************************************************************/
+
+  'post /recipe/:recipe/step': 'RecipeStepController.create',
+  
+  'delete /recipe/:recipe/step/:step': 'RecipeStepController.destroy',
+  
+  'get /recipe/:recipe/step': 'RecipeStepController.findSteps',
+  
+  'put /recipe/:recipe/step/:step': 'RecipeStepController.update',
+  
+  /***************************************************************************
+  *                                                                          *
   * Voti a ricette.                                                          *
   *                                                                          *
   ***************************************************************************/

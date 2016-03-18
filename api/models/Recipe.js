@@ -17,8 +17,6 @@ module.exports = {
   attributes: {
 
     title : { type: 'String', required: true },
-
-    description : { type: 'String', required: true },
     
     // Example: "Dosages for 8 persons"
     dosagesFor : { type: 'Integer', required: true },
@@ -74,6 +72,12 @@ module.exports = {
     // Reference to many Ingredient Groups
     ingredientGroups : {
       collection: 'IngredientGroup',
+      via: 'recipe'
+    },
+    
+    // Reference to many Collections
+    steps : {
+      collection: 'recipeStep',
       via: 'recipe'
     },
 
