@@ -97,9 +97,8 @@ angular.module('UserService', [])
         };
         
         /**
-         * Metodo per smettere di seguire un utente.
-         * Ovviamente l'operazione viene eseguita a nome dell'utente
-         * correntemente loggato.
+         * Metodo per verificare se l'utente loggato 
+         * sta seguendo un'altro utente.
          */
         service.areYouFollowing = function (userToCheck, successCallback) {
             return $http.get(server_prefix + '/user/following/' + userToCheck.id,
@@ -112,6 +111,9 @@ angular.module('UserService', [])
                     userToCheck.isFollowed = true;
                     if (successCallback)
                         successCallback(response);
+                        
+                }, function (response) {
+                    userToCheck.isFollowed = false;
                 });
         };
 

@@ -25,7 +25,7 @@ angular.module('CollectionService', [])
                 }
             }
             return false;
-        }
+        };
 
         /**
          * Metodo per richiedere una lista di collection.
@@ -106,7 +106,78 @@ angular.module('CollectionService', [])
         };
         
         /**
-         * Servizio per aggiungere
+         * Metodo per verificare se l'utente loggato 
+         * sta seguendo una raccolta.
+         */
+        o.areYouFollowing = function (collectionToCheck, successCallback) {
+            return $http.get(server_prefix + '/collection/'+ collectionToCheck.id+'/following/',
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                }).then(function (response) {
+
+                    collectionToCheck.isFollowed = true;
+                    if (successCallback)
+                        successCallback(response);
+                        
+                }, function (response) {
+                    collectionToCheck.isFollowed = false;
+                });
+        };
+        
+        /**
+         * Servizio per aggiungere una ricetta ad una raccolta
+         */
+        o.follow = function (collection, successCallback) {
+            return $http.put(
+                server_prefix + '/collection/' + collection.id + '/follow',
+                null,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                })
+                .then(function(response) {
+                    
+                    collection.isFollowed = true;
+                    collection.followersCount++;
+                    successCallback(response);
+                    
+                }, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    //alert("Errore: " + response);
+                    console.log(response);
+                });
+        };
+        
+        /**
+         * Metodo per smettere di seguire una raccolta.
+         */
+        o.unfollow = function (collection, successCallback) {
+            return $http.delete(server_prefix + '/collection/' + collection.id + '/follow',
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                }).then(function (response) {
+                    
+                    collection.followersCount--;
+                    collection.isFollowed = false;
+                    if (successCallback)
+                        successCallback(response);
+                        
+                }, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    //alert("Errore: " + response);
+                    console.log(response);
+                });
+        };
+        
+        /**
+         * Servizio per aggiungere una ricetta ad una raccolta
          */
         o.addRecipeToCollection = function (recipe, collection, successCallback) {
             return $http.put(

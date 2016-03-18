@@ -26,6 +26,35 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
         
         // espongo i metodi del servizio User
         $scope.getUserProfileImage = User.getUserProfileImage;
+        
+        /**
+         * Gestione del pulsante per seguire la raccolta:
+         */
+        
+        // Testo sul pulsante per seguire una raccolta
+        $scope.action = "SEGUI RACCOLTA";
+        
+        $scope.toggleFollow = function (collection) {
+            if (collection.isFollowed == true) {
+                Collection.unfollow($scope.detailedCollection, function () {
+                    //fatto
+                })
+            } else {
+                Collection.follow($scope.detailedCollection, function () {
+                    //fatto
+                })
+            }
+        }
+        
+        $scope.onMouseEnter = function () {
+            if ($scope.detailedCollection.isFollowed == true) {
+                $scope.action = "SMETTI DI SEGUIRE";
+            }
+        }
+        
+        $scope.toggleAction = function () {
+            $scope.action = "";
+        }
 
         $scope.formatDate = function (collection) {
             moment.locale("it");
@@ -38,6 +67,7 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
         var init = function () {
             // inizializzazione del controller
             Collection.getDetailedCollectionRecipes();
+            Collection.areYouFollowing($scope.detailedCollection, $scope.toggleAction());
         };
         // and fire it after definition
         init();

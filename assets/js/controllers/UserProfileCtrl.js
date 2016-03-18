@@ -15,12 +15,18 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
         $scope.user = User.user;//utente del profilo
         $scope.getUserProfileImage = User.getUserProfileImage;//metodo per ottenere l'immagine del profilo
         
-        $scope.action = "SEGUI";
+        
         // Espongo il metodo per determinare lo stato dell'app
         $scope.getCurrentState = function () {
             return $state.current.name;
         }
         
+        /**
+         * Gestione del pulsante per seguire l'utente:
+         */
+        
+        // Testo sul pulsante per seguire una persona
+        $scope.action = "SEGUI";
         $scope.toggleFollow = function (user) {
             if (user.isFollowed == true) {
                 User.unfollowUser(user, function () {
@@ -42,7 +48,7 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
         $scope.toggleAction = function () {
             $scope.action = "";
         }
-        
+        //////////////////////////////////////////////
         
         // Inizializzazione del controller
         var init = function () {

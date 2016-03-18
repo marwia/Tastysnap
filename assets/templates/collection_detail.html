@@ -22,11 +22,19 @@
     </div>
 
     <!-- Row Titolo -->
-    <div class="col-md-12 collection_main_info">
+    <div class="col-md-10 collection_main_info">
         <span class="text-uppercase">
             <h1 class="no-margin collection_title"><strong>{{detailedCollection.title}}</strong></h1>
         </span>
     </div>
+    <div class="col-md-2 collection_main_info">
+
+        <button type="button" class="btn btn-warning btn-sm" ng-click="toggleFollow(detailedCollection)" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
+            <div ng-if="action.length>0"><span class="glyphicon glyphicon-user"></span>{{action}}</div>
+            <div ng-if="detailedCollection.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
+            <div ng-if="detailedCollection.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI RACCOLTA</div>
+        </button>
+   </div>
 
     <!-- Row Like -->
     <div class="col-md-12 collection_main_info">
