@@ -27,9 +27,6 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
         // espongo i metodi del servizio User
         $scope.getUserProfileImage = User.getUserProfileImage;
         
-        //ricavo un immagine casuale di una ricetta per metterla come sfondo
-        $scope.getRandomCoverBlurredImage = Collection.getRandomCoverBlurredImage;
-        
         $scope.formatDate = function (collection) {
             moment.locale("it");
             return moment(collection.createdAt).fromNow();
@@ -70,7 +67,11 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
         
         var init = function () {
             Collection.createView($scope.detailedCollection);
-            Collection.getDetailedCollectionRecipes();
+            Collection.getDetailedCollectionRecipes(function (response) {
+                
+                $scope.randomBlurredImage = Collection.getRandomCoverBlurredImage($scope.detailedCollection);
+            });
+            
             Collection.areYouFollowing($scope.detailedCollection, $scope.toggleAction());
         };
         // and fire it after definition

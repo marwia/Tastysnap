@@ -9,7 +9,7 @@
  */
 
 angular.module('sampleApp')
-    .directive('collectionCard', ['User', function (User) {
+    .directive('collectionCard', ['User', 'Collection', function (User, Collection) {
         
         return {
             restrict: 'E',
@@ -22,6 +22,11 @@ angular.module('sampleApp')
             //controller: 'CollectionCtrl',
             link: function (scope, element, attrs) {
                 scope.getUserProfileImage = User.getUserProfileImage;
+                
+                /**
+                 * Inizializzazione del controller
+                 */
+                Collection.getCollectionRecipes(scope.collection, 4, 0);
             },
             templateUrl: 'templates/collection_card.html'
         };

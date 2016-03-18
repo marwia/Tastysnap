@@ -40,13 +40,38 @@ angular.module('CollectionService', [])
          * Metodo per richiedere la lista di ricette di 
          * una data collection
          */
-        o.getDetailedCollectionRecipes = function () {
+        o.getDetailedCollectionRecipes = function (successCallback) {
             return $http.get(server_prefix + '/collection/' + o.detailedCollection.id + '/recipe')
             .then(function (response) {
                 o.detailedCollection.recipes = [];
                 angular.copy(response.data, o.detailedCollection.recipes);
+                if (successCallback)
+                    successCallback(response);
                 
             }, function errorCallback(response) {
+     
+                    console.log(response);
+                });
+        };
+        
+        /**
+         * Metodo per richiedere la lista di ricette di 
+         * una data collection
+         */
+        o.getCollectionRecipes = function (collection, limit, skip) {
+            return $http.get(
+                server_prefix + '/collection/' + collection.id + '/recipe',
+                {
+                    params: {
+                        'skip': skip,
+                        'limit': limit
+                    }
+                })
+                .then(function (response) {
+                    collection.recipes = [];
+                    angular.copy(response.data, collection.recipes);
+                
+                }, function errorCallback(response) {
      
                     console.log(response);
                 });
