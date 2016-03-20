@@ -16,14 +16,14 @@ angular.module('appRoutes', []).config([
     '$stateProvider',
     '$urlRouterProvider',
     '$locationProvider',
-    function ($stateProvider, $urlRouterProvider, $locationProvider) {
+    function($stateProvider, $urlRouterProvider, $locationProvider) {
 
         // Dichiaro i vari stati dell'app
         $stateProvider
 
-        /**
-         * Stato genitore organizzato in 3 view.
-         */
+            /**
+             * Stato genitore organizzato in 3 view.
+             */
             .state('app', {
                 url: '/app',
                 views: {
@@ -34,14 +34,14 @@ angular.module('appRoutes', []).config([
                     'navbar@app': {
                         templateUrl: 'partials/navbar.html',
                         resolve: {
-                            userPromise: ['User', function (user) {
+                            userPromise: ['User', function(user) {
                                 return user.getCurrentUser();
                             }]
                         }
                     },
                     'sidebar@app': { templateUrl: 'partials/sidebar.html' }
                 },
-                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                onEnter: ['$state', 'Auth', function($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
@@ -56,23 +56,28 @@ angular.module('appRoutes', []).config([
                         controller: 'RecipeCreateCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
-                            postPromise: ['Recipe', function (recipes) {
+                            postPromise: ['Recipe', function(recipes) {
                                 return recipes.getAllRecipeCategories();
                             }],
-                            dosageType: ['Recipe', function (recipes) {
+                            dosageType: ['Recipe', function(recipes) {
                                 return recipes.getAllDosageTypes();
                             }]
                         }
                     }
                 }
             })
-            
+
             // SEARCH
             .state('app.search', {
-                url: '/search',
+                url: '/search?q',
                 views: {
                     'content@app': {
                         templateUrl: 'templates/search.html',
+                        controller: 'SearchCtrl',
+                        onEnter: ['$state', '$stateParams', function($state, $stateParams) {
+                            console.log("resolve home");
+                            console.log($stateParams.q);
+                        }]
                     }
                 }
             })
@@ -86,13 +91,13 @@ angular.module('appRoutes', []).config([
                         controller: 'UserHomeCtrl'
                     }
                 },
-                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                onEnter: ['$state', 'Auth', function($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
                 }]
             })
-            
+
             // HOME MOST RECENT
             .state('app.home.most_recent', {
                 url: '/most_recent',
@@ -103,19 +108,19 @@ angular.module('appRoutes', []).config([
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
                             // stampa le card delle ricette
-                            postPromise: ['Recipe', function (recipes) {
+                            postPromise: ['Recipe', function(recipes) {
                                 console.log("resolve home");
                                 return recipes.getAll();
                             }],
                             // stampa le collection
-                            collectionPromise: ['Collection', '$stateParams', function (recipes, $stateParams) {
+                            collectionPromise: ['Collection', '$stateParams', function(recipes, $stateParams) {
                                 return recipes.getUserCollections($stateParams.id);
                             }]
                         }
                     }
                 }
             })
-            
+
             // HOME MOST TASTED
             .state('app.home.most_tasted', {
                 url: '/most_tasted',
@@ -127,7 +132,7 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             //stampa delle ricette
                             //TODO - stampa delle ricette piu assaggiate
-                            recipePromise: ['Recipe', function (recipes) {
+                            recipePromise: ['Recipe', function(recipes) {
                                 console.log("resolve home");
                                 return recipes.getAll("trialsCount");
                             }]
@@ -135,7 +140,7 @@ angular.module('appRoutes', []).config([
                     }
                 }
             })
-            
+
             // HOME TRENDING
             .state('app.home.trending', {
                 url: '/trending',
@@ -147,7 +152,7 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             //stampa delle ricette
                             //TODO - stampa delle ricette piu assaggiate
-                            postPromise: ['Recipe', function (recipes) {
+                            postPromise: ['Recipe', function(recipes) {
                                 console.log("resolve home");
                                 return recipes.getAll();
                             }]
@@ -155,7 +160,7 @@ angular.module('appRoutes', []).config([
                     }
                 }
             })
-            
+
             // HOME MOST COMMENTED
             .state('app.home.most_commented', {
                 url: '/most_commented',
@@ -167,7 +172,7 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             //stampa delle ricette
                             //TODO - stampa delle ricette piu assaggiate
-                            postPromise: ['Recipe', function (recipes) {
+                            postPromise: ['Recipe', function(recipes) {
                                 console.log("resolve home");
                                 return recipes.getAll();
                             }]
@@ -175,7 +180,7 @@ angular.module('appRoutes', []).config([
                     }
                 }
             })
-            
+
             // FAVORITE RECIPES
             .state('app.favorite_recipes', {
                 url: '/favorite_recipes',
@@ -184,19 +189,19 @@ angular.module('appRoutes', []).config([
                         templateUrl: 'templates/favorite_recipes.html',
                         controller: 'RecipeCtrl',
                         resolve: {
-                            recipePromise: ['Recipe', 'Auth', function (recipes, Auth) {
+                            recipePromise: ['Recipe', 'Auth', function(recipes, Auth) {
                                 return recipes.getUserUpvotedRecipes(Auth.currentUser().id);
                             }]
                         }
                     }
                 },
-                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                onEnter: ['$state', 'Auth', function($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
                 }]
             })
-            
+
             // VIEWED RECIPES
             .state('app.viewed_recipes', {
                 url: '/viewed_recipes',
@@ -205,19 +210,19 @@ angular.module('appRoutes', []).config([
                         templateUrl: 'templates/viewed_recipes.html',
                         controller: 'RecipeCtrl',
                         resolve: {
-                            recipePromise: ['Recipe', 'Auth', function (recipes, Auth) {
+                            recipePromise: ['Recipe', 'Auth', function(recipes, Auth) {
                                 return recipes.getUserViewedRecipes(Auth.currentUser().id);
                             }]
                         }
                     }
                 },
-                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                onEnter: ['$state', 'Auth', function($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
                 }]
             })
-            
+
             // FOLLOWED COLLECTIONS
             .state('app.followed_collections', {
                 url: '/followed_collections',
@@ -227,13 +232,13 @@ angular.module('appRoutes', []).config([
                         controller: 'RecipeCtrl'
                     }
                 },
-                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                onEnter: ['$state', 'Auth', function($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
                 }]
             })
-            
+
             // TASTED RECIPES
             .state('app.tasted_recipes', {
                 url: '/tasted_recipes',
@@ -242,25 +247,25 @@ angular.module('appRoutes', []).config([
                         templateUrl: 'templates/tasted_recipes.html',
                         controller: 'RecipeCtrl',
                         resolve: {
-                            recipePromise: ['Recipe', 'Auth', function (recipes, Auth) {
+                            recipePromise: ['Recipe', 'Auth', function(recipes, Auth) {
                                 return recipes.getUserTriedRecipes(Auth.currentUser().id);
                             }]
                         }
                     }
                 },
-                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                onEnter: ['$state', 'Auth', function($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
                 }]
             })
 
-        // LOGIN PAGE ==========================================================
+            // LOGIN PAGE ==========================================================
             .state('login', {
                 url: '/login?token',// query param (opzionale)
                 templateUrl: 'templates/login.html',
                 controller: 'AuthCtrl',
-                onEnter: ['$state', '$stateParams', 'Auth', function ($state, $stateParams, Auth) {
+                onEnter: ['$state', '$stateParams', 'Auth', function($state, $stateParams, Auth) {
                     if ($stateParams.token) {
                         Auth.saveToken($stateParams.token);
                     }
@@ -269,9 +274,9 @@ angular.module('appRoutes', []).config([
                     }
                 }]
             })
-                
-        // PROFILE PAGE ==========================================================
-        // PROFILE ROOT (DEFAULT)
+
+            // PROFILE PAGE ==========================================================
+            // PROFILE ROOT (DEFAULT)
             .state('app.profile', {
                 url: '/profile/{id}',
                 views: {
@@ -279,10 +284,10 @@ angular.module('appRoutes', []).config([
                         templateUrl: 'templates/profile.html',
                         controller: 'UserProfileCtrl',
                         resolve: {
-                            userPromise: ['User', '$stateParams', function (user, $stateParams) {
+                            userPromise: ['User', '$stateParams', function(user, $stateParams) {
                                 return user.getUserById($stateParams.id);
                             }],
-                            recipePromise: ['Recipe', '$stateParams', function (recipes, $stateParams) {
+                            recipePromise: ['Recipe', '$stateParams', function(recipes, $stateParams) {
                                 return recipes.getUserRecipes($stateParams.id);
                             }]
                         }
@@ -293,7 +298,7 @@ angular.module('appRoutes', []).config([
                     }
                 }
             })
-        // PROFILE COLLECTIONS
+            // PROFILE COLLECTIONS
             .state('app.profile.collections', {
                 url: '/collections',
                 views: {
@@ -301,14 +306,14 @@ angular.module('appRoutes', []).config([
                         templateUrl: 'templates/profile_collections.html',
                         controller: 'CollectionCtrl',
                         resolve: {
-                            collectionPromise: ['Collection', '$stateParams', function (recipes, $stateParams) {
+                            collectionPromise: ['Collection', '$stateParams', function(recipes, $stateParams) {
                                 return recipes.getUserCollections($stateParams.id);
                             }]
                         }
                     }
                 }
             })
-        // PROFILE FOLLOWERS
+            // PROFILE FOLLOWERS
             .state('app.profile.followers', {
                 url: '/followers',
                 views: {
@@ -317,7 +322,7 @@ angular.module('appRoutes', []).config([
                     }
                 }
             })
-        // PROFILE FOLLOWING
+            // PROFILE FOLLOWING
             .state('app.profile.following', {
                 url: '/following',
                 views: {
@@ -327,7 +332,7 @@ angular.module('appRoutes', []).config([
                 }
             })
 
-        // RECIPE PAGE =======================================================
+            // RECIPE PAGE =======================================================
             .state('app.recipe', {
                 url: '/recipe/{id}',
                 views: {
@@ -336,14 +341,14 @@ angular.module('appRoutes', []).config([
                         controller: 'RecipeCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
-                            recipePromise: ['Recipe', '$stateParams', function (recipes, $stateParams) {
+                            recipePromise: ['Recipe', '$stateParams', function(recipes, $stateParams) {
                                 return recipes.getRecipe($stateParams.id);
                             }]
                         }
                     }
                 }
             })
-            
+
             // COLLECTION PAGE =======================================================
             .state('app.collection', {
                 url: '/collection/{id}',
@@ -353,7 +358,7 @@ angular.module('appRoutes', []).config([
                         controller: 'CollectionDetailCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
-                            collectionPromise: ['Collection', '$stateParams', function (collections, $stateParams) {
+                            collectionPromise: ['Collection', '$stateParams', function(collections, $stateParams) {
                                 return collections.getCollection($stateParams.id);
                             }]
                         }
@@ -362,12 +367,12 @@ angular.module('appRoutes', []).config([
             })
 
         // DEFAULT PAGE ==========================================================
-                
-        $urlRouterProvider.otherwise(function ($injector, $location) {
+
+        $urlRouterProvider.otherwise(function($injector, $location) {
             var $state = $injector.get("$state");
             $state.go("app.home.most_recent");
         });
-                
+
 
         // disabilito la necessità dei # nelle URL
         $locationProvider.html5Mode(true);
