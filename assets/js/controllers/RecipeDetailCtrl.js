@@ -19,7 +19,8 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
     '$log',
     '$state', // gestione degli stati dell'app (ui-router)
     'User',
-    function($scope, Recipe, Ingredient, Auth, Collection, $uibModal, $log, $state, User) {
+    'RecipeStep',
+    function($scope, Recipe, Ingredient, Auth, Collection, $uibModal, $log, $state, User, RecipeStep) {
 
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
         $scope.isLoggedIn = Auth.isLoggedIn;
@@ -191,6 +192,8 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
                 var group = $scope.detailedRecipe.ingredientGroups[i];
                 Ingredient.getIngredientGroupIngredients(group);
             }
+            
+            RecipeStep.getRecipeSteps($scope.detailedRecipe, 30, 0);
             
         }
         

@@ -10,6 +10,7 @@
         background-size: cover;
         padding: 50px 0 0 0;
     }
+    
 </style>
 
 <div ng-controller="RecipeDetailCtrl">
@@ -120,19 +121,29 @@
                     </div>
                    
                 </div>
+                </div>
 
                 <!-- INGREDIENTI -->
+                <div class="col-md-8 col-sm-8 recipe_col_8 recipe_generic_con">
                 <div class="row recipe_ing_con">
                     <div class="col-md-12">
                         <div class="recipe_sub_title">PREPARAZIONE</div>
                     </div>
                     <div class="col-md-12">
-                        <p>
-                            {{detailedRecipe.description}}
-                        </p>
+                        <div class="media" ng-repeat="step in detailedRecipe.steps">
+                            <div class="media-left media-middle" style="height: 100px; width: 100px;">
+                                <h1>
+                                    {{step.seq_number}}
+                                </h1>
+                            </div> 
+                            <div class="media-body media-middle">    
+                                    {{step.description}}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            
 
             <!-- OPINIONI + VALORI NUTRIZIONALI + SPONSOR -->
             <div class="col-md-4 col-sm-4 recipe_col_4">
@@ -140,7 +151,7 @@
                 <div class="row">
                     <!-- OPINIONI -->
                     <div class="col-md-12 recipe_sp_3">
-                        <div class="recipe_sp_3_title">OPINIONI</div>
+                        <div class="recipe_sp_3_title" style="border-bottom: 1px solid {{getTextColor(detailedRecipe)}};">OPINIONI</div>
                         <div class="recipe_sp_3_con">
                             <table class="recipe_sp_3_table">
                                 <tr class="recipe_sp_3_tr">
@@ -161,7 +172,12 @@
 
                     <!-- VALORI NUTRIZIONALI -->
                     <div class="col-md-12 recipe_sp_3">
-                        <div class="recipe_sp_3_title" ng-click="calculateNutrientValues(detailedRecipe)" uib-tooltip="I valori espressi sono relativi all'insieme degli ingredienti che compongono la ricetta. I risultati sono da considerarsi come stime, pertanto i valori reali dei nutrienti potrebbero variare."><a href="">VALORI NUTRIZIONALI</a></div>
+                        <div class="recipe_sp_3_title"
+                            ng-click="calculateNutrientValues(detailedRecipe)" 
+                            uib-tooltip="I valori espressi sono relativi all'insieme degli ingredienti che compongono la ricetta. I risultati sono da considerarsi come stime, pertanto i valori reali dei nutrienti potrebbero variare."
+                            style="border-bottom: 1px solid {{getTextColor(detailedRecipe)}};">
+                            <a href="">VALORI NUTRIZIONALI</a>
+                        </div>
                         <div class="recipe_sp_3_con">
                             <table class="recipe_sp_3_table">
                                 <tr class="recipe_sp_3_tr">
@@ -214,7 +230,7 @@
                 </div>
 
                 <!-- SPONSOR -->
-                <div class="recipe_sp_spons_con">
+                <div class="recipe_sp_spons_con" style="border-top: 1px solid {{getTextColor(detailedRecipe)}};">
                     <span class="recipe_sp_spons_title">SPONSORIZZATE</span>
 
                     <div class="recipe_sp_spons">

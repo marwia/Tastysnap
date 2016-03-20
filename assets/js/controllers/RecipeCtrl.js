@@ -95,7 +95,16 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
         };
         
         // gestione paging
-        $scope.getAll = Recipe.getAll;
+        // le più recenti
+        $scope.getAll = function (skip, successCB, errorCB) {
+            Recipe.getAll(null, skip, successCB, errorCB);
+        };
+        
+        // le più assaggiate
+        $scope.getMostTasted = function (skip, successCB, errorCB) {
+            Recipe.getAll("trialsCount DESC", skip, successCB, errorCB);
+        };
+        
         /*
         $scope.skipValue = 0;
         $scope.isLoading = false;

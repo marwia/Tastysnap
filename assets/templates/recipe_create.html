@@ -334,48 +334,72 @@
 
             <!-- RIGA 10 - Aggiungi un nuovo gruppo di ingredienti -->
             <div class="row c_recipe_row">
+                <!-- vuoto -->
                 <div class="col-md-4 c_recipe_left"></div>
                 <div class="col-md-8 c_recipe_right">
                     <button type="button" class="btn btn-warning" ng-click="addIngredientGroup()">Aggiungi gruppo ingredienti</button>
                 </div>
             </div>
 
-            <form name="recipeForm3" ng-submit="createRecipe()" role="form" novalidate>
-                <!-- RIGA 10.5 - INGREDIENTI -->
-                <div class="row c_recipe_row">
-                    <!-- vuoto -->
-                    <div class="col-md-4 c_recipe_left"></div>
-                    <div class="col-md-8 c_recipe_right">
-                        <h3>PREPARAZIONE</h3>
-                    </div>
+
+            <!-- RIGA 10.5 - INGREDIENTI -->
+            <div class="row c_recipe_row">
+                <!-- vuoto -->
+                <div class="col-md-4 c_recipe_left"></div>
+                <div class="col-md-8 c_recipe_right">
+                    <h3>PREPARAZIONE</h3>
+                </div>
+            </div>
+
+            <!-- RIGA 11 - PROCEDIMENTO -->
+            <div class="row c_recipe_row">
+                <div class="col-md-4 c_recipe_left">
+                    <span>Descrivi qui<br/> il procedimento della ricetta</span>
                 </div>
 
-                <!-- RIGA 11 - PROCEDIMENTO -->
                 <div class="row c_recipe_row">
-                    <div class="col-md-4 c_recipe_left">
-                        <span>Descrivi qui<br/> il procedimento della ricetta</span>
-                    </div>
-                    <div class="col-md-8 c_recipe_right" ng-class="{ 'has-error': recipeForm3.process.$touched && recipeForm3.process.$invalid }">
-                        <textarea class="form-control" name="process" rows="8" ng-model="recipeToCreate.description" required></textarea>
-                        <div class="help-block" ng-messages="recipeForm3.process.$error" ng-if="recipeForm3.process.$touched">
-                            <div ng-messages-include="templates/validation_messages.html"></div>
+                    <div class="col-md-8 c_recipe_right">
+                        <div class="media" ng-repeat="step in recipe_steps">
+                            <h1 class="pull-left">
+                                {{step.seq_number}}
+                            </h1>   
+                            <div class="media-body">
+                                <form name="recipeStepForm" role="form" novalidate>
+                                    <div class="recipe_comment_txt" ng-class="{ 'has-error': recipeStepForm.description.$touched && recipeStepForm.description.$invalid }">
+                                        <textarea class="form-control" name="description" rows="3" required ng-model="step.description"></textarea>
+                                        <div class="help-block" ng-messages="recipeStepForm.description.$error" ng-if="recipeStepForm.description.$touched">
+                                            <div ng-messages-include="templates/validation_messages.html"></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- RIGA 12 - PROCEDIMENTO -->
-                <div class="row c_recipe_row">
+            <div class="row c_recipe_row">
+                <div class="col-md-4 c_recipe_left"></div>
+                <div class="col-md-8 c_recipe_right">
+                    <button type="button" class="btn btn-warning" ng-click="addRecipeStep()">Aggiungi un altro passo</button>
+                </div>
+            </div>
+
+            <!-- RIGA 12 - COMPLETAMENTO DELLA CREAZIONE -->
+            <div class="row c_recipe_row">
+                <form name="recipeForm3" ng-submit="createRecipe()" role="form" novalidate>
                     <div class="col-md-4 c_recipe_left"></div>
                     <div class="col-md-8 c_recipe_right text-right">
 
                         <!-- AZIONI RELATIVE ALLA RICETTA -->
                         <button type="submit" class="btn btn-primary" ng-disabled="recipeForm.$invalid || recipeForm2.$invalid || recipeForm3.$invalid">Pubblica la ricetta</button>
                     </div>
-                </div>
-            </form>
-
+                </form>
+            </div>
 
         </div>
-        <!-- /panel-body -->
+
     </div>
-    <!-- /panel -->
+    <!-- /panel-body -->
+</div>
+<!-- /panel -->

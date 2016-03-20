@@ -30,6 +30,8 @@ angular.module('CommentService', [])
                     // populo il campo user manualmente (il server non lo fa e non deve)
                     var createdComment = response.data;
                     createdComment.user = User.currentUser;
+                    createdComment.upvotesCount = 0;
+                    createdComment.downvotesCount = 0;
 
                     // push on top
                     recipe.commentsCount++;
@@ -186,13 +188,18 @@ angular.module('CommentService', [])
                     }
                 })
                 .then(function(response) {
-
+                    
+                    //inizializzo l'array dei commenti
+                    if (!recipe.comments)
+                        recipe.comments = [];
+                       
+                    //se è presente qualche valore sullo skip 
+                    //allora devo aggiungere i commenti 
                     if (skip) {
                         for (var i = 0; i < response.data.length; i++) {
                             recipe.comments.push(response.data[i]);
                         }
                     } else {
-                        recipe.comments = [];
                         angular.extend(recipe.comments, response.data);
                     }
 
@@ -200,7 +207,8 @@ angular.module('CommentService', [])
                         successCB(response);
 
                 }, function errorCallback(response) {
-
+                    // no comment found for this recipe
+                    recipe.comments = [];
                     console.info(response);
                     if (errorCB)
                         errorCB(response);

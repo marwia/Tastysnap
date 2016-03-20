@@ -11,11 +11,12 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
     'Recipe', // servizio per le ricette
     'Product', // servizio per i prodotti
     'Ingredient', // servizio per gli ingredienti
+    'RecipeStep', // servizio per i passi
     'Auth', // servizio per l'autenticazione
     '$filter',
     'FileUploader', // per il file upload
     '$http',
-    function ($scope, $state, Recipe, Product, Ingredient, Auth, $filter, FileUploader, $http) {
+    function ($scope, $state, Recipe, Product, Ingredient, RecipeStep, Auth, $filter, FileUploader, $http) {
 
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
         $scope.isLoggedIn = Auth.isLoggedIn;
@@ -79,6 +80,12 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 product: {}
             }]
         }];
+        
+        $scope.recipe_steps =
+            [{
+                seq_number: 1,
+                description: ""
+        }];
 		
         // metodo per aggiungere banalmente un gruppo di ingredienti
         $scope.addIngredientGroup = function () {
@@ -120,6 +127,15 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         $scope.removeIngredient = function (group_index, ingredient_index) {
             $scope.ingredient_groups[group_index].ingredients.splice(ingredient_index, 1);
         };
+        
+        // metodo per aggiungere banalmente un passo alla ricetta
+        $scope.addRecipeStep = function () {
+            $scope.recipe_steps
+                .push({
+                    seq_number: $scope.recipe_steps.length + 1,
+                    description: ""
+                });
+        };
 
         /**
          * Esegui l'upload di tutte le immagini in attesa di upload.
@@ -134,6 +150,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                         + coverImageUploader.queue.length * 2 // immagine di copertina + quella sfocata
                         + otherImageUploader.queue.length // altre immagini
                         + $scope.ingredient_groups.length; // gruppi di ingredienti
+                        + $scope.recipe_steps.length; // numero di passi nella preparazione
             
             for (var i in $scope.ingredient_groups) {
                 $scope.createSum += $scope.ingredient_groups[i].ingredients.length // numero di ingredienti di ogni gruppo
@@ -143,13 +160,17 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             //crea ricetta
             Recipe.create($scope.recipeToCreate, function (response) {
   
-                $scope.createProgress++;
-                //crea gruppi di ingredienti
-                console.info(response);
+                // salvo l'esito della creazione della ricetta
                 $scope.recipeToCreate = response.data;
+                $scope.createProgress++;
+                
+                // creo i passi per la preparazione
+                createRecipeSteps();
+                
+                // crea gruppi di ingredienti
                 createIngredientGroups();
  
-                // carico l'immagine di copertina
+                // carico l'immagine di copertina (compresa quella sfocata)
                 coverImageUploader.uploadAll();
                 
                 // carico le altre immagini aggiuntive
@@ -168,6 +189,20 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 $state.go("app.recipe", { id: $scope.recipeToCreate.id });
             }
         });
+        
+        /**
+         * Crea tutti i passi per la ricetta.
+         */
+        function createRecipeSteps() {
+            for (var i = 0; i < $scope.recipe_steps.length; i++) {
+                RecipeStep.create(
+                    $scope.recipeToCreate,
+                    $scope.recipe_steps[i],
+                    function () {// success
+                        $scope.createProgress++;
+                });
+            }
+        }
         
         /**
          * Crea tutti gruppi di ingredienti per la ricetta.

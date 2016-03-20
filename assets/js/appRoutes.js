@@ -127,9 +127,9 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             //stampa delle ricette
                             //TODO - stampa delle ricette piu assaggiate
-                            postPromise: ['Recipe', function (recipes) {
+                            recipePromise: ['Recipe', function (recipes) {
                                 console.log("resolve home");
-                                return recipes.getAll();
+                                return recipes.getAll("trialsCount");
                             }]
                         }
                     }

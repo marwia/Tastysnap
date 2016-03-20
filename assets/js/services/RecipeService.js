@@ -59,11 +59,12 @@ angular.module('RecipeService', [])
         /**
          * Metodo per richiedere una lista di ricette.
          */
-        o.getAll = function(skip, successCB, errorCB) {
+        o.getAll = function(order_by, skip, successCB, errorCB) {
             return $http.get(server_prefix + '/recipe',
                 {
                     params: {
-                        'skip': skip
+                        'skip': skip,
+                        'order': order_by
                     }
                 }).then(function(response) {
                     if (skip) {

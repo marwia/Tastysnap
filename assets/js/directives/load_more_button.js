@@ -59,7 +59,7 @@ angular.module('sampleApp')
                 };
                 
                 $scope.hasMoreElements = function () {
-                    if ($scope.elements) {
+                    if ($scope.elements.length > 0) {
                         return $scope.elements.length % $scope.step == 0;
                     }
                     else {
