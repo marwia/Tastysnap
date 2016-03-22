@@ -1,6 +1,6 @@
 <!-- Colorazione dinamica della colonna di sinistra -->
 <style>
-    .recipe_col_4 {
+    .recipe_col_4, .recipe_prep_step {
         background-color: {{detailedRecipe.dominantColor}};
         color:{{getTextColor(detailedRecipe)}};
     }
@@ -10,7 +10,6 @@
         background-size: cover;
         padding: 50px 0 0 0;
     }
-    
 </style>
 
 <div ng-controller="RecipeDetailCtrl">
@@ -135,9 +134,9 @@
                                 <h1>
                                     <div class="recipe_prep_step">{{step.seq_number}}</div>
                                 </h1>
-                            </div> 
+                            </div>
                             <div class="media-body media-middle">    
-                                {{step.description}}
+                                <span>{{step.description}}<span>
                             </div>
                         </div>
                     </div>

@@ -1,11 +1,7 @@
 <style>
     .c_recipe_row {
-        background-color: {
-            {
-                recipeToCreate.dominantColor
-            }
-        }
-        ;
+        background-color: {{recipeToCreate.dominantColor}};
+        color:{{getTextColor(recipeToCreate)}};
     }
 </style>
 
@@ -26,8 +22,11 @@
                     <!-- titolo -->
                     <div class="col-md-8 c_recipe_right">
                         <div class="page-header">
-                            <h1><small>Inserisci la ricetta</small>
-                <br>DAI SFOGO ALLA TUA CREATIVIT&Aacute; </h1>
+                            <h1>
+                                <small>Inserisci la ricetta</small>
+                                <br>
+                                DAI SFOGO ALLA TUA CREATIVIT&Aacute;
+                            </h1>
                         </div>
                     </div>
                 </div>
@@ -361,7 +360,7 @@
                     <div class="col-md-8 c_recipe_right">
                         <div class="media" ng-repeat="step in recipe_steps">
                             <h1 class="pull-left">
-                                {{step.seq_number}}
+                                 <div class="recipe_prep_step">{{step.seq_number}}</div>
                             </h1>   
                             <div class="media-body">
                                 <form name="recipeStepForm" role="form" novalidate>
