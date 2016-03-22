@@ -133,11 +133,11 @@
                         <div class="media" ng-repeat="step in detailedRecipe.steps">
                             <div class="media-left media-middle" style="height: 100px; width: 100px;">
                                 <h1>
-                                    {{step.seq_number}}
+                                    <div class="recipe_prep_step">{{step.seq_number}}</div>
                                 </h1>
                             </div> 
                             <div class="media-body media-middle">    
-                                    {{step.description}}
+                                {{step.description}}
                             </div>
                         </div>
                     </div>

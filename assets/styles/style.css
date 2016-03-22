@@ -881,12 +881,7 @@ ul.home_navbar{
     width: 100%;
 	background: #E7E5E6;
 	margin: 60px auto 40px auto;
-	
-    /*
-	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-	-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-	box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-	*/
+    
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
@@ -919,12 +914,6 @@ ul.home_navbar{
 }
 
 .recipe_generic_con{
-    /*
-	-webkit-box-shadow: 0px 0px 10px 0px rgba(50, 50, 50, 0.57);
-	-moz-box-shadow:    0px 0px 10px 0px rgba(50, 50, 50, 0.57);
-	box-shadow:         0px 0px 10px 0px rgba(50, 50, 50, 0.57);
-    */
-    
     -webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
@@ -1108,6 +1097,14 @@ tr.recipe_sp_3_tr{
 
 .recipe_span_pointer{
     cursor:pointer;
+}
+
+.recipe_prep_step{
+    background-color: black;
+    color: white;
+    width: 45px;
+    height: 45px;
+    text-align: center
 }
 
 .recipe_comment_delete{
