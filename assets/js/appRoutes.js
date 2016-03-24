@@ -20,6 +20,17 @@ angular.module('appRoutes', []).config([
 
         // Dichiaro i vari stati dell'app
         $stateProvider
+        
+            .state('main', {
+                url: '/',
+                onEnter: ['$state', 'Auth', function($state, Auth) {
+                    if (!Auth.isLoggedIn()) {
+                        $state.go('login');
+                    } else {
+                        $state.go('app');
+                    }
+                }]
+            })
 
             /**
              * Stato genitore organizzato in 3 view.
