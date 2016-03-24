@@ -14,7 +14,9 @@ angular.module('UserService', [])
         // service body
         var service = {
             currentUser: {},
-            user: {}
+            user: {},
+            following_users: [],//quelli che si segue
+            follower_users: []//quelli che si seguono
         };
         
         /**
@@ -24,6 +26,56 @@ angular.module('UserService', [])
             return $http.get(server_prefix + '/user/' + Auth.currentUser().id).then(function (response) {
                 angular.copy(response.data, service.currentUser);
             });
+        };
+        
+        /**
+         * Metodo per richiedere la lista di utenti seguiti da un particolare
+         * utente.
+         */
+        service.getFollowingUsers = function (user, order_by, skip, successCB, errorCB) {
+            return $http.get(server_prefix + '/user/' + user.id + '/following',
+                {
+                    params: {
+                        'skip': skip,
+                        'order': order_by
+                    }
+                }).then(function(response) {
+                    if (skip) {
+                        for (var i = 0; i < response.data.length; i++) {
+                            service.following_users.push(response.data[i]);
+                        }
+                    } else {
+                        angular.extend(service.following_users, response.data);
+                    }
+                    if (successCB)
+                        successCB(response);
+
+                }, errorCB);
+        };
+        
+        /**
+         * Metodo per richiedere la lista di utenti che seguono un particolare
+         * utente.
+         */
+        service.getFollowerUsers = function (user, order_by, skip, successCB, errorCB) {
+            return $http.get(server_prefix + '/user/' + user.id + '/follower',
+                {
+                    params: {
+                        'skip': skip,
+                        'order': order_by
+                    }
+                }).then(function(response) {
+                    if (skip) {
+                        for (var i = 0; i < response.data.length; i++) {
+                            service.follower_users.push(response.data[i]);
+                        }
+                    } else {
+                        angular.extend(service.follower_users, response.data);
+                    }
+                    if (successCB)
+                        successCB(response);
+
+                }, errorCB);
         };
         
         /**

@@ -118,14 +118,18 @@ angular.module('appRoutes', []).config([
                         controller: 'RecipeCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
-                            // stampa le card delle ricette
+                            // carica le ricette
                             postPromise: ['Recipe', function(recipes) {
                                 console.log("resolve home");
                                 return recipes.getAll();
                             }],
-                            // stampa le collection
-                            collectionPromise: ['Collection', '$stateParams', function(recipes, $stateParams) {
-                                return recipes.getUserCollections($stateParams.id);
+                            // carica le collection
+                            collectionPromise: ['Collection', '$stateParams', function(collections, $stateParams) {
+                                return collections.getAll();
+                            }],
+                            // carica gli utenti seguiti
+                            followingUsersPromise: ['User', 'Auth', function(User, Auth) {
+                                return User.getFollowingUsers(Auth.currentUser());
                             }]
                         }
                     }
@@ -329,7 +333,15 @@ angular.module('appRoutes', []).config([
                 url: '/followers',
                 views: {
                     'profile_content@app.profile': {
-                        templateUrl: 'templates/profile_followers.html'
+                        templateUrl: 'templates/profile_followers.html',
+                        controller: 'UserProfileFollowerUsersCtrl',
+                        resolve: {
+                            // carica gli utenti seguiti
+                            followerUsersPromise: ['User', 'Auth', function(User, Auth) {
+                                return User.getFollowerUsers(Auth.currentUser());
+                            }]
+                        }
+                        
                     }
                 }
             })
@@ -338,7 +350,14 @@ angular.module('appRoutes', []).config([
                 url: '/following',
                 views: {
                     'profile_content@app.profile': {
-                        templateUrl: 'templates/profile_following.html'
+                        templateUrl: 'templates/profile_following.html',
+                        controller: 'UserProfileFollowingUsersCtrl',
+                        resolve: {
+                            // carica gli utenti seguiti
+                            followingUsersPromise: ['User', 'Auth', function(User, Auth) {
+                                return User.getFollowingUsers(Auth.currentUser());
+                            }]
+                        }
                     }
                 }
             })

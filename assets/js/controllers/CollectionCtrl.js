@@ -34,6 +34,12 @@ angular.module('CollectionCtrl', []).controller('CollectionCtrl', [
         //ricavo un immagine casuale di una ricetta per metterla come sfondo
         $scope.getRandomCoverBlurredImage = Collection.getRandomCoverBlurredImage;
         
+        // gestione paging
+        // le più recenti
+        $scope.getMostRecentCollection = function (skip, successCB, errorCB) {
+            Collection.getAll(null, skip, successCB, errorCB);
+        };
+        
         /*
         $scope.deleteCurrentRecipe = function () {
             console.log("elimino la ricetta");

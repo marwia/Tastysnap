@@ -16,12 +16,8 @@
 <div class="row tasty_container text-center">
 
     <!-- basic card -->
-    <recipe-card recipe="recipe" 
-        open-collection-modal="openCollectionSelectionModal(recipe)" 
-        open-share-modal="openShareModal(recipe)"
-        toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" 
-        ng-repeat="recipe in recipes" 
-        ng-init="checkVote(recipe)"></recipe-card>
+    <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
+    toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" ng-repeat="recipe in recipes" ng-init="checkVote(recipe)"></recipe-card>
     <!-- fine card -->
 
 </div>
@@ -29,142 +25,61 @@
 
 <!-- button carica altro -->
 <div class="row tasty_container text-center tasty_load_space">
-    <load-more-button elements="recipes"
-        on-click-function="getAll(skip, successCB, errorCB)"
-        step="30"></load-more-button>
+    <load-more-button elements="recipes" on-click-function="getAll(skip, successCB, errorCB)" step="30"></load-more-button>
 </div>
 
-<!-- title -->
-<div class="row tasty_container text-center tasty_title_category tasty_load_space">
-    <div class="col-md-4">
-        <hr class="tasty_title_bar"></hr>
+<!-- Most recent collections -->
+<div ng-controller="CollectionCtrl">
+    <div class="row tasty_container text-center tasty_title_category tasty_load_space">
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
+        </div>
+        <div class="col-md-4">
+            <h3 class="tasty_title_text">Raccolte consigliate</h3></div>
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h3 class="tasty_title_text">Raccolte consigliate</h3></div>
-    <div class="col-md-4">
-        <hr class="tasty_title_bar"></hr>
+
+    <!-- container card -->
+    <div class="row tasty_container text-center tasty_load_space">
+
+        <!-- collection card -->
+        <collection-card collection="collection" ng-repeat="collection in collections"></collection-card>
+        <!-- collection card -->
+
     </div>
-</div>
 
-<!-- container card -->
-<div class="row tasty_container text-center tasty_load_space" ng-controller="CollectionCtrl">
-
-    <!-- collection card -->
-    <collection-card 
-        collection="collection" 
-        ng-repeat="collection in collections"></collection-card>
-    <!-- collection card -->
-
-</div>
-
-<!-- button carica altro -->
-<div class="row tasty_container text-center tasty_load_space">
-    <button class="btn btn-warning" type="submit">CARICA ALTRO</button>
-</div>
-
-<!-- title -->
-<div class="row tasty_container text-center tasty_title_category tasty_load_space">
-    <div class="col-md-4">
-        <hr class="tasty_title_bar"></hr>
-    </div>
-    <div class="col-md-4">
-        <h3 class="tasty_title_text">Persone che segui</h3></div>
-    <div class="col-md-4">
-        <hr class="tasty_title_bar"></hr>
+    <!-- button carica altro -->
+    <div class="row tasty_container text-center tasty_load_space">
+        <load-more-button elements="collections" on-click-function="getMostRecentCollection(skip, successCB, errorCB)" step="30"></load-more-button>
     </div>
 </div>
 
-<!-- profile's cards -->
-<div class="row tasty_container text-center tasty_load_space">
-
-    <!-- MATT -->
-    <div class="col-sm-4 col-md-3 profile_card">
-        <a href="">
-            <div class="profile_card_background profile_card_matt"></div>
-            <img src="imm/matt.jpg" class="img-circle profile_card_img" />
-            <div class="profile_card_name text-center">MATTEO BOLOGNESI</div>
-            <div class="profile_card_gradient"></div>
-        </a>
+<!-- Followed users -->
+<div ng-controller="UserHomeCtrl">
+    <div class="row tasty_container text-center tasty_title_category tasty_load_space">
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
+        </div>
+        <div class="col-md-4">
+            <h3 class="tasty_title_text">Persone che segui</h3></div>
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
+        </div>
     </div>
 
-    <!-- MARIO -->
-    <div class="col-sm-4 col-md-3 profile_card">
-        <a href="">
-            <div class="profile_card_background profile_card_mario"></div>
-            <img src="imm/mario.jpg" class="img-circle profile_card_img" />
-            <div class="profile_card_name text-center">MARIUSZ WIAZOWSKI</div>
-            <div class="profile_card_gradient"></div>
-        </a>
+    <!-- profile's cards -->
+    <div class="row tasty_container text-center tasty_load_space">
+
+        <!-- user card -->
+        <user-card user="user" ng-repeat="user in following_users"></user-card>
+        <!-- user card -->
+
     </div>
 
-    <!-- CRISTIAN -->
-    <div class="col-sm-4 col-md-3 profile_card">
-        <a href="">
-            <div class="profile_card_background profile_card_cristian"></div>
-            <img src="imm/cristian.jpg" class="img-circle profile_card_img" />
-            <div class="profile_card_name text-center">CRISTIAN TEATINI</div>
-            <div class="profile_card_gradient"></div>
-        </a>
+    <!-- button carica altro -->
+    <div class="row tasty_container text-center tasty_load_space">
+        <load-more-button elements="following_users" on-click-function="getFollowingUsers(skip, successCB, errorCB)" step="30"></load-more-button>
     </div>
-
-    <!-- OBAMA -->
-    <div class="col-sm-4 col-md-3 profile_card">
-        <a href="">
-            <div class="profile_card_background profile_card_obama"></div>
-            <img src="imm/obama.jpg" class="img-circle profile_card_img" />
-            <div class="profile_card_name text-center">PRESIDENT BARACK OBAMA</div>
-            <div class="profile_card_gradient"></div>
-        </a>
-    </div>
-
-    <!-- INIZIO SPECIAL STAR WARS -->
-
-    <!-- YODA -->
-    <div class="col-sm-4 col-md-3 profile_card">
-        <a href="">
-            <div class="profile_card_background profile_card_yoda"></div>
-            <img src="imm/yoda.jpg" class="img-circle profile_card_img" />
-            <div class="profile_card_name text-center">MAESTRO YODA</div>
-            <div class="profile_card_gradient"></div>
-        </a>
-    </div>
-
-    <!-- windu -->
-    <div class="col-sm-4 col-md-3 profile_card">
-        <a href="">
-            <div class="profile_card_background profile_card_windu"></div>
-            <img src="imm/windu.jpg" class="img-circle profile_card_img" />
-            <div class="profile_card_name text-center">MAESTRO WINDU</div>
-            <div class="profile_card_gradient"></div>
-        </a>
-    </div>
-
-    <!-- kenobi -->
-    <div class="col-sm-4 col-md-3 profile_card">
-        <a href="">
-            <div class="profile_card_background profile_card_kenobi"></div>
-            <img src="imm/kenobi.jpg" class="img-circle profile_card_img" />
-            <div class="profile_card_name text-center">MAESTRO OBI-WAN KENOBI</div>
-            <div class="profile_card_gradient"></div>
-        </a>
-    </div>
-
-    <!-- fener -->
-    <div class="col-sm-4 col-md-3 profile_card">
-        <a href="">
-            <div class="profile_card_background profile_card_fener"></div>
-            <img src="imm/fener.jpg" class="img-circle profile_card_img" />
-            <div class="profile_card_name text-center">DART FENER</div>
-            <div class="profile_card_gradient"></div>
-        </a>
-    </div>
-
-
-    <!-- FINE SPECIAL STAR WARS -->
-
-</div>
-
-<!-- button carica altro -->
-<div class="row tasty_container text-center tasty_load_space">
-    <button class="btn btn-warning" type="submit">CARICA ALTRO</button>
 </div>

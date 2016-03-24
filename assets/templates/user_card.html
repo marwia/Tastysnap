@@ -1,0 +1,9 @@
+<!-- user_card -->
+<div class="col-sm-4 col-md-3 profile_card">
+    <a href="app/profile/{{user.id}}">
+        <div class="profile_card_background profile_card_matt"></div>
+        <img src="{{ getUserProfileImage(user) }}" class="img-circle profile_card_img" />
+        <div class="profile_card_name text-center">{{user.name}}  {{user.surname}}</div>
+        <div class="profile_card_gradient"></div>
+    </a>
+</div>

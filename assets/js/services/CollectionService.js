@@ -30,10 +30,25 @@ angular.module('CollectionService', [])
         /**
          * Metodo per richiedere una lista di collection.
          */
-        o.getAll = function () {
-            return $http.get(server_prefix + '/collection').success(function (data) {
-                angular.copy(data, o.collections);
-            });
+        o.getAll = function (order_by, skip, successCB, errorCB) {
+            return $http.get(server_prefix + '/collection',
+                {
+                    params: {
+                        'skip': skip,
+                        'order': order_by
+                    }
+                }).then(function(response) {
+                    if (skip) {
+                        for (var i = 0; i < response.data.length; i++) {
+                            o.collections.push(response.data[i]);
+                        }
+                    } else {
+                        angular.extend(o.collections, response.data);
+                    }
+                    if (successCB)
+                        successCB(response);
+
+                }, errorCB);
         };
         
         /**

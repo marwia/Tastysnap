@@ -30,7 +30,7 @@ angular.module('RecipeService', [])
 
         //funzione che restiruisce il colore bianco o nero a seonda dell'input
         o.getTextColor = function(recipe) {
-            //inizializzo la varibile a bianco, quindi il testo dobrebbe esseren nero.
+            //inizializzo la varibile a bianco, quindi il testo dobrebbe essere nero.
             var c = "#000000";
 
             //recupero il colore dominante della ricetta
