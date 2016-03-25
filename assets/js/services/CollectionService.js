@@ -52,6 +52,29 @@ angular.module('CollectionService', [])
         };
         
         /**
+         * Metodo per eseguire una ricerca per titolo di raccolta.
+         */
+        o.search = function(query, skip, successCB, errorCB) {
+            return $http.get(server_prefix + '/collection', {
+                params: {
+                    where: {
+                        "title": { "contains": query }
+                    }
+                }
+            }).then(function(response) {
+                if (skip) {
+                    for (var i = 0; i < response.data.length; i++) {
+                        o.collections.push(response.data[i]);
+                    }
+                } else {
+                    angular.extend(o.collections, response.data);
+                }
+                if (successCB)
+                    successCB(response);
+            }, errorCB);
+        };
+        
+        /**
          * Metodo per richiedere la lista di ricette di 
          * una data collection
          */

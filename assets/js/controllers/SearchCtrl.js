@@ -11,8 +11,40 @@ angular.module('SearchCtrl', []).controller('SearchCtrl', [
 	'$scope',
 	'$state',
     '$stateParams',
-	function($scope, $state, $stateParams){
+    'Recipe',
+    'Collection',
+    'User',
+	function($scope, $state, $stateParams, Recipe, Collection, User){
 		
+        // espongo le variabili usati allo scope
         $scope.q = $stateParams.q;
+        $scope.recipes = Recipe.recipes;
+        $scope.collections = Collection.collections;
+        $scope.users = User.users;
+        
+        // espongo i wrapper per i bottoni 'carica altro'
+        $scope.loadMoreRecipes = function (skip, successCB, errorCB) {
+            Recipe.search($scope.q, skip, successCB, errorCB);
+        }
+        
+        $scope.loadMoreCollections = function (skip, successCB, errorCB) {
+            Collection.search($scope.q, skip, successCB, errorCB);
+        }
+        
+        $scope.loadMoreUsers = function (skip, successCB, errorCB) {
+            User.search($scope.q, skip, successCB, errorCB);
+        }
+        
+        var init = function () {
+            // inizializzazione del controller
+            // query per ricette
+            Recipe.search($scope.q);
+            // query per raccolte
+            Collection.search($scope.q);
+            // query per persone
+            User.search($scope.q);
+        };
+        // and fire it after definition
+        init();
         
 	}]);
