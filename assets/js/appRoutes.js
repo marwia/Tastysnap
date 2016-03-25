@@ -27,7 +27,7 @@ angular.module('appRoutes', []).config([
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     } else {
-                        $state.go('app');
+                        $state.go('app.home.most_recent');
                     }
                 }]
             })
