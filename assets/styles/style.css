@@ -1509,3 +1509,11 @@ img.profile_card_img{
     margin-top:10px;
     font-size: 15px
 }
+
+/* ---------------------------------------------------------- GOOGLE MAPS -------------------------------------------- */
+
+.angular-google-map,
+.angular-google-map-container {
+  width: 100%;
+  height: 100vh;
+}
