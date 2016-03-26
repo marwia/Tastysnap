@@ -1,82 +1,87 @@
 <!-- -------------------------------- ricette -------------------------------- -->
-<!-- container card -->
-<div class="row tasty_container text-center tasty_title_category tasty_load_space">
-    <div class="col-md-4">
-        <hr class="tasty_title_bar"></hr>
+<div ng-show="recipes.length > 0">
+    <!-- container card -->
+    <div class="row tasty_container text-center tasty_title_category tasty_load_space">
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
+        </div>
+        <div class="col-md-4">
+            <h3 class="tasty_title_text">{{recipes.length}} ricette trovate per {{q}}</h3>
+        </div>
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h3 class="tasty_title_text">{{recipes.length}} ricette trovate per {{q}}</h3>
+
+    <!-- RECIPE CARD -->
+    <div class="row tasty_container text-center" ng-controller="RecipeCtrl">
+
+        <!-- basic card -->
+        <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
+        toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" ng-repeat="recipe in recipes" ng-init="checkVote(recipe)"></recipe-card>
+        <!-- fine card -->
     </div>
-    <div class="col-md-4">
-        <hr class="tasty_title_bar"></hr>
+    <!-- fine tasty_container -->
+
+    <!-- button carica altro -->
+    <div class="row tasty_container text-center tasty_load_space">
+        <load-more-button elements="recipes" on-click-function="loadMoreRecipes(skip, successCB, errorCB)" step="30"></load-more-button>
     </div>
-</div>
-
-<!-- RECIPE CARD -->
-<div class="row tasty_container text-center" ng-controller="RecipeCtrl">
-
-    <!-- basic card -->
-    <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
-    toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" ng-repeat="recipe in recipes" ng-init="checkVote(recipe)"></recipe-card>
-    <!-- fine card -->
-</div>
-<!-- fine tasty_container -->
-
-<!-- button carica altro -->
-<div class="row tasty_container text-center tasty_load_space">
-    <load-more-button elements="recipes" on-click-function="loadMoreRecipes(skip, successCB, errorCB)" step="30"></load-more-button>
 </div>
 
 <!-- -------------------------------- raccolte -------------------------------- -->
-
-<!-- container card -->
-<div class="row tasty_container text-center tasty_title_category tasty_load_space">
-    <div class="col-md-4">
-        <hr class="tasty_title_bar"></hr>
+<div ng-show="collections.length > 0">
+    <!-- container card -->
+    <div class="row tasty_container text-center tasty_title_category tasty_load_space">
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
+        </div>
+        <div class="col-md-4">
+            <h3 class="tasty_title_text">{{collections.length}} raccolte trovate per {{q}}</h3>
+        </div>
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h3 class="tasty_title_text">{{collections.length}} raccolte trovate per {{q}}</h3>
+
+    <!-- container card -->
+    <div class="row tasty_container text-center tasty_load_space">
+
+        <!-- collection card -->
+        <collection-card collection="collection" ng-repeat="collection in collections"></collection-card>
+        <!-- collection card -->
     </div>
-    <div class="col-md-4">
-        <hr class="tasty_title_bar"></hr>
+
+    <!-- button carica altro -->
+    <div class="row tasty_container text-center tasty_load_space">
+        <load-more-button elements="collections" on-click-function="loadMoreCollections(skip, successCB, errorCB)" step="30"></load-more-button>
     </div>
-</div>
-
-<!-- container card -->
-<div class="row tasty_container text-center tasty_load_space">
-
-    <!-- collection card -->
-    <collection-card collection="collection" ng-repeat="collection in collections"></collection-card>
-    <!-- collection card -->
-</div>
-
-<!-- button carica altro -->
-<div class="row tasty_container text-center tasty_load_space">
-    <load-more-button elements="collections" on-click-function="loadMoreCollections(skip, successCB, errorCB)" step="30"></load-more-button>
 </div>
 
 <!-- -------------------------------- utenti -------------------------------- -->
 
-<div class="row tasty_container text-center tasty_title_category tasty_load_space">
-    <div class="col-md-4">
-        <hr class="tasty_title_bar"></hr>
+<div ng-show="users.length > 0">
+    <div class="row tasty_container text-center tasty_title_category tasty_load_space">
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
+        </div>
+        <div class="col-md-4">
+            <h3 class="tasty_title_text">{{users.length}} persone trovate per {{q}}</h3></div>
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h3 class="tasty_title_text">{{users.length}} persone trovate per {{q}}</h3></div>
-    <div class="col-md-4">
-        <hr class="tasty_title_bar"></hr>
+
+    <!-- profile's cards -->
+    <div class="row tasty_container text-center tasty_load_space">
+
+        <!-- user card -->
+        <user-card user="user" ng-repeat="user in users"></user-card>
+        <!-- user card -->
     </div>
-</div>
 
-<!-- profile's cards -->
-<div class="row tasty_container text-center tasty_load_space">
-
-    <!-- user card -->
-    <user-card user="user" ng-repeat="user in users"></user-card>
-    <!-- user card -->
-</div>
-
-<!-- button carica altro -->
-<div class="row tasty_container text-center tasty_load_space">
-    <load-more-button elements="users" on-click-function="loadMoreUsers(skip, successCB, errorCB)" step="30"></load-more-button>
+    <!-- button carica altro -->
+    <div class="row tasty_container text-center tasty_load_space">
+        <load-more-button elements="users" on-click-function="loadMoreUsers(skip, successCB, errorCB)" step="30"></load-more-button>
+    </div>
 </div>
