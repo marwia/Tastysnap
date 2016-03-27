@@ -27,7 +27,7 @@ angular.module('appRoutes', []).config([
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     } else {
-                        $state.go('app');
+                        $state.go('app.home.most_recent');
                     }
                 }]
             })
@@ -194,6 +194,22 @@ angular.module('appRoutes', []).config([
                         }
                     }
                 }
+            })
+            
+            // HOME
+            .state('app.near_recipes', {
+                url: '/near_recipes',
+                views: {
+                    'content@app': {
+                        templateUrl: 'templates/near_recipes.html',
+                        controller: 'NearRecipesCtrl'
+                    }
+                },
+                onEnter: ['$state', 'Auth', function($state, Auth) {
+                    if (!Auth.isLoggedIn()) {
+                        $state.go('login');
+                    }
+                }]
             })
 
             // FAVORITE RECIPES

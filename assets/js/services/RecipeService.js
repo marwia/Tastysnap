@@ -81,6 +81,29 @@ angular.module('RecipeService', [])
         };
 
         /**
+         * Metodo per eseguire una ricerca per titolo di ricetta.
+         */
+        o.search = function(query, skip, successCB, errorCB) {
+            return $http.get(server_prefix + '/recipe', {
+                params: {
+                    where: {
+                        "title": { "contains": query }
+                    }
+                }
+            }).then(function(response) {
+                if (skip) {
+                    for (var i = 0; i < response.data.length; i++) {
+                        o.recipes.push(response.data[i]);
+                    }
+                } else {
+                    angular.extend(o.recipes, response.data);
+                }
+                if (successCB)
+                    successCB(response);
+            }, errorCB);
+        };
+
+        /**
          * Metodo per richiedere una lista di ricette di un dato utente.
          */
         o.getUserRecipes = function(userId) {
@@ -133,7 +156,7 @@ angular.module('RecipeService', [])
                         Authorization: 'Bearer ' + Auth.getToken()
                     }
                 })
-                .then(function (response) {
+                .then(function(response) {
                     // remove the deleted recipe
                     for (var i in o.recipes) {
                         if (o.recipes[i].id == recipeId) {
@@ -188,7 +211,7 @@ angular.module('RecipeService', [])
                     }
                 })
                 .then(function(response) {
-                    
+
                     User.currentUser.recipesCount++;
                     //recipe = response.data;
                     successCallback(response);

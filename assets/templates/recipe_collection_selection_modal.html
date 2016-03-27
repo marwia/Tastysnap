@@ -62,13 +62,21 @@
                         </div>
 
                         <!-- ng repeat media (collection) -->
-                        <div class="media modal-add-recipe-to-collection_media" 
-                        ng-repeat="collection in collections | filter: addtocollection "
+                        <div class="media modal-add-recipe-to-collection_media" ng-repeat="collection in collections | filter: addtocollection "
                         ng-click="addRecipeToCollection(collection)">
                             <!-- manca di mettere il nome della raccolta nel title -->
                             <div class="media-left media-middle" title="Aggiungi {{selectedRecipe.title}} a {{collection.title}}">
                                 <a href="#">
-                                    <div class="media-object modal-add-recipe-to-collection_img" style="background-image:url('http://www.tastysnap.com/preview/imm/thai_tb.jpg')"></div>
+                                    <div class="media-object modal-add-recipe-to-collection_img">
+                                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[0].coverImageUrl + ')'}"
+                                        style="background-color: #464646;"></div>
+                                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[1].coverImageUrl + ')'}"
+                                        style="background-color: #555555;"></div>
+                                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[2].coverImageUrl + ')'}"
+                                        style="background-color: #636363;"></div>
+                                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[3].coverImageUrl + ')'}"
+                                        style="background-color: #707070;"></div>
+                                    </div>
                                 </a>
                             </div>
                             <div class="media-body">

@@ -26,6 +26,7 @@ angular.module('NavCtrl', []).controller('NavCtrl', [
         /**
          * Funzione che serve per eseguire una ricerca istantanea delle ricette.
          */
+        /*
         $scope.getLocation = function (val) {
             return $http.get('/api/v1/recipe', {
                 params: {
@@ -36,6 +37,6 @@ angular.module('NavCtrl', []).controller('NavCtrl', [
             }).then(function (response) {
                 return response.data;
             });
-        };
+        };*/
 
     }]);

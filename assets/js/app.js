@@ -8,14 +8,14 @@
  */
 
 var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload',
-                'ngAnimate', 'ngMessages',
+                'ngAnimate', 'ngMessages', 'uiGmapgoogle-maps',
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
                 'IngredientService', 'CommentService', 'RecipeStepService',
 				'ngAnimate', 'appRoutes', 
 				'AuthCtrl', 'MasterCtrl', 'NavCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeDetailCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl', 'UserHomeCtrl', 'CollectionCtrl',
                 'CollectionSelectionModalCtrl', 'CollectionDetailCtrl', 'CommentCtrl', 'SearchCtrl',
-                'UserProfileFollowerUsersCtrl', 'UserProfileFollowingUsersCtrl']);
+                'UserProfileFollowerUsersCtrl', 'UserProfileFollowingUsersCtrl', 'NearRecipesCtrl']);
      
 // funzione che parte all'avvio dell'app
 // Serve per ricevere il token CSRF una volta sola        
@@ -28,9 +28,17 @@ myApp.run(function($http) {
         });
 });
 
-myApp.config(['$animateProvider', function($animateProvider){
+myApp.config(['$animateProvider', 'uiGmapGoogleMapApiProvider', function($animateProvider, uiGmapGoogleMapApiProvider){
   // restrict animation to elements with the bi-animate css class with a regexp.
   // note: "bi-*" is our css namespace at @Bringr.
   $animateProvider.classNameFilter(/^((?!(fa-spinner)).)*$/);
   //$animateProvider.classNameFilter(/^((?!(fa-spinner|class2|class3)).)*$/);
+  
+  // Configurazione delle Google Maps API
+  uiGmapGoogleMapApiProvider.configure({
+        //    key: 'your api key',
+        v: '3.20', //defaults to latest 3.X anyhow
+        libraries: 'weather,geometry,visualization'
+    });
+    
 }]);
