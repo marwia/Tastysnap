@@ -1358,7 +1358,7 @@ img.profile_card_img{
 /* ------------------------------------------------------------- CREATE RECIPE -------------------------------------------------- */
 
 .c_recipe_row{
-    background-color: #a94442;
+    background-color: rgb(45, 45, 45);
     margin:0;
     
     -webkit-transition: all 0.3s ease-in-out;
@@ -1385,7 +1385,28 @@ img.profile_card_img{
 /* Default class applied to drop zones on over */
 .nv-file-over { 
     border: dotted 3px red; 
-} 
+}
+
+.recipe_creating_message{
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    max-width: 700px;
+    color: white;
+    text-align: center;
+    top: 100px;
+}
+
+.recipe_creating_message_gear{
+    -webkit-animation:spin 2s linear infinite;
+    -moz-animation:spin 2s linear infinite;
+    animation:spin 2s linear infinite;
+}
+
+@-moz-keyframes spin {100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 /* ------------------------------------------------------------------ 12 -------------------------------------------------------- */
 /* ---------------------------------------------------- MODAL ADD CARD IN COLLECTION -------------------------------------------- */

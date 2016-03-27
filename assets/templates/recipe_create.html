@@ -5,13 +5,12 @@
     }
 </style>
 
+<div class="panel-body no-padding recipe_creating_message" ng-show="isCreating">
+    <h3><i class="fa fa-cog recipe_creating_message_gear"></i> Creazione ricetta in corso...</h3>
+</div>
+
 <div class="tasty_container tasty_container_margin">
     <div class="panel panel-default no-border">
-
-        <div class="panel-body no-padding" ng-show="isCreating">
-            <h3>Creazione ricetta in corso...</h3>
-        </div>
-
         <div class="panel-body no-padding" ng-hide="isCreating">
 
             <form name="recipeForm" role="form" novalidate>
@@ -316,8 +315,8 @@
                                                 </button>
                                             </form>
                                             <div class="buttons" ng-show="!recipeFormRow.$visible">
-                                                <button type="button" class="btn btn-primary" ng-click="recipeFormRow.$show()">Modifica</button>
-                                                <button type="button" class="btn btn-danger" ng-click="removeIngredient($parent.$index, $index)">Elimina</button>
+                                                <button type="button" class="btn btn-primary" ng-click="recipeFormRow.$show()" title="modifica"><i class="fa fa-pencil"></i></button>
+                                                <button type="button" class="btn btn-danger" ng-click="removeIngredient($parent.$index, $index)" title="elimina"><i class="fa fa-trash"></i></button>
                                             </div>
                                         </td>
                                     </tr>
