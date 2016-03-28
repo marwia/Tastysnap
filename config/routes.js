@@ -140,6 +140,8 @@ var apiRoutes = addGlobalPrefix({
   
   'get /user/:id/tried_recipe': 'UserController.findUserTriedRecipes',
   
+  'get /user/:id/following_collections': 'UserController.findUserFollwingCollections',
+  
   /***************************************************************************
   *                                                                          *
   * Ricette.                                                                 *

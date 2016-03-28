@@ -1,0 +1,25 @@
+<!-- Most recent collections -->
+    <div class="row tasty_container text-center tasty_title_category tasty_load_space">
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
+        </div>
+        <div class="col-md-4">
+            <h3 class="tasty_title_text">Raccolte che segui</h3></div>
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
+        </div>
+    </div>
+
+    <!-- container card -->
+    <div class="row tasty_container text-center tasty_load_space">
+
+        <!-- collection card -->
+        <collection-card collection="collection" ng-repeat="collection in collections"></collection-card>
+        <!-- collection card -->
+
+    </div>
+
+    <!-- button carica altro -->
+    <div class="row tasty_container text-center tasty_load_space">
+        <load-more-button elements="collections" on-click-function="getFollowingCollections(skip, successCB, errorCB)" step="30"></load-more-button>
+    </div>

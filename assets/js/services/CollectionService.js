@@ -52,6 +52,30 @@ angular.module('CollectionService', [])
         };
         
         /**
+         * Metodo per richiedere una lista di collection seguite da un utente.
+         */
+        o.getUserFollowingCollections = function (userId, order_by, skip, successCB, errorCB) {
+            return $http.get(server_prefix + '/user/' + userId +'/following_collections',
+                {
+                    params: {
+                        'skip': skip,
+                        'order': order_by
+                    }
+                }).then(function(response) {
+                    if (skip) {
+                        for (var i = 0; i < response.data.length; i++) {
+                            o.collections.push(response.data[i]);
+                        }
+                    } else {
+                        angular.extend(o.collections, response.data);
+                    }
+                    if (successCB)
+                        successCB(response);
+
+                }, errorCB);
+        };
+        
+        /**
          * Metodo per eseguire una ricerca per titolo di raccolta.
          */
         o.search = function(query, skip, successCB, errorCB) {
