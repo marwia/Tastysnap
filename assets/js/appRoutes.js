@@ -260,7 +260,7 @@ angular.module('appRoutes', []).config([
                 views: {
                     'content@app': {
                         templateUrl: 'templates/followed_collections.html',
-                        controller: 'RecipeCtrl'
+                        controller: 'FollowingCollectionsCtrl'
                     }
                 },
                 onEnter: ['$state', 'Auth', function($state, Auth) {

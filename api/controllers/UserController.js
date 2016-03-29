@@ -318,6 +318,45 @@ module.exports = {
                 RecipeService.find(req, res, next, triedRecipes);
             });
     },
+    
+    /**
+     * @api {get} /user/:id/following_collections Get a User following collection list
+     * @apiName getUserFollowingCollections
+     * @apiGroup User
+     *
+     * @apiDescription Serve per richiedere la lista di raccolte
+     * seguite da un utente.
+     *
+     * @apiParam {String} id User id.
+     *
+     * @apiSuccess {[CollectionObject]} collectionList JSON that represents the list of collections.
+     *
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 404 Not Found
+     */
+    findUserFollwingCollections: function (req, res, next) {
+        var userId = req.param('id');
+        if (!userId) { return next(); }
+
+        User.findOne(userId)
+            .populate('followingCollections')
+            .exec(function (err, foundUser) {
+                if (err) { return next(err); }
+
+                if (!foundUser) { return res.notFound({ error: 'No user found' }); }
+            
+                // Array con id di ricette provate
+                var followingCollections = new Array();
+
+                for (var i in foundUser.followingCollections) {
+                    followingCollections.push(foundUser.followingCollections[i].id)
+                }
+
+                // find recipes
+                CollectionService.find(req, res, next, followingCollections);
+            });
+    },
 
     /**
      * @api {put} /user/:user/follow Follow a User
