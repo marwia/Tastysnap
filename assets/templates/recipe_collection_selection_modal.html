@@ -14,53 +14,67 @@
         <!-- CONTAINER LISTA COLLECTION -->
         <div class="col-xs-12 col-sm-7 col-md-7">
             <div class="container-fluid">
-                <!-- search collection input -->
-                <!--
-                <div class="row modal-add-recipe-to-collection_row">
-                    <input type="text" class="form-control modal-add-recipe-to-collection_input_text" placeholder="Cerca una raccolta">
+                
+                <!-- Nuova raccolta -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="showme=true">
+                            Nuova Raccolta
+                        </button>
+                    </div>
                 </div>
-                -->
+                
+                <!-- HR -->
+                <div class="row" ng-hide="showme">
+                    <div class="col-md-12">
+                        <hr/>
+                    </div>
+                </div>
+                
+                <!-- creazione nuova raccolta -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default modal-add-recipe-to-collection_panel" ng-show="showme">
+                            <div class="panel-body">
+                                <!-- Titolo Raccolta -->
+                                <input type="text" class="form-control modal-add-recipe-to-collection_input_text" placeholder="Titolo Raccolta" ng-model="collectionToCreate.title">
 
-                <!-- add new collection -->
-                <div class="row modal-add-recipe-to-collection_row modal-add-recipe-to-collection_media_container">
+                                <!-- Input descrizione -->
+                                <textarea class="form-control modal-add-recipe-to-collection_input_text" rows="3" placeholder="Descrivi brevemente la tua raccolta!"></textarea>
 
-                    <!-- Aggiungi una nuova collection! -->
-                    <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="showme=true">Crea una nuova raccolta</button>
+                                <!-- Is private -->
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> Collection Private (puoi vederla solo tu)
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> Collection pubblica
+                                    </label>
+                                </div>
 
-                    <div class="panel panel-default modal-add-recipe-to-collection_panel" ng-show="showme">
-                        <div class="panel-body">
-
-                            <!-- Titolo Raccolta -->
-                            <input type="text" class="form-control modal-add-recipe-to-collection_input_text" placeholder="Titolo Raccolta" ng-model="collectionToCreate.title">
-
-                            <!-- Input descrizione -->
-                            <textarea class="form-control modal-add-recipe-to-collection_input_text" rows="3" placeholder="Descrivi brevemente la tua raccolta!"></textarea>
-
-                            <!-- Is private -->
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> Collection Private (puoi vederla solo tu)
-                                </label>
+                                <!-- Standard button -->
+                                <button type="button" class="btn btn-warning text-right" ng-click="showme=false">Chiudi</button>
+                                <button type="button" class="btn btn-primary text-right" ng-click="createCollection()">Aggiungi</button>
                             </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> Collection pubblica
-                                </label>
-                            </div>
-
-                            <!-- Standard button -->
-                            <button type="button" class="btn btn-warning text-right" ng-click="showme=false">Chiudi</button>
-                            <button type="button" class="btn btn-primary text-right" ng-click="createCollection()">Aggiungi</button>
-
                         </div>
                     </div>
-
-                    <!-- input per filtrare le tue raccolte -->
-                    <div ng-hide="showme" class="modal-add-recipe-to-collection_container_media">
-                        <div class="media">
-                            <input type="text" class="form-control modal-add-recipe-to-collection_input_text" placeholder="Cerca una raccolta" ng-model="addtocollection">
+                </div>
+                
+                <!-- Cerca -->
+                <div class="row" ng-hide="showme">
+                    <div class="col-md-12">
+                         <div class="form-group has-feedback">
+                            <input type="text" name="search_input" class="form-control modal-add-recipe-to-collection_input_text" id="search_input" placeholder="Cerca una raccolta" ng-model="addtocollection">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
                         </div>
-
+                    </div>
+                </div>
+                
+                <!-- Elenco raccolte -->
+                <div class="row" ng-hide="showme">
+                    <div class="col-md-12 modal-add-recipe-to-collection_media_con">
                         <!-- ng repeat media (collection) -->
                         <div class="media modal-add-recipe-to-collection_media" ng-repeat="collection in collections | filter: addtocollection "
                         ng-click="addRecipeToCollection(collection)">
@@ -82,13 +96,11 @@
                             <div class="media-body">
                                 <h4 class="media-heading modal-add-recipe-to-collection_title">{{collection.title}}</h4>
                             </div>
-                        </div>
-                        <!-- fine ng-repeat -->
+                        </div><!-- fine ng-repeat -->
                     </div>
-
-                </div>
-            </div>
+                </div><!-- fine elenco raccolte -->
+                
+            </div><!-- fine container fluid -->
         </div>
-        <div class="clearfix"></div>
     </div>
-</div>
+</div><!-- /modal body -->
