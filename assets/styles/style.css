@@ -58,7 +58,7 @@ body {
 .sidebar_footer{
     position: absolute;
     bottom: 60px;
-    color: orange;
+    color: #FF8E2A;
 }
 
 .tasty_icon_default{
@@ -1283,7 +1283,8 @@ tr.recipe_sp_3_tr{
 }
 
 .profile_card:hover .profile_card_img{	
-	opacity: 0;
+	*opacity: 0;
+	opacity: 1;
 }
 
  /* example */
@@ -1402,6 +1403,25 @@ img.profile_card_img{
     -webkit-animation:spin 2s linear infinite;
     -moz-animation:spin 2s linear infinite;
     animation:spin 2s linear infinite;
+}
+
+.recipe_create_add_photo_icon{
+    font-size: 80px;
+    color: #DADADA;
+}
+
+.recipe_create_add_photo_box{
+    background-color:white;
+}
+
+.recipe_create_add_ingredient_box{
+    background-color:white;
+}
+
+.recipe_create_ingredient_required{
+    color: gray;
+    font-size: 0.9em;
+    font-style: inherit;
 }
 
 @-moz-keyframes spin {100% { -moz-transform: rotate(360deg); } }
