@@ -23,6 +23,8 @@ var allowedTypes = ['image/jpeg', 'image/png'];
 // skipper default upload directory .tmp/uploads/
 var localImagesDir = sails.config.appPath + "/assets/images";
 
+var server_name = "https://tastysnap.com";
+
 module.exports = {
     /**
      * @api {get} /recipe List Recipes
@@ -539,7 +541,22 @@ module.exports = {
 
             // get the file name from a path
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
-            var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
+            var fileUrl;
+            
+            if (process.env.NODE_ENV === 'production') {
+                fileUrl = require('util').format('%s%s', server_name, '/images/' + filename);
+                
+                //var filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/')+1);
+                //var uploadLocation = process.cwd() +'/assets/images/uploads/' + filename;
+                var uploadLocation = uploadedFiles[0].fd;
+                var tempLocation = process.cwd() + '/.tmp/public/images/' + filename;
+ 
+                //Copy the file to the temp folder so that it becomes available immediately
+                fs.createReadStream(uploadLocation).pipe(fs.createWriteStream(tempLocation));
+            }
+            else {
+                fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
+            }
 
             Recipe.update(recipe.id, {
 
@@ -601,8 +618,22 @@ module.exports = {
 
             // get the file name from a path
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
-            var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
-            console.log(fileUrl);
+            var fileUrl;
+            
+            if (process.env.NODE_ENV === 'production') {
+                fileUrl = require('util').format('%s%s', server_name, '/images/' + filename);
+                
+                //var filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/')+1);
+                //var uploadLocation = process.cwd() +'/assets/images/uploads/' + filename;
+                var uploadLocation = uploadedFiles[0].fd;
+                var tempLocation = process.cwd() + '/.tmp/public/images/' + filename;
+ 
+                //Copy the file to the temp folder so that it becomes available immediately
+                fs.createReadStream(uploadLocation).pipe(fs.createWriteStream(tempLocation));
+            }
+            else {
+                fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
+            }
 
             Recipe.update(recipe.id, {
 
@@ -663,8 +694,22 @@ module.exports = {
 
             // get the file name from a path
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
-            var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
-            console.log(fileUrl);
+            var fileUrl;
+            
+            if (process.env.NODE_ENV === 'production') {
+                fileUrl = require('util').format('%s%s', server_name, '/images/' + filename);
+                
+                //var filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/')+1);
+                //var uploadLocation = process.cwd() +'/assets/images/uploads/' + filename;
+                var uploadLocation = uploadedFiles[0].fd;
+                var tempLocation = process.cwd() + '/.tmp/public/images/' + filename;
+ 
+                //Copy the file to the temp folder so that it becomes available immediately
+                fs.createReadStream(uploadLocation).pipe(fs.createWriteStream(tempLocation));
+            }
+            else {
+                fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
+            }
 
             Recipe.findOne(recipe.id).exec(function(err, recipe) {
                 if (err) return res.negotiate(err);
