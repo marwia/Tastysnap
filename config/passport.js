@@ -12,14 +12,27 @@ var passport = require('passport'),
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 // Facebook strategy
-passport.use(new FacebookStrategy({
-    clientID: "617087911724851",
-    clientSecret: "5e8033ba7bc89b9c72d890862b5d618c",
-    callbackURL: "http://localhost:1337/api/v1/auth/facebook/callback",
-    profileFields: ['id', 'displayName', 'name', 'gender', 'email', 'photos']
-},
-    function (accessToken, refreshToken, profile, done) {
+var FBstrategy;
+if (process.env.NODE_ENV === 'production') {
+    FBstrategy = {
+        clientID: "617087911724851",
+        clientSecret: "5e8033ba7bc89b9c72d890862b5d618c",
+        callbackURL: "https://tastysnap.com/api/v1/auth/facebook/callback",
+        profileFields: ['id', 'displayName', 'name', 'gender', 'emails', 'photos']
+    };
+    
+} else {// development
+    FBstrategy = {
+        clientID: "1049533381779590",
+        clientSecret: "8a55b07428ba961582bb5d4e870df4b4",
+        callbackURL: "http://localhost:1337/api/v1/auth/facebook/callback",
+        profileFields: ['id', 'displayName', 'name', 'gender', 'emails', 'photos']
+    };
+}
+passport.use(new FacebookStrategy(FBstrategy,
+    function(accessToken, refreshToken, profile, done) {
         console.log("Facebook strategy triggered...\n");
+        console.info(profile);
         var fbUser = {
             facebookId: profile.id,
             facebookImageUrl: profile.photos[0].value,
@@ -33,13 +46,13 @@ passport.use(new FacebookStrategy({
                 { facebookId: profile.id },
                 { email: profile.emails[0].value }
             ]
-        }, fbUser).exec(function (err, foundUser) {
+        }, fbUser).exec(function(err, foundUser) {
             if (err) { return done(err); }
             if (foundUser[0]) {
                 console.log("Utente FB loggato", foundUser[0]);
                 done(null, foundUser[0]);
             } else {
-                User.create(fbUser).exec(function (err, user) {
+                User.create(fbUser).exec(function(err, user) {
 
                     if (err) { return done(err); }
                     console.log("Utente FB creato", user);
@@ -56,7 +69,7 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://localhost:1337/api/v1/auth/google/callback",
     profileFields: ['id', 'displayName', 'name', 'gender', 'email', 'photos']
 },
-    function (accessToken, refreshToken, profile, done) {
+    function(accessToken, refreshToken, profile, done) {
         console.log("Google strategy triggered...\n");
         console.log("Google profile:", profile);
         var gUser = {
@@ -72,13 +85,13 @@ passport.use(new GoogleStrategy({
                 { googleId: profile.id },
                 { email: profile.emails[0].value }
             ]
-        }, gUser).exec(function (err, foundUser) {
+        }, gUser).exec(function(err, foundUser) {
             if (err) { return done(err); }
             if (foundUser[0]) {
                 console.log("Utente Google loggato", foundUser[0]);
                 done(null, foundUser[0]);
             } else {
-                User.create(gUser).exec(function (err, user) {
+                User.create(gUser).exec(function(err, user) {
 
                     if (err) { return done(err); }
                     console.log("Utente Google creato", user);
@@ -87,7 +100,7 @@ passport.use(new GoogleStrategy({
             }
         });
     }
-    ));
+));
 
 // Twitter strategy
 passport.use(new TwitterStrategy({
@@ -96,7 +109,7 @@ passport.use(new TwitterStrategy({
     callbackURL: "http://localhost:1337/api/v1/auth/twitter/callback",
     profileFields: ['id', 'displayName', 'name', 'gender', 'email', 'photos']
 },
-    function (accessToken, refreshToken, profile, done) {
+    function(accessToken, refreshToken, profile, done) {
         console.log("Twitter strategy triggered...\n", profile);
         console.log("Twitter profile:", profile);
         var tUser = {
@@ -112,13 +125,13 @@ passport.use(new TwitterStrategy({
                 { twitterId: profile.id },
                 { email: profile.emails[0].value }
             ]
-        }, tUser).exec(function (err, foundUser) {
+        }, tUser).exec(function(err, foundUser) {
             if (err) { return done(err); }
             if (foundUser[0]) {
                 console.log("Utente Twitter loggato", foundUser[0]);
                 done(null, foundUser[0]);
             } else {
-                User.create(tUser).exec(function (err, user) {
+                User.create(tUser).exec(function(err, user) {
 
                     if (err) { return done(err); }
                     console.log("Utente Twitter creato", user);
@@ -127,4 +140,4 @@ passport.use(new TwitterStrategy({
             }
         });
     }
-    ));
+));
