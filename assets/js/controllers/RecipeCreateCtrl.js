@@ -209,6 +209,12 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
          */
         function createIngredientGroups() {
             for (var i = 0; i < $scope.ingredient_groups.length; i++) {
+                
+                //Se il gruppo non ha nome allora lo setto a " "
+                if (!$scope.ingredient_groups[i].name) {
+                    $scope.ingredient_groups[i].name = " ";
+                }
+                
                 Ingredient.createIngredientGroup(
                     $scope.recipeToCreate,
                     $scope.ingredient_groups[i],
