@@ -239,6 +239,20 @@ a:hover{
 	text-align:right;
 }
 
+.top_menu_message_dropdown{
+	right: 0 !important;
+	left: inherit;
+	top: 48px;
+	text-align:right;
+}
+
+.top_menu_notify_dropdown{
+    right: 5% !important;
+    left: inherit;
+    top: 48px;
+    text-align: right;
+}
+
 .badge-notify{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	background: red;

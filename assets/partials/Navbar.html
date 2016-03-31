@@ -35,18 +35,36 @@
         <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
             <img alt="{{ currentUser.name }}" src="{{ getUserProfileImage(currentUser) }}" id="single-button" uib-dropdown-toggle class="top_menu_profile img-circle pull-right">
             <ul uib-dropdown-menu class="top_menu_profile_dropdown" role="menu" aria-labelledby="single-button">
-                <!--
-                <li role="menuitem"><a href="#">Action</a></li>
-                <li role="menuitem"><a href="#">Another action</a></li>
-                -->
                 <li role="menuitem"><a href="/app/profile/{{ currentUser.id }}">Profilo</a></li>
                 <li class="divider"></li>
                 <li role="menuitem"><a href="/login" ng-click="logOut()">Esci</a></li>
             </ul>
         </div>
         
-        <!-- MENU -->        
+        <!-- Messaggi -->
+        <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
+            <a href="#" ng-hide="active" class="top_menu_notify_icon" uib-dropdown-toggle id="single-button2">
+                <div class="glyphicon glyphicon-comment pull-right top_menu_item"><span class="badge badge-notify" ng-init="num_messages=0" ng-hide="num_messages<=0">{{num_messages}}</span></div>
+            </a>
+            <ul uib-dropdown-menu class="top_menu_message_dropdown" role="menu" aria-labelledby="single-button2">
+                <li role="menuitem"><a href="#">Non ci sono messaggi</a></li>
+            </ul>
+        </div>
+        
+        <!-- Notifiche -->
+        <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
+            <a href="#" ng-hide="active" class="top_menu_notify_icon" uib-dropdown-toggle id="single-button3">
+                <div class="glyphicon glyphicon-bell comment pull-right top_menu_item"><span class="badge badge-notify" ng-init="num_notify=0" ng-hide="num_notify<=0">{{num_notify}}</span></div>
+            </a>
+            <ul uib-dropdown-menu class="top_menu_notify_dropdown" role="menu" aria-labelledby="single-button3">
+                <li role="menuitem"><a href="#">Non ci sono nuove notifiche</a></li>
+            </ul>
+        </div>
+        
+        <!-- MENU -->
+        <!--
 		<a href="#" ng-hide="active" class="top_menu_notify_icon"><div class="glyphicon glyphicon-comment pull-right top_menu_item"><span class="badge badge-notify">42</span></div></a>
 		<a href="#" ng-hide="active" class="top_menu_notify_icon"><div class="glyphicon glyphicon-bell pull-right top_menu_item"></div></a>
+        -->
     </div>
 </nav>
