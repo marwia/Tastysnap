@@ -56,7 +56,13 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                 resolve: {
                     selectedRecipe: selectedRecipe,
                     collections: function () {
-                        return Collection.getUserCollections(Auth.currentUser.id);
+                        return Collection.getUserCollections(
+                            Auth.currentUser.id, 
+                            null, 
+                            function errorCB(response) {
+                                // in caso di assenza di raccolte del corrente utente devo svuotare l'array
+                                Collection.collections = [];
+                        });
                     }
                 }
             });
