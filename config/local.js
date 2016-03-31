@@ -3,6 +3,8 @@ var fs = require('fs');
 /**
  * Configurazione dei vari certificati SSL
  */
+
+/*
 module.exports = {
 
     ssl : {
@@ -14,3 +16,4 @@ module.exports = {
     port: process.env.PORT || 443
 
 };
+*/

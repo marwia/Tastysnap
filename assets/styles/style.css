@@ -17,6 +17,7 @@
 *   -- 11.CREAETE RECIPE
 *   -- 12.MODAL - aggingi card alla raccolta + crea raccolta
 *   -- 13.MODAL - condividi una ricetta
+*   -- 14.GOOGLE MAPS
 */
 
 /* ------------------------------------------------------------   1    ------------------------------------------------------ */
@@ -1226,135 +1227,21 @@ tr.recipe_sp_3_tr{
 /* ------------------------------------------------------------- PERSONAL CARDS ------------------------------------------------- */
 
 .profile_card{
-    position: relative;
-	margin: 10px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-	width:calc(25% - 20px);
-	float: left;
-	
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-ms-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
+    padding: 15px 0 15px 0;
 }
 
-.profile_card:before{
-    content: "";
-    display: block;
-    padding-top: 100%;  /* ratio of 1:1*/
-}
-
-.profile_card_gradient{
-	background-image: linear-gradient(to bottom, rgba(255,255,255,0) 40%, rgba(0,0,0,0.65) 59%);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1;
-	
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-ms-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
-}
-
-.profile_card_background{
-	height: 100%;
-	width: 100%;
-	position: absolute;
-	z-index: 0;
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	top: 0;
-	left: 0;
-	
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-ms-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
-}
-
-.profile_card:hover .profile_card_background{	
-	background-image: url("imm/matt.jpg");  /* example */
-}
-
-.profile_card:hover .profile_card_img{	
-	*opacity: 0;
-	opacity: 1;
-}
-
- /* example */
-.profile_card_matt{background-image: url("imm/copertina_matt.jpg");}
-.profile_card_mario{background-image: url("imm/copertina_mario.jpg");}
-.profile_card_cristian{background-image: url("imm/copertina_cristian.jpg");}
-.profile_card_obama{background-image: url("imm/copertina_obama.jpg");}
-
-.profile_card:hover .profile_card_mario{background-image: url("imm/mario.jpg");}
-.profile_card:hover .profile_card_cristian{background-image: url("imm/cristian.jpg");}
-.profile_card:hover .profile_card_obama{background-image: url("imm/obama.jpg");}
-
-/* special star wars */
-.profile_card_yoda{background-image: url("imm/copertina_yoda.jpg");}
-.profile_card_windu{background-image: url("imm/copertina_windu.jpg");}
-.profile_card_kenobi{background-image: url("imm/copertina_kenobi.jpg");}
-.profile_card_fener{background-image: url("imm/copertina_fener.jpg");}
-
-.profile_card:hover .profile_card_yoda{background-image: url("imm/yoda.jpg");}
-.profile_card:hover .profile_card_windu{background-image: url("imm/windu.jpg");}
-.profile_card:hover .profile_card_kenobi{background-image: url("imm/kenobi.jpg");}
-.profile_card:hover .profile_card_fener{background-image: url("imm/fener.jpg");}
-
-
-img.profile_card_img{
-	width: 50%;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: -65px;
-    bottom: 0;
+.profile_card_img{
+    width:90px;
+    height:90px;
     margin: auto;
-	z-index: 2;
-	-webkit-transition: all 0.3s ease-in-out;
-	-moz-transition: all 0.3s ease-in-out;
-	-ms-transition: all 0.3s ease-in-out;
-	-o-transition: all 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .profile_card_name{
-	color: white;
-    position: absolute;
-    width: calc(100% - 30px);
-    left: 0;
-    right: 0;
-    margin: auto;
-    bottom: 13px;
-    font-size: 1.3em;
-    padding: 0 15px 0 15px;
-	z-index: 2;
-}
-
-@media screen and (max-width: 768px){
-	.profile_card{
-		width:calc(33% - 20px);
-	}
-}
-
-@media screen and (max-width: 528px){
-	.profile_card{
-		width:calc(50% - 20px);
-	}
-	
-	.profile_card_name{
-		font-size: 1em;
-		bottom:0;
-	}
+    margin-top: 15px;
+    color: white;
+    font-size: 1.2em
 }
 
 /* ------------------------------------------------------------------ 11 -------------------------------------------------------- */
