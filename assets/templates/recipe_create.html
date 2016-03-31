@@ -254,7 +254,7 @@
                         <form name="recipeForm2" role="form" novalidate>
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col-xs-4" ng-class="{ 'has-error': recipeForm2.group_name.$touched && recipeForm2.group_name.$invalid }">
+                                    <div class="col-xs-4" ng-class="{ 'has-error': recipeForm2.group_name.$touched && recipeForm2.group_name.$invalid }" ng-hide="ingredient_groups.length==1">
                                         <label class="control-label">Titolo gruppo ingredienti</label>
                                         <input type="text" class="form-control" name="group_name" ng-model="ingredient_group.name" required plceholder="ingredienti per l'impasto'"/>
                                         <div class="help-block" ng-messages="recipeForm2.group_name.$error" ng-if="recipeForm2.group_name.$touched">
@@ -300,7 +300,7 @@
                                             <!-- editable group (select-remote) -->
                                             <span editable-text="ingredient.unitOfMeasure" e-typeahead-editable="false" e-ng-model="ingredient.unitOfMeasure" e-uib-typeahead="unit for unit in unitsOfMeasure | filter:$viewValue"
                                             e-name="unitOfMeasure" e-form="recipeFormRow" e-required class="recipe_create_ingredient_required">
-                                                {{ ingredient.unitOfMeasure || 'es. gr' }}
+                                                {{ ingredient.unitOfMeasure || 'es. g' }}
                                             </span>
                                         </td>
                                         <td style="white-space: nowrap">

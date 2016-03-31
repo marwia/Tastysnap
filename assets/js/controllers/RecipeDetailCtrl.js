@@ -31,6 +31,9 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
 
         // espongo i metodi del servizio User
         $scope.getUserProfileImage = User.getUserProfileImage;
+        
+        // serve a tenere conto del caricamento della ricetta
+        $scope.loadingProgress = 0;
 
         $scope.deleteCurrentRecipe = function() {
             Recipe.delete($scope.detailedRecipe.id,
@@ -182,6 +185,18 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
         //fine carousel
         
         /**
+         * Osserva la variabile che indica il progresso del
+         * caricamento di tutti i dati della ricetta.
+         * Utile per eseguire dei calcoli a seguito del caricamento.
+         */
+        $scope.$watch("loadingProgress", function(newValue, oldValue) {
+            console.info(newValue);
+            if ($scope.loadingProgress >= $scope.detailedRecipe.ingredientGroups.length) {// fine del caricamento della ricetta
+                $scope.calculateNutrientValues($scope.detailedRecipe);
+            }
+        });
+        
+        /**
          * Inizializzazione del controller
          */
         function init() {
@@ -190,7 +205,9 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
             
             for (var i in $scope.detailedRecipe.ingredientGroups) {
                 var group = $scope.detailedRecipe.ingredientGroups[i];
-                Ingredient.getIngredientGroupIngredients(group);
+                Ingredient.getIngredientGroupIngredients(group, function () {
+                    $scope.loadingProgress++;
+                });
             }
             
             RecipeStep.getRecipeSteps($scope.detailedRecipe, 30, 0);

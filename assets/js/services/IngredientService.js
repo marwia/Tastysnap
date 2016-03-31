@@ -83,7 +83,7 @@ angular.module('IngredientService', [])
         /**
          * Servizio per caricare la lista di ingredienti dato un gruppo.
          */
-        o.getIngredientGroupIngredients = function(ingredientGroup) {
+        o.getIngredientGroupIngredients = function(ingredientGroup, successCB, errorCB) {
             return $http.get(
                 server_prefix + '/ingredientgroup/' + ingredientGroup.id + '/ingredients')
 
@@ -91,12 +91,18 @@ angular.module('IngredientService', [])
                     ingredientGroup.ingredients = [];
                     console.info(response.data);
                     angular.copy(response.data, ingredientGroup.ingredients);
+                    
+                    if (successCB)
+                        successCB();
 
                 }, function errorCallback(response) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     //alert("Errore: " + response);
                     console.log(response);
+                    
+                    if (errorCB)
+                        errorCB();
                 });
         };
 
