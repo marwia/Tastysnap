@@ -167,8 +167,7 @@ angular.module('CollectionService', [])
                     headers: {
                         Authorization: 'Bearer ' + Auth.getToken()
                     }
-                })
-                .then(successCallback, errorCallback);
+            }).then(successCallback, errorCallback);
         }
     
         /**
