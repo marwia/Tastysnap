@@ -106,16 +106,18 @@ angular.module('RecipeService', [])
         /**
          * Metodo per richiedere una lista di ricette di un dato utente.
          */
-        o.getUserRecipes = function(userId) {
+        o.getUserRecipes = function(userId, successCB, errorCB) {
             return $http.get(server_prefix + '/recipe', {
                 params: {
                     where: {
                         "author": userId
                     }
                 }
-            }).success(function(data) {
-                angular.copy(data, o.recipes);
-            });
+            }).then(function(response) {
+                angular.copy(response.data, o.recipes);
+                if (successCB)
+                    successCB(response);
+            }, errorCB);
         };
 
         /**

@@ -142,16 +142,19 @@ angular.module('CollectionService', [])
         /**
          * Metodo per richiedere una lista di collection di un dato utente.
          */
-        o.getUserCollections = function (userId) {
+        o.getUserCollections = function (userId, successCB, errorCB) {
             return $http.get(server_prefix + '/collection', {
                 params: {
                     where: {
                         "author": userId
                     }
                 }
-            }).success(function (data) {
-                angular.copy(data, o.collections);
-            });
+            }).then(function (response) {
+                angular.copy(response.data, o.collections);
+                
+                if (successCB)
+                    successCB(response);
+            }, errorCB);
         };
 
         /**
@@ -164,8 +167,7 @@ angular.module('CollectionService', [])
                     headers: {
                         Authorization: 'Bearer ' + Auth.getToken()
                     }
-                })
-                .then(successCallback, errorCallback);
+            }).then(successCallback, errorCallback);
         }
     
         /**

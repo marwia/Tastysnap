@@ -319,7 +319,11 @@ angular.module('appRoutes', []).config([
                                 return user.getUserById($stateParams.id);
                             }],
                             recipePromise: ['Recipe', '$stateParams', function(recipes, $stateParams) {
-                                return recipes.getUserRecipes($stateParams.id);
+                                return recipes.getUserRecipes($stateParams.id, null, //nel caso positivo fai nulla...
+                                    function(response) { //nel caso di errore
+                                        Recipe.recipes = []; //svuoto l'array delle ricette
+                                        return true; //prosegui comunque
+                                });
                             }]
                         }
                     },
