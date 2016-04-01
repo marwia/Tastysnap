@@ -121,7 +121,7 @@ a{
 }
 
 a:hover{
-    color: #FF8E2A !important;
+    color: #FF8E2A;
     text-decoration: none;
 }
 
@@ -1340,6 +1340,11 @@ tr.recipe_sp_3_tr{
 	-ms-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
+}
+
+.recipe_create_ingredient_close{color:black;}
+.recipe_create_ingredient_close:hover{
+    text-decoration: none;
 }
 
 @-moz-keyframes spin {100% { -moz-transform: rotate(360deg); } }

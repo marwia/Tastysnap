@@ -197,17 +197,13 @@
                         <form name="recipeForm2" role="form" novalidate>
                             <div class="form-group">
                                 <div class="row">
+                                    <button type="button" class="btn btn-link pull-right recipe_create_ingredient_close" ng-click="removeIngredientGroup($index)">chiudi</button>
                                     <div class="col-xs-4" ng-class="{ 'has-error': recipeForm2.group_name.$touched && recipeForm2.group_name.$invalid }" ng-hide="ingredient_groups.length==1">
                                         <label class="control-label">Titolo gruppo ingredienti</label>
                                         <input type="text" class="form-control" name="group_name" ng-model="ingredient_group.name" required plceholder="ingredienti per l'impasto'"/>
                                         <div class="help-block" ng-messages="recipeForm2.group_name.$error" ng-if="recipeForm2.group_name.$touched">
                                             <div ng-messages-include="templates/validation_messages.html"></div>
                                         </div>
-                                    </div>
-                                    <div class="col-xs-2">
-                                        <label class="control-label"> </label>
-                                        <br>
-                                        <button type="button" class="btn btn-danger" ng-click="removeIngredientGroup($index)">Rimuovi</button>
                                     </div>
                                 </div>
                             </div>
