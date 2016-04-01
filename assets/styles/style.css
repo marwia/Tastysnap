@@ -1327,6 +1327,21 @@ tr.recipe_sp_3_tr{
     font-style: inherit;
 }
 
+#myCanvas{
+    width:100%;
+}
+
+.recipe_create_button_remove{
+    position:absolute;
+    top:2%;
+    right:9%;
+    -webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
 @-moz-keyframes spin {100% { -moz-transform: rotate(360deg); } }
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }

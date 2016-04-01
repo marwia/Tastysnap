@@ -62,9 +62,9 @@
                         data-dropdown-data="recipeCategories"></my-dropdown>
                     </div>
                 </div>
-
+                
                 <!-- RIGA 5 - FOTO -->
-                <div class="row c_recipe_row">
+                <div class="row c_recipe_row" ng-hide="coverImageUploader.queue.length >= 1">
                     <!-- foto -->
                     <div class="col-md-4 c_recipe_left">
                         <span>Immagine di copertina</span>
@@ -87,53 +87,22 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <!-- RIGA 6 - IMMAGINI SELEZIONATE -->
                 <div class="row c_recipe_row" ng-show="coverImageUploader.queue.length >= 1">
                     <!-- colore domaninate -->
                     <div class="col-md-4 c_recipe_left">
                         <span>Immagine selezionata</span>
-                        <p>Numero: {{ coverImageUploader.queue.length }}</p>
                     </div>
                     <!-- Carica immagini -->
-                    <div class="col-md-8 c_recipe_right">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th width="50%">Nome</th>
-                                    <th ng-show="coverImageUploader.isHTML5">Dimensioni</th>
-                                    <th ng-show="coverImageUploader.isHTML5">Progesso</th>
-                                    <th>Stato</th>
-                                    <th>Azioni</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="item in coverImageUploader.queue">
-                                    <td><strong>{{ item.file.name }}</strong>
-                                        <div ng-show="coverImageUploader.isHTML5" ng-thumb="{ file: item._file, height: 50 }"></div>
-                                    </td>
-                                    <td ng-show="coverImageUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                                    <td ng-show="coverImageUploader.isHTML5">
-                                        <div class="progress" style="margin-bottom: 0;">
-                                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                                        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                                    </td>
-                                    <td nowrap>
-                                        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                                            <span class="glyphicon glyphicon-trash"></span> Rimuovi
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="col-md-8 c_recipe_right" ng-repeat="item in coverImageUploader.queue">
+                        <button type="button" class="btn btn-danger btn-xs recipe_create_button_remove" ng-click="item.remove()">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                        <div ng-show="coverImageUploader.isHTML5" ng-thumb="{ file: item._file, height: 50 }"></div>
                     </div>
                 </div>
-
+                
                 <!-- RIGA 5 - FOTO -->
                 <div class="row c_recipe_row">
                     <!-- foto -->
@@ -168,40 +137,14 @@
                     </div>
                     <!-- Carica immagini -->
                     <div class="col-md-8 c_recipe_right">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th width="50%">Nome</th>
-                                    <th ng-show="otherImageUploader.isHTML5">Dimensioni</th>
-                                    <th ng-show="otherImageUploader.isHTML5">Progesso</th>
-                                    <th>Stato</th>
-                                    <th>Azioni</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="item in otherImageUploader.queue">
-                                    <td><strong>{{ item.file.name }}</strong>
-                                        <div ng-show="otherImageUploader.isHTML5" ng-thumb="{ file: item._file, height: 50 }"></div>
-                                    </td>
-                                    <td ng-show="otherImageUploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
-                                    <td ng-show="otherImageUploader.isHTML5">
-                                        <div class="progress" style="margin-bottom: 0;">
-                                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">
-                                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                                        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                                    </td>
-                                    <td nowrap>
-                                        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
-                                            <span class="glyphicon glyphicon-trash"></span> Rimuovi
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        
+                        <div class="col-md-4" ng-repeat="item in otherImageUploader.queue">
+                            <button type="button" class="btn btn-danger btn-xs recipe_create_button_remove" ng-click="item.remove()">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                            <div ng-show="otherImageUploader.isHTML5" ng-thumb="{ file: item._file, height: 50 }"></div>
+                        </div>
+                        
                     </div>
                 </div>
 
