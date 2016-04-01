@@ -129,7 +129,7 @@ angular.module('appRoutes', []).config([
                             }],
                             // carica gli utenti seguiti
                             followingUsersPromise: ['User', 'Auth', function(User, Auth) {
-                                return User.getFollowingUsers(Auth.currentUser());
+                                return User.getFollowingUsers(Auth.currentUser().id);
                             }]
                         }
                     }
