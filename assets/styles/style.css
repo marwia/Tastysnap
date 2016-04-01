@@ -1329,6 +1329,7 @@ tr.recipe_sp_3_tr{
 
 #myCanvas{
     width:100%;
+    max-width: 425px
 }
 
 .recipe_create_button_remove{
