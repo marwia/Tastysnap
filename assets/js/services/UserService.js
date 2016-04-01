@@ -64,8 +64,8 @@ angular.module('UserService', [])
          * Metodo per richiedere la lista di utenti seguiti da un particolare
          * utente.
          */
-        service.getFollowingUsers = function(user, order_by, skip, successCB, errorCB) {
-            return $http.get(server_prefix + '/user/' + user.id + '/following',
+        service.getFollowingUsers = function(userId, order_by, skip, successCB, errorCB) {
+            return $http.get(server_prefix + '/user/' + userId + '/following',
                 {
                     params: {
                         'skip': skip,
@@ -89,8 +89,8 @@ angular.module('UserService', [])
          * Metodo per richiedere la lista di utenti che seguono un particolare
          * utente.
          */
-        service.getFollowerUsers = function(user, order_by, skip, successCB, errorCB) {
-            return $http.get(server_prefix + '/user/' + user.id + '/follower',
+        service.getFollowerUsers = function(userId, order_by, skip, successCB, errorCB) {
+            return $http.get(server_prefix + '/user/' + userId + '/follower',
                 {
                     params: {
                         'skip': skip,

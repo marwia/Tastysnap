@@ -357,8 +357,8 @@ angular.module('appRoutes', []).config([
                         controller: 'UserProfileFollowerUsersCtrl',
                         resolve: {
                             // carica gli utenti seguiti
-                            followerUsersPromise: ['User', 'Auth', function(User, Auth) {
-                                return User.getFollowerUsers(Auth.currentUser());
+                            followerUsersPromise: ['User', '$stateParams', function(User, $stateParams) {
+                                return User.getFollowerUsers($stateParams.id); 
                             }]
                         }
                         
@@ -374,8 +374,8 @@ angular.module('appRoutes', []).config([
                         controller: 'UserProfileFollowingUsersCtrl',
                         resolve: {
                             // carica gli utenti seguiti
-                            followingUsersPromise: ['User', 'Auth', function(User, Auth) {
-                                return User.getFollowingUsers(Auth.currentUser());
+                            followingUsersPromise: ['User', '$stateParams', function(User, $stateParams) {
+                                return User.getFollowingUsers($stateParams.id); 
                             }]
                         }
                     }
