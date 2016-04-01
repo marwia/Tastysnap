@@ -341,8 +341,8 @@ angular.module('appRoutes', []).config([
                         templateUrl: 'templates/profile_collections.html',
                         controller: 'CollectionCtrl',
                         resolve: {
-                            collectionPromise: ['Collection', '$stateParams', function(recipes, $stateParams) {
-                                return recipes.getUserCollections($stateParams.id);
+                            collectionPromise: ['Collection', '$stateParams', function(Collection, $stateParams) {
+                                return Collection.getUserCollections($stateParams.id);
                             }]
                         }
                     }
