@@ -13,10 +13,11 @@ module.exports = function(grunt) {
 
 	grunt.config.set('uglify', {
         options: {
-                mangle: false
+                banner: 'Copyright (c) Mariusz Wiazowski, Matteo Bolognesi',
+                mangle: true
          },
 		dist: {
-			src: ['.tmp/public/concat/production.js'],
+			src: ['.tmp/public/concat/production.annotated.js'],
 			dest: '.tmp/public/min/production.min.js'
 		}
 	});

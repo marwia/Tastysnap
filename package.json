@@ -9,7 +9,7 @@
     "bcrypt-nodejs": "0.0.3",
     "ejs": "~0.8.4",
     "express-jwt": "^3.0.1",
-    "grunt": "0.4.2",
+    "grunt": "^0.4.5",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-coffee": "~0.10.1",
     "grunt-contrib-concat": "~0.3.0",
@@ -50,5 +50,8 @@
   "apidoc": {
     "title": "TastySnap apiDoc",
     "url": "http://tastysnap.com/api/v1"
+  },
+  "devDependencies": {
+    "grunt-ng-annotate": "^2.0.1"
   }
 }
