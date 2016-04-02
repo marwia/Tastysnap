@@ -11,8 +11,13 @@
  *
  */
 module.exports = function(grunt) {
-
-	grunt.config.set('ng-annotate', {
+    
+    /**
+     * Attenzione al vincolo sul nome di questa configurazione,
+     * deve essere proprio "ngAnnotate" e così anche il 
+     * nome del file.
+     */   
+    grunt.config.set("ngAnnotate", {
         // configurazione per l'app angular
         sampleApp: {
             files: [
@@ -21,11 +26,12 @@ module.exports = function(grunt) {
                     src: ['.tmp/public/concat/production.js'],
                     ext: '.annotated.js', // Dest filepaths will have this extension.
                     extDot: 'last',       // Extensions in filenames begin after the last dot
-                },
-            ],
-        },
+                }
+            ]
+        }
 
-	});
+    });
+    
 
-	grunt.loadNpmTasks('grunt-ng-annotate');
+    grunt.loadNpmTasks('grunt-ng-annotate');
 };

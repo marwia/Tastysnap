@@ -10,10 +10,10 @@
  *
  */
 module.exports = function(grunt) {
-
+    
 	grunt.config.set('uglify', {
         options: {
-                banner: 'Copyright (c) Mariusz Wiazowski, Matteo Bolognesi',
+                banner: '/* Copyright (c) Mariusz Wiazowski, Matteo Bolognesi */',
                 mangle: true
          },
 		dist: {

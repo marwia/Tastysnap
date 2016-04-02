@@ -5,7 +5,7 @@ var fs = require('fs');
  */
 
 if (process.env.NODE_ENV === 'production') {
-
+    
     module.exports = {
 
         ssl: {
@@ -17,6 +17,6 @@ if (process.env.NODE_ENV === 'production') {
         port: process.env.PORT || 443
 
     };
-
+    
 }
 
