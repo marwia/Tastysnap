@@ -19,7 +19,7 @@
         <form method="GET" class="navbar-form navbar-left top_menu_form" role="search" action="app/search?q">
             <a href="app/search"><div class="glyphicon glyphicon-search pull-left top_menu_search_label"></div></a>
             <input type="text" name="q" ng-model="asyncSelected" class="form-control pull-left top_menu_search_input top_menu_search" placeholder="Cerca"
-            class="form-control">
+            class="form-control" autocomplete="off">
             <!-- 
             <input type="text" name="q" ng-model="asyncSelected" class="form-control pull-left top_menu_search_input top_menu_search" placeholder="Cerca" uib-typeahead="recipe.title for recipe in getLocation($viewValue)"
             typeahead-loading="loadingLocations" typeahead-no-results="noResults" class="form-control">
