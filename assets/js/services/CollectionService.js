@@ -301,7 +301,8 @@ angular.module('CollectionService', [])
                 .then(function(response) {
                     
                     //recipe = response.data;
-                    successCallback(response);
+                    if(successCallback)
+                        successCallback(response);
                     
                 }, function errorCallback(response) {
                     // called asynchronously if an error occurs
