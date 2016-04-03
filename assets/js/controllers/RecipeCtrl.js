@@ -104,7 +104,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
         // gestione paging
         // le più recenti
         $scope.getAll = function (skip, successCB, errorCB) {
-            Recipe.getAll(null, skip, successCB, errorCB);
+            Recipe.getAll("createdAt DESC", skip, successCB, errorCB);
         };
         
         // le più assaggiate

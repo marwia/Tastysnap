@@ -12,6 +12,7 @@ angular.module('CollectionService', [])
         // service body
         var o = {
             collections: [],
+            userCollections: [],
             detailedCollection: {}, // one collection 
         };
         
@@ -150,7 +151,7 @@ angular.module('CollectionService', [])
                     }
                 }
             }).then(function (response) {
-                angular.copy(response.data, o.collections);
+                angular.copy(response.data, o.userCollections);
                 
                 if (successCB)
                     successCB(response);

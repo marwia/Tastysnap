@@ -121,7 +121,7 @@ angular.module('appRoutes', []).config([
                             // carica le ricette
                             postPromise: ['Recipe', function(recipes) {
                                 console.log("resolve home");
-                                return recipes.getAll();
+                                return recipes.getAll("createdAt DESC");
                             }],
                             // carica le collection
                             collectionPromise: ['Collection', '$stateParams', function(collections, $stateParams) {

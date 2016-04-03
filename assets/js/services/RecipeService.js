@@ -64,7 +64,7 @@ angular.module('RecipeService', [])
                 {
                     params: {
                         'skip': skip,
-                        'order': order_by
+                        'sort': order_by
                     }
                 }).then(function(response) {
                     if (skip) {

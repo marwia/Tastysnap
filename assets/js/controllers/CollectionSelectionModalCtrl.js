@@ -22,7 +22,7 @@ angular.module('CollectionSelectionModalCtrl', [])
             // cose aggiunte
             $scope.selectedRecipe = selectedRecipe;
 
-            $scope.collections = Collection.collections;
+            $scope.collections = Collection.userCollections;
             
             // creazione di una nuova collection
             $scope.collectionToCreate = {
