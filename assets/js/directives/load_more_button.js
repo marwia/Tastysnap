@@ -54,11 +54,16 @@ angular.module('sampleApp')
                             skip: $scope.skipValue,
                             successCB: function (response) {
                                 $scope.isLoading = false;
+                            },
+                            errorCB: function (response) {
+                                $scope.isLoading = false;
                             }
                         });
                 };
                 
                 $scope.hasMoreElements = function () {
+                    if (!$scope.elements) { return false; }
+                    
                     if ($scope.elements.length > 0) {
                         return $scope.elements.length % $scope.step == 0;
                     }

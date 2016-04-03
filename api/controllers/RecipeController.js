@@ -131,8 +131,8 @@ module.exports = {
                     foundRecipes[i].viewsCount = foundRecipes[i].views.length;
                     // calcolo dei voti positivi
                     foundRecipes[i].votesCount = 0;
-                    for (var k in foundRecipes.votes) {
-                        if (foundRecipes.votes[k].value > 0) {
+                    for (var k in foundRecipes[i].votes) {
+                        if (foundRecipes[i].votes[k].value > 0) {
                             foundRecipes[i].votesCount++;
                         }
                     }
@@ -146,6 +146,10 @@ module.exports = {
                      */
                     var obj = foundRecipes[i].toObject();
                     delete obj.description;// tolgo la descrizione della ricetta
+                    delete obj.views;
+                    delete obj.votes;
+                    delete obj.comments;
+                    delete obj.trials;
                     recipes.push(obj);
                 }
                 return res.json(recipes);
@@ -197,7 +201,13 @@ module.exports = {
 
                 // conteggi vari
                 foundRecipe.viewsCount = foundRecipe.views.length;
-                foundRecipe.votesCount = foundRecipe.votes.length;// aggiungere verifica sul value positivo
+                // calcolo dei voti positivi
+                foundRecipe.votesCount = 0;
+                for (var k in foundRecipe.votes) {
+                    if (foundRecipe.votes[k].value > 0) {
+                        foundRecipe.votesCount++;
+                    }
+                }
                 foundRecipe.commentsCount = foundRecipe.comments.length;
                 foundRecipe.trialsCount = foundRecipe.trials.length;
 
@@ -542,15 +552,15 @@ module.exports = {
             // get the file name from a path
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
             var fileUrl;
-            
+
             if (process.env.NODE_ENV === 'production') {
                 fileUrl = require('util').format('%s%s', server_name, '/images/' + filename);
-                
+
                 //var filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/')+1);
                 //var uploadLocation = process.cwd() +'/assets/images/uploads/' + filename;
                 var uploadLocation = uploadedFiles[0].fd;
                 var tempLocation = process.cwd() + '/.tmp/public/images/' + filename;
- 
+
                 //Copy the file to the temp folder so that it becomes available immediately
                 fs.createReadStream(uploadLocation).pipe(fs.createWriteStream(tempLocation));
             }
@@ -619,15 +629,15 @@ module.exports = {
             // get the file name from a path
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
             var fileUrl;
-            
+
             if (process.env.NODE_ENV === 'production') {
                 fileUrl = require('util').format('%s%s', server_name, '/images/' + filename);
-                
+
                 //var filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/')+1);
                 //var uploadLocation = process.cwd() +'/assets/images/uploads/' + filename;
                 var uploadLocation = uploadedFiles[0].fd;
                 var tempLocation = process.cwd() + '/.tmp/public/images/' + filename;
- 
+
                 //Copy the file to the temp folder so that it becomes available immediately
                 fs.createReadStream(uploadLocation).pipe(fs.createWriteStream(tempLocation));
             }
@@ -695,15 +705,15 @@ module.exports = {
             // get the file name from a path
             var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
             var fileUrl;
-            
+
             if (process.env.NODE_ENV === 'production') {
                 fileUrl = require('util').format('%s%s', server_name, '/images/' + filename);
-                
+
                 //var filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/')+1);
                 //var uploadLocation = process.cwd() +'/assets/images/uploads/' + filename;
                 var uploadLocation = uploadedFiles[0].fd;
                 var tempLocation = process.cwd() + '/.tmp/public/images/' + filename;
- 
+
                 //Copy the file to the temp folder so that it becomes available immediately
                 fs.createReadStream(uploadLocation).pipe(fs.createWriteStream(tempLocation));
             }
@@ -713,10 +723,10 @@ module.exports = {
 
             Recipe.findOne(recipe.id).exec(function(err, recipe) {
                 if (err) return res.negotiate(err);
-                
+
                 if (recipe.otherImageUrls == null)
                     recipe.otherImageUrls = new Array();
-                    
+
                 recipe.otherImageUrls.push(fileUrl);
                 recipe.save();
                 return res.json(recipe);

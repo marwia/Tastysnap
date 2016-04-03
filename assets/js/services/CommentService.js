@@ -207,9 +207,11 @@ angular.module('CommentService', [])
                         successCB(response);
 
                 }, function errorCallback(response) {
-                    // no comment found for this recipe
-                    recipe.comments = [];
-                    console.info(response);
+                    
+                    if (!skip) {
+                        // no comment found for this recipe
+                        recipe.comments = [];
+                    }
                     if (errorCB)
                         errorCB(response);
                 });
