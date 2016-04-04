@@ -5,6 +5,7 @@
   "description": "TastySnap è il social network sul cibo. Come tale offre una serie di API RESTful.",
   "keywords": [],
   "dependencies": {
+    "aws-sdk": "^2.3.0",
     "bcrypt": "^0.8.3",
     "bcrypt-nodejs": "0.0.3",
     "ejs": "~0.8.4",

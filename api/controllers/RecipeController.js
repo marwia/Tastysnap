@@ -24,6 +24,64 @@ var allowedTypes = ['image/jpeg', 'image/png'];
 var localImagesDir = sails.config.appPath + "/assets/images";
 
 var server_name = "https://tastysnap.com";
+var cdn_url = "https://tastysnapcdn.s3.amazonaws.com/";
+
+/**
+ * Funzioni comuni nell'upload di immagini
+ */
+var localUploadConfiguration = {
+    // don't allow the total upload size to exceed ~10MB
+    maxBytes: 5000000,
+    saveAs: function(file, cb) {
+        var d = new Date();
+        var extension = file.filename.split('.').pop();
+
+        if (extension == 'blob') { extension = 'jpg'; }
+        // generating unique filename with extension
+        var uuid = md5(d.getMilliseconds()) + "." + extension;
+
+        console.log(file.headers['content-type']);
+        // seperate allowed and disallowed file types
+        if (allowedTypes.indexOf(file.headers['content-type']) === -1) {
+            // don't accept not allowed file types
+            return res.badRequest('Not supported file type');
+        } else {
+            // save as allowed files
+            cb(null, localImagesDir + "/" + uuid);
+        }
+    }
+};
+
+var s3Upload = function(err, filesUploaded, recipe, whenDone) {
+    if (err) {
+        return res.badRequest();
+    }
+    // If no files were uploaded, respond with an error.
+    if (filesUploaded.length === 0) {
+        return res.badRequest('No file was uploaded');
+    }
+
+    // eseguo l'upload dell'immagine sul bucket S3
+    S3FileService.uploadS3Object(filesUploaded[0], function(err, uploadedFiles) {
+
+        if (err || !uploadedFiles) {
+            return res.badRequest("Errore nell'upload del file sul bucket S3");
+        }
+
+        var filename = filesUploaded[0].fd.replace(/^.*[\\\/]/, '');
+        var fileUrl = cdn_url + filename;
+
+        // elimino il file temporaneo
+        fs.unlink(filesUploaded[0].fd, function(err) {
+            if (err) {
+                return console.error(err);
+            }
+            console.log("File deleted successfully!");
+        });
+
+        whenDone(fileUrl);
+    });
+};
 
 module.exports = {
     /**
@@ -353,7 +411,24 @@ module.exports = {
                     }
                     console.log("File deleted successfully!");
                 });
-
+            }
+        }
+        else {
+            // eliminazione immagine di copertina
+            if (recipe.coverImageUrl != "") {
+                var filename = recipe.coverImageUrl.split('/').pop();
+                S3FileService.deleteS3Object(filename);
+            }
+            // eliminazione immagine di copertina sfocata
+            if (recipe.blurredCoverImageUrl != "") {
+                var filename = recipe.blurredCoverImageUrl.split('/').pop();
+                S3FileService.deleteS3Object(filename);
+            }
+            // eliminazione delle ulteriori immagini
+            for (var i in recipe.otherImageUrls) {
+                var fileUrl = recipe.otherImageUrls[i];
+                var filename = fileUrl.split('/').pop();
+                S3FileService.deleteS3Object(filename);
             }
         }
 
@@ -522,62 +597,57 @@ module.exports = {
         var coverImage = req.file('image');
         if (!coverImage) { return res.badRequest('No file was found'); }
 
-        coverImage.upload({
-            // don't allow the total upload size to exceed ~10MB
-            maxBytes: 10000000,
-            saveAs: function(file, cb) {
-                var d = new Date();
-                var extension = file.filename.split('.').pop();
+        if (process.env.NODE_ENV === 'production') {
+            coverImage.upload({
+                maxBytes: 5000000,
+                dirname: localImagesDir
 
-                if (extension == 'blob') { extension = 'jpg'; }
-                // generating unique filename with extension
-                var uuid = md5(d.getMilliseconds()) + "." + extension;
+            }, function(err, filesUploaded) {
+                // eseguo l'upload sul bucket s3
+                s3Upload(err, filesUploaded, recipe, function(fileUrl) {
 
-                console.log(file.headers['content-type']);
-                // seperate allowed and disallowed file types
-                if (allowedTypes.indexOf(file.headers['content-type']) === -1) {
-                    // don't accept not allowed file types
-                    return res.badRequest('Not supported file type');
-                } else {
-                    // save as allowed files
-                    cb(null, localImagesDir + "/" + uuid);
-                }
-            }
-        }, function whenDone(err, uploadedFiles) {
-            if (err) { return res.negotiate(err); }
+                    // se la ricetta ha già una immagine di copertina
+                    // elimino l'immagine di copertina vecchia
+                    if (recipe.coverImageUrl) {
+                        var filename = recipe.coverImageUrl.replace(/^.*[\\\/]/, '');
+                        S3FileService.deleteS3Object(filename);
+                    }
 
-            // If no files were uploaded, respond with an error.
-            if (uploadedFiles.length === 0) { return res.badRequest('No file was uploaded'); }
+                    // aggiorno la ricetta
+                    Recipe.update(recipe.id, {
+                        // aggiungo url dell'immagine appena caricata
+                        coverImageUrl: fileUrl,
 
-            // get the file name from a path
-            var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
-            var fileUrl;
-
-            if (process.env.NODE_ENV === 'production') {
-                fileUrl = require('util').format('%s%s', server_name, '/images/' + filename);
-
-                //var filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/')+1);
-                //var uploadLocation = process.cwd() +'/assets/images/uploads/' + filename;
-                var uploadLocation = uploadedFiles[0].fd;
-                var tempLocation = process.cwd() + '/.tmp/public/images/' + filename;
-
-                //Copy the file to the temp folder so that it becomes available immediately
-                fs.createReadStream(uploadLocation).pipe(fs.createWriteStream(tempLocation));
-            }
-            else {
-                fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
-            }
-
-            Recipe.update(recipe.id, {
-
-                // Generate a unique URL where the avatar can be downloaded.
-                coverImageUrl: fileUrl,
-
-            }).exec(function(err, updatedRecipes) {
-                if (err) return res.negotiate(err);
-                return res.json(updatedRecipes[0]);
+                    }).exec(function(err, updatedRecipes) {
+                        if (err) return res.negotiate(err);
+                        return res.json(updatedRecipes[0]);
+                    });
+                });
             });
-        });
+        }
+        else {
+            coverImage.upload(
+                localUploadConfiguration,
+                function whenDone(err, uploadedFiles) {
+                    if (err) { return res.negotiate(err); }
+
+                    // If no files were uploaded, respond with an error.
+                    if (uploadedFiles.length === 0) { return res.badRequest('No file was uploaded'); }
+
+                    // get the file name from a path
+                    var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
+                    var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
+
+                    Recipe.update(recipe.id, {
+                        // aggiungo url dell'immagine appena caricata
+                        coverImageUrl: fileUrl,
+
+                    }).exec(function(err, updatedRecipes) {
+                        if (err) return res.negotiate(err);
+                        return res.json(updatedRecipes[0]);
+                    });
+                });
+        }
     },
 
 
@@ -595,66 +665,59 @@ module.exports = {
         var blurredCoverImage = req.file('image');
         if (!blurredCoverImage) { return res.badRequest('No file was found'); }
 
-        blurredCoverImage.upload({
-            // don't allow the total upload size to exceed ~10MB
-            maxBytes: 10000000,
-            saveAs: function(file, cb) {
-                var d = new Date();
-                var extension = file.filename.split('.').pop();
+        if (process.env.NODE_ENV === 'production') {
+            coverImage.upload({
+                maxBytes: 5000000,
+                dirname: localImagesDir
 
-                if (extension == 'blob') { extension = 'jpg'; }
-                // generating unique filename with extension
-                var uuid = md5(d.getMilliseconds()) + "." + extension;
+            }, function(err, filesUploaded) {
+                // eseguo l'upload sul bucket s3
+                s3Upload(err, filesUploaded, recipe, function(fileUrl) {
+                    
+                    // se la ricetta ha già una immagine di copertina
+                    // elimino l'immagine di copertina vecchia
+                    if (recipe.blurredCoverImageUrl) {
+                        var filename = recipe.blurredCoverImageUrl.replace(/^.*[\\\/]/, '');
+                        S3FileService.deleteS3Object(filename);
+                    }
 
-                console.log(file.headers['content-type']);
-                // seperate allowed and disallowed file types
-                if (allowedTypes.indexOf(file.headers['content-type']) === -1) {
-                    // don't accept not allowed file types
-                    return res.badRequest('Not supported file type');
-                } else {
-                    // save as allowed files
-                    cb(null, localImagesDir + "/" + uuid);
-                }
-            }
-        }, function whenDone(err, uploadedFiles) {
-            if (err) {
-                return res.negotiate(err);
-            }
+                    // aggiorno la ricetta
+                    Recipe.update(recipe.id, {
+                        // aggiungo url dell'immagine appena caricata
+                        blurredCoverImageUrl: fileUrl,
 
-            // If no files were uploaded, respond with an error.
-            if (uploadedFiles.length === 0) {
-                return res.badRequest('No file was uploaded');
-            }
-
-            // get the file name from a path
-            var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
-            var fileUrl;
-
-            if (process.env.NODE_ENV === 'production') {
-                fileUrl = require('util').format('%s%s', server_name, '/images/' + filename);
-
-                //var filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/')+1);
-                //var uploadLocation = process.cwd() +'/assets/images/uploads/' + filename;
-                var uploadLocation = uploadedFiles[0].fd;
-                var tempLocation = process.cwd() + '/.tmp/public/images/' + filename;
-
-                //Copy the file to the temp folder so that it becomes available immediately
-                fs.createReadStream(uploadLocation).pipe(fs.createWriteStream(tempLocation));
-            }
-            else {
-                fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
-            }
-
-            Recipe.update(recipe.id, {
-
-                // Generate a unique URL where the avatar can be downloaded.
-                blurredCoverImageUrl: fileUrl,
-
-            }).exec(function(err, updatedRecipes) {
-                if (err) return res.negotiate(err);
-                return res.json(updatedRecipes[0]);
+                    }).exec(function(err, updatedRecipes) {
+                        if (err) return res.negotiate(err);
+                        return res.json(updatedRecipes[0]);
+                    });
+                });
             });
-        });
+        }
+        else {
+            blurredCoverImage.upload(
+                localUploadConfiguration,
+                function whenDone(err, uploadedFiles) {
+                    if (err) { return res.negotiate(err); }
+
+                    // If no files were uploaded, respond with an error.
+                    if (uploadedFiles.length === 0) {
+                        return res.badRequest('No file was uploaded');
+                    }
+
+                    // get the file name from a path
+                    var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
+                    var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
+
+                    Recipe.update(recipe.id, {
+                        // aggiungo url dell'immagine appena caricata
+                        blurredCoverImageUrl: fileUrl,
+
+                    }).exec(function(err, updatedRecipes) {
+                        if (err) return res.negotiate(err);
+                        return res.json(updatedRecipes[0]);
+                    });
+                });
+        }
     },
 
     /**
@@ -671,67 +734,59 @@ module.exports = {
         var image = req.file('image');
         if (!image) { return res.badRequest('No file was found'); }
 
-        image.upload({
-            // don't allow the total upload size to exceed ~10MB
-            maxBytes: 10000000,
-            saveAs: function(file, cb) {
-                var d = new Date();
-                var extension = file.filename.split('.').pop();
+        if (process.env.NODE_ENV === 'production') {
+            coverImage.upload({
+                maxBytes: 5000000,
+                dirname: localImagesDir
 
-                if (extension == 'blob') { extension = 'jpg'; }
-                // generating unique filename with extension
-                var uuid = md5(d.getMilliseconds()) + "." + extension;
+            }, function(err, filesUploaded) {
+                // eseguo l'upload sul bucket s3
+                s3Upload(err, filesUploaded, recipe, function(fileUrl) {
 
-                console.log(file.headers['content-type']);
-                // seperate allowed and disallowed file types
-                if (allowedTypes.indexOf(file.headers['content-type']) === -1) {
-                    // don't accept not allowed file types
-                    return res.badRequest('Not supported file type');
-                } else {
-                    // save as allowed files
-                    cb(null, localImagesDir + "/" + uuid);
-                }
-            }
-        }, function whenDone(err, uploadedFiles) {
-            if (err) {
-                return res.negotiate(err);
-            }
+                    // aggiorno la ricetta
+                    Recipe.findOne(recipe.id).exec(function(err, recipe) {
+                        if (err) return res.negotiate(err);
 
-            // If no files were uploaded, respond with an error.
-            if (uploadedFiles.length === 0) {
-                return res.badRequest('No file was uploaded');
-            }
+                        if (recipe.otherImageUrls == null)
+                            recipe.otherImageUrls = new Array();
 
-            // get the file name from a path
-            var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
-            var fileUrl;
-
-            if (process.env.NODE_ENV === 'production') {
-                fileUrl = require('util').format('%s%s', server_name, '/images/' + filename);
-
-                //var filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/')+1);
-                //var uploadLocation = process.cwd() +'/assets/images/uploads/' + filename;
-                var uploadLocation = uploadedFiles[0].fd;
-                var tempLocation = process.cwd() + '/.tmp/public/images/' + filename;
-
-                //Copy the file to the temp folder so that it becomes available immediately
-                fs.createReadStream(uploadLocation).pipe(fs.createWriteStream(tempLocation));
-            }
-            else {
-                fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
-            }
-
-            Recipe.findOne(recipe.id).exec(function(err, recipe) {
-                if (err) return res.negotiate(err);
-
-                if (recipe.otherImageUrls == null)
-                    recipe.otherImageUrls = new Array();
-
-                recipe.otherImageUrls.push(fileUrl);
-                recipe.save();
-                return res.json(recipe);
+                        // aggiungo url dell'immagine appena caricata
+                        recipe.otherImageUrls.push(fileUrl);
+                        recipe.save();
+                        return res.json(recipe);
+                    });
+                });
             });
-        });
+        }
+        else {
+            image.upload(
+                localUploadConfiguration,
+                function whenDone(err, uploadedFiles) {
+                    if (err) { return res.negotiate(err); }
+
+                    // If no files were uploaded, respond with an error.
+                    if (uploadedFiles.length === 0) {
+                        return res.badRequest('No file was uploaded');
+                    }
+
+                    // get the file name from a path
+                    var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
+                    var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
+
+                    // aggiorno la ricetta
+                    Recipe.findOne(recipe.id).exec(function(err, recipe) {
+                        if (err) return res.negotiate(err);
+
+                        if (recipe.otherImageUrls == null)
+                            recipe.otherImageUrls = new Array();
+
+                        // aggiungo url dell'immagine appena caricata
+                        recipe.otherImageUrls.push(fileUrl);
+                        recipe.save();
+                        return res.json(recipe);
+                    });
+                });
+        }
     }
 
 

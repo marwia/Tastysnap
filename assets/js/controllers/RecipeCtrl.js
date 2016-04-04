@@ -111,23 +111,5 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
         $scope.getMostTasted = function (skip, successCB, errorCB) {
             Recipe.getAll("trialsCount DESC", skip, successCB, errorCB);
         };
-        
-        /*
-        $scope.skipValue = 0;
-        $scope.isLoading = false;
-        
-        $scope.loadMore = function () {
-            $scope.skipValue += 30;
-            $scope.isLoading = true;
-            Recipe.getAll($scope.skipValue,
-                function (response) {
-                    $scope.isLoading = false;
-            });
-        }
-        
-        $scope.hasMoreElements = function () {
-            return $scope.recipes.length % 30 == 0;
-        }
-        */
-        
+                
     }]);
