@@ -10,29 +10,34 @@
 
 module.exports = {
 
-  attributes: {
-      
-      value : { type: 'Boolean', required: true },
-      
-      typology : {
-        type: 'String',
-        required: true, 
-        enum: ['cheap', 'easy', 'healthy']
-  	  },
-      
-      trial : { 
-    	  model :'TryRecipe',
-    	  required : true
-      }
+    attributes: {
 
-  },
-  
-   /***************************************************************************
-  *                                                                          *
-  * Nome dell'interfaccia di connessione al database relativo                *
-  * a questo modello.                                                        *
-  *                                                                          *
-  ***************************************************************************/
-  connection: 'someMongodbServer'
+        value: {
+            type: 'integer',
+            required: true,
+            max: 5,
+            min: 0
+        },
+
+        typology: {
+            type: 'String',
+            required: true,
+            enum: ['cheap', 'easy', 'healthy']
+        },
+
+        trial: {
+            model: 'TryRecipe',
+            required: true
+        }
+
+    },
+
+    /***************************************************************************
+   *                                                                          *
+   * Nome dell'interfaccia di connessione al database relativo                *
+   * a questo modello.                                                        *
+   *                                                                          *
+   ***************************************************************************/
+    connection: 'someMongodbServer'
 };
 

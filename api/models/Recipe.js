@@ -18,6 +18,9 @@ module.exports = {
 
     title : { type: 'String', required: true },
     
+    // recipe preparation time in minutes
+    preparationTime : { type: 'Integer', required: true },
+    
     // Example: "Dosages for 8 persons"
     dosagesFor : { type: 'Integer', required: true },
     
