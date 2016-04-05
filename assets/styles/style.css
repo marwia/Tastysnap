@@ -60,7 +60,7 @@ body {
 .sidebar_footer{
     position: absolute;
     bottom: 60px;
-    color: #FF8E2A;
+    color: #ff9800;
 }
 
 .tasty_icon_default{
@@ -74,11 +74,11 @@ body {
 }
 
 .tasty_icon:hover{
-    color: #FF8E2A;
+    color: #ff9800;
 }
 
 .tasty_icon_active{
-    color: #FF8E2A;
+    color: #ff9800;
 }
 
 .tasty_load_space{
@@ -121,7 +121,7 @@ a{
 }
 
 a:hover{
-    color: #FF8E2A;
+    color: #ff9800;
     text-decoration: none;
 }
 
@@ -888,7 +888,7 @@ ul.home_navbar{
 
 .home_navbar_item_active>a{
 	color:white !important;
-	border-bottom:1px solid #FF8E2A;
+	border-bottom:1px solid #ff9800;
 }
 
 /* --------------------------------------------------------------- 9 ---------------------------------------------------- */

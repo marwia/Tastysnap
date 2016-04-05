@@ -77,7 +77,7 @@ ul.sidebar .sidebar-list a {
 
 ul.sidebar .sidebar-list a:hover {
   color: #fff;
-  border-left: 3px solid #e99d1a;
+  border-left: 3px solid #ff9800;
   text-indent: 22px;
 }
 
@@ -85,7 +85,7 @@ ul.sidebar .sidebar-list a:hover {
 /* ------------------------------------------------------------------------  ----------------------------------------------------------- */
 ul.sidebar .sidebar-list a.active {
   color: #fff;
-  border-left: 3px solid #e99d1a;
+  border-left: 3px solid #ff9800;
   text-indent: 22px;
 }
 
@@ -196,7 +196,7 @@ ul.sidebar .sidebar-list .menu-icon {
 }
 
 .sidebar_create_recipe {
-    background-color: #FF8E2A;
+    background-color: #ff9800;
     color: white !important;
     position: absolute; 
     top: 225px; 
@@ -205,7 +205,7 @@ ul.sidebar .sidebar-list .menu-icon {
 }
 
 .sidebar_create_recipe:hover{
-    background-color: #FF8E2A;
+    background-color: #ff9800;
     color: white !important;
 }
 
