@@ -12,30 +12,33 @@
     <ul class="sidebar-nav sidebar">
         <div class="sidebar-profile">
             <div class="col-xs-12" align="center">
-                <img src="{{ getUserProfileImage(currentUser) }}" class="image-circle center-block" />
-                <br/> {{ currentUser.name }} {{ currentUser.surname }}
-                <br/>
+                <a href="/app/profile/{{currentUser.id}}" class="link">
+                    <img src="{{ getUserProfileImage(currentUser) }}" class="image-circle center-block" />
+                
+                    <br/> {{ currentUser.name }} {{ currentUser.surname }}
+                    <br/>
+                </a>
                 <span>FABRIANO</span>
             </div>
             <div class="col-xs-6">
-                <a href="#" class="link">
-            {{currentUser.followingCount}} <br/> <span>FOLLOWING</span>
-          </a>
+                <a href="/app/profile/{{currentUser.id}}/following" class="link">
+                    {{currentUser.followingCount}} <br/> <span>FOLLOWING</span>
+                </a>
             </div>
             <div class="col-xs-6">
-                <a href="#" class="link">
-            {{currentUser.followersCount}} <br/> <span>FOLLOWERS</span>
-          </a>
+                <a href="/app/profile/{{currentUser.id}}/followers" class="link">
+                    {{currentUser.followersCount}} <br/> <span>FOLLOWERS</span>
+                </a>
             </div>
             <div class="col-xs-6">
-                <a href="#" class="link">
-            {{currentUser.recipesCount}} <br/> <span>RICETTE</span>
-          </a>
+                <a href="/app/profile/{{currentUser.id}}" class="link">
+                    {{currentUser.recipesCount}} <br/> <span>RICETTE</span>
+                </a>
             </div>
             <div class="col-xs-6">
-                <a href="#" class="link">
-            {{currentUser.collectionsCount}} <br/> <span>RACCOLTE</span>
-          </a>
+                <a href="/app/profile/{{currentUser.id}}/collections" class="link">
+                    {{currentUser.collectionsCount}} <br/> <span>RACCOLTE</span>
+                </a>
             </div>
         </div>
         
