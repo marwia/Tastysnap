@@ -50,6 +50,28 @@
                         </div>
                     </div>
                 </div>
+                                
+                <!-- RIGA 3.5 - TEMPO DI PREPARAZIONE -->
+                <div class="row c_recipe_row">
+                    <!-- categoria ricetta -->
+                    <div class="col-md-4 c_recipe_left">
+                        <span>Tempo totale di preparazione</span>
+                    </div>
+                    <div class="col-md-8 c_recipe_right" ng-class="{ 'has-error': recipeForm.preparation_time.$touched && recipeForm.preparation_time.$invalid }">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <input type="number" class="form-control" name="preparation_time" id="preparation_time" ng-model="recipeToCreate.preparationTime" required
+                                    min="1" max="1000" value="1" placeholder="1"/>
+                                <div class="help-block" ng-messages="recipeForm.preparation_time.$error" ng-if="recipeForm.preparation_time.$touched">
+                                    <div ng-messages-include="templates/validation_messages.html"></div>
+                                </div>
+                            </div>
+                            <div class="col-xs-2">
+                                <span>minuti</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- RIGA 4 - CATEGORIA -->
                 <div class="row c_recipe_row">

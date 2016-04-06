@@ -60,6 +60,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         $scope.recipeToCreate = {
             title: "",
+            preparationTime: 15,
             dosagesFor: "",
             dosagesType: "",
             category: "",
