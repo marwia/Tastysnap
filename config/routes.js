@@ -27,310 +27,315 @@ var ROUTE_PREFIX = blueprintConfig.blueprints.prefix || "";
 // add global prefix to manually defined routes
 // Exclude the first one
 function addGlobalPrefix(routes) {
-  var paths = Object.keys(routes),
-      newRoutes = {};
+    var paths = Object.keys(routes),
+        newRoutes = {};
 
-  if(ROUTE_PREFIX === "") {
-    return routes;
-  }
-  
-  var i=0;
-  paths.forEach(function(path) {
+    if (ROUTE_PREFIX === "") {
+        return routes;
+    }
 
-    var pathParts = path.split(" "),
-        uri = pathParts.pop(),
-        prefixedURI = "", newPath = "";
-      // escludo la prima...
-      if(i != 0)
+    var i = 0;
+    paths.forEach(function(path) {
+
+        var pathParts = path.split(" "),
+            uri = pathParts.pop(),
+            prefixedURI = "", newPath = "";
+
         prefixedURI = ROUTE_PREFIX + uri;
-      else
-        prefixedURI = uri;
 
-      pathParts.push(prefixedURI);
+        pathParts.push(prefixedURI);
 
-      newPath = pathParts.join(" ");
-      // construct the new routes
-      newRoutes[newPath] = routes[path];
-      i++;
-  });
-  
+        newPath = pathParts.join(" ");
+        // construct the new routes
+        newRoutes[newPath] = routes[path];
+        i++;
+    });
 
-  return newRoutes;
+    return newRoutes;
 };
+
+var viewRoutes = {
+    /**
+    * Entry point dell'app AngularJS.
+    * E' importante specificare che si tratta di una GET altrimenti
+    * ogni richiesta verrà reinderizzata qui.
+     * ATTENZIONE è STATA ESCLUSA DALL'AGGIUNGERE IL PREFISSO
+     */
+    'get /': {
+        view: 'index'
+    },
+
+    'get /terms': {
+        view: 'termini_di_servizio'
+    },
+}
 
 
 var apiRoutes = addGlobalPrefix({
 
-  /***************************************************************************
-  *                                                                          *
-  * Make the view located at `views/homepage.ejs` (or `views/homepage.jade`, *
-  * etc. depending on your default view engine) your home page.              *
-  *                                                                          *
-  * (Alternatively, remove this and add an `index.html` file in your         *
-  * `assets` directory)                                                      *
-  *                                                                          *
-  ***************************************************************************/
+    /***************************************************************************
+    *                                                                          *
+    * Make the view located at `views/homepage.ejs` (or `views/homepage.jade`, *
+    * etc. depending on your default view engine) your home page.              *
+    *                                                                          *
+    * (Alternatively, remove this and add an `index.html` file in your         *
+    * `assets` directory)                                                      *
+    *                                                                          *
+    ***************************************************************************/
 
- /**
-  * Entry point dell'app AngularJS.
-  * E' importante specificare che si tratta di una GET altrimenti
-  * ogni richiesta verrà reinderizzata qui.
-  * ATTENZIONE è STATA ESCLUSA DALL'AGGIUNGERE IL PREFISSO
-  */
-  'get /': {
-    view: 'index'
-  },
 
-  /*
-  'get /:something': {
-       target: '/',
-       skipAssets: true
-  },
-  
-  'get /:something/:weft': {
-        target: '/',
-        skipAssets: true
-  },
-  */
-  
 
-  /***************************************************************************
-  *                                                                          *
-  * Custom routes here...                                                    *
-  *                                                                          *
-  *  If a request to a URL doesn't match any of the custom routes above, it  *
-  * is matched against Sails route blueprints. See `config/blueprints.js`    *
-  * for configuration options and examples.                                  *
-  *                                                                          *
-  ***************************************************************************/
+    /*
+    'get /:something': {
+         target: '/',
+         skipAssets: true
+    },
+    
+    'get /:something/:weft': {
+          target: '/',
+          skipAssets: true
+    },
+    */
 
-  /***************************************************************************
-  *                                                                          *
-  * Utenti                                                                   *
-  *                                                                          *
-  ***************************************************************************/
 
-  'get /auth/facebook': 'AuthController.facebook',
-  
-  'get /auth/facebook/callback': 'AuthController.facebookCallback',
-  
-  'get /auth/google': 'AuthController.google',
-  
-  'get /auth/google/callback': 'AuthController.googleCallback',
-  
-  'get /auth/twitter': 'AuthController.twitter',
-  
-  'get /auth/twitter/callback': 'AuthController.twitterCallback',
-  
-  'put /user/:user/follow': 'UserController.follow',
+    /***************************************************************************
+    *                                                                          *
+    * Custom routes here...                                                    *
+    *                                                                          *
+    *  If a request to a URL doesn't match any of the custom routes above, it  *
+    * is matched against Sails route blueprints. See `config/blueprints.js`    *
+    * for configuration options and examples.                                  *
+    *                                                                          *
+    ***************************************************************************/
 
-  'delete /user/:user/follow': 'UserController.unfollow',
+    /***************************************************************************
+    *                                                                          *
+    * Utenti                                                                   *
+    *                                                                          *
+    ***************************************************************************/
 
-  'get /user/:user/follower': 'UserController.getFollowers',
+    'get /auth/facebook': 'AuthController.facebook',
 
-  'get /user/:user/following': 'UserController.getFollowing',
+    'get /auth/facebook/callback': 'AuthController.facebookCallback',
 
-  'get /user/following/:user': 'UserController.areYouFollowing',
+    'get /auth/google': 'AuthController.google',
 
-  'get /user/:user/following/:target_user': 'UserController.isFollowing',
-  
-  'get /user/:id/upvoted_recipe': 'UserController.findUserUpvotedRecipes',
-  
-  'get /user/:id/viewed_recipe': 'UserController.findUserViewedRecipes',
-  
-  'get /user/:id/tried_recipe': 'UserController.findUserTriedRecipes',
-  
-  'get /user/:id/following_collections': 'UserController.findUserFollwingCollections',
-  
-  /***************************************************************************
-  *                                                                          *
-  * Ricette.                                                                 *
-  *                                                                          *
-  ***************************************************************************/
-  
-  // definisco solo le azioni non standard
-  
-  'put /recipe/:recipe/upload_cover_image': 'RecipeController.uploadCoverImage',
-  
-  'put /recipe/:recipe/upload_blurred_cover_image': 'RecipeController.uploadBlurredCoverImage',
-  
-  'put /recipe/:recipe/upload_image': 'RecipeController.uploadImage',
-  
-  'get /recipe/categories': 'RecipeController.getRecipeCategories',
-  
-  'get /recipe/dosage_types': 'RecipeController.getRecipeDosageTypes',
-  
-  /***************************************************************************
-  *                                                                          *
-  * Passi di ricette.                                                        *
-  *                                                                          *
-  ***************************************************************************/
+    'get /auth/google/callback': 'AuthController.googleCallback',
 
-  'post /recipe/:recipe/step': 'RecipeStepController.create',
-  
-  'delete /recipe/:recipe/step/:step': 'RecipeStepController.destroy',
-  
-  'get /recipe/:recipe/step': 'RecipeStepController.findSteps',
-  
-  'put /recipe/:recipe/step/:step': 'RecipeStepController.update',
-  
-  /***************************************************************************
-  *                                                                          *
-  * Voti a ricette.                                                          *
-  *                                                                          *
-  ***************************************************************************/
+    'get /auth/twitter': 'AuthController.twitter',
 
-  'post /recipe/:recipe/upvote': 'VoteRecipeController.createUpvote',
+    'get /auth/twitter/callback': 'AuthController.twitterCallback',
 
-  'post /recipe/:recipe/downvote': 'VoteRecipeController.createDownvote',
+    'put /user/:user/follow': 'UserController.follow',
 
-  'delete /recipe/:recipe/vote': 'VoteRecipeController.destroy',
+    'delete /user/:user/follow': 'UserController.unfollow',
 
-  'get /recipe/:recipe/upvote': 'VoteRecipeController.findUpvotes',
+    'get /user/:user/follower': 'UserController.getFollowers',
 
-  'get /recipe/:recipe/downvote': 'VoteRecipeController.findDownvotes',
+    'get /user/:user/following': 'UserController.getFollowing',
 
-  'get /recipe/:recipe/voted': 'VoteRecipeController.checkVote',
-  
-  /***************************************************************************
-  *                                                                          *
-  * Prove di ricette.                                                        *
-  *                                                                          *
-  ***************************************************************************/
+    'get /user/following/:user': 'UserController.areYouFollowing',
 
-  'post /recipe/:recipe/try': 'TryRecipeController.create',
+    'get /user/:user/following/:target_user': 'UserController.isFollowing',
 
-  'delete /recipe/:recipe/try': 'TryRecipeController.destroy',
+    'get /user/:id/upvoted_recipe': 'UserController.findUserUpvotedRecipes',
 
-  'get /recipe/:recipe/try': 'TryRecipeController.find',
+    'get /user/:id/viewed_recipe': 'UserController.findUserViewedRecipes',
 
-  'get /recipe/:recipe/tried': 'TryRecipeController.checkTry',
-  
-  'post /recipe/:recipe/try/detail': 'TryRecipeDetailController.create',
+    'get /user/:id/tried_recipe': 'UserController.findUserTriedRecipes',
 
-  'delete /recipe/:recipe/try/detail': 'TryRecipeDetailController.destroy',
-  
-  'put /recipe/:recipe/try/detail': 'TryRecipeDetailController.update',
-  
-  'get /try/detail/typologies': 'TryRecipeDetailController.getTryDetailTypologies',
-  
-  /***************************************************************************
-  *                                                                          *
-  * View di ricette.                                                         *
-  *                                                                          *
-  ***************************************************************************/
-  
-  'post /recipe/:recipe/view': 'ViewRecipeController.create',
+    'get /user/:id/following_collections': 'UserController.findUserFollwingCollections',
 
-  /***************************************************************************
-  *                                                                          *
-  * Commenti a ricette.                                                      *
-  *                                                                          *
-  ***************************************************************************/
+    /***************************************************************************
+    *                                                                          *
+    * Ricette.                                                                 *
+    *                                                                          *
+    ***************************************************************************/
 
-  'post /recipe/:recipe/comment' : 'CommentController.create',
+    // definisco solo le azioni non standard
 
-  'delete /recipe/:recipe/comment/:id' : 'CommentController.destroy',
+    'put /recipe/:recipe/upload_cover_image': 'RecipeController.uploadCoverImage',
 
-  'put /recipe/:recipe/comment/:id' : 'CommentController.update',
+    'put /recipe/:recipe/upload_blurred_cover_image': 'RecipeController.uploadBlurredCoverImage',
 
-  'get /recipe/:recipe/comment' : 'CommentController.find',
+    'put /recipe/:recipe/upload_image': 'RecipeController.uploadImage',
 
-  'get /recipe/:recipe/comment/:id' : 'CommentController.findOne',
-  
-  /***************************************************************************
-  *                                                                          *
-  * Voti a commenti                                                          *
-  *                                                                          *
-  ***************************************************************************/
-  
-  'post /comment/:comment/upvote': 'VotecommentController.createUpvote',
+    'get /recipe/categories': 'RecipeController.getRecipeCategories',
 
-  'post /comment/:comment/downvote': 'VotecommentController.createDownvote',
+    'get /recipe/dosage_types': 'RecipeController.getRecipeDosageTypes',
 
-  'delete /comment/:comment/vote': 'VotecommentController.destroy',
+    /***************************************************************************
+    *                                                                          *
+    * Passi di ricette.                                                        *
+    *                                                                          *
+    ***************************************************************************/
 
-  'get /comment/:comment/upvote': 'VotecommentController.findUpvotes',
+    'post /recipe/:recipe/step': 'RecipeStepController.create',
 
-  'get /comment/:comment/downvote': 'VotecommentController.findDownvotes',
+    'delete /recipe/:recipe/step/:step': 'RecipeStepController.destroy',
 
-  'get /comment/:comment/voted': 'VotecommentController.checkVote',
+    'get /recipe/:recipe/step': 'RecipeStepController.findSteps',
 
-  /***************************************************************************
-  *                                                                          *
-  * Collezioni di ricette.                                                   *
-  *                                                                          *
-  ***************************************************************************/
-  
-  'get /collection/:collection' : 'CollectionController.findOne',
+    'put /recipe/:recipe/step/:step': 'RecipeStepController.update',
 
-  'put /collection/:collection/recipe' : 'CollectionController.addRecipe',
+    /***************************************************************************
+    *                                                                          *
+    * Voti a ricette.                                                          *
+    *                                                                          *
+    ***************************************************************************/
 
-  'delete /collection/:collection/recipe' : 'CollectionController.removeRecipe',
+    'post /recipe/:recipe/upvote': 'VoteRecipeController.createUpvote',
 
-  'get /collection/:collection/recipe' : 'CollectionController.getRecipes',
+    'post /recipe/:recipe/downvote': 'VoteRecipeController.createDownvote',
 
-  'put /collection/:collection/follow': 'CollectionController.follow',
+    'delete /recipe/:recipe/vote': 'VoteRecipeController.destroy',
 
-  'delete /collection/:collection/follow': 'CollectionController.unfollow',
+    'get /recipe/:recipe/upvote': 'VoteRecipeController.findUpvotes',
 
-  'get /collection/:collection/follower': 'CollectionController.getFollowers',
+    'get /recipe/:recipe/downvote': 'VoteRecipeController.findDownvotes',
 
-  'get /collection/:collection/following': 'CollectionController.areYouFollowing',
-  
-  /***************************************************************************
-  *                                                                          *
-  * View di ricette.                                                         *
-  *                                                                          *
-  ***************************************************************************/
-  
-  'post /collection/:collection/view': 'ViewCollectionController.create',
+    'get /recipe/:recipe/voted': 'VoteRecipeController.checkVote',
 
-  /***************************************************************************
-  *                                                                          *
-  * Ingredienti di ricette.                                                  *
-  *                                                                          *
-  ***************************************************************************/
+    /***************************************************************************
+    *                                                                          *
+    * Prove di ricette.                                                        *
+    *                                                                          *
+    ***************************************************************************/
 
-  'post /recipe/:recipe/ingredient_group' : 'IngredientGroupController.create',
+    'post /recipe/:recipe/try': 'TryRecipeController.create',
 
-  'put /recipe/:recipe/ingredient_group/:ingredient_group' : 'IngredientGroupController.update',
+    'delete /recipe/:recipe/try': 'TryRecipeController.destroy',
 
-  'delete /recipe/:recipe/ingredient_group/:ingredient_group' : 'IngredientGroupController.delete',
-  
+    'get /recipe/:recipe/try': 'TryRecipeController.find',
 
-  'post /recipe/:recipe/ingredient_group/:ingredient_group/ingredient' : 'IngredientController.create',
+    'get /recipe/:recipe/tried': 'TryRecipeController.checkTry',
 
-  'put /recipe/:recipe/ingredient_group/:ingredient_group/ingredient/:ingredient' : 'IngredientController.update',
+    'post /recipe/:recipe/try/detail': 'TryRecipeDetailController.create',
 
-  'delete /recipe/:recipe/ingredient_group/:ingredient_group/ingredient/:ingredient' : 'IngredientController.delete',
-  
-  
-  'get /ingredient/unit_of_measure': 'IngredientController.getIngredientUnitOfMeasure',
-  
-  'get /ingredientgroup/:id/ingredients': 'IngredientController.getIngredientsGroupIngredients',
-  
-  /***************************************************************************
-  *                                                                          *
-  * Prodotti                                                                 *
-  *                                                                          *
-  ***************************************************************************/
-  
-  'get /product/groups': 'ProductController.getProductGroups'
+    'delete /recipe/:recipe/try/detail': 'TryRecipeDetailController.destroy',
+
+    'put /recipe/:recipe/try/detail': 'TryRecipeDetailController.update',
+
+    'get /try/detail/typologies': 'TryRecipeDetailController.getTryDetailTypologies',
+
+    /***************************************************************************
+    *                                                                          *
+    * View di ricette.                                                         *
+    *                                                                          *
+    ***************************************************************************/
+
+    'post /recipe/:recipe/view': 'ViewRecipeController.create',
+
+    /***************************************************************************
+    *                                                                          *
+    * Commenti a ricette.                                                      *
+    *                                                                          *
+    ***************************************************************************/
+
+    'post /recipe/:recipe/comment': 'CommentController.create',
+
+    'delete /recipe/:recipe/comment/:id': 'CommentController.destroy',
+
+    'put /recipe/:recipe/comment/:id': 'CommentController.update',
+
+    'get /recipe/:recipe/comment': 'CommentController.find',
+
+    'get /recipe/:recipe/comment/:id': 'CommentController.findOne',
+
+    /***************************************************************************
+    *                                                                          *
+    * Voti a commenti                                                          *
+    *                                                                          *
+    ***************************************************************************/
+
+    'post /comment/:comment/upvote': 'VotecommentController.createUpvote',
+
+    'post /comment/:comment/downvote': 'VotecommentController.createDownvote',
+
+    'delete /comment/:comment/vote': 'VotecommentController.destroy',
+
+    'get /comment/:comment/upvote': 'VotecommentController.findUpvotes',
+
+    'get /comment/:comment/downvote': 'VotecommentController.findDownvotes',
+
+    'get /comment/:comment/voted': 'VotecommentController.checkVote',
+
+    /***************************************************************************
+    *                                                                          *
+    * Collezioni di ricette.                                                   *
+    *                                                                          *
+    ***************************************************************************/
+
+    'get /collection/:collection': 'CollectionController.findOne',
+
+    'put /collection/:collection/recipe': 'CollectionController.addRecipe',
+
+    'delete /collection/:collection/recipe': 'CollectionController.removeRecipe',
+
+    'get /collection/:collection/recipe': 'CollectionController.getRecipes',
+
+    'put /collection/:collection/follow': 'CollectionController.follow',
+
+    'delete /collection/:collection/follow': 'CollectionController.unfollow',
+
+    'get /collection/:collection/follower': 'CollectionController.getFollowers',
+
+    'get /collection/:collection/following': 'CollectionController.areYouFollowing',
+
+    /***************************************************************************
+    *                                                                          *
+    * View di ricette.                                                         *
+    *                                                                          *
+    ***************************************************************************/
+
+    'post /collection/:collection/view': 'ViewCollectionController.create',
+
+    /***************************************************************************
+    *                                                                          *
+    * Ingredienti di ricette.                                                  *
+    *                                                                          *
+    ***************************************************************************/
+
+    'post /recipe/:recipe/ingredient_group': 'IngredientGroupController.create',
+
+    'put /recipe/:recipe/ingredient_group/:ingredient_group': 'IngredientGroupController.update',
+
+    'delete /recipe/:recipe/ingredient_group/:ingredient_group': 'IngredientGroupController.delete',
+
+
+    'post /recipe/:recipe/ingredient_group/:ingredient_group/ingredient': 'IngredientController.create',
+
+    'put /recipe/:recipe/ingredient_group/:ingredient_group/ingredient/:ingredient': 'IngredientController.update',
+
+    'delete /recipe/:recipe/ingredient_group/:ingredient_group/ingredient/:ingredient': 'IngredientController.delete',
+
+
+    'get /ingredient/unit_of_measure': 'IngredientController.getIngredientUnitOfMeasure',
+
+    'get /ingredientgroup/:id/ingredients': 'IngredientController.getIngredientsGroupIngredients',
+
+    /***************************************************************************
+    *                                                                          *
+    * Prodotti                                                                 *
+    *                                                                          *
+    ***************************************************************************/
+
+    'get /product/groups': 'ProductController.getProductGroups'
 
 });
 
 var paths = Object.keys(apiRoutes);
 
-  //This automatically serves all routes, apart from /api/** routes to ember
-  //(which will be initialized in assets/index.html). This route needs to be
-  //at the very bottom if you want to server other routes through Sails, because they are matched in order
-  
-  /*
-  Credo che la regex significhi esegui questa route se non contiene la parola api ne la parola csrfToken
-  */
-apiRoutes['get *'] = {view: 'index', skipAssets: true, skipRegex: /^\/api\/.*$|csrfToken/ };
+//This automatically serves all routes, apart from /api/** routes to ember
+//(which will be initialized in assets/index.html). This route needs to be
+//at the very bottom if you want to server other routes through Sails, because they are matched in order
 
-//console.log(apiRoutes);
+/*
+Credo che la regex significhi esegui questa route se non contiene la parola api ne la parola csrfToken
+(ne view aggiunte in questo modo: "|^\/prova" aggiunta prima dell'ultimo "/") 
+*/
+apiRoutes['get *'] = { view: 'index', skipAssets: true, skipRegex: /^\/api\/.*$|csrfToken|^\/terms/ };
 
-module.exports.routes = apiRoutes;
+// ritorno il merge dei due oggetti contenenti routes
+var extend = require('util')._extend
+module.exports.routes = extend(apiRoutes, viewRoutes);
