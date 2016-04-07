@@ -20,6 +20,7 @@ angular.module('CollectionCtrl', []).controller('CollectionCtrl', [
 	
         // espongo allo scope le ricette del servizio Recipe
         $scope.collections = Collection.collections;
+        $scope.userCollections = Collection.userCollections;
         $scope.detailedCollection = Collection.detailedCollection;
         
         // espongo i metodi del servizio User
