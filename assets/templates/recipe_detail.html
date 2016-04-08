@@ -123,12 +123,14 @@
                 </div>
                 </div>
 
-                <!-- INGREDIENTI -->
+                <!-- PREPARAZIONE -->
                 <div class="col-md-8 col-sm-8 recipe_col_8 recipe_generic_con">
                 <div class="row recipe_ing_con">
                     <div class="col-md-12">
-                        <div class="recipe_sub_title">PREPARAZIONE</div>
-                        <span>Tempo di preparazione: {{detailedRecipe.preparationTime}} minuti</span>
+                        <div class="recipe_sub_title">
+                            PREPARAZIONE
+                            <span class="pull-right">Tempo di preparazione: {{detailedRecipe.preparationTime}} minuti</span>
+                        </div>
                     </div>
                     <div class="col-md-12">
                         <div class="media" ng-repeat="step in detailedRecipe.steps">
