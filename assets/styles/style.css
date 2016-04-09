@@ -341,7 +341,6 @@ a:hover{
 }
 
 .login_body{
-    background: url("imm/login.jpg") no-repeat center center fixed; /* example */
 	background-size:cover;
 	padding:0;
 }
