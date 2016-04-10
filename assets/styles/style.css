@@ -1122,7 +1122,7 @@ tr.recipe_sp_3_tr{
 }
 
 .recipe_prep_step{
-    background-color: black;
+    background-color: #dedede;
     color: white;
     width: 45px;
     height: 45px;
@@ -1261,7 +1261,7 @@ tr.recipe_sp_3_tr{
 /* ------------------------------------------------------------- CREATE RECIPE -------------------------------------------------- */
 
 .c_recipe_row{
-    background-color: rgb(45, 45, 45);
+    background-color: #dedede;
     margin:0;
     
     -webkit-transition: all 0.3s ease-in-out;
@@ -1273,7 +1273,7 @@ tr.recipe_sp_3_tr{
 
 .c_recipe_left{
     text-align:right;
-    color:white;
+    color:black;
 }
 
 .c_recipe_right{
@@ -1340,6 +1340,21 @@ tr.recipe_sp_3_tr{
 	-ms-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
+}
+
+.recipe_create_page_header{
+    font-size: 50px;
+    color: #dedede;
+    
+}
+
+.recipe_create_description{
+    font-size: 87%;
+    color: #635A57;
+}
+
+.table-borderless tbody tr td, .table-borderless tbody tr th, .table-borderless thead tr th {
+    border: none;
 }
 
 .recipe_create_ingredient_close{color:black;}
