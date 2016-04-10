@@ -148,6 +148,11 @@ module.exports.policies = {
     'create' : ['isAuthorized', 'findRecipe', 'findUserTryRecipe'],
     'destroy' : ['isAuthorized', 'findRecipe', 'findUserTryRecipe'],
     'update' : ['isAuthorized', 'findRecipe', 'findUserTryRecipe']
+  },
+  
+  'ReportRecipeController' : {
+    'create' : ['isAuthorized', 'findRecipe'],
+    'find' : 'findRecipe'
   }
 
   /***************************************************************************

@@ -377,6 +377,33 @@ angular.module('RecipeService', [])
                     recipe.userView = response.data;
                 });
         };
+        
+        /**
+         * Servizio per comunicare che una ricetta è stata segnalata
+         * dall'utente loggato.
+         * Disponibile solo su un dettaglio di una ricetta.
+         */
+        o.createReport = function(recipeId, notes, successCallback, errorCallback) {
+            return $http.post(
+                server_prefix + '/recipe/' + recipeId + '/report',
+                notes,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                })
+                .then(function(response) {
+                    //nothing
+                    if (successCallback) 
+                        successCallback(response);
+                }
+                , function(response) {
+                    console.log(response);
+                    
+                    if (errorCallback)
+                        errorCallback(response);
+                });
+        };
 
 
         /*

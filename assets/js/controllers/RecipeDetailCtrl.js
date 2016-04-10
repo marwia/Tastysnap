@@ -87,6 +87,42 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
                 size: 'sm'
             });
         };
+        
+        // MODALE PER CONFERMARE LA SEGNALAZIONE DI UNA RICETTA
+
+        $scope.openReportModal = function(selectedRecipe) {
+            $uibModal.open({
+                animation: true,
+                templateUrl: 'templates/recipe_report_modal.html',
+                controller: function($uibModalInstance, $scope) {
+                    // passaggio paramteri
+                    $scope.loading = false;
+                    $scope.notes = "";
+                    $scope.selectedRecipe = selectedRecipe;
+                    // azioni possibili all'interno della modale
+                    $scope.ok = function() {
+                        $scope.loading = true
+
+                        Recipe.createReport(selectedRecipe.id, $scope.notes,
+                            function(response) {
+                                //do what you need here
+                                $scope.loading = false;
+                                $uibModalInstance.dismiss('cancel');
+                                //$state.go('app.home.most_recent');
+
+                            }, function(response) {
+                                // errore
+                                $scope.loading = false;
+                            });
+                    };
+
+                    $scope.cancel = function() {
+                        $uibModalInstance.dismiss('cancel');
+                    };
+                },
+                size: 'md'
+            });
+        };
 
         //mi ritorna la data leggibile
         $scope.formatDate = function(date) {

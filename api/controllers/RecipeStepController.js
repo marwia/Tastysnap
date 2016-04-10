@@ -29,7 +29,7 @@ module.exports = {
      *     HTTP/1.1 200 OK
      *     {
      *      {
-     *        "description": "Soffriggere la cipolla nella tabella con un filo d'olio.",
+     *        "description": "Soffriggere la cipolla nella padella con un filo d'olio.",
      *        "seq_number": 1,
      *        "recipe": "55cc9b54e75edbb10e65089c",
      *        "createdAt": "2015-09-09T09:53:20.041Z",

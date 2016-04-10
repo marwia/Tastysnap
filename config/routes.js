@@ -206,6 +206,16 @@ var apiRoutes = addGlobalPrefix({
     'get /recipe/:recipe/downvote': 'VoteRecipeController.findDownvotes',
 
     'get /recipe/:recipe/voted': 'VoteRecipeController.checkVote',
+    
+    /***************************************************************************
+    *                                                                          *
+    * Segnalazioni di ricette.                                                 *
+    *                                                                          *
+    ***************************************************************************/
+    
+    'post /recipe/:recipe/report': 'ReportRecipeController.create',
+    
+    'get /recipe/:recipe/report': 'ReportRecipeController.find',
 
     /***************************************************************************
     *                                                                          *

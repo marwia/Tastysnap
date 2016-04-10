@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <h3 class="modal-title text-center">Segnala la ricetta come non appropriata</strong></h3>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Note dell'utente' -->
+            <label class="control-label">Aggiunti dettagli per la tua segnalazione (opzionale)</label>
+            <textarea style="resize: none;" rows="3" class="form-control modal-add-recipe-to-collection_input_text" placeholder="Aggiungi note" ng-model="notes"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-danger" type="button" ng-click="ok()">Segnala <i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Annulla</button>
+</div>

@@ -20,9 +20,10 @@
             <div class="col-md-8 col-sm-8 recipe_col_8 recipe_sp_1 recipe_generic_con">
                 <!-- +aggiungi - condividi -->
                 <div class="recipe_sp_1_1 text-right">
+                    <span ng-click="openReportModal(detailedRecipe)" class="recipe_span_pointer"><i class="fa fa-exclamation-circle"></i> Sgnala</span>
                     <span ng-show="isRecipeAuthor(detailedRecipe)" ng-click="openEliminationModal(detailedRecipe)" class="recipe_span_pointer"><i class="fa fa-trash-o"></i> Elimina</span>
-                    <span ng-click="openCollectionSelectionModal(detailedRecipe)"><i class="fa fa-plus"></i> Aggiungi a</span>
-                    <span><i class="fa fa-share-alt"></i> Condividi</span>
+                    <span ng-click="openCollectionSelectionModal(detailedRecipe)" class="recipe_span_pointer"><i class="fa fa-plus"></i> Aggiungi a</span>
+                    <span class="recipe_span_pointer"><i class="fa fa-share-alt"></i> Condividi</span>
                 </div>
                 <!-- profilo -->
                 <div class="recipe_sp_1_2">
