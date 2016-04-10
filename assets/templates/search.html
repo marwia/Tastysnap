@@ -1,167 +1,181 @@
-<!-- Navbar, per la ricerca avanzata -->
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" ng-click="isCollapsed = !isCollapsed" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <span style="margin-top:15px;"class="navbar-brand">Ricerca Avanzata</span>
-        </div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Ricerca Avanzata -->
+        <div class="col-xs-12 col-sm-12 col-md-3 pull-right" style="color:white;">
+            <h3 class="text-center">Ricerca Avanzata</h3>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="uib-collapse navbar-collapse row" uib-collapse="isCollapsed">
-            <form class="form-inline navbar-form navbar-left" role="search">
-                <!-- input ricerca -->
+            <form class="form-horizontal text-right">
+                <!-- ricerca input -->
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Cerca" value="{{q}}">
+                    <div class="col-md-12">
+                        <label for="" class="col-md-12 control-label">Ricerca</label>
+                    </div>
+                    <div class="col-md-12">
+                        <input type="text" class="form-control" id="Search" value="{{q}}">
+                    </div>
                 </div>
+
                 <!-- scelta in (ricette, raccolte, profili) -->
                 <div class="form-group">
-                    <p class="navbar-text">
-                        Ricerca in:
+                    <div class="col-md-12">
+                        <label for="" class="col-md-12 control-label">Ricerca:</label>
+                    </div>
+                    <div class="col-md-12">
                         <select class="form-control" ng-model="selectedItem" ng-options="item as item.name for item in items"></select>
-                    </p>
+                    </div>
+                </div>
+
+                <!-- div che viene mostrato se seleziona la categoria ricette -->
+                <div style="width:100%;" class="pull-left" ng-show="selectedItem.id == 2">
+
+                    <!-- Riga -->
+                    <div class="col-md-12">
+                        <hr/>
+                    </div>
+
+                    <!-- Portata -->
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label for="" class="control-label">Categoria:</label>
+                        </div>
+                        <div class="col-md-12">
+                            <select class="form-control search_advaced_input" ng-model="selectedItem2" ng-options="item2 as item2.name for item2 in items2"></select>
+                        </div>
+                    </div>
+
+                    <!-- Tempo di preparazione -->
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label for="" class="col-md-12 control-label"><i class="fa fa-clock-o"></i></label>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="number" name="" min="1" class="form-control search_advaced_input">
+                        </div>
+                    </div>
+
+                    <!-- Difficioltà -->
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label for="" class="col-md-12 control-label">Difficoltà: </label>
+                        </div>
+                        <div class="col-md-12">
+                            <select class="form-control search_advaced_input" ng-model="selectedItem3" ng-options="item3 as item3.name for item3 in items3"></select>
+                        </div>
+                    </div>
+
+                    <!-- Costo -->
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label for="" class="col-md-12 control-label">Costo:</label>
+                        </div>
+                        <div class="col-md-12">
+                            <select class="form-control search_advaced_input" ng-model="selectedItem4" ng-options="item4 as item4.name for item4 in items4"></select>
+                        </div>
+                    </div>
+
+                    <!-- Calorie -->
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label for="" class="col-md-12 control-label">Calorie:</label>
+                        </div>
+                        <div class="col-md-12">
+                            <select class="form-control search_advaced_input" ng-model="selectedItem5" ng-options="item5 as item5.name for item5 in items5"></select>
+                        </div>
+                    </div>
                 </div>
             </form>
-            <!-- div che viene mostrato se seleziona la categoria ricette -->
-            <div style="width:100%; border-top: 1px solid;" class="pull-left form-inline" ng-show="selectedItem.id == 2">
-                <!-- Portata -->
-                <div class="form-group">
-                    <p class="navbar-text">
-                        Categoria: 
-                        <select class="form-control" ng-model="selectedItem2" ng-options="item2 as item2.name for item2 in items2"></select>
-                    </p>
-                </div>
-                
-                <!-- Tempo di preparazione -->
-                <div class="form-group">
-                    <p class="navbar-text">
-                        <i class="fa fa-clock-o"></i> 
-                        <input type="number" name="" min="1">
-                    </p>
-                </div>
-                
-                <!-- Difficioltà -->
-                <div class="form-group">
-                    <p class="navbar-text">
-                        Difficoltà:
-                        <select class="form-control" ng-model="selectedItem3" ng-options="item3 as item3.name for item3 in items3"></select>
-                    </p>
-                </div>
-                
-                <!-- Costo -->
-                <div class="form-group">
-                    <p class="navbar-text">
-                        Costo:
-                        <select class="form-control" ng-model="selectedItem4" ng-options="item4 as item4.name for item4 in items4"></select>
-                    </p>
-                </div>
-                
-                <!-- Calorie -->
-                <div class="form-group">
-                    <p class="navbar-text">
-                        Calorie:
-                        <select class="form-control" ng-model="selectedItem5" ng-options="item5 as item5.name for item5 in items5"></select>
-                    </p>
-                </div>
-                
-                <div class="clearfix"></div>
-            </div>
         </div>
         
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container-fluid -->
-</nav>
+        <!-- risultati ricerca -->
+        <div class="col-md-9 pull-left">
+            <!-- -------------------------------- ricette -------------------------------- -->
+            <div ng-show="recipes.length > 0">
+                <!-- container card -->
+                <div class="row tasty_container text-center tasty_title_category tasty_load_space">
+                    <div class="col-md-4">
+                        <hr class="tasty_title_bar"></hr>
+                    </div>
+                    <div class="col-md-4">
+                        <h3 class="tasty_title_text">{{recipes.length}} ricette trovate per {{q}}</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <hr class="tasty_title_bar"></hr>
+                    </div>
+                </div>
 
-<!-- -------------------------------- ricette -------------------------------- -->
-<div ng-show="recipes.length > 0">
-    <!-- container card -->
-    <div class="row tasty_container text-center tasty_title_category tasty_load_space">
-        <div class="col-md-4">
-            <hr class="tasty_title_bar"></hr>
+                <!-- RECIPE CARD -->
+                <div class="row tasty_container text-center" ng-controller="RecipeCtrl">
+
+                    <!-- basic card -->
+                    <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
+                    toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" ng-repeat="recipe in recipes" ng-init="checkVote(recipe)"></recipe-card>
+                    <!-- fine card -->
+                </div>
+                <!-- fine tasty_container -->
+
+                <!-- button carica altro -->
+                <div class="row tasty_container text-center tasty_load_space">
+                    <load-more-button elements="recipes" on-click-function="loadMoreRecipes(skip, successCB, errorCB)" step="30"></load-more-button>
+                </div>
+            </div>
+
+            <!-- -------------------------------- raccolte -------------------------------- -->
+            <div ng-show="collections.length > 0">
+                <!-- container card -->
+                <div class="row tasty_container text-center tasty_title_category tasty_load_space">
+                    <div class="col-md-4">
+                        <hr class="tasty_title_bar"></hr>
+                    </div>
+                    <div class="col-md-4">
+                        <h3 class="tasty_title_text">{{collections.length}} raccolte trovate per {{q}}</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <hr class="tasty_title_bar"></hr>
+                    </div>
+                </div>
+
+                <!-- container card -->
+                <div class="row tasty_container text-center tasty_load_space">
+
+                    <!-- collection card -->
+                    <collection-card collection="collection" ng-repeat="collection in collections"></collection-card>
+                    <!-- collection card -->
+                </div>
+
+                <!-- button carica altro -->
+                <div class="row tasty_container text-center tasty_load_space">
+                    <load-more-button elements="collections" on-click-function="loadMoreCollections(skip, successCB, errorCB)" step="30"></load-more-button>
+                </div>
+            </div>
+
+            <!-- -------------------------------- utenti -------------------------------- -->
+
+            <div ng-show="users.length > 0">
+                <div class="row tasty_container text-center tasty_title_category tasty_load_space">
+                    <div class="col-md-4">
+                        <hr class="tasty_title_bar"></hr>
+                    </div>
+                    <div class="col-md-4">
+                        <h3 class="tasty_title_text">{{users.length}} persone trovate per {{q}}</h3></div>
+                    <div class="col-md-4">
+                        <hr class="tasty_title_bar"></hr>
+                    </div>
+                </div>
+
+                <!-- profile's cards -->
+                <div class="row tasty_container text-center tasty_load_space">
+
+                    <!-- user card -->
+                    <user-card user="user" ng-repeat="user in users"></user-card>
+                    <!-- user card -->
+                </div>
+
+                <!-- button carica altro -->
+                <div class="row tasty_container text-center tasty_load_space">
+                    <load-more-button elements="users" on-click-function="loadMoreUsers(skip, successCB, errorCB)" step="30"></load-more-button>
+                </div>
+            </div>
         </div>
-        <div class="col-md-4">
-            <h3 class="tasty_title_text">{{recipes.length}} ricette trovate per {{q}}</h3>
-        </div>
-        <div class="col-md-4">
-            <hr class="tasty_title_bar"></hr>
-        </div>
-    </div>
 
-    <!-- RECIPE CARD -->
-    <div class="row tasty_container text-center" ng-controller="RecipeCtrl">
-
-        <!-- basic card -->
-        <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
-        toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" ng-repeat="recipe in recipes" ng-init="checkVote(recipe)"></recipe-card>
-        <!-- fine card -->
-    </div>
-    <!-- fine tasty_container -->
-
-    <!-- button carica altro -->
-    <div class="row tasty_container text-center tasty_load_space">
-        <load-more-button elements="recipes" on-click-function="loadMoreRecipes(skip, successCB, errorCB)" step="30"></load-more-button>
-    </div>
-</div>
-
-<!-- -------------------------------- raccolte -------------------------------- -->
-<div ng-show="collections.length > 0">
-    <!-- container card -->
-    <div class="row tasty_container text-center tasty_title_category tasty_load_space">
-        <div class="col-md-4">
-            <hr class="tasty_title_bar"></hr>
-        </div>
-        <div class="col-md-4">
-            <h3 class="tasty_title_text">{{collections.length}} raccolte trovate per {{q}}</h3>
-        </div>
-        <div class="col-md-4">
-            <hr class="tasty_title_bar"></hr>
-        </div>
-    </div>
-
-    <!-- container card -->
-    <div class="row tasty_container text-center tasty_load_space">
-
-        <!-- collection card -->
-        <collection-card collection="collection" ng-repeat="collection in collections"></collection-card>
-        <!-- collection card -->
-    </div>
-
-    <!-- button carica altro -->
-    <div class="row tasty_container text-center tasty_load_space">
-        <load-more-button elements="collections" on-click-function="loadMoreCollections(skip, successCB, errorCB)" step="30"></load-more-button>
-    </div>
-</div>
-
-<!-- -------------------------------- utenti -------------------------------- -->
-
-<div ng-show="users.length > 0">
-    <div class="row tasty_container text-center tasty_title_category tasty_load_space">
-        <div class="col-md-4">
-            <hr class="tasty_title_bar"></hr>
-        </div>
-        <div class="col-md-4">
-            <h3 class="tasty_title_text">{{users.length}} persone trovate per {{q}}</h3></div>
-        <div class="col-md-4">
-            <hr class="tasty_title_bar"></hr>
-        </div>
-    </div>
-
-    <!-- profile's cards -->
-    <div class="row tasty_container text-center tasty_load_space">
-
-        <!-- user card -->
-        <user-card user="user" ng-repeat="user in users"></user-card>
-        <!-- user card -->
-    </div>
-
-    <!-- button carica altro -->
-    <div class="row tasty_container text-center tasty_load_space">
-        <load-more-button elements="users" on-click-function="loadMoreUsers(skip, successCB, errorCB)" step="30"></load-more-button>
     </div>
 </div>

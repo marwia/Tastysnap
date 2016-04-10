@@ -97,13 +97,15 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
                 controller: function($uibModalInstance, $scope) {
                     // passaggio paramteri
                     $scope.loading = false;
-                    $scope.notes = "";
+                    $scope.reportToCreate = {
+                        notes: ""
+                    };
                     $scope.selectedRecipe = selectedRecipe;
                     // azioni possibili all'interno della modale
                     $scope.ok = function() {
                         $scope.loading = true
-
-                        Recipe.createReport(selectedRecipe.id, $scope.notes,
+                        console.info($scope.reportToCreate);
+                        Recipe.createReport(selectedRecipe.id, $scope.reportToCreate,
                             function(response) {
                                 //do what you need here
                                 $scope.loading = false;

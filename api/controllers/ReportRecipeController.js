@@ -41,10 +41,11 @@ module.exports = {
     create: function (req, res, next) {
         var user = req.payload;
         
-        var notes = req.body;
+        var reportRecipe = req.body;
 	
-        // completo l'oggetto voteRecipe
-        var reportRecipe = { user: user, recipe: req.recipe.id, notes: notes };
+        // completo l'oggetto reportRecipe
+        reportRecipe.user = user;
+        reportRecipe.recipe = req.recipe.id;
 	
         ReportRecipe.create(reportRecipe).exec(function (err, reportRecipeCreated) {
             if (err) { return next(err); }

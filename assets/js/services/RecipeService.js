@@ -383,10 +383,10 @@ angular.module('RecipeService', [])
          * dall'utente loggato.
          * Disponibile solo su un dettaglio di una ricetta.
          */
-        o.createReport = function(recipeId, notes, successCallback, errorCallback) {
+        o.createReport = function(recipeId, reportToCreate, successCallback, errorCallback) {
             return $http.post(
                 server_prefix + '/recipe/' + recipeId + '/report',
-                notes,
+                reportToCreate,
                 {
                     headers: {
                         Authorization: 'Bearer ' + Auth.getToken()
