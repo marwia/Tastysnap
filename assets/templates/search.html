@@ -1,3 +1,83 @@
+<!-- Navbar, per la ricerca avanzata -->
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" ng-click="isCollapsed = !isCollapsed" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span style="margin-top:15px;"class="navbar-brand">Ricerca Avanzata</span>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="uib-collapse navbar-collapse row" uib-collapse="isCollapsed">
+            <form class="form-inline navbar-form navbar-left" role="search">
+                <!-- input ricerca -->
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Cerca" value="{{q}}">
+                </div>
+                <!-- scelta in (ricette, raccolte, profili) -->
+                <div class="form-group">
+                    <p class="navbar-text">
+                        Ricerca in:
+                        <select class="form-control" ng-model="selectedItem" ng-options="item as item.name for item in items"></select>
+                    </p>
+                </div>
+            </form>
+            <!-- div che viene mostrato se seleziona la categoria ricette -->
+            <div style="width:100%; border-top: 1px solid;" class="pull-left form-inline" ng-show="selectedItem.id == 2">
+                <!-- Portata -->
+                <div class="form-group">
+                    <p class="navbar-text">
+                        Categoria: 
+                        <select class="form-control" ng-model="selectedItem2" ng-options="item2 as item2.name for item2 in items2"></select>
+                    </p>
+                </div>
+                
+                <!-- Tempo di preparazione -->
+                <div class="form-group">
+                    <p class="navbar-text">
+                        <i class="fa fa-clock-o"></i> 
+                        <input type="number" name="" min="1">
+                    </p>
+                </div>
+                
+                <!-- Difficioltà -->
+                <div class="form-group">
+                    <p class="navbar-text">
+                        Difficoltà:
+                        <select class="form-control" ng-model="selectedItem3" ng-options="item3 as item3.name for item3 in items3"></select>
+                    </p>
+                </div>
+                
+                <!-- Costo -->
+                <div class="form-group">
+                    <p class="navbar-text">
+                        Costo:
+                        <select class="form-control" ng-model="selectedItem4" ng-options="item4 as item4.name for item4 in items4"></select>
+                    </p>
+                </div>
+                
+                <!-- Calorie -->
+                <div class="form-group">
+                    <p class="navbar-text">
+                        Calorie:
+                        <select class="form-control" ng-model="selectedItem5" ng-options="item5 as item5.name for item5 in items5"></select>
+                    </p>
+                </div>
+                
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+
 <!-- -------------------------------- ricette -------------------------------- -->
 <div ng-show="recipes.length > 0">
     <!-- container card -->
