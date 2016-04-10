@@ -295,7 +295,7 @@
                             <div class="media-body">
                                 <h5 class="media-heading">
                                     <strong>{{comment.user.name}} {{comment.user.surname}} </strong><span class="recipe_comment_when">{{formatDate(comment.createdAt)}}</span>
-                                    <a href="#" ng-show="comment.user.id == currentUser.id" ng-click="deleteComment(detailedRecipe, comment)" class="recipe_comment_delete">x</a>
+                                    <a href="#" ng-show="comment.user.id == currentUser.id" ng-click="deleteComment(detailedRecipe, comment)" class="recipe_comment_delete"><i class="fa fa-times"></i></a>
                                 </h5>
                                 <h6 class="recipe_comment_txt">
 												{{comment.body}}

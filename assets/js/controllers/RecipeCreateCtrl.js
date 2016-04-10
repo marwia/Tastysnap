@@ -60,7 +60,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         $scope.recipeToCreate = {
             title: "",
-            preparationTime: 15,
+            preparationTime: null,
             dosagesFor: "",
             dosagesType: "",
             category: "",
@@ -133,10 +133,14 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         $scope.addRecipeStep = function () {
             $scope.recipe_steps
                 .push({
-                    seq_number: $scope.recipe_steps.length + 1,
+                    seq_number: null,
                     description: ""
                 });
         };
+        // metodo per rimuovere un passo della ricetta
+        $scope.removeRecipeStep = function (step_index) {
+            $scope.recipe_steps.splice(step_index, 1);
+        }
 
         /**
          * Esegui l'upload di tutte le immagini in attesa di upload.
@@ -196,6 +200,9 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
          */
         function createRecipeSteps() {
             for (var i = 0; i < $scope.recipe_steps.length; i++) {
+                // preparo l'oggetto
+                $scope.recipe_steps[i].seq_number = i + 1;
+                // invio...
                 RecipeStep.create(
                     $scope.recipeToCreate,
                     $scope.recipe_steps[i],
