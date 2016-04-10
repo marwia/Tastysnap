@@ -1146,6 +1146,44 @@ tr.recipe_sp_3_tr{
     opacity:1;
 }
 
+.recipe_rating_con:hover .recipe_rating_2{
+    display: block;
+}
+
+.recipe_rating_con:hover .recipe_rating_1{
+    display: none;
+}
+
+.recipe_rating_1{
+    display: block;
+}
+
+.recipe_rating_2{
+    display: none;
+}
+
+.rating > span:hover:before {
+   content: "\2605";
+   position: absolute;
+}
+
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+}
+.rating > span:hover:before,
+.rating > span:hover ~ span:before {
+   content: "\2605";
+   position: absolute;
+   color: #ff9800;
+}
+
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 1.1em;
+}
+
 @media screen and (min-width: 768px){
 	.recipe_col_8{
 		float: right;
