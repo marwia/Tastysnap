@@ -101,21 +101,27 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
                         notes: ""
                     };
                     $scope.selectedRecipe = selectedRecipe;
+                    $scope.finish = false;
                     // azioni possibili all'interno della modale
                     $scope.ok = function() {
-                        $scope.loading = true
-                        console.info($scope.reportToCreate);
-                        Recipe.createReport(selectedRecipe.id, $scope.reportToCreate,
-                            function(response) {
-                                //do what you need here
-                                $scope.loading = false;
-                                $uibModalInstance.dismiss('cancel');
-                                //$state.go('app.home.most_recent');
+                        if ($scope.finish) {
+                            $uibModalInstance.dismiss('cancel');
+                        } else {
+                            $scope.loading = true
+                            console.info($scope.reportToCreate);
+                            Recipe.createReport(selectedRecipe.id, $scope.reportToCreate,
+                                function(response) {
+                                    //do what you need here
+                                    $scope.loading = false;
+                                    $scope.finish = true;// sono pronto a uscire
+                                
+                                    //$state.go('app.home.most_recent');
 
-                            }, function(response) {
-                                // errore
-                                $scope.loading = false;
-                            });
+                                }, function(response) {
+                                    // errore
+                                    $scope.loading = false;
+                                });
+                        }
                     };
 
                     $scope.cancel = function() {
