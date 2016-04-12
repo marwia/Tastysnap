@@ -1405,6 +1405,21 @@ tr.recipe_sp_3_tr{
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
+@media screen and (max-width: 1200px){
+    .c_recipe_row{
+        background-color: white;
+    }
+    
+    .c_recipe_right{
+        text-align: center !important;
+    }
+    
+    .c_recipe_left{
+        text-align: center !important;
+        margin-bottom: 15px;
+    }
+}
+
 /* ------------------------------------------------------------------ 12 -------------------------------------------------------- */
 /* ---------------------------------------------------- MODAL ADD CARD IN COLLECTION -------------------------------------------- */
 
