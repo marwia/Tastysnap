@@ -230,14 +230,28 @@ var apiRoutes = addGlobalPrefix({
     'get /recipe/:recipe/try': 'TryRecipeController.find',
 
     'get /recipe/:recipe/tried': 'TryRecipeController.checkTry',
+    
+    /***************************************************************************
+    *                                                                          *
+    * Recensioni di ricette.                                                   *
+    *                                                                          *
+    ***************************************************************************/
 
-    'post /recipe/:recipe/try/detail': 'TryRecipeDetailController.create',
+    'post /recipe/:recipe/review': 'ReviewRecipeController.create',
 
-    'delete /recipe/:recipe/try/detail': 'TryRecipeDetailController.destroy',
+    'delete /recipe/:recipe/review/:review': 'ReviewRecipeController.destroy',
 
-    'put /recipe/:recipe/try/detail': 'TryRecipeDetailController.update',
+    'put /recipe/:recipe/review': 'ReviewRecipeController.update',
+    
+    'get /recipe/:recipe/review': 'ReviewRecipeController.find',
 
-    'get /try/detail/typologies': 'TryRecipeDetailController.getTryDetailTypologies',
+    'get /recipe/:recipe/review/:review': 'ReviewRecipeController.findOne',
+    
+    'get /recipe/:recipe/reviewed': 'ReviewRecipeController.checkReview',
+
+    'get /review/typologies': 'ReviewRecipeController.getTypologies',
+    
+    'get /recipe/:recipe/review/total/:typology': 'ReviewRecipeController.getTotalValueForTypology',
 
     /***************************************************************************
     *                                                                          *

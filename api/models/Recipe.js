@@ -107,6 +107,12 @@ module.exports = {
       collection: 'tryRecipe',
       via: 'recipe'
     },
+    
+    // Reference to many Reviews
+    reviews : {
+      collection: 'reviewRecipe',
+      via: 'recipe'
+    },
 
     // Reference to many Collections
     collections : {

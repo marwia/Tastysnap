@@ -19,12 +19,6 @@ module.exports = {
       	model :'recipe',
       	required : true
     },
-    
-    // Reference to many Trial Details
-    details : {
-      collection: 'TryRecipeDetail',
-      via: 'trial'
-    }
 
   },
   

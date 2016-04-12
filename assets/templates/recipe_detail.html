@@ -154,7 +154,7 @@
 
                 <div class="row">
                     <!-- OPINIONI -->
-                    <div class="col-md-12 recipe_sp_3">
+                    <div class="col-md-12 recipe_sp_3" ng-controller="RecipeReviewCtrl">
                         <div class="recipe_sp_3_title" style="border-bottom: 1px solid {{getTextColor(detailedRecipe)}};">OPINIONI</div>
                         <div class="recipe_sp_3_con">
                             <table class="recipe_sp_3_table">
@@ -162,14 +162,14 @@
                                     <td class="text-left">DIFFICOLTA</td>
                                     <td class="text-right">
                                         <div class="recipe_rating_con">
-                                            <div class="recipe_rating_1">media</div>
+                                            <div class="recipe_rating_1">{{detailedRecipe.difficulty.total/detailedRecipe.difficulty.reviewsCount}}</div>
                                             <div class="recipe_rating_2">
                                                 <div class="rating">
-                                                    <span class="tasty_icon">☆</span>
-                                                    <span class="tasty_icon">☆</span>
-                                                    <span class="tasty_icon">☆</span>
-                                                    <span class="tasty_icon">☆</span>
-                                                    <span class="tasty_icon">☆</span>
+                                                    <span class="tasty_icon" ng-click="createRecipeReview('difficulty', 4)">☆</span>
+                                                    <span class="tasty_icon" ng-click="createRecipeReview('difficulty', 3)">☆</span>
+                                                    <span class="tasty_icon" ng-click="createRecipeReview('difficulty', 2)">☆</span>
+                                                    <span class="tasty_icon" ng-click="createRecipeReview('difficulty', 1)">☆</span>
+                                                    <span class="tasty_icon" ng-click="createRecipeReview('difficulty', 0)">☆</span>
                                                 </div>
                                             </div>
                                         </div>

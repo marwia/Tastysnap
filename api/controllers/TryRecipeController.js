@@ -5,6 +5,13 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+/**
+ * Module dependencies
+ * 
+ * Prese da https://github.com/balderdashy/sails/blob/master/lib/hooks/blueprints/actions/find.js
+ */
+var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+
 module.exports = {
 	
 	/**
@@ -44,8 +51,10 @@ module.exports = {
         var tryRecipe = { user: user, recipe: req.recipe.id };
 	
         //cerco se c'è gia uno stesso vote
-        TryRecipe.find().where({ user: user.id, recipe: req.recipe.id })
+        TryRecipe.find()
+            .where({ user: user.id, recipe: req.recipe.id })
             .exec(function (err, tryRecipes) {
+                
                 if (err) { return next(err); }
 
                 if (tryRecipes.length == 0) {// non trovato, quindi ne posso creare uno
@@ -126,8 +135,12 @@ module.exports = {
 	* @apiUse NoRecipeError
 	*/
     find: function (req, res, next) {
-        TryRecipe.find().where({ recipe: req.recipe.id })
-            .populate('user').populate('details')
+        TryRecipe.find()
+            .where({ recipe: req.recipe.id })
+            .limit(actionUtil.parseLimit(req))
+            .skip(actionUtil.parseSkip(req))
+            .sort(actionUtil.parseSort(req))
+            .populate('user')
             .exec(function (err, tryRecipes) {
 
                 if (err) { return next(err); }
@@ -173,12 +186,16 @@ module.exports = {
     checkTry: function (req, res, next) {
         var user = req.payload;
 
-        TryRecipe.find().where({ recipe: req.recipe.id, user: user.id }).populate('details').exec(function (err, tryRecipes) {
+        TryRecipe.findOne()
+            .where({ recipe: req.recipe.id, user: user.id })
+            .exec(function (err, tryRecipe) {
+                
             if (err) { return next(err); }
 
-            if (tryRecipes.length == 0) {
-                return res.status(404).send('Not found');// HTTP status 404: NotFound
-            } else { return res.json(tryRecipes[0]); }
+            if (!tryRecipe) {
+                return res.notFound();
+            }
+            return res.json(tryRecipes);
         });
     }
 };

@@ -144,10 +144,14 @@ module.exports.policies = {
     'checkTry' : ['isAuthorized', 'findRecipe']
   },
   
-  'TryRecipeDetailController' : {
-    'create' : ['isAuthorized', 'findRecipe', 'findUserTryRecipe'],
-    'destroy' : ['isAuthorized', 'findRecipe', 'findUserTryRecipe'],
-    'update' : ['isAuthorized', 'findRecipe', 'findUserTryRecipe']
+  'ReviewRecipeController' : {
+    'create' : ['isAuthorized', 'findRecipe'],
+    'destroy' : ['isAuthorized', 'isReviewAuthor', 'findRecipe'],
+    'update' : ['isAuthorized', 'findRecipe'],
+    'find' : 'findRecipe',
+    'findOne' : true,
+    'checkReview' : ['isAuthorized', 'findRecipe'],
+    'getTotalValueForTypology' : 'findRecipe',
   },
   
   'ReportRecipeController' : {

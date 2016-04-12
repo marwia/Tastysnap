@@ -9,36 +9,39 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Policies
  */
 
- /**
- * @apiDefine NoPermissionError
- *
- * @apiError NoPermission You are not the author of this resource, you can not update it.
- *
- * @apiErrorExample Error-Response:
- *     HTTP/1.1 401 Bad Request
- *     {
- *       "error": "NoPermission"
- *     }
- */
+/**
+* @apiDefine NoPermissionError
+*
+* @apiError NoPermission You are not the author of this resource, you can not update it.
+*
+* @apiErrorExample Error-Response:
+*     HTTP/1.1 401 Bad Request
+*     {
+*       "error": "NoPermission"
+*     }
+*/
 
-module.exports = function (req, res, next) {
-  var user = req.payload;
+module.exports = function(req, res, next) {
+    var user = req.payload;
 
-  var id = req.param('id');
+    var id = req.param('id');
+    if (!id) { return badRequest(); }
 
-  Comment.find(id).limit(1)
-    .exec(function (err, originalComment) {
-      if(err){ return next(err); }
+    Comment.findOne(id)
+        .exec(function(err, originalComment) {
+            if (err) { return next(err); }
+            
+            if (!originalComment) { return res.notFound({error: 'No comment found'})}
 
-      // verifico che l'utente è il creatore della risorsa
-      if(originalComment[0].user == user.id) {
-        // per sicurezza elimino l'author 
-        delete req.body.user;// cancello elementi inopportuni
-        next();
-      } else
-        return res.json(401, {error: 'NoPermission'});
-  });
+            // verifico che l'utente è il creatore della risorsa
+            if (originalComment[0].user == user.id) {
+                // per sicurezza elimino l'author 
+                delete req.body.user;// cancello elementi inopportuni
+                next();
+            } else
+                return res.json(401, { error: 'NoPermission' });
+        });
 
-  //next();
+    //next();
 
 };

@@ -1,18 +1,18 @@
 /**
- * isCollectionAuthor.js
+ * isReviewAuthor.js
  *
  * Questa è una politica che si occupa di verificare se l'utente che vuole eseguire
- * una update su una risorsa è il suo autore.
+ * una update o delete su una risorsa è il suo autore.
  *
  *
- * @description :: Policy to check if user is authorized to update a comment.
+ * @description :: Policy to check if user is authorized to update/delete a review.
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Policies
  */
 
 /**
 * @apiDefine NoPermissionError
 *
-* @apiError NoPermission You are not the author of this resource, you can not update it.
+* @apiError NoPermission You are not the author of this resource, you can not update/delete it.
 *
 * @apiErrorExample Error-Response:
 *     HTTP/1.1 401 Bad Request
@@ -24,22 +24,24 @@
 module.exports = function(req, res, next) {
     var user = req.payload;
 
-    var collectionId = req.param('collection');// l'id è un parametro
-    if (!collectionId) { return res.badRequest(); }
+    var id = req.param('review');
+    if (!id) { return badRequest(); }
 
-    Collection.findOne(collectionId)
-        .exec(function(err, originalCollection) {
+    ReviewRecipe.findOne(id)
+        .exec(function(err, originalReview) {
             if (err) { return next(err); }
-
-            if (!originalCollection) { return res.notFound({error: 'No collection found'}); }
             
+            if (!originalReview) { return res.notFound({error: 'No review found'})}
+
             // verifico che l'utente è il creatore della risorsa
-            if (originalCollection.author == user.id) {
+            if (originalReview[0].user == user.id) {
                 // per sicurezza elimino l'author 
                 delete req.body.user;// cancello elementi inopportuni
                 next();
             } else
                 return res.json(401, { error: 'NoPermission' });
         });
+
+    //next();
 
 };
