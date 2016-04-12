@@ -57,15 +57,22 @@
                     </div>
                     <div class="col-md-8 c_recipe_right" ng-class="{ 'has-error': recipeForm.preparation_time.$touched && recipeForm.preparation_time.$invalid }">
                         <div class="row">
-                            <div class="col-xs-2">
-                                <input type="number" class="form-control" name="preparation_time" id="preparation_time" ng-model="recipeToCreate.preparationTime" required
-                                    min="1" max="1000" value="30" placeholder="30"/>
-                                <div class="help-block" ng-messages="recipeForm.preparation_time.$error" ng-if="recipeForm.preparation_time.$touched && recipeForm.preparation_time.$invalid">
-                                    <div ng-messages-include="templates/validation_messages.html"></div>
-                                </div>
-                            </div>
-                            <div class="col-xs-2">
-                                <span>minuti</span>
+                            <div class="col-md-12">
+                                <table style="margin:auto;">
+                                    <tr>
+                                        <td>
+                                            <input type="number" class="form-control" name="preparation_time" id="preparation_time" ng-model="recipeToCreate.preparationTime" required min="1" max="1000" value="30" placeholder="30"/>
+                                        </td>
+                                        <td>
+                                            &nbsp; minuti
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <div class="help-block" ng-messages="recipeForm.preparation_time.$error" ng-if="recipeForm.preparation_time.$touched && recipeForm.preparation_time.$invalid">
+                                            <div ng-messages-include="templates/validation_messages.html"></div>
+                                        </div>
+                                    </tr> 
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -94,7 +101,7 @@
                     <div class="col-md-8 c_recipe_right">
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-xs-8">
+                                <div class="col-md-8 col-xs-12">
                                     <div nv-file-drop class="well my-drop-zone text-center recipe_create_add_photo_box" nv-file-over="" uploader="coverImageUploader">
                                         <i class="fa fa-camera recipe_create_add_photo_icon"></i>
                                         <h5>Trascina un'immagine oppure usa il seguente pulsante</h5>
@@ -136,7 +143,7 @@
                     <div class="col-md-8 c_recipe_right">
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-xs-8">
+                                <div class="col-md-8 col-xs-12">
                                     <div nv-file-drop class="well my-drop-zone text-center recipe_create_add_photo_box" nv-file-over="" uploader="otherImageUploader">
                                         <i class="fa fa-camera recipe_create_add_photo_icon"></i>
                                         <h5>Trascina un'immagine oppure usa il seguente pulsante</h5>
@@ -189,7 +196,7 @@
                     <div class="col-md-8 c_recipe_right">
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-xs-2" ng-class="{ 'has-error': recipeForm.dosages_for.$touched && recipeForm.dosages_for.$invalid }">
+                                <div class="col-md-2 col-xs-6" ng-class="{ 'has-error': recipeForm.dosages_for.$touched && recipeForm.dosages_for.$invalid }">
                                     <label class="control-label">Dosi per</label>
                                     <input type="number" class="form-control" name="dosages_for" id="dosages_for" ng-model="recipeToCreate.dosagesFor" required
                                     min="1" max="99" value="3" placeholder="3"/>
@@ -197,7 +204,7 @@
                                         <div ng-messages-include="templates/validation_messages.html"></div>
                                     </div>
                                 </div>
-                                <div class="col-xs-2">
+                                <div class="col-md-2 col-xs-6">
                                     <label class="control-label">Tipologia</label>
                                     <br>
                                     <my-dropdown data-menu-type="button" select-val="recipeToCreate.dosagesType = selectedVal" preselected-item="dosageTypes[0]"
