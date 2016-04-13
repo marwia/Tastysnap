@@ -19,6 +19,7 @@
 *   -- 13.MODAL - condividi una ricetta
 *   -- 14.GOOGLE MAPS
 *   -- 15.SEARCH
+*   -- 16.FOOTER
 */
 
 /* ------------------------------------------------------------   1    ------------------------------------------------------ */
@@ -1512,4 +1513,48 @@ tr.recipe_sp_3_tr{
 
 .search_advaced_input{
     width:100% !important;
+}
+
+/* ------------------------------------------------------------------ 16 -------------------------------------------------------- */
+/* ---------------------------------------------------------------- FOOTER ------------------------------------------------------ */
+
+footer{
+    padding: 20px 20px 0 20px;
+    color:white !important;
+}
+
+.footer_top{
+    background: #222;
+    color:#ff9800;
+    min-height:50px;
+}
+
+.footer_bottom{
+    background: #222;
+    min-height: 250px;
+    padding-top:30px;
+}
+
+.footer_tasty_logo{
+    width: 100%;
+}
+
+.footer_items h5{
+    border-bottom:1px solid white;
+    padding-bottom: 15px;
+    margin-top: 15px
+}
+
+.footer_items ul{
+    padding-left: 10px;
+}
+
+.footer_items ul li{
+    list-style-type:none;
+    line-height: 1.7
+}
+
+.footer_social_icon{
+    font-size: 2em;
+    margin: 20px 7px 0 7px;
 }
