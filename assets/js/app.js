@@ -8,9 +8,9 @@
  */
 
 var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload',
-                'ngAnimate', 'ngMessages', 'uiGmapgoogle-maps',
+                'toaster', 'ngMessages', 'uiGmapgoogle-maps',
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
-                'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService',
+                'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService', 'ImageUtilsService',
 				'ngAnimate', 'appRoutes', 
 				'AuthCtrl', 'MasterCtrl', 'NavCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeDetailCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl', 'UserHomeCtrl', 'CollectionCtrl',

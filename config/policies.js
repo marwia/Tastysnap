@@ -51,7 +51,8 @@ module.exports.policies = {
     'getFollowers' : 'findUser',
     'getFollowing' : 'findUser',
     'areYouFollowing' : ['isAuthorized', 'findUser'],
-    'isFollowing' : 'findUser'
+    'isFollowing' : 'findUser',
+    'uploadCoverImage': ['isAuthorized', 'findUser'],
   },
 
   'CollectionController' : {

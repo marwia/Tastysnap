@@ -13,10 +13,11 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
     'Ingredient', // servizio per gli ingredienti
     'RecipeStep', // servizio per i passi
     'Auth', // servizio per l'autenticazione
+    'ImageUtils',
     '$filter',
     'FileUploader', // per il file upload
     '$http',
-    function ($scope, $state, Recipe, Product, Ingredient, RecipeStep, Auth, $filter, FileUploader, $http) {
+    function ($scope, $state, Recipe, Product, Ingredient, RecipeStep, Auth, ImageUtils, $filter, FileUploader, $http) {
 
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
         $scope.isLoggedIn = Auth.isLoggedIn;
@@ -289,51 +290,6 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             }
         }
         
-        /**
-         * Serve a ridurre la qualità e la risoluzione di un elemento del 
-         * file uploader.
-         * @param {FileItem} fileItem
-         * @param {Function} successCallback(canvas)
-         */
-        function reduceImageSizeAndQuality(fileItem, successCallback) {
-            var file = fileItem._file;
-            
-            // Crea il canvas
-            var canvas = document.createElement("canvas");
-            // Create a file reader
-            var reader = new FileReader();
-            
-            // Set the image once loaded into file reader
-            reader.onload = function (e) {
-                // Create an image
-                var img = document.createElement("img");
-                img.onload = onLoadImage;
-                img.src = e.target.result;
-            }
-
-            reader.readAsDataURL(file);
-
-            function onLoadImage() {
-                // Setta le massime dimensioni
-                var sizes = setImageSize(this, 1024, 1024);
-                canvas.width = sizes.width;
-                canvas.height = sizes.height;
-                
-                // Trasforma il file in canvas
-                canvas.getContext("2d").drawImage(this, 0, 0, sizes.width, sizes.height);
-                
-                // Comprimi il canvas in JPEG e riduci qualità
-                var dataUrl = canvas.toDataURL("image/jpeg", 0.7);
-                
-                // Transofm to blob
-                var blob = dataURItoBlob(dataUrl);
-                fileItem._file = blob;
-
-                if (successCallback)
-                    successCallback(canvas);
-            }
-        }
-        
         // Set filters
         coverImageUploader.filters.push(coverImageFilter);
        
@@ -345,7 +301,10 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         coverImageUploader.onAfterAddingFile = function (fileItem) {
             console.info('onAfterAddingFile', fileItem);
-            reduceImageSizeAndQuality(fileItem, function (canvas) {
+            
+            ImageUtils.reduceImageSizeAndQuality(fileItem._file, 1024, 1024, 0.7, function (canvas, reducedFile) {
+                // ottengo l'immagine ridotta
+                fileItem._file = reducedFile;   
                 // ottengo il colore dominante dell'immagine di copertina
                 $scope.getCoverImageDominanatColor(canvas);
             });
@@ -389,45 +348,26 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         coverImageUploader.onCompleteAll = function () {
             console.info('onCompleteAll');
             
-            // prendo la prima immagine
-            var file = coverImageUploader.queue[0]._file;
-            // Crea il canvas
-            var canvas = document.createElement("canvas");
-            // Create a file reader
-            var reader = new FileReader();
-            // Set the image once loaded into file reader
-            reader.onload = function (e) {
-                // Create an image
-                var img = document.createElement("img");
-                img.onload = onLoadImage;
-                img.src = e.target.result;
-            }
-
-            reader.readAsDataURL(file);
-
-            function onLoadImage() {
-                canvas.width = this.width;
-                canvas.height = this.height;
+            ImageUtils.reduceImageSizeAndQuality(
+                coverImageUploader.queue[0]._file, 
+                1024, 1024, 0.7, 
+                function (canvas, reducedFile) {// callback finale
+                // ottengo l'immagine ridotta
+                //fileItem._file = reducedFile;
                 
-                // Aggiungo la sfocatura e trasferisco l'immagine sul canvas
-                StackBlur.image(this, canvas, 70, false);
-
-                // Comprimi il canvas in JPEG e riduci qualità
-                var dataUrl = canvas.toDataURL("image/jpeg", 0.7);
-
-                // Transofm to blob
-                var blob = dataURItoBlob(dataUrl);
-
-                Recipe.uploadBlurImage(blob, $scope.recipeToCreate, function (response) {
+                Recipe.uploadBlurImage(reducedFile, $scope.recipeToCreate, function (response) {
                     $scope.createProgress++;
                     //$scope.recipeToCreate = response.data;
                     console.info($scope.recipeToCreate);
                     
-
                 }, function (response) {
                     console.info("error", response)
                 });
-            }
+                
+            }, function(img, canvas) {// ulteriori operazioni sull'immagine
+                // Aggiungo la sfocatura e trasferisco l'immagine sul canvas
+                StackBlur.image(img, canvas, 70, false);
+            });
         };
 
         console.info('uploader', coverImageUploader);
@@ -438,7 +378,10 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         otherImageUploader.onAfterAddingFile = function (fileItem) {
             console.info('onAfterAddingFile', fileItem);
-            reduceImageSizeAndQuality(fileItem);
+            ImageUtils.reduceImageSizeAndQuality(fileItem._file, 1024, 1024, 0.7, function (canvas, reducedFile) {
+                // ottengo l'immagine ridotta
+                fileItem._file = reducedFile; 
+            });
         };
 
         otherImageUploader.onBeforeUploadItem = function (item) {
@@ -455,61 +398,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             console.info("otherImageUploader - onCompleteAll");
         }
         
-        
-        // Helpers
-
-        /**
-         * Ricava le dimensioni dell'immagine riducendola proporzionalmente.
-         * @param {Image} img
-         * @param {Int} MAX_WIDTH
-         * @param {Int} MAX_HEIGHT
-         * @return {Object} sizes
-         */
-        var setImageSize = function (img, MAX_WIDTH, MAX_HEIGHT) {
-            var width = img.width;
-            var height = img.height;
-
-            if (width > height) {
-                if (width > MAX_WIDTH) {
-                    height *= MAX_WIDTH / width;
-                    width = MAX_WIDTH;
-                }
-            } else {
-                if (height > MAX_HEIGHT) {
-                    width *= MAX_HEIGHT / height;
-                    height = MAX_HEIGHT;
-                }
-            }
-
-            return { width: width, height: height };
-        }
-        
-        /**
-         * Converts data uri to Blob. Necessary for uploading.
-         * @see
-         *   http://stackoverflow.com/questions/4998908/convert-data-uri-to-file-then-append-to-formdata
-         * @param  {String} dataURI
-         * @return {Blob}
-         */
-        var dataURItoBlob = function (dataURI) {
-            // convert base64/URLEncoded data component to raw binary data held in a string
-            var byteString;
-            if (dataURI.split(',')[0].indexOf('base64') >= 0)
-                byteString = atob(dataURI.split(',')[1]);
-            else
-                byteString = unescape(dataURI.split(',')[1]);
-
-            // separate out the mime component
-            var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
-
-            // write the bytes of the string to a typed array
-            var ia = new Uint8Array(byteString.length);
-            for (var i = 0; i < byteString.length; i++) {
-                ia[i] = byteString.charCodeAt(i);
-            }
-
-            return new Blob([ia], { type: mimeString });
-        }
+        //////////////////////////////////////////////
         
         var init = function () {
             // inizializzazione del controller
@@ -517,6 +406,5 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         };
         // and fire it after definition
         init();
-
 
     }]);
