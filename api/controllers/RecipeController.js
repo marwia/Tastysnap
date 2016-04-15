@@ -52,7 +52,7 @@ var localUploadConfiguration = {
     }
 };
 
-var s3Upload = function(err, filesUploaded, recipe, whenDone) {
+var s3Upload = function(err, filesUploaded, whenDone) {
     if (err) {
         return res.badRequest();
     }
@@ -604,7 +604,7 @@ module.exports = {
 
             }, function(err, filesUploaded) {
                 // eseguo l'upload sul bucket s3
-                s3Upload(err, filesUploaded, recipe, function(fileUrl) {
+                s3Upload(err, filesUploaded, function(fileUrl) {
 
                     // se la ricetta ha già una immagine di copertina
                     // elimino l'immagine di copertina vecchia
@@ -672,7 +672,7 @@ module.exports = {
 
             }, function(err, filesUploaded) {
                 // eseguo l'upload sul bucket s3
-                s3Upload(err, filesUploaded, recipe, function(fileUrl) {
+                s3Upload(err, filesUploaded, function(fileUrl) {
                     
                     // se la ricetta ha già una immagine di copertina
                     // elimino l'immagine di copertina vecchia
@@ -741,7 +741,7 @@ module.exports = {
 
             }, function(err, filesUploaded) {
                 // eseguo l'upload sul bucket s3
-                s3Upload(err, filesUploaded, recipe, function(fileUrl) {
+                s3Upload(err, filesUploaded, function(fileUrl) {
 
                     // aggiorno la ricetta
                     Recipe.findOne(recipe.id).exec(function(err, recipe) {

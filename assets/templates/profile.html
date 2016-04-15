@@ -1,64 +1,75 @@
-    <!-- testata cover + profilo -->
-    <div class="prof_personal_header" style="background: url('http://www.mattarmendariz.com/media/original/Matt-Dani-Adam-Meal-APE.jpg') no-repeat center center fixed; ">
-        <div class="container-fluid text-center prof_personal_info">
-            <!-- profile photo -->
-            <div class="row">
-                <img src="{{ getUserProfileImage(user) }}" alt="{{user.name}} {{user.surname}}" class="img-circle profile_photo">
-            </div>
-            <!-- profile name -->
-            <div class="row">
-                <span><h4>{{user.name}} {{user.surname}}</h4></span>
-            </div>
-            <!-- profile where -->
-            <div class="row">
-                <span><h5><span class="glyphicon glyphicon-map-marker"></span> FABRIANO</h5>
-                </span>
-            </div>
-            <!-- profile follow -->
-            <div class="row prof_personal_info_item">
-                <button type="button" class="btn btn-warning btn-sm" ng-click="toggleFollow(user)" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
-                    <div ng-if="action.length>0"><span class="glyphicon glyphicon-user"></span>{{action}}</div>
-                    <div ng-if="user.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
-                    <div ng-if="user.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI</div>
-                </button>
-            </div>
+<!-- testata cover + profilo -->
+<div class="prof_personal_header" id="profile_header" style="background: url({{user.coverImageUrl}}) no-repeat center center fixed; background-size: cover;">
+
+    <div class="container-fluid text-center prof_personal_info">
+        <!-- profile photo -->
+        <div class="row">
+            <img src="{{ getUserProfileImage(user) }}" alt="{{user.name}} {{user.surname}}" class="img-circle profile_photo">
         </div>
-
-        <!-- buttons -->
-        <div class="row text-center profile_menu">
-            
-            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile'}">
-                <a href="/app/profile/{{ user.id }}">
-                    <span>{{user.recipesCount}}<br>RICETTE</span>
-                </a>
-            </div>
-
-            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.collections'}">
-                <a href="/app/profile/{{ user.id }}/collections">
-                    <span>{{user.collectionsCount}}<br>RACCOLTE</span>
-                </a>
-            </div>
-
-            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.following'}">
-                <a href="/app/profile/{{ user.id }}/following">
-                    <span>{{user.followingCount}}<br>FOLLOWING</span>
-                </a>
-            </div>
-
-            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.followers'}">
-                <a href="/app/profile/{{ user.id }}/followers">
-                    <span>{{user.followersCount}}<br>FOLLOWERS</span>
-                </a>
-            </div>
-
+        <!-- profile name -->
+        <div class="row">
+            <span><h4>{{user.name}} {{user.surname}}</h4></span>
         </div>
-        
-        <!-- gradient -->
-        <div class="prof_personal_header_gradient"></div>
+        <!-- profile where -->
+        <div class="row">
+            <span><h5><span class="glyphicon glyphicon-map-marker"></span> FABRIANO</h5>
+            </span>
+        </div>
+        <!-- profile follow -->
+        <div class="row prof_personal_info_item">
+            <button type="button" class="btn btn-warning btn-sm" ng-click="toggleFollow(user)" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
+                <div ng-if="action.length>0"><span class="glyphicon glyphicon-user"></span>{{action}}</div>
+                <div ng-if="user.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
+                <div ng-if="user.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI</div>
+            </button>
+        </div>
     </div>
     
-    <!-- Profile Content -->
-    <div class="row tasty_container tasty_container_profile_margin text-center">
-        <div ui-view="profile_content"></div>    
+    <div class="container-fluid text-right prof_personal_cover_change_button" ng-if="user.id == currentUser.id">
+
+        <!-- elezione dell'immagine di copertina -->
+        <div class="fileUpload btn btn-link">
+            <span><i class="fa fa-cog" aria-hidden="true"></i> Cambia copertina</span>
+            <input type="file" class="upload" nv-file-select="" uploader="coverImageUploader" />
+         </div>
+        
     </div>
-    <!-- End Profile Content -->
+
+    <!-- buttons -->
+    <div class="row text-center profile_menu">
+
+        <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile'}">
+            <a href="/app/profile/{{ user.id }}">
+                <span>{{user.recipesCount}}<br>RICETTE</span>
+            </a>
+        </div>
+
+        <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.collections'}">
+            <a href="/app/profile/{{ user.id }}/collections">
+                <span>{{user.collectionsCount}}<br>RACCOLTE</span>
+            </a>
+        </div>
+
+        <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.following'}">
+            <a href="/app/profile/{{ user.id }}/following">
+                <span>{{user.followingCount}}<br>FOLLOWING</span>
+            </a>
+        </div>
+
+        <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.followers'}">
+            <a href="/app/profile/{{ user.id }}/followers">
+                <span>{{user.followersCount}}<br>FOLLOWERS</span>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- gradient -->
+    <div class="prof_personal_header_gradient"></div>
+</div>
+
+<!-- Profile Content -->
+<div class="row tasty_container tasty_container_profile_margin text-center">
+    <div ui-view="profile_content"></div>
+</div>
+<!-- End Profile Content -->

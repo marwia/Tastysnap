@@ -17,6 +17,7 @@
     "stackblur-canvas": "^1.2.0",
     "moment": "^2.11.2",
     "angular-messages": "^1.5.0",
-    "angular-google-maps": "^2.3.2"
+    "angular-google-maps": "^2.3.2",
+    "AngularJS-Toaster": "angularjs-toaster#^2.0.0"
   }
 }
