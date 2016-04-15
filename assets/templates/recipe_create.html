@@ -8,7 +8,7 @@
     <h3><i class="fa fa-cog recipe_creating_message_gear"></i> Creazione ricetta in corso...</h3>
 </div>
 
-<div class="tasty_container tasty_container_margin">
+<div class="tasty_container tasty_container_margin recipe_container">
     <div class="panel panel-default no-border">
         <div class="panel-body no-padding" ng-hide="isCreating">
             <form name="recipeForm" role="form" ng-submit="createRecipe()" novalidate>
@@ -58,7 +58,7 @@
                     <div class="col-md-8 c_recipe_right" ng-class="{ 'has-error': recipeForm.preparation_time.$touched && recipeForm.preparation_time.$invalid }">
                         <div class="row">
                             <div class="col-md-12">
-                                <table style="margin:auto;">
+                                <table class="recipe_create_min_table">
                                     <tr>
                                         <td>
                                             <input type="number" class="form-control" name="preparation_time" id="preparation_time" ng-model="recipeToCreate.preparationTime" required min="1" max="1000" value="30" placeholder="30"/>

@@ -1442,7 +1442,7 @@ tr.recipe_sp_3_tr{
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
-@media screen and (max-width: 1200px){
+@media screen and (max-width: 991px){
     .c_recipe_row{
         background-color: white;
     }
@@ -1455,6 +1455,14 @@ tr.recipe_sp_3_tr{
         text-align: center !important;
         margin-bottom: 15px;
     }
+	
+	.recipe_create_min_table{
+		margin:auto;
+	}
+	
+	.recipe_container{
+		max-width:700px;
+	}
 }
 
 /* ------------------------------------------------------------------ 12 -------------------------------------------------------- */
@@ -1560,29 +1568,24 @@ footer{
 }
 
 .footer_top{
-    background: #222;
-    color:#ff9800;
-    min-height:50px;
+    background: #be7100;
+    color: #ff9800;
+    min-height: 30px;
 }
 
 .footer_bottom{
-    background: #222;
+    background: #ff9800;
     min-height: 250px;
     padding-top:30px;
 }
 
 .footer_tasty_logo{
     width: 100%;
-}
-
-.footer_items h5{
-    border-bottom:1px solid white;
-    padding-bottom: 15px;
-    margin-top: 15px
+	max-width:250px;
 }
 
 .footer_items ul{
-    padding-left: 10px;
+    padding-left: 70px;
 }
 
 .footer_items ul li{
@@ -1590,7 +1593,15 @@ footer{
     line-height: 1.7
 }
 
+.footer_items ul li a:hover{
+	color:white;
+}
+
 .footer_social_icon{
     font-size: 2em;
-    margin: 20px 7px 0 7px;
+    margin: 0px 7px 0 7px;
+}
+
+@media screen and (max-width: 991px){
+    
 }
