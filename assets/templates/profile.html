@@ -1,5 +1,5 @@
 <!-- testata cover + profilo -->
-<div class="prof_personal_header" id="profile_header" style="background: url({{user.coverImageUrl}}) no-repeat center center fixed; background-size: cover;">
+<div class="prof_personal_header" id="profile_header" back-img="{{user.coverImageUrl}}">
 
     <div class="container-fluid text-center prof_personal_info">
         <!-- profile photo -->
@@ -27,12 +27,15 @@
     
     <div class="container-fluid text-right prof_personal_cover_change_button" ng-if="user.id == currentUser.id">
 
-        <!-- elezione dell'immagine di copertina -->
-        <div class="fileUpload btn btn-link">
+        <!-- selezione dell'immagine di copertina -->
+        <div class="fileUpload btn btn-link" ng-if="coverImageUploader.queue.length == 0">
             <span><i class="fa fa-cog" aria-hidden="true"></i> Cambia copertina</span>
             <input type="file" class="upload" nv-file-select="" uploader="coverImageUploader" />
          </div>
-        
+         <div ng-if="coverImageUploader.queue.length > 0">
+            <button type="button" class="btn btn-default btn-sm" ng-click="cancelCoverImage()">Annulla</button>
+            <button type="button" class="btn btn-warning btn-sm" ng-click="uploadCoverImage()">Applica</button>
+        </div>
     </div>
 
     <!-- buttons -->

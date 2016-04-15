@@ -15,8 +15,8 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
     '$filter',
     'FileUploader', // per il file upload
     '$http',
-    'toaster',
-    function($scope, User, $state, Recipe, ImageUtils, Auth, $filter, FileUploader, $http, toaster) {
+    'toastr',
+    function($scope, User, $state, Recipe, ImageUtils, Auth, $filter, FileUploader, $http, toastr) {
         // Espongo gli elementi del User service
         $scope.currentUser = User.currentUser;
         $scope.user = User.user;//utente del profilo
@@ -89,34 +89,49 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
         // File upload callbacks
         coverImageUploader.onAfterAddingFile = function(fileItem) {
             console.info('onAfterAddingFile', fileItem);
-
             ImageUtils.reduceImageSizeAndQuality(fileItem._file, 1024, 1024, 0.7, function(canvas, reducedFile) {
+
+                // salvo la vecchia immagine
+                $scope.user.oldCoverImageUrl = $scope.user.coverImageUrl;
 
                 // setto l'immagine di copertina...
                 var dataUrl = canvas.toDataURL("image/jpeg", 1);
                 $scope.user.coverImageUrl = dataUrl;
+                // e anche quella della sidebar
+                $scope.currentUser.coverImageUrl = dataUrl;
+                $scope.$apply();
 
                 // ottengo l'immagine ridotta
                 fileItem._file = reducedFile;
-                // avvia l'upload
-                coverImageUploader.uploadAll();
+                fileItem.removeAfterUpload = true;
             });
         };
 
         coverImageUploader.onCompleteItem = function(fileItem, response, status, headers) {
             console.info('onCompleteItem', fileItem, response, status, headers);
-
+            toastr.success('Immagine aggiornata');
         };
 
         coverImageUploader.onErrorItem = function(fileItem, response, status, headers) {
             console.info('onErrorItem', fileItem, response, status, headers);
+            toastr.error('Non è stato possibile caricare l\'immagine');
+            // rimetto la vecchia immagine
+            $scope.user.coverImageUrl = $scope.user.oldCoverImageUrl;
+            $scope.currentUser.coverImageUrl = $scope.user.oldCoverImageUrl;
         };
-
-        $scope.test = function() {
-            toaster.error("title", "text2");
-
-            toaster.pop('success', "Copertina aggiornata", "aa");
-        };
+        
+        $scope.cancelCoverImage = function() {
+            // rimetto la vecchia immagine
+            $scope.user.coverImageUrl = $scope.user.oldCoverImageUrl;
+            $scope.currentUser.coverImageUrl = $scope.user.oldCoverImageUrl;
+            // svuoto la coda
+            coverImageUploader.clearQueue();
+        }
+        
+        $scope.uploadCoverImage = function() {
+            // avvia l'upload
+            coverImageUploader.uploadAll();
+        }
 
         //////////////////////////////////////////////
 

@@ -8,10 +8,10 @@
  */
 
 var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload',
-                'toaster', 'ngMessages', 'uiGmapgoogle-maps',
+                'ngMessages', 'uiGmapgoogle-maps',
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
                 'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService', 'ImageUtilsService',
-				'ngAnimate', 'appRoutes', 
+				'ngAnimate', 'appRoutes', 'toastr',
 				'AuthCtrl', 'MasterCtrl', 'NavCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeDetailCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl', 'UserHomeCtrl', 'CollectionCtrl',
                 'CollectionSelectionModalCtrl', 'CollectionDetailCtrl', 'CommentCtrl', 'SearchCtrl',
@@ -43,3 +43,9 @@ myApp.config(['$animateProvider', 'uiGmapGoogleMapApiProvider', function($animat
     });
     
 }]);
+
+myApp.config(function(toastrConfig) {
+  angular.extend(toastrConfig, {
+    positionClass: 'toast-top-center',
+  });
+});
