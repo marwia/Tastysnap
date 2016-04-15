@@ -1576,7 +1576,7 @@ footer{
 }
 
 .footer_items ul{
-    padding-left: 10px;
+    padding-left: 70px;
 }
 
 .footer_items ul li{
@@ -1584,7 +1584,11 @@ footer{
     line-height: 1.7
 }
 
+.footer_items ul li a:hover{
+	color:white;
+}
+
 .footer_social_icon{
     font-size: 2em;
-    margin: 20px 7px 0 7px;
+    margin: 0px 7px 0 7px;
 }
