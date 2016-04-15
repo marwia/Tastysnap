@@ -1524,25 +1524,19 @@ footer{
 }
 
 .footer_top{
-    background: #222;
-    color:#ff9800;
-    min-height:50px;
+    background: #be7100;
+    color: #ff9800;
+    min-height: 30px;
 }
 
 .footer_bottom{
-    background: #222;
+    background: #ff9800;
     min-height: 250px;
     padding-top:30px;
 }
 
 .footer_tasty_logo{
     width: 100%;
-}
-
-.footer_items h5{
-    border-bottom:1px solid white;
-    padding-bottom: 15px;
-    margin-top: 15px
 }
 
 .footer_items ul{
