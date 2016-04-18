@@ -1,3 +1,11 @@
+/**
+ * S3FileService
+ *
+ * @description :: Piccola utility di funzioni per interagire con un
+ *                 bucket AWS S3.
+ * @help        :: See http://links.sailsjs.org/docs/controllers
+ */
+
 var fs = require('fs');
 var path = require('path');
 var bucket = 'tastysnapcdn';

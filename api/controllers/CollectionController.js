@@ -10,7 +10,7 @@ var _ = require('lodash');
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
-    
+
     /**
      * @api {get} /collection/:collection Get a Collection
      * @apiName GetCollection
@@ -22,31 +22,51 @@ module.exports = {
      *     HTTP/1.1 200 OK
      *
      */
-    findOne: function (req, res, next) {
+    findOne: function(req, res, next) {
         var collectionId = req.param('collection');
         if (!collectionId) { return next(); }
-        
+
         Collection.findOne(collectionId)
             .populate('author')
-            .populate('followers')
-            .populate('views')
-            .exec(function (err, foundCollection) {
+            .exec(function(err, foundCollection) {
                 if (err) { return next(err); }
 
-                if (!foundCollection) { return res.notFound({ error: 'No collection found' }); }
-            
-                // conto gli elementi delle collection
-                foundCollection.followersCount = foundCollection.followers.length;
-                foundCollection.viewsCount = foundCollection.views.length;
-            
-                /**
-                 * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
-                 * delle associazioni vengono automaticamente tolte quando si esegue
-                 * il seguente metodo.
-                 */
-                var obj = foundCollection.toObject();
+                if (!foundCollection) {
+                    return res.notFound({ error: 'No collection found' });
+                }
 
-                return res.json(obj);
+                var counts = {
+                    viewsCount: function(cb) {
+                        ViewCollection.count({ collection: foundCollection.id }).exec(function(err, result) {
+                            cb(err, result);
+                        });
+                    },
+                    followersCount: function(cb) {
+                        sails.models['collection_followers__user_followingcollections'].count({ collection_followers: foundCollection.id }).exec(function(err, result) {
+                            cb(err, result);
+                        });
+                    },
+                    recipesCount: function(cb) {
+                        sails.models['collection_recipes__recipe_collections'].count({ collection_recipes: foundCollection.id }).exec(function(err, result) {
+                            cb(err, result);
+                        });
+                    }
+                };
+
+                // eseguo lo precedenti funzioni in parallelo
+                async.parallel(counts, function(err, resultSet) {
+                    if (err) { return next(err); }
+
+                    console.info(resultSet);
+
+                    // copio i valori calcolati
+                    foundCollection.viewsCount = resultSet.viewsCount;
+                    foundCollection.followersCount = resultSet.followersCount;
+                    foundCollection.recipesCount = resultSet.recipesCount;
+
+                    // richiamo la callback finale
+                    return res.json(foundCollection);
+                });
             });
     },
 
@@ -71,35 +91,71 @@ module.exports = {
      *     HTTP/1.1 200 OK
      *
      */
-    find: function (req, res, next) {
+    find: function(req, res, next) {
         Collection.find()
             .where(actionUtil.parseCriteria(req))
             .limit(actionUtil.parseLimit(req))
             .skip(actionUtil.parseSkip(req))
             .sort(actionUtil.parseSort(req))
             .populate('author')
-            .populate('followers')
-            .populate('views')
-            .exec(function (err, foundCollections) {
+            .exec(function(err, foundCollections) {
                 if (err) { return next(err); }
-            
-                // array di appoggio
-                var collections = new Array();
-            
-                // conto gli elementi delle collection
-                for (var i in foundCollections) {
-                    foundCollections[i].viewsCount = foundCollections[i].views.length;
-                    foundCollections[i].followersCount = foundCollections[i].followers.length;
 
-                    /**
-                     * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
-                     * delle associazioni vengono automaticamente tolte quando si esegue
-                     * il seguente metodo.
-                     */
-                    var obj = foundCollections[i].toObject();
-                    collections.push(obj);
+                if (foundCollections.length == 0) {
+                    return res.notFound({ error: 'No collection found' });
                 }
-                return res.json(collections);
+
+                // per ogni ricetta eseguo delle funzioni asincrono
+                // ma aseptto che tutte finiscono (l'ultima callback)
+                async.each(foundCollections, function(collection, callback) {
+                    var counts = {
+                        viewsCount: function(cb) {
+                            ViewCollection.count({ collection: collection.id }).exec(function(err, result) {
+                                cb(err, result);
+                            });
+                        },
+                        followersCount: function(cb) {
+                            sails.models['collection_followers__user_followingcollections'].count({ collection_followers: collection.id }).exec(function(err, result) {
+                                cb(err, result);
+                            });
+                        },
+                        recipesCount: function(cb) {
+                            sails.models['collection_recipes__recipe_collections'].count({ collection_recipes: collection.id }).exec(function(err, result) {
+                                cb(err, result);
+                            });
+                        }
+                    };
+
+                    // eseguo lo precedenti funzioni in parallelo
+                    async.parallel(counts, function(err, resultSet) {
+                        if (err) { return next(err); }
+
+                        console.info(resultSet);
+
+                        // copio i valori calcolati
+                        collection.viewsCount = resultSet.viewsCount;
+                        collection.followersCount = resultSet.followersCount;
+                        collection.recipesCount = resultSet.recipesCount;
+
+                        // richiamo la callback finale
+                        callback();
+                    });
+
+                }, function(err) {
+                    if (err) { return next(err); }
+                    // finish
+                    var sort = actionUtil.parseSort(req);
+
+                    // verifico che il criterio di ordinamento sia tra quei 
+                    // valori contati
+                    var substrings = ['viewsCount', 'followersCount', 'recipesCount'];
+                    if (new RegExp(substrings.join("|")).test(sort)) {
+                        // ordino i risultati secondo un criterio
+                        foundCollections.sort(MyUtils.dynamicSort(sort));
+                    }
+
+                    return res.json(foundCollections);
+                });
             });
     },
 
@@ -115,15 +171,15 @@ module.exports = {
      *     HTTP/1.1 200 OK
      *
      */
-    getRecipes: function (req, res, next) {
+    getRecipes: function(req, res, next) {
         var collection = req.collection;
 
         Collection
             .findOne(collection.id)
             .populate('recipes')
-            .exec(function (err, foundCollection) {
+            .exec(function(err, foundCollection) {
                 if (err) { return next(err); }
-                
+
                 // Array con id di ricette
                 var recipeIds = new Array();
 
@@ -131,11 +187,11 @@ module.exports = {
                     if (foundCollection.recipes[i].id)// if exist
                         recipeIds.push(foundCollection.recipes[i].id)
                 }
-                
+
                 // find recipes
                 RecipeService.find(req, res, next, recipeIds);
 
-        });
+            });
     },
 
 	/**
@@ -180,14 +236,14 @@ module.exports = {
      *
      * @apiUse InvalidTokenError
      */
-    create: function (req, res, next) {
+    create: function(req, res, next) {
         var user = req.payload;
 
         var collection = req.body;
         // setto l'autore della ricetta
         collection.author = user;
 
-        Collection.create(collection).exec(function (err, createdCollection) {
+        Collection.create(collection).exec(function(err, createdCollection) {
             if (err) { return next(err); }
             return res.json(createdCollection);
         });
@@ -299,11 +355,11 @@ module.exports = {
      *
      * @apiUse NoPermissionError
      */
-    addRecipe: function (req, res, next) {
+    addRecipe: function(req, res, next) {
         var recipeId = req.body.recipe_id;
         if (!recipeId) { return next(); }
 
-        Recipe.findOne(recipeId).exec(function (err, recipe) {
+        Recipe.findOne(recipeId).exec(function(err, recipe) {
             if (err) { return next(err); }
 
             if (!recipe) { return res.notFound({ error: 'No recipe found' }); }
@@ -311,7 +367,7 @@ module.exports = {
             var newCollection = req.collection;
             newCollection.recipes.add(recipe.id);
 
-            newCollection.save(function (err, saved) {
+            newCollection.save(function(err, saved) {
                 if (err) { return next(err); }
                 return res.json(saved);
             });
@@ -346,7 +402,7 @@ module.exports = {
      *
      * @apiUse NoPermissionError
      */
-    removeRecipe: function (req, res, next) {
+    removeRecipe: function(req, res, next) {
         var recipeId = req.body.recipe_id;
         if (!recipeId) { return next(); }
 
@@ -356,7 +412,7 @@ module.exports = {
         if(idx == -1) { return res.notFound({error: 'No recipe found in this collection'}) }
         */
         collection.recipes.remove(recipeId);
-        collection.save(function (err, saved) {
+        collection.save(function(err, saved) {
             if (err) { return next(err); }
             return res.send(204, null);// OK - No Content
         });
@@ -386,18 +442,18 @@ module.exports = {
      *
      * @apiUse NoCollectionError
      */
-    follow: function (req, res, next) {
+    follow: function(req, res, next) {
         var user = req.payload;
         var collectionToFollow = req.collection;
 
         // ricarico l'utente corrente (con l'array dei following) (necessario...)
-        User.findOne(user.id).populate('followingCollections').exec(function (err, foundUser) {
+        User.findOne(user.id).populate('followingCollections').exec(function(err, foundUser) {
             // seguire più volte non è permesso
             if (foundUser.isFollowingCollection(collectionToFollow.id) == true) { return res.badRequest(); }
 
             foundUser.followingCollections.add(collectionToFollow.id);
 
-            foundUser.save(function (err, saved) {
+            foundUser.save(function(err, saved) {
                 if (err) { return next(err); }
                 return res.send(204, null);// OK - No Content
             });
@@ -427,16 +483,16 @@ module.exports = {
      *
      * @apiUse NoCollectionError
      */
-    unfollow: function (req, res, next) {
+    unfollow: function(req, res, next) {
         var user = req.payload;
         var collectionTounfollow = req.collection;
 
         // ricarico l'utente corrente (con l'array dei following) (necessario...)
-        User.findOne(user.id).exec(function (err, foundUser) {
+        User.findOne(user.id).exec(function(err, foundUser) {
 
             foundUser.followingCollections.remove(collectionTounfollow.id);
 
-            foundUser.save(function (err, saved) {
+            foundUser.save(function(err, saved) {
                 if (err) { return next(err); }
                 return res.send(204, null);// OK - No Content
             });
@@ -456,11 +512,11 @@ module.exports = {
      *
      * @apiUse NoCollectionError
      */
-    getFollowers: function (req, res, next) {
+    getFollowers: function(req, res, next) {
         var collectionId = req.param('collection');
         if (!collectionId) { return next(); }
 
-        Collection.findOne(collectionId).populate('followers').exec(function (err, foundCollection) {
+        Collection.findOne(collectionId).populate('followers').exec(function(err, foundCollection) {
             if (err) { return next(err); }
             if (!foundCollection) { return res.notFound({ error: 'No collection found' }); }
             return res.json(foundCollection.followers);
@@ -490,12 +546,12 @@ module.exports = {
      *
      * @apiUse NoCollectionError
      */
-    areYouFollowing: function (req, res, next) {
+    areYouFollowing: function(req, res, next) {
         var user = req.payload;
         var targetCollection = req.collection;
 
         // ricarico l'utente corrente (necessario...)
-        User.findOne(user.id).populate('followingCollections').exec(function (err, foundUser) {
+        User.findOne(user.id).populate('followingCollections').exec(function(err, foundUser) {
             if (err) { return next(err); }
 
             // seguire più volte non è permesso

@@ -101,7 +101,8 @@ module.exports = {
     // Override toJSON method to remove password from API
     toJSON: function() {
       var obj = this.toObject();
-      // do nothing for now...
+      // delete sensible data
+      delete obj.email;
       return obj;
     },
 

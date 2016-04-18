@@ -14,6 +14,9 @@ var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 var md5 = require('md5');
 var fs = require('fs');
 
+// libreria per gestire gli array
+var _ = require('lodash');
+
 /**
  * Codice in comune
  */
@@ -170,10 +173,6 @@ module.exports = {
             .skip(actionUtil.parseSkip(req))
             .sort(actionUtil.parseSort(req))
             .populate('author')
-            .populate('views')
-            .populate('votes')
-            .populate('comments')
-            .populate('trials')
             .exec(function(err, foundRecipes) {
                 if (err) { return next(err); }
 
@@ -181,39 +180,66 @@ module.exports = {
                     return res.notFound({ error: 'No recipe found' });
                 }
 
-                // array di appoggio
-                var recipes = new Array();
-
-                // conto gli elementi delle collection
-                for (var i in foundRecipes) {
-                    foundRecipes[i].viewsCount = foundRecipes[i].views.length;
-                    // calcolo dei voti positivi
-                    foundRecipes[i].votesCount = 0;
-                    for (var k in foundRecipes[i].votes) {
-                        if (foundRecipes[i].votes[k].value > 0) {
-                            foundRecipes[i].votesCount++;
+                // per ogni ricetta eseguo delle funzioni asincrono
+                // ma aseptto che tutte finiscono (l'ultima callback)
+                async.each(foundRecipes, function(recipe, callback) {
+                    var counts = {
+                        commentsCount: function(cb) {
+                            Comment.count({ recipe: recipe.id }).exec(function(err, result) {
+                                cb(err, result);
+                            });
+                        },
+                        votesCount: function(cb) {
+                            VoteRecipe.count({ recipe: recipe.id, value: 1 }).exec(function(err, result) {
+                                cb(err, result);
+                            });
+                        },
+                        viewsCount: function(cb) {
+                            ViewRecipe.count({ recipe: recipe.id }).exec(function(err, result) {
+                                cb(err, result);
+                            });
+                        },
+                        trialsCount: function(cb) {
+                            TryRecipe.count({ recipe: recipe.id }).exec(function(err, result) {
+                                cb(err, result);
+                            });
                         }
-                    }
-                    foundRecipes[i].commentsCount = foundRecipes[i].comments.length;
-                    foundRecipes[i].trialsCount = foundRecipes[i].trials.length;
+                    };
 
-                    /**
-                     * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
-                     * delle associazioni vengono automaticamente tolte quando si esegue
-                     * il seguente metodo.
-                     */
-                    var obj = foundRecipes[i].toObject();
-                    delete obj.description;// tolgo la descrizione della ricetta
-                    delete obj.views;
-                    delete obj.votes;
-                    delete obj.comments;
-                    delete obj.trials;
-                    recipes.push(obj);
-                }
-                return res.json(recipes);
+                    // eseguo lo precedenti funzioni in parallelo
+                    async.parallel(counts, function(err, resultSet) {
+                        if (err) { return next(err); }
+
+                        console.info(resultSet);
+
+                        // copio i valori calcolati
+                        recipe.commentsCount = resultSet.commentsCount;
+                        recipe.votesCount = resultSet.votesCount;
+                        recipe.viewsCount = resultSet.viewsCount;
+                        recipe.trialsCount = resultSet.trialsCount;
+
+                        // richiamo la callback finale
+                        callback();
+                    });
+
+                }, function(err) {
+                    if (err) { return next(err); }
+                    // finish
+                    var sort = actionUtil.parseSort(req);
+
+                    // verifico che il criterio di ordinamento sia tra quei 
+                    // valori contati
+                    var substrings = ['commentsCount', 'votesCount', 'viewsCount', 'trialsCount'];
+                    if (new RegExp(substrings.join("|")).test(sort)) {
+                        // ordino i risultati secondo un criterio
+                        foundRecipes.sort(MyUtils.dynamicSort(sort));
+                    }
+
+                    return res.json(foundRecipes);
+                });
+
             });
     },
-
 
 
     /**
@@ -247,38 +273,51 @@ module.exports = {
 
         Recipe.findOne(recipeId)
             .populate('author')
-            .populate('views')
-            .populate('votes')
-            .populate('comments')
-            .populate('trials')
             .populate('ingredientGroups')
             .exec(function(err, foundRecipe) {
                 if (err) { return next(err); }
 
                 if (!foundRecipe) { return res.notFound({ error: 'No recipe found' }); }
 
-                // conteggi vari
-                foundRecipe.viewsCount = foundRecipe.views.length;
-                // calcolo dei voti positivi
-                foundRecipe.votesCount = 0;
-                for (var k in foundRecipe.votes) {
-                    if (foundRecipe.votes[k].value > 0) {
-                        foundRecipe.votesCount++;
+                // per ogni ricetta eseguo delle funzioni asincrono
+                // ma aseptto che tutte finiscono (l'ultima callback)
+
+                var counts = {
+                    commentsCount: function(cb) {
+                        Comment.count({ recipe: foundRecipe.id }).exec(function(err, result) {
+                            cb(err, result);
+                        });
+                    },
+                    votesCount: function(cb) {
+                        VoteRecipe.count({ recipe: foundRecipe.id, value: 1 }).exec(function(err, result) {
+                            cb(err, result);
+                        });
+                    },
+                    viewsCount: function(cb) {
+                        ViewRecipe.count({ recipe: foundRecipe.id }).exec(function(err, result) {
+                            cb(err, result);
+                        });
+                    },
+                    trialsCount: function(cb) {
+                        TryRecipe.count({ recipe: foundRecipe.id }).exec(function(err, result) {
+                            cb(err, result);
+                        });
                     }
-                }
-                foundRecipe.commentsCount = foundRecipe.comments.length;
-                foundRecipe.trialsCount = foundRecipe.trials.length;
+                };
 
-                /**
-                 * Tolgo gli elementi popolati.
-                 */
-                var obj = foundRecipe.toObject();
-                delete obj.views;
-                delete obj.votes;
-                delete obj.comments;
-                delete obj.trials;
+                // eseguo lo precedenti funzioni in parallelo
+                async.parallel(counts, function(err, resultSet) {
+                    if (err) { return next(err); }
 
-                return res.json(obj);
+                    // copio i valori calcolati
+                    foundRecipe.commentsCount = resultSet.commentsCount;
+                    foundRecipe.votesCount = resultSet.votesCount;
+                    foundRecipe.viewsCount = resultSet.viewsCount;
+                    foundRecipe.trialsCount = resultSet.trialsCount;
+
+                    // richiamo la callback finale
+                    return res.json(foundRecipe);
+                });
             });
     },
 
@@ -673,7 +712,7 @@ module.exports = {
             }, function(err, filesUploaded) {
                 // eseguo l'upload sul bucket s3
                 s3Upload(err, filesUploaded, function(fileUrl) {
-                    
+
                     // se la ricetta ha già una immagine di copertina
                     // elimino l'immagine di copertina vecchia
                     if (recipe.blurredCoverImageUrl) {

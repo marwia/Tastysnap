@@ -176,6 +176,8 @@ var apiRoutes = addGlobalPrefix({
     'get /recipe/categories': 'RecipeController.getRecipeCategories',
 
     'get /recipe/dosage_types': 'RecipeController.getRecipeDosageTypes',
+    
+    'get /recipe/trending': 'RecipeController.trend',
 
     /***************************************************************************
     *                                                                          *

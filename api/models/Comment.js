@@ -14,7 +14,7 @@ module.exports = {
   *                                                                          *
   ***************************************************************************/
   attributes: {
-
+      
   	body : { type: 'String', required: true },
 
     user : { 
