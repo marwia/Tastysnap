@@ -195,7 +195,7 @@ module.exports = {
             if (!tryRecipe) {
                 return res.notFound();
             }
-            return res.json(tryRecipes);
+            return res.json(tryRecipe);
         });
     }
 };
