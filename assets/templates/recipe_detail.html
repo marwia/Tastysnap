@@ -162,14 +162,10 @@
                                     <td class="text-left">DIFFICOLTA</td>
                                     <td class="text-right">
                                         <div class="recipe_rating_con">
-                                            <div class="recipe_rating_1">{{detailedRecipe.difficulty.total/detailedRecipe.difficulty.reviewsCount}}</div>
+                                            <div class="recipe_rating_1">{{detailedRecipe.difficulty.total/detailedRecipe.difficulty.reviewsCount}} ({{rating_1}})</div>
                                             <div class="recipe_rating_2">
                                                 <div class="rating">
-                                                    <span class="tasty_icon" ng-click="createRecipeReview('difficulty', 4)">☆</span>
-                                                    <span class="tasty_icon" ng-click="createRecipeReview('difficulty', 3)">☆</span>
-                                                    <span class="tasty_icon" ng-click="createRecipeReview('difficulty', 2)">☆</span>
-                                                    <span class="tasty_icon" ng-click="createRecipeReview('difficulty', 1)">☆</span>
-                                                    <span class="tasty_icon" ng-click="createRecipeReview('difficulty', 0)">☆</span>
+                                                    <div ng-init="x = 5"><uib-rating ng-model="rating_1" max="5" state-on="'glyphicon-star'" state-off="'glyphicon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -179,14 +175,10 @@
                                     <td class="text-left">COSTO</td>
                                     <td class="text-right">
                                         <div class="recipe_rating_con">
-                                            <div class="recipe_rating_1">basso</div>
+                                            <div class="recipe_rating_1">basso ({{rating_2}})</div>
                                             <div class="recipe_rating_2">
                                                 <div class="rating">
-                                                    <span class="tasty_icon">☆</span>
-                                                    <span class="tasty_icon">☆</span>
-                                                    <span class="tasty_icon">☆</span>
-                                                    <span class="tasty_icon">☆</span>
-                                                    <span class="tasty_icon">☆</span>
+                                                    <div ng-init="x = 5"><uib-rating ng-model="rating_2" max="5" state-on="'glyphicon-star'" state-off="'glyphicon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -196,14 +188,10 @@
                                     <td class="text-left">CALORIE</td>
                                     <td class="text-right">
                                         <div class="recipe_rating_con">
-                                            <div class="recipe_rating_1">molto calorica</div>
+                                            <div class="recipe_rating_1">molto calorica ({{rating_3}})</div>
                                             <div class="recipe_rating_2">
                                                 <div class="rating">
-                                                    <span class="tasty_icon">☆</span>
-                                                    <span class="tasty_icon">☆</span>
-                                                    <span class="tasty_icon">☆</span>
-                                                    <span class="tasty_icon">☆</span>
-                                                    <span class="tasty_icon">☆</span>
+                                                    <div ng-init="x = 0"><uib-rating ng-model="rating_3" max="5" state-on="'glyphicon-star'" state-off="'glyphicon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating></div>
                                                 </div>
                                             </div>
                                         </div>

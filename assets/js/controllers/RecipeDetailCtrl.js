@@ -228,6 +228,19 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
         }
         //fine carousel
         
+        //rating
+        
+        $scope.rate = 0;
+        $scope.max = 5;
+        $scope.isReadonly = false;
+
+        $scope.hoveringOver = function(value) {
+            $scope.overStar = value;
+            $scope.percent = 100 * (value / $scope.max);
+        };
+        
+        //fine rating
+        
         /**
          * Osserva la variabile che indica il progresso del
          * caricamento di tutti i dati della ricetta.
