@@ -149,7 +149,7 @@ angular.module('appRoutes', []).config([
                             //TODO - stampa delle ricette piu assaggiate
                             recipePromise: ['Recipe', function(recipes) {
                                 console.log("resolve home");
-                                return recipes.getAll("trialsCount");
+                                return recipes.getAll("trialsCount DESC");
                             }]
                         }
                     }
@@ -169,7 +169,7 @@ angular.module('appRoutes', []).config([
                             //TODO - stampa delle ricette piu assaggiate
                             postPromise: ['Recipe', function(recipes) {
                                 console.log("resolve home");
-                                return recipes.getAll();
+                                return recipes.getAll('viewsCount DESC');
                             }]
                         }
                     }
@@ -189,7 +189,7 @@ angular.module('appRoutes', []).config([
                             //TODO - stampa delle ricette piu assaggiate
                             postPromise: ['Recipe', function(recipes) {
                                 console.log("resolve home");
-                                return recipes.getAll();
+                                return recipes.getAll('commentsCount DESC');
                             }]
                         }
                     }
