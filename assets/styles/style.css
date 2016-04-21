@@ -1209,7 +1209,7 @@ tr.recipe_sp_3_tr{
 
 .rating {
   unicode-bidi: bidi-override;
-  direction: rtl;
+  /* direction: rtl; */
 }
 .rating > span:hover:before,
 .rating > span:hover ~ span:before {
