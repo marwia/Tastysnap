@@ -44,17 +44,17 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
                     //fatto
                 })
             }
-        }
+        };
 
         $scope.onMouseEnter = function() {
             if ($scope.user.isFollowed == true) {
                 $scope.action = "SMETTI DI SEGUIRE";
             }
-        }
+        };
 
         $scope.toggleAction = function() {
             $scope.action = "";
-        }
+        };
 
         /**
          * Gestione del pulsante per cambiare l'immagine di copertina:
@@ -126,12 +126,12 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
             $scope.currentUser.coverImageUrl = $scope.user.oldCoverImageUrl;
             // svuoto la coda
             coverImageUploader.clearQueue();
-        }
+        };
         
         $scope.uploadCoverImage = function() {
             // avvia l'upload
             coverImageUploader.uploadAll();
-        }
+        };
 
         //////////////////////////////////////////////
 

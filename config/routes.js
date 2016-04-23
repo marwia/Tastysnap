@@ -243,7 +243,7 @@ var apiRoutes = addGlobalPrefix({
 
     'delete /recipe/:recipe/review/:review': 'ReviewRecipeController.destroy',
 
-    'put /recipe/:recipe/review': 'ReviewRecipeController.update',
+    'put /recipe/:recipe/review/:review': 'ReviewRecipeController.update',
     
     'get /recipe/:recipe/review': 'ReviewRecipeController.find',
 

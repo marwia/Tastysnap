@@ -7,7 +7,12 @@
  */
 
 angular.module('RecipeReviewService', [])
-    .factory('RecipeReview', ['$http', 'Auth', 'User', function($http, Auth, User) {
+    .factory('RecipeReview', [
+        '$http', 
+        'Auth', 
+        'User', 
+        'toastr',
+        function($http, Auth, User, toastr) {
 
         var server_prefix = '/api/v1';
 
@@ -29,12 +34,105 @@ angular.module('RecipeReviewService', [])
                 .then(function(response) {
                     // populo il campo user manualmente (il server non lo fa e non deve)
                     var createdReview = response.data;
+                    
+                    // inizializzo se necessario
+                    if (!recipe[createdReview.typology]) {
+                        recipe[createdReview.typology] = {
+                            total: 0,
+                            reviewsCount: 0
+                        };
+                    }
+                    
+                    // aggiungo la recensione dell'utente al totale
+                    recipe[createdReview.typology].reviewsCount++;
+                    recipe[createdReview.typology].total = recipe[createdReview.typology].total + createdReview.value;
 
-                    // push on top
-                    if (recipe.reviews == null)
-                        recipe.reviews = [];
-                    recipe.reviews.push(createdReview);
+                    // salvo il parere dell'utente
+                    if (!recipe.user) {
+                        recipe.user = {};
+                    }
+                    recipe.user[createdReview.typology] = createdReview;
+                    
+                    if (successCallback) {
+                        successCallback(response);
+                    }
+                    toastr.success('Grazie per il tuo parere!');
+                }
+                , function(response) {
+                    if (errorCallback) {
+                        errorCallback(response);
+                    }
+                    console.log(response);
+                });
+        };
+        
+        /**
+         * Servizio per aggiornare una recensione per una ricetta.
+         */
+        o.update = function(recipe, oldReview, newReview, successCallback, errorCallback) {
+            return $http.put(
+                server_prefix + '/recipe/' + recipe.id + '/review/' + oldReview.id,
+                newReview,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                })
+                .then(function(response) {
+                    // populo il campo user manualmente (il server non lo fa e non deve)
+                    var createdReview = response.data;
+                    
+                    // inizializzo se necessario
+                    if (!recipe[createdReview.typology]) {
+                        recipe[createdReview.typology] = {
+                            total: 0,
+                            reviewsCount: 0
+                        };
+                    }
+                    
+                    // aggiorno la recensione dell'utente al totale
+                    recipe[createdReview.typology].total = recipe[createdReview.typology].total + createdReview.value - oldReview.value;
 
+                    // salvo il parere dell'utente
+                    if (!recipe.user) {
+                        recipe.user = {};
+                    }
+                    recipe.user[createdReview.typology] = createdReview;
+                    
+                    if (successCallback) {
+                        successCallback(response);
+                    }
+                    toastr.success('Hai aggiornato il tuo parere.');
+                }
+                , function(response) {
+                    if (errorCallback) {
+                        errorCallback(response);
+                    }
+                    console.log(response);
+                });
+        };
+        
+        o.checkReview = function(recipe, successCallback, errorCallback) {
+            return $http.get(
+                server_prefix + '/recipe/' + recipe.id + '/reviewed',
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + Auth.getToken()
+                    }
+                })
+                .then(function(response) {
+                    // populo il campo user manualmente (il server non lo fa e non deve)
+                    var userReviews = response.data;
+
+                    // salvo il parere dell'utente
+                    if (!recipe.user) {
+                        recipe.user = {};
+                    }
+                    
+                    for(i in userReviews) {
+                        recipe.user[userReviews[i].typology] = userReviews[i];
+                    }
+                    
                     if (successCallback) {
                         successCallback(response);
                     }
@@ -88,7 +186,11 @@ angular.module('RecipeReviewService', [])
                     
                     // modifico una proprietà con nome della tipologia
                     recipe[reviewToDelete.typology].reviewsCount--;
-                    recipe[reviewToDelete.typology].total = recipe[typology].total - reviewToDelete.value;
+                    recipe[reviewToDelete.typology].total = recipe[reviewToDelete.typology].total - reviewToDelete.value;
+                    // elimino il parere dell'utente
+                    recipe.user[reviewToDelete.typology] = {};
+                    
+                    toastr.success('Giudizio annullato.');
                 }
                 , function(response) {
                     console.log(response);

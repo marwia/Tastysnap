@@ -34,7 +34,7 @@ module.exports = function(req, res, next) {
             if (!originalReview) { return res.notFound({error: 'No review found'})}
 
             // verifico che l'utente è il creatore della risorsa
-            if (originalReview[0].user == user.id) {
+            if (originalReview.user == user.id) {
                 // per sicurezza elimino l'author 
                 delete req.body.user;// cancello elementi inopportuni
                 next();

@@ -77,7 +77,7 @@ module.exports = {
   	},
 	  
 	/**
-	* @api {put} /recipe/:recipe/review/:id Update a detail for a trial
+	* @api {put} /recipe/:recipe/review/:review Update a detail for a trial
 	* @apiName UpdateReviewRecipe
 	* @apiGroup Review Recipe
 	*
@@ -111,16 +111,19 @@ module.exports = {
 	*/
 	update: function (req, res, next) {
 		var user = req.payload;
+		
+		var reviewId = req.param('review');
+        if (!reviewId) { return next(); }
 	
 		// completo l'oggetto tryRecipeDetail
 		var newTryRecipeDetail = { value: req.body.value };
 	
 		// cerco se c'è gia uno stesso tryRecipeDetail
 		ReviewRecipe
-            .update({ typology: req.body.typology, user: user.id, recipe: req.recipe.id }, newTryRecipeDetail)
+            .update(reviewId, newTryRecipeDetail)
 		    .exec(function (err, updatedTryRecipeDetails) {
 			    if(err){ return next(err); }
-	
+				console.info(updatedTryRecipeDetails[0]);
 			    return res.json(updatedTryRecipeDetails[0]);
 		});
   	},
@@ -260,7 +263,7 @@ module.exports = {
     },
     
     /**
-	* @api {get} /recipe/:recipe/review Check if you reviewed a Recipe
+	* @api {get} /recipe/:recipe/reviewed Check if you reviewed a Recipe
 	* @apiName CheckReviewRecipe
 	* @apiGroup Review Recipe
 	*
