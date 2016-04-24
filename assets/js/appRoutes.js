@@ -50,7 +50,8 @@ angular.module('appRoutes', []).config([
                             }]
                         }
                     },
-                    'sidebar@app': { templateUrl: 'partials/sidebar.html' }
+                    'sidebar@app': { templateUrl: 'partials/sidebar.html' },
+                    'footer@app': { templateUrl: 'partials/footer.html' }
                 },
                 onEnter: ['$state', 'Auth', function($state, Auth) {
                     if (!Auth.isLoggedIn()) {
