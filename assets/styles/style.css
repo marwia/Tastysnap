@@ -1510,6 +1510,19 @@ tr.recipe_sp_3_tr{
     margin-top:14px;
 }
 
+.modal-add-recipe-to-collection_media_add{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.modal-add-recipe-to-collection_add{
+	font-size:2.5em;
+	width: 64px;
+	text-align: center;
+	height: 44px;
+	padding-top: 8px;
+}
+
 /* ------------------------------------------------------------------ 13 -------------------------------------------------------- */
 /* ---------------------------------------------------------- MODAL SHARE COLLECTION -------------------------------------------- */
 
