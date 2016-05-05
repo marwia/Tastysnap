@@ -1,93 +1,134 @@
 <div class="container-fluid">
     <div class="row">
         <!-- Ricerca Avanzata -->
-        <div class="col-sm-12 col-md-2 pull-right" style="color:white; margin-top:30px;">
-            <h4 class="text-center">Ricerca Avanzata</h4>
-
-            <form class="form-horizontal text-right">
-                <!-- ricerca input -->
-                <div class="form-group">
+        <div class="col-sm-12 col-md-3 pull-right">
+            
+            <div class="fluid-container">
+            
+                <!-- ricerca row -->
+                <div class="row search_background_gray search_row">
                     <div class="col-md-12">
-                        <label for="" class="col-md-12 control-label">Ricerca</label>
-                    </div>
-                    <div class="col-md-12">
-                        <input type="text" class="form-control" id="Search" value="{{q}}">
+                        <input type="text" class="form-control" placeholder="Cerca">
                     </div>
                 </div>
-
-                <!-- scelta in (ricette, raccolte, profili) -->
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <label for="" class="col-md-12 control-label">Ricerca:</label>
-                    </div>
-                    <div class="col-md-12">
-                        <select class="form-control" ng-model="selectedItem" ng-options="item as item.name for item in items"></select>
-                    </div>
-                </div>
-
-                <!-- div che viene mostrato se seleziona la categoria ricette -->
-                <div style="width:100%;" class="pull-left" ng-show="selectedItem.id == 2">
-
-                    <!-- Riga -->
-                    <div class="col-md-12">
-                        <hr/>
-                    </div>
-
-                    <!-- Portata -->
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label for="" class="control-label">Categoria:</label>
-                        </div>
-                        <div class="col-md-12">
-                            <select class="form-control search_advaced_input" ng-model="selectedItem2" ng-options="item2 as item2.name for item2 in items2"></select>
-                        </div>
-                    </div>
-
-                    <!-- Tempo di preparazione -->
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label for="" class="col-md-12 control-label"><i class="fa fa-clock-o"></i></label>
-                        </div>
-                        <div class="col-md-12">
-                            <input type="number" name="" min="1" class="form-control search_advaced_input">
-                        </div>
-                    </div>
-
-                    <!-- Difficioltà -->
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label for="" class="col-md-12 control-label">Difficoltà: </label>
-                        </div>
-                        <div class="col-md-12">
-                            <select class="form-control search_advaced_input" ng-model="selectedItem3" ng-options="item3 as item3.name for item3 in items3"></select>
-                        </div>
-                    </div>
-
-                    <!-- Costo -->
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label for="" class="col-md-12 control-label">Costo:</label>
-                        </div>
-                        <div class="col-md-12">
-                            <select class="form-control search_advaced_input" ng-model="selectedItem4" ng-options="item4 as item4.name for item4 in items4"></select>
-                        </div>
-                    </div>
-
-                    <!-- Calorie -->
-                    <div class="form-group">
-                        <div class="col-md-12">
-                            <label for="" class="col-md-12 control-label">Calorie:</label>
-                        </div>
-                        <div class="col-md-12">
-                            <select class="form-control search_advaced_input" ng-model="selectedItem5" ng-options="item5 as item5.name for item5 in items5"></select>
-                        </div>
+                
+                <!-- ricette, raccolte, persone -->
+                <div class="row search_background_gray search_row">
+                    <div class="col-md-12 text-center">
+                        <a class="search_button_category active" href="#" role="button">RICETTE</a>
+                        <a class="search_button_category" href="#" role="button">RACCOLTE</a>
+                        <a class="search_button_category" href="#" role="button">PERSONE</a>
                     </div>
                 </div>
-            </form>
+                
+                <!-- ricerca row -->
+                <div class="row search_background_white search_row">
+                    <div class="col-md-12 search_title">
+                        <h4>TIPOLOGIA</h4>
+                    </div>
+                    
+                    <div class="col-md-6 search_item" ng-click="state1 = !state1" ng-class="{'active' : state1}">
+                        <span class="search_item_title">Primi Piatti</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    
+                    <div class="col-md-6 search_item" ng-click="state2 = !state2" ng-class="{'active' : state2}">
+                        <span class="search_item_title">Secondi Piatti</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    
+                    <div class="col-md-6 search_item" ng-click="state3 = !state3" ng-class="{'active' : state3}">
+                        <span class="search_item_title">Bevande</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    
+                    <div class="col-md-6 search_item" ng-click="state4 = !state4" ng-class="{'active' : state4}">
+                        <span class="search_item_title">Zuppe</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    
+                    <div class="col-md-6 search_item" ng-click="state5 = !state5" ng-class="{'active' : state5}">
+                        <span class="search_item_title">Cocktails</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    
+                    <div class="col-md-6 search_item" ng-click="state6 = !state6" ng-class="{'active' : state6}">
+                        <span class="search_item_title">Insalate</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    
+                    <div class="col-md-6 search_item" ng-click="state7 = !state7" ng-class="{'active' : state7}">
+                        <span class="search_item_title">Contorni</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    
+                    <div class="col-md-6 search_item" ng-click="state8 = !state8" ng-class="{'active' : state8}">
+                        <span class="search_item_title">Antipasti e Stuzzichini</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    
+                    <div class="col-md-6 search_item" ng-click="state9 = !state9" ng-class="{'active' : state9}">
+                        <span class="search_item_title">Marmellate e conserve</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    
+                    <div class="col-md-6 search_item" ng-click="state10 = !state10" ng-class="{'active' : state10}">
+                        <span class="search_item_title">Dessert e torte</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    
+                    <div class="col-md-6 search_item" ng-click="state11 = !state11" ng-class="{'active' : state11}">
+                        <span class="search_item_title">Salse</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+                
+                <!-- ricerca row - TEMPO-->
+                <div class="row search_background_white search_row">
+                    <div class="col-md-12 search_title">
+                        <h4>TEMPO</h4>
+                    </div>
+                </div>
+                
+                <!-- ricerca row - INGREDIENTI -->
+                <div class="row search_background_white search_row">
+                    <div class="col-md-12 search_title">
+                        <h4>INGREDIENTI</h4>
+                    </div>
+                    <div class="col-md-12 search_title">
+                        <input type="text" class="form-control" placeholder="Nome dell'ingrediente">
+                    </div>
+                    
+                    <div class="col-md-6 search_item active">
+                        <span class="search_item_title">Patate</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    
+                    <div class="col-md-6 search_item active">
+                        <span class="search_item_title">Farina 00</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                    
+                    <div class="col-md-6 search_item active">
+                        <span class="search_item_title">Olio d'oliva</span>
+                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+                
+                <!-- ricerca row - OPINIONI -->
+                <div class="row search_background_white search_row">
+                    <div class="col-md-12 search_title">
+                        <h4>OPINIONI</h4>
+                    </div>
+                    
+                </div>
+                
+            </div>
+                
         </div>
         
         <!-- risultati ricerca -->
-        <div class="col-md-10 pull-left">
+        <div class="col-md-9 pull-left">
             <!-- -------------------------------- ricette -------------------------------- -->
             <div ng-show="recipes.length > 0">
                 <!-- container card -->
