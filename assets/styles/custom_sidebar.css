@@ -168,6 +168,7 @@ ul.sidebar .sidebar-list .menu-icon {
  * </div> 
  */
 
+/*
 .ui-view-container {
   position: relative;
 }
@@ -195,6 +196,7 @@ ul.sidebar .sidebar-list .menu-icon {
 [ui-view].ng-leave-active {
   opacity: 0;
 }
+*/
 
 .sidebar_create_recipe {
     background-color: #ff9800;

@@ -8,7 +8,7 @@
  */
 
 var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload',
-                'ngMessages', 'uiGmapgoogle-maps',
+                'ngMessages', 'uiGmapgoogle-maps', 'angular-spinkit',
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
                 'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService', 'ImageUtilsService',
 				'ngAnimate', 'appRoutes', 'toastr',
@@ -17,16 +17,32 @@ var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies
                 'CollectionSelectionModalCtrl', 'CollectionDetailCtrl', 'CommentCtrl', 'SearchCtrl',
                 'UserProfileFollowerUsersCtrl', 'UserProfileFollowingUsersCtrl', 'NearRecipesCtrl', 'FollowingCollectionsCtrl',
                 'RecipeReviewCtrl']);
-     
-// funzione che parte all'avvio dell'app
-// Serve per ricevere il token CSRF una volta sola        
-myApp.run(function($http) {
-    // change site
+
+/**
+ * Configurazione iniziale dell'app, viene fatta una sola volta all'avvio.
+ */     
+myApp.run(function($http, $rootScope) {
+    
+    /**
+     * Serve per ricevere il token CSRF una volta sola e lo imposta
+     * per ogni chiamata successiva.
+     */
     $http.get('csrfToken').success(function(data){
         console.log(data);
         $http.defaults.headers.common['x-csrf-token'] = data._csrf;
         $http.defaults.withCredentials = true;
-        });
+    });
+    
+    /**
+     * Serve a configurare correttamente lo scrolling del ui-router.
+     * Infatti senza di questo codice, ui-router tende a ricordarsi la
+     * posizione e questo peggiora l'eserienza utente. Nel nostro
+     * caso nemmeno autoscroll="true" risolve il problema.
+     */
+    $rootScope.$on('$stateChangeSuccess', function() {
+        // eseguo uno scroll al top assoluto
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+    });
 });
 
 myApp.config(['$animateProvider', 'uiGmapGoogleMapApiProvider', function($animateProvider, uiGmapGoogleMapApiProvider){
