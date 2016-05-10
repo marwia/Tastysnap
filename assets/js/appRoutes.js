@@ -392,7 +392,6 @@ angular.module('appRoutes', []).config([
                         controller: 'RecipeCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
-                            
                             recipePromise: ['Recipe', '$stateParams', function(recipes, $stateParams) {
                                 return recipes.getRecipe($stateParams.id);
                             }]

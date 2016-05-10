@@ -8,7 +8,6 @@
  * genitore (con più alto grado di gerarchia): RecipeCtrl.
  */
 
-angular.module('ui.bootstrap.demo', ['ngAnimate', 'ui.bootstrap']);
 angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
     '$scope',
     'Recipe',
@@ -167,68 +166,6 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
             recipe.totalSod = Ingredient.calculateNutrientTotal(recipe.ingredientGroups, '307');
 
         }
-        
-        //Metodi per far funzionare lo slider del dettaglio della ricetta,
-        // NON so se dovremmo metterlo in un conroller a parte
-        //inizio carousel
-        $scope.myInterval = 5000;
-        $scope.noWrapSlides = false;
-        $scope.active = 0;
-        var slides = $scope.slides = [];
-        var currIndex = 0;
-
-        $scope.addSlide = function() {
-            var newWidth = 600 + slides.length + 1;
-            slides.push({
-            image: 'http://lorempixel.com/' + newWidth + '/300',
-            text: ['Nice image','Awesome photograph','That is so cool','I love that'][slides.length % 4],
-            id: currIndex++
-            });
-        };
-
-        $scope.randomize = function() {
-            var indexes = generateIndexesArray();
-            assignNewIndexesToSlides(indexes);
-        };
-
-        for (var i = 0; i < 4; i++) {
-            $scope.addSlide();
-        }
-
-        // Randomize logic below
-
-        function assignNewIndexesToSlides(indexes) {
-            for (var i = 0, l = slides.length; i < l; i++) {
-            slides[i].id = indexes.pop();
-            }
-        }
-
-        function generateIndexesArray() {
-            var indexes = [];
-            for (var i = 0; i < currIndex; ++i) {
-            indexes[i] = i;
-            }
-            return shuffle(indexes);
-        }
-
-        // http://stackoverflow.com/questions/962802#962890
-        function shuffle(array) {
-            var tmp, current, top = array.length;
-
-            if (top) {
-            while (--top) {
-                current = Math.floor(Math.random() * (top + 1));
-                tmp = array[current];
-                array[current] = array[top];
-                array[top] = tmp;
-            }
-            }
-
-            return array;
-        }
-        //fine carousel
-        
-      
         
         /**
          * Osserva la variabile che indica il progresso del

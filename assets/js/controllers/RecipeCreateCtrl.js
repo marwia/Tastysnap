@@ -57,7 +57,15 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 g = parseInt(rgb[1]),
                 b = parseInt(rgb[2]);
             return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-        }
+        };
+        
+        /**
+         * Funzione che lega il prodotto selezionato dall'utente
+         * all'ingrediente.
+         */
+        $scope.onProductSelect = function (item, ingredient) {
+            ingredient.product = item.id;
+        };
 
         $scope.recipeToCreate = {
             title: "",
@@ -79,7 +87,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 name: "",
                 quantity: "",
                 unitOfMeasure: "",
-                product: {}
+                product: ""
             }]
         }];
         

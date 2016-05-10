@@ -676,13 +676,14 @@ module.exports = {
                     // get the file name from a path
                     var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
                     var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
-
+                    //console.log("immagine di copertina: " + fileUrl);
                     Recipe.update(recipe.id, {
                         // aggiungo url dell'immagine appena caricata
                         coverImageUrl: fileUrl,
 
                     }).exec(function(err, updatedRecipes) {
                         if (err) return res.negotiate(err);
+                        //console.info(updatedRecipes[0]);
                         return res.json(updatedRecipes[0]);
                     });
                 });
@@ -782,17 +783,20 @@ module.exports = {
                 // eseguo l'upload sul bucket s3
                 s3Upload(err, filesUploaded, function(fileUrl) {
 
+                    if (recipe.otherImageUrls == null)
+                        recipe.otherImageUrls = new Array();
+
+                    // aggiungo url dell'immagine appena caricata
+                    recipe.otherImageUrls.push(fileUrl);
+                    
                     // aggiorno la ricetta
-                    Recipe.findOne(recipe.id).exec(function(err, recipe) {
-                        if (err) return res.negotiate(err);
-
-                        if (recipe.otherImageUrls == null)
-                            recipe.otherImageUrls = new Array();
-
+                    Recipe.update(recipe.id, {
                         // aggiungo url dell'immagine appena caricata
-                        recipe.otherImageUrls.push(fileUrl);
-                        recipe.save();
-                        return res.json(recipe);
+                        otherImageUrls: recipe.otherImageUrls,
+
+                    }).exec(function(err, updatedRecipes) {
+                        if (err) return res.negotiate(err);
+                        return res.json(updatedRecipes[0]);
                     });
                 });
             });
@@ -812,17 +816,20 @@ module.exports = {
                     var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
                     var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
 
+                    if (recipe.otherImageUrls == null)
+                        recipe.otherImageUrls = new Array();
+
+                    // aggiungo url dell'immagine appena caricata
+                    recipe.otherImageUrls.push(fileUrl);
+                    
                     // aggiorno la ricetta
-                    Recipe.findOne(recipe.id).exec(function(err, recipe) {
-                        if (err) return res.negotiate(err);
-
-                        if (recipe.otherImageUrls == null)
-                            recipe.otherImageUrls = new Array();
-
+                    Recipe.update(recipe.id, {
                         // aggiungo url dell'immagine appena caricata
-                        recipe.otherImageUrls.push(fileUrl);
-                        recipe.save();
-                        return res.json(recipe);
+                        otherImageUrls: recipe.otherImageUrls,
+
+                    }).exec(function(err, updatedRecipes) {
+                        if (err) return res.negotiate(err);
+                        return res.json(updatedRecipes[0]);
                     });
                 });
         }

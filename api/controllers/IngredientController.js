@@ -83,6 +83,10 @@ module.exports = {
         ingredientToCreate.ingredientGroup = ingredientGroup;
 
         if (!ingredientToCreate.product) { return next(); }
+        
+        // controllo che product sia una stringa
+        if (!(typeof ingredientToCreate.product === 'string' || myVar instanceof String)) { return next(); }
+        
         //find relative Product
         Product.findOne(ingredientToCreate.product).exec(function (err, foundProduct) {
             if (err) { return next(err); }

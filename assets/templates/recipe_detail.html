@@ -50,16 +50,10 @@
                 <!--<div class="recipe_sp_2_1" style="background-image:url('{{detailedRecipe.coverImageUrl}}')"></div>-->
 
                 <!-- inizio carousel -->
-                    <div>
+                    <div ng-controller="RecipeImageSliderCtrl">
                         <uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
                             <uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
-                                <div class="recipe_sp_2_1" style="background-image:url('{{detailedRecipe.coverImageUrl}}')"></div>
-                                <!--
-                                <div class="carousel-caption">
-                                    <h4>Slide {{slide.id}}</h4>
-                                    <p>{{slide.text}}</p>
-                                </div>
-                                -->
+                                <div class="recipe_sp_2_1" style="background-image:url('{{slide.image}}')"></div>
                             </uib-slide>
                         </uib-carousel>
                     </div>
