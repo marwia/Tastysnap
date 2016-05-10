@@ -25,7 +25,7 @@ angular.module('appRoutes', []).config([
                 url: '/',
                 onEnter: ['$state', 'Auth', function($state, Auth) {
                     if (!Auth.isLoggedIn()) {
-                        $state.go('login');
+                        $state.go('app.ext_home');
                     } else {
                         $state.go('app.home.most_recent');
                     }
@@ -59,7 +59,7 @@ angular.module('appRoutes', []).config([
                     }
                 }]
             })
-
+            
             .state('app.recipe_create', {
                 url: '/recipe_create',
                 views: {
@@ -74,6 +74,27 @@ angular.module('appRoutes', []).config([
                             dosageType: ['Recipe', function(recipes) {
                                 return recipes.getAllDosageTypes();
                             }]
+                        }
+                    }
+                }
+            })
+            
+            // EXTERN HOME
+            .state('app.ext_home', {
+                url: '/ext_home',
+                views: {
+                    'content@app': {
+                        templateUrl: 'templates/ext_home.html',
+                        controller: 'ExtHomeCtrl',
+                        // ogni volta che parte da questo stato farà questa funzione
+                        resolve: {
+                            /*
+                            postPromise: ['Recipe', function(recipes) {
+                                return recipes.getAllRecipeCategories();
+                            }],
+                            dosageType: ['Recipe', function(recipes) {
+                                return recipes.getAllDosageTypes();
+                            }]*/
                         }
                     }
                 }

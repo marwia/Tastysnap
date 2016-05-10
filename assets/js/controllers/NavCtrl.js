@@ -22,21 +22,5 @@ angular.module('NavCtrl', []).controller('NavCtrl', [
         $scope.currentUser = User.currentUser;
         $scope.getUserProfileImage = User.getUserProfileImage;
     
-        // Any function returning a promise object can be used to load values asynchronously
-        /**
-         * Funzione che serve per eseguire una ricerca istantanea delle ricette.
-         */
-        /*
-        $scope.getLocation = function (val) {
-            return $http.get('/api/v1/recipe', {
-                params: {
-                    where: {
-                        "title": { "contains": val }
-                    }
-                }
-            }).then(function (response) {
-                return response.data;
-            });
-        };*/
 
     }]);
