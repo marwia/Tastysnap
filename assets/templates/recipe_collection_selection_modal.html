@@ -18,16 +18,16 @@
                 <!-- Nuova raccolta -->
                 <div class="row">
                     <div class="col-md-12">
-                        <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="showme=true">
-                            Nuova Raccolta
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- HR -->
-                <div class="row" ng-hide="showme">
-                    <div class="col-md-12">
-                        <hr/>
+                        <!-- ng repeat media (collection) -->
+                        <div class="media modal-add-recipe-to-collection_media_add" ng-click="showme=true">
+                            <!-- manca di mettere il nome della raccolta nel title -->
+                            <div class="media-left media-middle">
+                                <i class="fa fa-plus modal-add-recipe-to-collection_add" aria-hidden="true"></i>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading modal-add-recipe-to-collection_title">Nuova Raccolta</h4>
+                            </div>
+                        </div><!-- fine ng-repeat -->
                     </div>
                 </div>
                 

@@ -1415,6 +1415,7 @@ tr.recipe_sp_3_tr{
     position:absolute;
     top:2%;
     right:9%;
+	
     -webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
@@ -1510,6 +1511,19 @@ tr.recipe_sp_3_tr{
     margin-top:14px;
 }
 
+.modal-add-recipe-to-collection_media_add{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.modal-add-recipe-to-collection_add{
+	font-size:2.5em;
+	width: 64px;
+	text-align: center;
+	height: 44px;
+	padding-top: 8px;
+}
+
 /* ------------------------------------------------------------------ 13 -------------------------------------------------------- */
 /* ---------------------------------------------------------- MODAL SHARE COLLECTION -------------------------------------------- */
 
@@ -1558,9 +1572,77 @@ tr.recipe_sp_3_tr{
 
 /* ------------------------------------------------------------------ 15 -------------------------------------------------------- */
 /* ---------------------------------------------------------------- SEARCH ------------------------------------------------------ */
+.search_background_white{
+	background-color: white;
+}
 
-.search_advaced_input{
-    width:100% !important;
+.search_background_gray{
+	background-color: #d8d9da;
+}
+
+.search_row{
+	padding: 15px;
+}
+
+.search_button_category{
+    padding: 0 8px;
+    margin: auto;
+    border: none;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.search_button_category.active{
+	color: #ff9800;
+}
+
+.search_button_category:hover{
+	color: #ff9800;
+}
+
+.search_title{
+	color: #ff9800;
+}
+
+.search_item{
+	color: gray;
+	margin: 10px auto;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.search_item_icon{
+	opacity: 0;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.search_item:hover{
+	color: black;
+}
+
+.search_item:hover .search_item_icon{
+	opacity: 1;
+}
+
+.search_item.active{
+	color: black;
+}
+
+.search_item.active .search_item_icon{
+	opacity: 1;
 }
 
 /* ------------------------------------------------------------------ 16 -------------------------------------------------------- */
