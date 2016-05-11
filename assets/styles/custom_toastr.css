@@ -1,0 +1,21 @@
+/*
+ * Custom toastr.css
+ * Mariusz Wiazowski
+ *
+ * Fogli di stile usati principalmente per personalizzare l'aspetto
+ * dei messaggi toast.
+ *
+ * https://github.com/Foxandxss/angular-toastr
+ * 
+ */
+ 
+.toast-top-center {
+  top: 50px;
+  right: 0;
+  width: 100%;
+}
+
+#toast-container.toast-top-center > div,
+#toast-container.toast-bottom-center > div {
+  margin-top: 10px;
+}
