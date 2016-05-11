@@ -88,6 +88,24 @@
                     <div class="col-md-12 search_title">
                         <h4>TEMPO</h4>
                     </div>
+                    
+                    <!-- timeline -->
+                    <!-- l'ho commentata perche sennò tutto angular non funziona dato che ' -->
+                    <link rel="stylesheet" type="text/css" href="https://rawgit.com/rzajac/angularjs-slider/master/dist/rzslider.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
+                    <script src="https://rawgit.com/rzajac/angularjs-slider/master/dist/rzslider.js"></script>
+                    
+                    <!-- http://jsfiddle.net/0f7sd7dw/ -->
+                    
+                    <!--
+                    <div class="col-md-12">
+                        <div ng-controller="TestController as vm">
+                            <p>Time: {{vm.priceSlider1.value}}</p>
+                            <rzslider rz-slider-model="vm.priceSlider1.value" rz-slider-options="vm.priceSlider1.options" ></rzslider>
+                        </div>
+                    </div>
+                    -->
+                    
                 </div>
                 
                 <!-- ricerca row - INGREDIENTI -->
@@ -119,6 +137,52 @@
                 <div class="row search_background_white search_row">
                     <div class="col-md-12 search_title">
                         <h4>OPINIONI</h4>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        
+                        <table class="">
+                            <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringReviewsCount('difficulty')}}">
+                                <td class="text-left">DIFFICOLTA</td>
+                                <td class="text-right">
+                                    <div class="recipe_rating_con">
+                                        <div class="recipe_rating_1">{{getStringAverageValue("difficulty", "difficultyTitles")}}</div>
+                                        <div class="recipe_rating_2">
+                                            <div class="rating">
+                                                <div><uib-rating ng-click="toggleRecipeReview('difficulty', difficultyRating)" ng-model="difficultyRating" max="max" read-only="isReadonly" titles="difficultyTitles" on-hover="hoveringOver(value)"></uib-rating></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="recipe_sp_3_tr" uib-tooltip="{{getStringReviewsCount('cost')}}">
+                                <td class="text-left">COSTO</td>
+                                <td class="text-right">
+                                    <div class="recipe_rating_con">
+                                        <div class="recipe_rating_1">{{getStringAverageValue("cost", "costTitles")}}</div>
+                                        <div class="recipe_rating_2">
+                                            <div class="rating">
+                                                <div><uib-rating ng-click="toggleRecipeReview('cost', costRating)" ng-model="costRating" max="max" read-only="isReadonly" titles="costTitles" on-hover="hoveringOver(value)"></uib-rating></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringReviewsCount('calories')}}">
+                                <td class="text-left">CALORIE</td>
+                                <td class="text-right">
+                                    <div class="recipe_rating_con">
+                                        <div class="recipe_rating_1">{{getStringAverageValue("calories", "caloriesTitles")}}</div>
+                                        <div class="recipe_rating_2">
+                                            <div class="rating">
+                                                <div><uib-rating ng-click="toggleRecipeReview('calories', caloriesRating)" ng-model="caloriesRating" max="max" read-only="isReadonly" titles="caloriesTitles" on-hover="hoveringOver(value)"></uib-rating></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                            
                     </div>
                     
                 </div>
