@@ -1,1 +1,26 @@
-<h1>Home per le persone non loggate</h1>
+<div class="welcome_home"> 
+    <div style="background-image: url('app_images/ext_home.png');" class="welcome_background"> </div>
+    
+    <div class="welcome_intro text-center">
+        <img src="app_images/tastysnaplogo_full.png" class="welcome_logo">
+        
+        <h3>Scropri, crea e condividi ricette e raccolte con il resto del mondo.</h3>
+        <h5>Hai fame? Ti senti creativo? Crea la ricetta ideale su Tastysnap e inizia a cucinre</h5>
+        
+        <input type="text" class="form-control welcome_search" placeholder="Favolose creap con guarnizione di fragle e crema">
+        
+        <h6>SCORRI PER TROVARE L'ISPIRAZIONE</h6>
+        
+        <h1><i class="fa fa-angle-down welcome_down" aria-hidden="true"></i></h1>
+        
+    </div>
+    
+</div>
+
+<!-- CARD -->
+<div class="row tasty_container welcome_home_card_container text-center">
+    <!-- basic card -->
+    <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
+    toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" ng-repeat="recipe in recipes" ng-init="checkVote(recipe)"></recipe-card>
+    <!-- fine card -->
+</div>
