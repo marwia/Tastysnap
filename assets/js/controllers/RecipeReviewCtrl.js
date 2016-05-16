@@ -23,14 +23,9 @@ angular.module('RecipeReviewCtrl', []).controller('RecipeReviewCtrl', [
         $scope.rate = 0;
         $scope.max = 5;
         $scope.isReadonly = false;
-        $scope.difficultyTitles = ['molto difficile', 'difficile', 'normale', 'facile', 'molto facile']
-        $scope.costTitles = ['molto costosa', 'costosa', 'normale', 'economica', 'molto economica']
-        $scope.caloriesTitles = ['molto calorica', 'calorica', 'normale', 'leggera', 'molto leggera']
-
-        $scope.hoveringOver = function(value) {
-            $scope.overStar = value;
-            $scope.percent = 100 * (value / $scope.max);
-        };
+        $scope.difficultyTitles = ['molto difficile', 'difficile', 'normale', 'facile', 'molto facile'];
+        $scope.costTitles = ['molto costosa', 'costosa', 'normale', 'economica', 'molto economica'];
+        $scope.caloriesTitles = ['molto calorica', 'calorica', 'normale', 'leggera', 'molto leggera'];
         
         /**
          * Funzione per calcolare il valore medio 

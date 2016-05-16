@@ -11,7 +11,7 @@ var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies
                 'ngMessages', 'uiGmapgoogle-maps', 'angular-spinkit',
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
                 'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService', 'ImageUtilsService',
-				'ngAnimate', 'appRoutes', 'toastr',
+				'ngAnimate', 'appRoutes', 'toastr', 'rzModule',
 				'AuthCtrl', 'MasterCtrl', 'NavCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeDetailCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl', 'UserHomeCtrl', 'CollectionCtrl',
                 'CollectionSelectionModalCtrl', 'CollectionDetailCtrl', 'CommentCtrl', 'SearchCtrl', 'ExtHomeCtrl',

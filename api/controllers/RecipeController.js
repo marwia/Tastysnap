@@ -17,6 +17,8 @@ var fs = require('fs');
 // libreria per gestire gli array
 var _ = require('lodash');
 
+var wlFilter = require('waterline-criteria');
+
 /**
  * Codice in comune
  */
@@ -35,7 +37,7 @@ var cdn_url = "https://tastysnapcdn.s3.amazonaws.com/";
 var localUploadConfiguration = {
     // don't allow the total upload size to exceed ~10MB
     maxBytes: 5000000,
-    saveAs: function(file, cb) {
+    saveAs: function (file, cb) {
         var d = new Date();
         var extension = file.filename.split('.').pop();
 
@@ -55,7 +57,7 @@ var localUploadConfiguration = {
     }
 };
 
-var s3Upload = function(err, filesUploaded, whenDone) {
+var s3Upload = function (err, filesUploaded, whenDone) {
     if (err) {
         return res.badRequest();
     }
@@ -65,7 +67,7 @@ var s3Upload = function(err, filesUploaded, whenDone) {
     }
 
     // eseguo l'upload dell'immagine sul bucket S3
-    S3FileService.uploadS3Object(filesUploaded[0], function(err, uploadedFiles) {
+    S3FileService.uploadS3Object(filesUploaded[0], function (err, uploadedFiles) {
 
         if (err || !uploadedFiles) {
             return res.badRequest("Errore nell'upload del file sul bucket S3");
@@ -75,7 +77,7 @@ var s3Upload = function(err, filesUploaded, whenDone) {
         var fileUrl = cdn_url + filename;
 
         // elimino il file temporaneo
-        fs.unlink(filesUploaded[0].fd, function(err) {
+        fs.unlink(filesUploaded[0].fd, function (err) {
             if (err) {
                 return console.error(err);
             }
@@ -87,6 +89,238 @@ var s3Upload = function(err, filesUploaded, whenDone) {
 };
 
 module.exports = {
+
+    /**
+     * @api {get} /recipe/search Search Recipes
+     * @apiName SearchRecipes
+     * @apiGroup Recipe
+     *
+     * @apiDescription Serve per richiedere un lista di ricette applicando filtri di ricerca.
+     * Attenzione che i risultati sono limitati ad un numero preciso di ricette, massimo 30 per richiesta.<br>
+     * Questo end point accetta prametri.
+     *
+     * @apiParam {Integer} skip The number of records to skip (useful for pagination).
+     * @apiParam {Integer} limit The maximum number of records to send back (useful for pagination). Defaults to 30. 
+     * @apiParam {String} where Instead of filtering based on a specific attribute, you may instead choose to provide a where parameter with a Waterline WHERE criteria object, encoded as a JSON string.
+     * @apiParam {String} sort The sort order. By default, returned records are sorted by primary key value in ascending order. 
+     *
+     * @apiParamExample Request-Param-Example:
+     *     ?skip=6&limit=3
+     */
+    advancedSearch: function (req, res, next) {
+        var originalCriteria = actionUtil.parseCriteria(req);
+        var criteria = actionUtil.parseCriteria(req);
+
+        console.info("NOT filtered criteria: ", criteria);
+
+        // cancello i criteri di ricerca secondari
+        delete criteria["difficulty"];
+        delete criteria["cost"];
+        delete criteria["calories"];
+
+        delete criteria["products"];
+
+        console.info("filtered criteria: ", criteria);
+
+        Recipe.find()
+            .where(criteria)
+            //.limit(actionUtil.parseLimit(req))//forse è da mettere alla fine
+            //.skip(actionUtil.parseSkip(req))//anche...
+            //.sort(actionUtil.parseSort(req))
+            .populate('author')
+            .exec(function (err, foundRecipes) {
+                if (err) { return next(err); }
+
+                if (foundRecipes.length == 0) {
+                    return res.notFound({ error: 'No recipe found' });
+                }
+
+                // per ogni ricetta eseguo delle funzioni asincrono
+                // ma aseptto che tutte finiscono (l'ultima callback)
+                async.each(foundRecipes, function (recipe, callback) {
+                    // conteggi (obbligatorio)
+                    var counts = {
+                        commentsCount: function (cb) {
+                            Comment.count({ recipe: recipe.id }).exec(function (err, result) {
+                                cb(err, result);
+                            });
+                        },
+                        votesCount: function (cb) {
+                            VoteRecipe.count({ recipe: recipe.id, value: 1 }).exec(function (err, result) {
+                                cb(err, result);
+                            });
+                        },
+                        viewsCount: function (cb) {
+                            ViewRecipe.count({ recipe: recipe.id }).exec(function (err, result) {
+                                cb(err, result);
+                            });
+                        },
+                        trialsCount: function (cb) {
+                            TryRecipe.count({ recipe: recipe.id }).exec(function (err, result) {
+                                cb(err, result);
+                            });
+                        }
+                    };
+
+                    // popolo gli ingredienti (opzionale)
+
+                    var populateIngredients = function (cb) {
+
+                        IngredientGroup
+                            .find({ recipe: recipe.id })
+                            .populate('ingredients')
+                            .exec(function (err, result) {
+                                if (!err && result) {
+                                    var productIds = [];
+                                    for (var i = 0; i < result.length; i++) {
+                                        if (result[i].ingredients)
+                                            for (var j = 0; j < result[i].ingredients.length; j++) {
+                                                productIds.push(result[i].ingredients[j].product)
+                                            }
+                                    }
+                                    cb(err, productIds);
+                                } else {
+                                    cb(err, -1);// no data
+                                }
+                            });
+                    }
+
+                    // calcolo dei voti medi (opzionale)
+
+                    var averagesBase = function (cb, typology) {
+                        ReviewRecipe.find({ recipe: recipe.id, typology: typology }).exec(function (err, result) {
+                            if (!err && result && result.length > 0) {
+                                var tot = 0;
+                                for (var i = 0; i < result.length; i++) {
+                                    var tot = + result[i].value;
+                                }
+                                var avg = tot / result.length;
+                                cb(err, avg);
+                            } else {
+                                cb(err, -1);// no data
+                            }
+                        });
+                    };
+
+                    var averages = {
+                        difficulty: function (cb) {
+                            averagesBase(cb, "difficulty");
+                        },
+                        cost: function (cb) {
+                            averagesBase(cb, "cost");
+                        },
+                        calories: function (cb) {
+                            averagesBase(cb, "calories");
+                        }
+                    };
+
+                    // determinazione dei task da eseguire
+
+                    var tasks = counts;
+
+                    if (originalCriteria["difficulty"])
+                        tasks["difficulty"] = averages.difficulty;
+                    if (originalCriteria["cost"])
+                        tasks["cost"] = averages.cost;
+                    if (originalCriteria["calories"])
+                        tasks["calories"] = averages.calories;
+
+                    if (originalCriteria["products"])
+                        tasks["products"] = populateIngredients;
+
+
+                    // eseguo lo precedenti funzioni in parallelo
+                    async.parallel(tasks, function (err, resultSet) {
+                        if (err) { return next(err); }
+                        console.info(resultSet);
+                        // copio i valori calcolati
+                        recipe.commentsCount = resultSet.commentsCount;
+                        recipe.votesCount = resultSet.votesCount;
+                        recipe.viewsCount = resultSet.viewsCount;
+                        recipe.trialsCount = resultSet.trialsCount;
+
+                        // copio i valori opzionali
+                        recipe.difficulty = resultSet.difficulty;
+                        recipe.cost = resultSet.cost;
+                        recipe.calories = resultSet.calories;
+
+                        recipe.products = resultSet.products;
+
+                        // richiamo la callback finale
+                        callback();
+                    });
+
+                }, function (err) {
+                    if (err) { return next(err); }
+                    // finish
+
+                    // filter
+
+                    // in base al voto
+                    
+                    if (originalCriteria["difficulty"]) {
+                        foundRecipes = wlFilter(foundRecipes, {
+                            where: {
+                                difficulty: originalCriteria["difficulty"]
+                            }
+                        }).results;
+                    }
+                    
+                    if (originalCriteria["cost"]) {
+                        foundRecipes = wlFilter(foundRecipes, {
+                            where: {
+                                difficulty: originalCriteria["cost"]
+                            }
+                        }).results;
+                    }
+                    
+                    if (originalCriteria["calories"]) {
+                        foundRecipes = wlFilter(foundRecipes, {
+                            where: {
+                                difficulty: originalCriteria["calories"]
+                            }
+                        }).results;
+                    }
+
+                    // in base ai prodotti (AND)
+                    if (originalCriteria["products"]) {
+                        var products = originalCriteria["products"];
+                        if (!(products instanceof Array))
+                            products = [originalCriteria["products"]]
+
+                        foundRecipes = foundRecipes.filter(function (el) {
+                            return MyUtils.superBag(el.products, products);
+                        });
+                    }
+
+                    // sort
+                    var sort = actionUtil.parseSort(req);
+
+                    // verifico che il criterio di ordinamento sia tra quei 
+                    // valori contati
+                    var substrings = ['commentsCount', 'votesCount', 'viewsCount', 'trialsCount',
+                        'difficulty', 'cost', 'calories', 'title', 'preparationTime', 'category', 'author'];
+                    if (new RegExp(substrings.join("|")).test(sort)) {
+                        // ordino i risultati secondo un criterio
+                        foundRecipes.sort(MyUtils.dynamicSort(sort));
+                    }
+
+                    // skip or limit
+                    
+                    var limit = sails.config.blueprints.defaultLimit;
+                    if (actionUtil.parseLimit(req))
+                        limit = actionUtil.parseLimit(req);
+                    var skip = 0;
+                    if (actionUtil.parseSkip(req)) 
+                        skip = actionUtil.parseSkip(req);
+                    foundRecipes.slice(skip, skip + limit);
+                        
+                    return res.json(foundRecipes);
+                });
+
+            });
+    },
+
     /**
      * @api {get} /recipe List Recipes
      * @apiName ListRecipes
@@ -166,14 +400,14 @@ module.exports = {
      *
      * @apiUse InvalidTokenError
      */
-    find: function(req, res, next) {
+    find: function (req, res, next) {
         Recipe.find()
             .where(actionUtil.parseCriteria(req))
             .limit(actionUtil.parseLimit(req))
             .skip(actionUtil.parseSkip(req))
             .sort(actionUtil.parseSort(req))
             .populate('author')
-            .exec(function(err, foundRecipes) {
+            .exec(function (err, foundRecipes) {
                 if (err) { return next(err); }
 
                 if (foundRecipes.length == 0) {
@@ -182,35 +416,33 @@ module.exports = {
 
                 // per ogni ricetta eseguo delle funzioni asincrono
                 // ma aseptto che tutte finiscono (l'ultima callback)
-                async.each(foundRecipes, function(recipe, callback) {
+                async.each(foundRecipes, function (recipe, callback) {
                     var counts = {
-                        commentsCount: function(cb) {
-                            Comment.count({ recipe: recipe.id }).exec(function(err, result) {
+                        commentsCount: function (cb) {
+                            Comment.count({ recipe: recipe.id }).exec(function (err, result) {
                                 cb(err, result);
                             });
                         },
-                        votesCount: function(cb) {
-                            VoteRecipe.count({ recipe: recipe.id, value: 1 }).exec(function(err, result) {
+                        votesCount: function (cb) {
+                            VoteRecipe.count({ recipe: recipe.id, value: 1 }).exec(function (err, result) {
                                 cb(err, result);
                             });
                         },
-                        viewsCount: function(cb) {
-                            ViewRecipe.count({ recipe: recipe.id }).exec(function(err, result) {
+                        viewsCount: function (cb) {
+                            ViewRecipe.count({ recipe: recipe.id }).exec(function (err, result) {
                                 cb(err, result);
                             });
                         },
-                        trialsCount: function(cb) {
-                            TryRecipe.count({ recipe: recipe.id }).exec(function(err, result) {
+                        trialsCount: function (cb) {
+                            TryRecipe.count({ recipe: recipe.id }).exec(function (err, result) {
                                 cb(err, result);
                             });
                         }
                     };
 
                     // eseguo lo precedenti funzioni in parallelo
-                    async.parallel(counts, function(err, resultSet) {
+                    async.parallel(counts, function (err, resultSet) {
                         if (err) { return next(err); }
-
-                        console.info(resultSet);
 
                         // copio i valori calcolati
                         recipe.commentsCount = resultSet.commentsCount;
@@ -222,7 +454,7 @@ module.exports = {
                         callback();
                     });
 
-                }, function(err) {
+                }, function (err) {
                     if (err) { return next(err); }
                     // finish
                     var sort = actionUtil.parseSort(req);
@@ -267,14 +499,14 @@ module.exports = {
     * @apiErrorExample Error-Response:
     *     HTTP/1.1 404 Not Found
     */
-    findOne: function(req, res, next) {
+    findOne: function (req, res, next) {
         var recipeId = req.param('id');
         if (!recipeId) { return next(); }
 
         Recipe.findOne(recipeId)
             .populate('author')
             .populate('ingredientGroups')
-            .exec(function(err, foundRecipe) {
+            .exec(function (err, foundRecipe) {
                 if (err) { return next(err); }
 
                 if (!foundRecipe) { return res.notFound({ error: 'No recipe found' }); }
@@ -283,30 +515,30 @@ module.exports = {
                 // ma aseptto che tutte finiscono (l'ultima callback)
 
                 var counts = {
-                    commentsCount: function(cb) {
-                        Comment.count({ recipe: foundRecipe.id }).exec(function(err, result) {
+                    commentsCount: function (cb) {
+                        Comment.count({ recipe: foundRecipe.id }).exec(function (err, result) {
                             cb(err, result);
                         });
                     },
-                    votesCount: function(cb) {
-                        VoteRecipe.count({ recipe: foundRecipe.id, value: 1 }).exec(function(err, result) {
+                    votesCount: function (cb) {
+                        VoteRecipe.count({ recipe: foundRecipe.id, value: 1 }).exec(function (err, result) {
                             cb(err, result);
                         });
                     },
-                    viewsCount: function(cb) {
-                        ViewRecipe.count({ recipe: foundRecipe.id }).exec(function(err, result) {
+                    viewsCount: function (cb) {
+                        ViewRecipe.count({ recipe: foundRecipe.id }).exec(function (err, result) {
                             cb(err, result);
                         });
                     },
-                    trialsCount: function(cb) {
-                        TryRecipe.count({ recipe: foundRecipe.id }).exec(function(err, result) {
+                    trialsCount: function (cb) {
+                        TryRecipe.count({ recipe: foundRecipe.id }).exec(function (err, result) {
                             cb(err, result);
                         });
                     }
                 };
 
                 // eseguo lo precedenti funzioni in parallelo
-                async.parallel(counts, function(err, resultSet) {
+                async.parallel(counts, function (err, resultSet) {
                     if (err) { return next(err); }
 
                     // copio i valori calcolati
@@ -364,7 +596,7 @@ module.exports = {
      *
      * @apiUse InvalidTokenError
      */
-    create: function(req, res, next) {
+    create: function (req, res, next) {
         var user = req.payload;
 
         var recipe = req.body;
@@ -374,7 +606,7 @@ module.exports = {
         //delete recipe.coverImageUrl;
         delete recipe.coverImageFd;
 
-        Recipe.create(recipe).exec(function(err, recipe) {
+        Recipe.create(recipe).exec(function (err, recipe) {
             if (err) { return next(err); }
             return res.json(recipe);
         });
@@ -415,7 +647,7 @@ module.exports = {
      *
      * @apiUse NoPermissionError
      */
-    destroy: function(req, res, next) {
+    destroy: function (req, res, next) {
         var recipe = req.recipe;
 
         //eliminazione dei file
@@ -423,7 +655,7 @@ module.exports = {
             // eliminazione immagine di copertina
             if (recipe.coverImageUrl != "") {
                 var filename = recipe.coverImageUrl.split('/').pop();
-                fs.unlink(localImagesDir + "/" + filename, function(err) {
+                fs.unlink(localImagesDir + "/" + filename, function (err) {
                     if (err) {
                         return console.error(err);
                     }
@@ -433,7 +665,7 @@ module.exports = {
             // eliminazione immagine di copertina sfocata
             if (recipe.blurredCoverImageUrl != "") {
                 var filename = recipe.blurredCoverImageUrl.split('/').pop();
-                fs.unlink(localImagesDir + "/" + filename, function(err) {
+                fs.unlink(localImagesDir + "/" + filename, function (err) {
                     if (err) {
                         return console.error(err);
                     }
@@ -444,7 +676,7 @@ module.exports = {
             for (var i in recipe.otherImageUrls) {
                 var fileUrl = recipe.otherImageUrls[i];
                 var filename = fileUrl.split('/').pop();
-                fs.unlink(localImagesDir + "/" + filename, function(err) {
+                fs.unlink(localImagesDir + "/" + filename, function (err) {
                     if (err) {
                         return console.error(err);
                     }
@@ -471,7 +703,7 @@ module.exports = {
             }
         }
 
-        Recipe.destroy(recipe.id).exec(function(err) {
+        Recipe.destroy(recipe.id).exec(function (err) {
             if (err) { return next(err); }
             return res.send(204, null);// eliminata
         });
@@ -547,7 +779,7 @@ module.exports = {
     *      }
     *
     */
-    getRecipeCategories: function(req, res) {
+    getRecipeCategories: function (req, res) {
         return res.json(sails.models.recipe.definition.category);
     },
 
@@ -572,7 +804,7 @@ module.exports = {
      *      }
      *
      */
-    getRecipeDosageTypes: function(req, res) {
+    getRecipeDosageTypes: function (req, res) {
         return res.json(sails.models.recipe.definition.dosagesType);
     },
 
@@ -630,7 +862,7 @@ module.exports = {
     *       "message": "No file was uploaded"
     *     }
     */
-    uploadCoverImage: function(req, res) {
+    uploadCoverImage: function (req, res) {
         var recipe = req.recipe;
 
         var coverImage = req.file('image');
@@ -641,9 +873,9 @@ module.exports = {
                 maxBytes: 5000000,
                 dirname: localImagesDir
 
-            }, function(err, filesUploaded) {
+            }, function (err, filesUploaded) {
                 // eseguo l'upload sul bucket s3
-                s3Upload(err, filesUploaded, function(fileUrl) {
+                s3Upload(err, filesUploaded, function (fileUrl) {
 
                     // se la ricetta ha già una immagine di copertina
                     // elimino l'immagine di copertina vecchia
@@ -657,7 +889,7 @@ module.exports = {
                         // aggiungo url dell'immagine appena caricata
                         coverImageUrl: fileUrl,
 
-                    }).exec(function(err, updatedRecipes) {
+                    }).exec(function (err, updatedRecipes) {
                         if (err) return res.negotiate(err);
                         return res.json(updatedRecipes[0]);
                     });
@@ -681,7 +913,7 @@ module.exports = {
                         // aggiungo url dell'immagine appena caricata
                         coverImageUrl: fileUrl,
 
-                    }).exec(function(err, updatedRecipes) {
+                    }).exec(function (err, updatedRecipes) {
                         if (err) return res.negotiate(err);
                         //console.info(updatedRecipes[0]);
                         return res.json(updatedRecipes[0]);
@@ -699,7 +931,7 @@ module.exports = {
     * @apiDescription Serve per caricare l'immagine di copertina sfocata.
     *
     */
-    uploadBlurredCoverImage: function(req, res) {
+    uploadBlurredCoverImage: function (req, res) {
         var recipe = req.recipe;
 
         var blurredCoverImage = req.file('image');
@@ -710,9 +942,9 @@ module.exports = {
                 maxBytes: 5000000,
                 dirname: localImagesDir
 
-            }, function(err, filesUploaded) {
+            }, function (err, filesUploaded) {
                 // eseguo l'upload sul bucket s3
-                s3Upload(err, filesUploaded, function(fileUrl) {
+                s3Upload(err, filesUploaded, function (fileUrl) {
 
                     // se la ricetta ha già una immagine di copertina
                     // elimino l'immagine di copertina vecchia
@@ -726,7 +958,7 @@ module.exports = {
                         // aggiungo url dell'immagine appena caricata
                         blurredCoverImageUrl: fileUrl,
 
-                    }).exec(function(err, updatedRecipes) {
+                    }).exec(function (err, updatedRecipes) {
                         if (err) return res.negotiate(err);
                         return res.json(updatedRecipes[0]);
                     });
@@ -752,7 +984,7 @@ module.exports = {
                         // aggiungo url dell'immagine appena caricata
                         blurredCoverImageUrl: fileUrl,
 
-                    }).exec(function(err, updatedRecipes) {
+                    }).exec(function (err, updatedRecipes) {
                         if (err) return res.negotiate(err);
                         return res.json(updatedRecipes[0]);
                     });
@@ -768,7 +1000,7 @@ module.exports = {
     * @apiDescription Serve per caricare ulteriori immagini ad una ricetta.
     *
     */
-    uploadImage: function(req, res) {
+    uploadImage: function (req, res) {
         var recipe = req.recipe;
 
         var image = req.file('image');
@@ -779,22 +1011,22 @@ module.exports = {
                 maxBytes: 5000000,
                 dirname: localImagesDir
 
-            }, function(err, filesUploaded) {
+            }, function (err, filesUploaded) {
                 // eseguo l'upload sul bucket s3
-                s3Upload(err, filesUploaded, function(fileUrl) {
+                s3Upload(err, filesUploaded, function (fileUrl) {
 
                     if (recipe.otherImageUrls == null)
                         recipe.otherImageUrls = new Array();
 
                     // aggiungo url dell'immagine appena caricata
                     recipe.otherImageUrls.push(fileUrl);
-                    
+
                     // aggiorno la ricetta
                     Recipe.update(recipe.id, {
                         // aggiungo url dell'immagine appena caricata
                         otherImageUrls: recipe.otherImageUrls,
 
-                    }).exec(function(err, updatedRecipes) {
+                    }).exec(function (err, updatedRecipes) {
                         if (err) return res.negotiate(err);
                         return res.json(updatedRecipes[0]);
                     });
@@ -821,13 +1053,13 @@ module.exports = {
 
                     // aggiungo url dell'immagine appena caricata
                     recipe.otherImageUrls.push(fileUrl);
-                    
+
                     // aggiorno la ricetta
                     Recipe.update(recipe.id, {
                         // aggiungo url dell'immagine appena caricata
                         otherImageUrls: recipe.otherImageUrls,
 
-                    }).exec(function(err, updatedRecipes) {
+                    }).exec(function (err, updatedRecipes) {
                         if (err) return res.negotiate(err);
                         return res.json(updatedRecipes[0]);
                     });

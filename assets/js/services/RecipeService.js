@@ -87,10 +87,73 @@ angular.module('RecipeService', [])
             return $http.get(server_prefix + '/recipe', {
                 params: {
                     where: {
-                        "title": { "contains": query }
+                        "title": { "contains": query },
+                        'skip': skip
                     }
                 }
             }).then(function(response) {
+                if (skip) {
+                    for (var i = 0; i < response.data.length; i++) {
+                        o.recipes.push(response.data[i]);
+                    }
+                } else {
+                    angular.extend(o.recipes, response.data);
+                }
+                if (successCB)
+                    successCB(response);
+            }, errorCB);
+        };
+        
+        /**
+         * Metodo per eseguire una ricerca AVANZATA per titolo di ricetta.
+         * @param {String} recipeTitle - parte del titolo della ricetta
+         * @param {String Array} categoryArray - array con le categorie in OR
+         * @param {String Array} productsIdsArray - array con gli prodotti in AND
+         * @param {String} difficulty - diffcoltà media richiesta dalla ricetta
+         * @param {String} cost - costo medio della ricetta
+         * @param {String} calories - calorie medie richieste dalla ricetta
+         * @param {String} sort_by - stringa che indica per cosa ordinare i risultati
+         * @param {String} sort_mode - stringa che indica la modalità di ordinazione ASC o DESC
+         * @param {Number} skip - numero di risultati da saltare, utile per la paginazione
+         */
+        o.advancedSearch = function(
+            recipeTitle, 
+            categoryArray, 
+            productsIdsArray, 
+            difficulty, cost, calories,
+            sort_by, sort_mode,
+            skip, successCB, errorCB) {
+                
+            // parametri base
+            var params = {
+                where: {
+                        "title": { "contains": recipeTitle }
+                    }
+            };
+            
+            // parametri aggiuntivi
+            if (categoryArray != null && categoryArray.length > 0)
+                params.where["category"] = categoryArray;// categories in OR
+                
+            if (productsIdsArray != null && productsIdsArray.length > 0)
+                params.where["products"] = productsIdsArray;// products in AND
+                
+            if (difficulty != null)
+                params.where["difficulty"] = { '>': difficulty - 1, '<=': difficulty };
+            if (cost != null)
+                params.where["cost"] = { '>': cost - 1, '<=': cost };
+            if (calories != null)
+                params.where["calories"] = { '>': calories - 1, '<=': calories };
+                
+            if (sort_by != null)
+                params["sort"] = sort_by + " " + sort_mode;
+                
+            if (skip != null)
+                params["skip"] = skip;
+                
+            // esecuzione della richiesta
+            return $http.get(server_prefix + '/recipe/search', { params })
+                .then(function(response) {
                 if (skip) {
                     for (var i = 0; i < response.data.length; i++) {
                         o.recipes.push(response.data[i]);

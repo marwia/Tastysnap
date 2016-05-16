@@ -27,60 +27,11 @@
                         <h4>TIPOLOGIA</h4>
                     </div>
                     
-                    <div class="col-md-6 search_item" ng-click="state1 = !state1" ng-class="{'active' : state1}">
-                        <span class="search_item_title">Primi Piatti</span>
+                    <div class="col-md-6 search_item" ng-repeat="category in recipeCategories" ng-click="state = !state; toggleCategory(category);" ng-class="{'active' : state}">
+                        <span class="search_item_title">{{category}}</span>
                         <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
                     </div>
-                    
-                    <div class="col-md-6 search_item" ng-click="state2 = !state2" ng-class="{'active' : state2}">
-                        <span class="search_item_title">Secondi Piatti</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-                    
-                    <div class="col-md-6 search_item" ng-click="state3 = !state3" ng-class="{'active' : state3}">
-                        <span class="search_item_title">Bevande</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-                    
-                    <div class="col-md-6 search_item" ng-click="state4 = !state4" ng-class="{'active' : state4}">
-                        <span class="search_item_title">Zuppe</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-                    
-                    <div class="col-md-6 search_item" ng-click="state5 = !state5" ng-class="{'active' : state5}">
-                        <span class="search_item_title">Cocktails</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-                    
-                    <div class="col-md-6 search_item" ng-click="state6 = !state6" ng-class="{'active' : state6}">
-                        <span class="search_item_title">Insalate</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-                    
-                    <div class="col-md-6 search_item" ng-click="state7 = !state7" ng-class="{'active' : state7}">
-                        <span class="search_item_title">Contorni</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-                    
-                    <div class="col-md-6 search_item" ng-click="state8 = !state8" ng-class="{'active' : state8}">
-                        <span class="search_item_title">Antipasti e Stuzzichini</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-                    
-                    <div class="col-md-6 search_item" ng-click="state9 = !state9" ng-class="{'active' : state9}">
-                        <span class="search_item_title">Marmellate e conserve</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-                    
-                    <div class="col-md-6 search_item" ng-click="state10 = !state10" ng-class="{'active' : state10}">
-                        <span class="search_item_title">Dessert e torte</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-                    
-                    <div class="col-md-6 search_item" ng-click="state11 = !state11" ng-class="{'active' : state11}">
-                        <span class="search_item_title">Salse</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
+     
                 </div>
                 
                 <!-- ricerca row - TEMPO-->
@@ -88,24 +39,15 @@
                     <div class="col-md-12 search_title">
                         <h4>TEMPO</h4>
                     </div>
-                    
-                    <!-- timeline -->
-                    <!-- l'ho commentata perche sennò tutto angular non funziona dato che ' -->
-                    <link rel="stylesheet" type="text/css" href="https://rawgit.com/rzajac/angularjs-slider/master/dist/rzslider.css">
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
-                    <script src="https://rawgit.com/rzajac/angularjs-slider/master/dist/rzslider.js"></script>
-                    
-                    <!-- http://jsfiddle.net/0f7sd7dw/ -->
-                    
-                    <!--
+  
                     <div class="col-md-12">
-                        <div ng-controller="TestController as vm">
-                            <p>Time: {{vm.priceSlider1.value}}</p>
-                            <rzslider rz-slider-model="vm.priceSlider1.value" rz-slider-options="vm.priceSlider1.options" ></rzslider>
-                        </div>
+                            <p>
+                                <span ng-hide="timeValue == sliderOptions.ceil || timeValue == sliderOptions.floor">Inferiore a {{timeValue}} minuti</span>
+                                <span ng-show="timeValue == sliderOptions.ceil || timeValue == sliderOptions.floor">Il tempo non è importante</span>
+                            </p>
+                            <rzslider rz-slider-model="timeValue" rz-slider-options="sliderOptions" ></rzslider>
                     </div>
-                    -->
-                    
+                        
                 </div>
                 
                 <!-- ricerca row - INGREDIENTI -->
@@ -114,23 +56,21 @@
                         <h4>INGREDIENTI</h4>
                     </div>
                     <div class="col-md-12 search_title">
-                        <input type="text" class="form-control" placeholder="Nome dell'ingrediente">
+                        <input type="text" 
+                            class="form-control" 
+                            placeholder="Nome dell'ingrediente"
+                            ng-model="selectedProduct"
+                            uib-typeahead="product.name.long for product in searchProductsByName($viewValue)"
+                            typeahead-editable="false"
+                            typeahead-on-select="onProductSelect($item); selectedProduct=null;"
+                            autocomplete="off">
                     </div>
                     
-                    <div class="col-md-6 search_item active">
-                        <span class="search_item_title">Patate</span>
+                    <div class="col-md-6 search_item active" ng-repeat="product in selectedProducts" ng-click="removeProduct($index)">
+                        <span class="search_item_title">{{product.name.long}}</span>
                         <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
                     </div>
                     
-                    <div class="col-md-6 search_item active">
-                        <span class="search_item_title">Farina 00</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-                    
-                    <div class="col-md-6 search_item active">
-                        <span class="search_item_title">Olio d'oliva</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
                 </div>
                 
                 <!-- ricerca row - OPINIONI -->
@@ -142,41 +82,32 @@
                     <div class="col-md-12">
                         
                         <table class="">
-                            <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringReviewsCount('difficulty')}}">
+                            <tr class="recipe_sp_3_tr">
                                 <td class="text-left">DIFFICOLTA</td>
                                 <td class="text-right">
                                     <div class="recipe_rating_con">
-                                        <div class="recipe_rating_1">{{getStringAverageValue("difficulty", "difficultyTitles")}}</div>
-                                        <div class="recipe_rating_2">
-                                            <div class="rating">
-                                                <div><uib-rating ng-click="toggleRecipeReview('difficulty', difficultyRating)" ng-model="difficultyRating" max="max" read-only="isReadonly" titles="difficultyTitles" on-hover="hoveringOver(value)"></uib-rating></div>
-                                            </div>
+                                        <div class="rating">
+                                            <div><uib-rating ng-model="difficultyRating" max="max" read-only="isReadonly" titles="difficultyTitles"></uib-rating></div>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="recipe_sp_3_tr" uib-tooltip="{{getStringReviewsCount('cost')}}">
+                            <tr class="recipe_sp_3_tr">
                                 <td class="text-left">COSTO</td>
                                 <td class="text-right">
                                     <div class="recipe_rating_con">
-                                        <div class="recipe_rating_1">{{getStringAverageValue("cost", "costTitles")}}</div>
-                                        <div class="recipe_rating_2">
-                                            <div class="rating">
-                                                <div><uib-rating ng-click="toggleRecipeReview('cost', costRating)" ng-model="costRating" max="max" read-only="isReadonly" titles="costTitles" on-hover="hoveringOver(value)"></uib-rating></div>
-                                            </div>
+                                        <div class="rating">
+                                            <div><uib-rating ng-model="costRating" max="max" read-only="isReadonly" titles="costTitles"></uib-rating></div>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringReviewsCount('calories')}}">
+                            <tr class="recipe_sp_3_tr">
                                 <td class="text-left">CALORIE</td>
                                 <td class="text-right">
                                     <div class="recipe_rating_con">
-                                        <div class="recipe_rating_1">{{getStringAverageValue("calories", "caloriesTitles")}}</div>
-                                        <div class="recipe_rating_2">
-                                            <div class="rating">
-                                                <div><uib-rating ng-click="toggleRecipeReview('calories', caloriesRating)" ng-model="caloriesRating" max="max" read-only="isReadonly" titles="caloriesTitles" on-hover="hoveringOver(value)"></uib-rating></div>
-                                            </div>
+                                        <div class="rating">
+                                            <div><uib-rating ng-model="caloriesRating" max="max" read-only="isReadonly" titles="caloriesTitles"></uib-rating></div>
                                         </div>
                                     </div>
                                 </td>
@@ -185,6 +116,23 @@
                             
                     </div>
                     
+                </div>
+                
+                <!-- ricerca row - ORDINA PER -->
+                <div class="row search_background_white search_row">
+                    <div class="col-md-12 search_title">
+                        <h4>ORDINA PER</h4>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <my-dropdown data-menu-type="button" select-val="selectedSortOption = selectedVal" preselected-item="sortOptions[0]"
+                        data-dropdown-data="sortOptions"></my-dropdown>
+                        
+                        <div class="btn-group">
+                            <label class="btn btn-default" ng-model="selectedSortMode" uib-btn-radio="'ASC'" uncheckable><i class="fa fa-caret-up" aria-hidden="true"></i></label>
+                            <label class="btn btn-default" ng-model="selectedSortMode" uib-btn-radio="'DESC'" uncheckable><i class="fa fa-caret-down" aria-hidden="true"></i></label>
+                        </div>
+                    </div>
                 </div>
                 
             </div>
