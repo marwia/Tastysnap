@@ -88,13 +88,19 @@ angular.module('appRoutes', []).config([
                         controller: 'ExtHomeCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
-                            /*
+                            // carica le ricette
                             postPromise: ['Recipe', function(recipes) {
-                                return recipes.getAllRecipeCategories();
+                                console.log("resolve home");
+                                return recipes.getAll("createdAt DESC");
                             }],
-                            dosageType: ['Recipe', function(recipes) {
-                                return recipes.getAllDosageTypes();
-                            }]*/
+                            // carica le collection
+                            collectionPromise: ['Collection', '$stateParams', function(collections, $stateParams) {
+                                return collections.getAll();
+                            }],
+                            // carica gli utenti seguiti
+                            followingUsersPromise: ['User', 'Auth', function(User, Auth) {
+                                return User.getFollowingUsers(Auth.currentUser().id);
+                            }]
                         }
                     }
                 }
