@@ -16,7 +16,7 @@ module.exports = {
             type: 'integer',
             required: true,
             max: 5,
-            min: 0
+            min: 1
         },
 
         typology: {
