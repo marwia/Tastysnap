@@ -104,29 +104,41 @@ module.exports = {
      * @apiParam {String} where Instead of filtering based on a specific attribute, you may instead choose to provide a where parameter with a Waterline WHERE criteria object, encoded as a JSON string.
      * @apiParam {String} sort The sort order. By default, returned records are sorted by primary key value in ascending order. 
      *
-     * @apiParamExample Request-Param-Example:
+     * @apiParamExample Skip-Limit-Param-Example:
      *     ?skip=6&limit=3
+     * 
+     * @apiParamExample Not-In-Products-Param-Example:
+     *     ?where{"products":{"!":["product_id1", "product_id2"]}}
+     * 
+     * @apiParamExample In-Products-Param-Example:
+     *     ?where{"products": ["product_id1", "product_id2"]}
+     *
+     * @apiParamExample Review-Param-Example:
+     *     ?where{"difficulty":{">":3, "<=":5}, "calories":{">":4, "<=":5}}
+     * 
+     * @apiParamExample Category-Param-Example:
+     *     ?where{"category": ["primi piatti", "zuppe"]}
      */
     advancedSearch: function (req, res, next) {
         var originalCriteria = actionUtil.parseCriteria(req);
-        var criteria = actionUtil.parseCriteria(req);
+        var sortCriteria = actionUtil.parseSort(req);
+        var filteredCriteria = actionUtil.parseCriteria(req);
+        
+        console.info("sort criteria: ", sortCriteria);
 
-        console.info("NOT filtered criteria: ", criteria);
+        console.info("NOT filtered criteria: ", filteredCriteria);
 
         // cancello i criteri di ricerca secondari
-        delete criteria["difficulty"];
-        delete criteria["cost"];
-        delete criteria["calories"];
+        delete filteredCriteria["difficulty"];
+        delete filteredCriteria["cost"];
+        delete filteredCriteria["calories"];
 
-        delete criteria["products"];
+        delete filteredCriteria["products"];
 
-        console.info("filtered criteria: ", criteria);
+        console.info("filtered criteria: ", filteredCriteria);
 
         Recipe.find()
-            .where(criteria)
-            //.limit(actionUtil.parseLimit(req))//forse è da mettere alla fine
-            //.skip(actionUtil.parseSkip(req))//anche...
-            //.sort(actionUtil.parseSort(req))
+            .where(filteredCriteria)
             .populate('author')
             .exec(function (err, foundRecipes) {
                 if (err) { return next(err); }
@@ -134,6 +146,10 @@ module.exports = {
                 if (foundRecipes.length == 0) {
                     return res.notFound({ error: 'No recipe found' });
                 }
+                
+                /**
+                 * DICHIARAZIONE DEI TASK (di popolamento, conteggio, ecc...)
+                 */
 
                 // per ogni ricetta eseguo delle funzioni asincrono
                 // ma aseptto che tutte finiscono (l'ultima callback)
@@ -214,22 +230,29 @@ module.exports = {
                         }
                     };
 
-                    // determinazione dei task da eseguire
+                    /**
+                     * DETERMINAZIONE DEI TASK DA ESEGUIRE
+                     */
 
                     var tasks = counts;
 
-                    if (originalCriteria["difficulty"])
+                    if (originalCriteria["difficulty"]
+                         || (sortCriteria && sortCriteria.indexOf("difficulty") > -1))
                         tasks["difficulty"] = averages.difficulty;
-                    if (originalCriteria["cost"])
+                    if (originalCriteria["cost"]
+                         || (sortCriteria && sortCriteria.indexOf("cost") > -1))
                         tasks["cost"] = averages.cost;
-                    if (originalCriteria["calories"])
+                    if (originalCriteria["calories"]
+                         || (sortCriteria && sortCriteria.indexOf("calories") > -1))
                         tasks["calories"] = averages.calories;
 
                     if (originalCriteria["products"])
                         tasks["products"] = populateIngredients;
 
-
-                    // eseguo lo precedenti funzioni in parallelo
+                    /**
+                     * ESECUZIONE DEI TASK IN PARALLELO
+                     */
+                    
                     async.parallel(tasks, function (err, resultSet) {
                         if (err) { return next(err); }
                         console.info(resultSet);
@@ -252,12 +275,15 @@ module.exports = {
 
                 }, function (err) {
                     if (err) { return next(err); }
-                    // finish
+                    /**
+                     * FINISH
+                     */
 
-                    // filter
+                    /**
+                     * FILTER
+                     */
 
                     // in base al voto
-                    
                     if (originalCriteria["difficulty"]) {
                         foundRecipes = wlFilter(foundRecipes, {
                             where: {
@@ -269,7 +295,7 @@ module.exports = {
                     if (originalCriteria["cost"]) {
                         foundRecipes = wlFilter(foundRecipes, {
                             where: {
-                                difficulty: originalCriteria["cost"]
+                                cost: originalCriteria["cost"]
                             }
                         }).results;
                     }
@@ -277,35 +303,48 @@ module.exports = {
                     if (originalCriteria["calories"]) {
                         foundRecipes = wlFilter(foundRecipes, {
                             where: {
-                                difficulty: originalCriteria["calories"]
+                                calories: originalCriteria["calories"]
                             }
                         }).results;
                     }
 
                     // in base ai prodotti (AND)
                     if (originalCriteria["products"]) {
-                        var products = originalCriteria["products"];
-                        if (!(products instanceof Array))
-                            products = [originalCriteria["products"]]
+                        var notIn = false;
+                        var products = originalCriteria["products"];;
+                        if (products["!"]) {
+                            notIn = true;
+                            products = products["!"]
+                        }
+                        
+                        // mi assicuro di avere un array
+                        if (!(products instanceof Array)) {
+                            products = [products];
+                        }
 
                         foundRecipes = foundRecipes.filter(function (el) {
-                            return MyUtils.superBag(el.products, products);
+                            return notIn ? !MyUtils.superBag(el.products, products) : MyUtils.superBag(el.products, products);
                         });
                     }
 
-                    // sort
-                    var sort = actionUtil.parseSort(req);
-
-                    // verifico che il criterio di ordinamento sia tra quei 
-                    // valori contati
+                    /**
+                     * SORT
+                     */
+                    
+                    /**
+                     * Verifico che il criterio di ordinamento sia tra 
+                     * i valori permessi.
+                     */
                     var substrings = ['commentsCount', 'votesCount', 'viewsCount', 'trialsCount',
                         'difficulty', 'cost', 'calories', 'title', 'preparationTime', 'category', 'author'];
-                    if (new RegExp(substrings.join("|")).test(sort)) {
+                    if (new RegExp(substrings.join("|")).test(sortCriteria)) {
                         // ordino i risultati secondo un criterio
-                        foundRecipes.sort(MyUtils.dynamicSort(sort));
+                        foundRecipes.sort(MyUtils.dynamicSort(sortCriteria));
                     }
-
-                    // skip or limit
+                    
+                    /**
+                     * SKIP OR LIMIT
+                     */
                     
                     var limit = sails.config.blueprints.defaultLimit;
                     if (actionUtil.parseLimit(req))

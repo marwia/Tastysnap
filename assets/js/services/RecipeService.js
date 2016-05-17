@@ -115,14 +115,17 @@ angular.module('RecipeService', [])
          * @param {String} sort_by - stringa che indica per cosa ordinare i risultati
          * @param {String} sort_mode - stringa che indica la modalità di ordinazione ASC o DESC
          * @param {Number} skip - numero di risultati da saltare, utile per la paginazione
+         * @param {Boolean} reset - se true indica che i risultati devono sovrascrivere quelli
+         * attuali, di default è false
          */
         o.advancedSearch = function(
             recipeTitle, 
             categoryArray, 
             productsIdsArray, 
             difficulty, cost, calories,
+            maxTime,
             sort_by, sort_mode,
-            skip, successCB, errorCB) {
+            skip, reset, successCB, errorCB) {
                 
             // parametri base
             var params = {
@@ -145,6 +148,9 @@ angular.module('RecipeService', [])
             if (calories != null)
                 params.where["calories"] = { '>': calories - 1, '<=': calories };
                 
+            if (maxTime)
+                params.where["preparationTime"] = { '<=': maxTime};
+                
             if (sort_by != null)
                 params["sort"] = sort_by + " " + sort_mode;
                 
@@ -159,7 +165,10 @@ angular.module('RecipeService', [])
                         o.recipes.push(response.data[i]);
                     }
                 } else {
-                    angular.extend(o.recipes, response.data);
+                    if (reset && reset == true)
+                        angular.copy(response.data, o.recipes);
+                    else
+                        angular.extend(o.recipes, response.data);
                 }
                 if (successCB)
                     successCB(response);
