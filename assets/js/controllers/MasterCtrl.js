@@ -18,14 +18,14 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
         /**
          * Sidebar Toggle & Cookie Control
          */
-        var mobileView = 1024;
+        var mobileView = 768;
 
         $scope.getWidth = function() {
             return window.innerWidth;
         };
 
         $scope.$watch($scope.getWidth, function(newValue, oldValue) {
-            if (newValue >= mobileView && $scope.isLoggedIn()) {
+            if (newValue >= mobileView && $scope.isLoggedIn() == false) {
                 if (angular.isDefined($cookieStore.get('toggle'))) {
                     $scope.toggle = ! $cookieStore.get('toggle') ? false : true;
                 } else {
@@ -34,7 +34,6 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
             } else {
                 $scope.toggle = false;
             }
-
         });
 
         $scope.toggleSidebar = function() {

@@ -45,18 +45,19 @@ angular.module('appRoutes', []).config([
                     'navbar@app': {
                         templateUrl: 'partials/navbar.html',
                         resolve: {
-                            userPromise: ['User', function(user) {
-                                return user.getCurrentUser();
-                            }]
+                            userPromise: ['User','Auth', function(user, Auth) {
+                                if (Auth.isLoggedIn())
+                                    return user.getCurrentUser();
+                            }] 
                         }
                     },
                     'sidebar@app': { templateUrl: 'partials/sidebar.html' },
                     'footer@app': { templateUrl: 'partials/footer.html' }
                 },
                 onEnter: ['$state', 'Auth', function($state, Auth) {
-                    if (!Auth.isLoggedIn()) {
-                        $state.go('login');
-                    }
+                    //if (!Auth.isLoggedIn()) {
+                    //    $state.go('login');
+                    //}
                 }]
             })
             
@@ -90,16 +91,12 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             // carica le ricette
                             postPromise: ['Recipe', function(recipes) {
-                                console.log("resolve home");
+                                console.log("resolve ext home");
                                 return recipes.getAll("createdAt DESC");
                             }],
                             // carica le collection
                             collectionPromise: ['Collection', '$stateParams', function(collections, $stateParams) {
                                 return collections.getAll();
-                            }],
-                            // carica gli utenti seguiti
-                            followingUsersPromise: ['User', 'Auth', function(User, Auth) {
-                                return User.getFollowingUsers(Auth.currentUser().id);
                             }]
                         }
                     }
@@ -448,7 +445,11 @@ angular.module('appRoutes', []).config([
 
         $urlRouterProvider.otherwise(function($injector, $location) {
             var $state = $injector.get("$state");
-            $state.go("app.home.most_recent");
+            var Auth = $injector.get("Auth");
+            if (Auth.isLoggedIn())
+                $state.go("app.home.most_recent");
+            else 
+                $state.go("app.ext_home");    
         });
 
 

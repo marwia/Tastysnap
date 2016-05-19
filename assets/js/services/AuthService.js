@@ -43,6 +43,7 @@ angular.module('AuthService', [])
             var payload = JSON.parse($window.atob(token.split('.')[1]));
             return payload;
         }
+        return null;
     };
 
 

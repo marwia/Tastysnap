@@ -41,6 +41,8 @@
             </ul>
         </div>
         
+        <p class="navbar-text pull-right" ng-hide="isLoggedIn()"><a href="/login" class="navbar-link">Accedi o registrati</a></p>
+        
         <!-- Messaggi -->
         <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
             <a href="#" ng-hide="active" class="top_menu_notify_icon" uib-dropdown-toggle id="single-button2">
