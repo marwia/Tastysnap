@@ -9,18 +9,17 @@
  */
 angular.module('NavCtrl', []).controller('NavCtrl', [
     '$scope',
+    '$stateParams',
     'Auth',//service
     'User',//service
     '$http',
-    function ($scope, Auth, User, $http) {
+    function ($scope, $stateParams, Auth, User, $http) {
         // Espongo i metodi del Auth service
         $scope.isLoggedIn = Auth.isLoggedIn;
-        //$scope.currentUser = Auth.currentUser;
+        $scope.q = $stateParams.q;// query di ricerca
         $scope.logOut = Auth.logOut;
         
         // Espongo i metodi e oggetti del User service
         $scope.currentUser = User.currentUser;
         $scope.getUserProfileImage = User.getUserProfileImage;
-    
-
     }]);

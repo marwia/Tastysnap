@@ -4,7 +4,7 @@
  * Servizio per gestire le operazioni con il server che riguardano le ricette.
  */
 angular.module('RecipeService', [])
-    .factory('Recipe', ['$http', 'Auth', 'User', function($http, Auth, User) {
+    .factory('Recipe', ['$http', 'Auth', 'User', '$stateParams', '$location', function($http, Auth, User, $stateParams, $location) {
 
         var server_prefix = '/api/v1';
 
@@ -13,7 +13,9 @@ angular.module('RecipeService', [])
             recipes: [],
             detailedRecipe: {}, // one recipe 
             recipeCategories: [],
-            dosagesTypes: []
+            dosagesTypes: [],
+            sortOptions: ["undefined","commentsCount", "trialsCount", "votesCount", "viewsCount",
+                "difficulty", "cost", "calories", "preparationTime", "title"]
         };
 
         /**
@@ -112,7 +114,7 @@ angular.module('RecipeService', [])
          * @param {String} difficulty - diffcoltà media richiesta dalla ricetta
          * @param {String} cost - costo medio della ricetta
          * @param {String} calories - calorie medie richieste dalla ricetta
-         * @param {String} sort_by - stringa che indica per cosa ordinare i risultati
+         * @param {Number} sort_by - numero che indica per cosa ordinare i risultati (in base all'array 'sortOptions')
          * @param {String} sort_mode - stringa che indica la modalità di ordinazione ASC o DESC
          * @param {Number} skip - numero di risultati da saltare, utile per la paginazione
          * @param {Boolean} reset - se true indica che i risultati devono sovrascrivere quelli
@@ -125,9 +127,10 @@ angular.module('RecipeService', [])
             difficulty, cost, calories,
             maxTime,
             sort_by, sort_mode,
-            skip, reset, successCB, errorCB) {
+            skip, 
+            reset, successCB, errorCB) {
                 
-            // parametri base
+                // parametri base
             var params = {
                 where: {
                         "title": { "contains": recipeTitle }
@@ -151,12 +154,12 @@ angular.module('RecipeService', [])
             if (maxTime)
                 params.where["preparationTime"] = { '<=': maxTime};
                 
-            if (sort_by != null)
-                params["sort"] = sort_by + " " + sort_mode;
+            if (sort_by != null && sort_by > 0)
+                params["sort"] = o.sortOptions[sort_by] + " " + sort_mode;
                 
             if (skip != null)
                 params["skip"] = skip;
-                
+                 
             // esecuzione della richiesta
             return $http.get(server_prefix + '/recipe/search', { params })
                 .then(function(response) {
@@ -165,15 +168,45 @@ angular.module('RecipeService', [])
                         o.recipes.push(response.data[i]);
                     }
                 } else {
-                    if (reset && reset == true)
+                    if (reset)
                         angular.copy(response.data, o.recipes);
                     else
                         angular.extend(o.recipes, response.data);
                 }
                 if (successCB)
                     successCB(response);
-            }, errorCB);
+            }, function (response) {
+                // nessuna ricetta trovata? Pulisco tutto...
+                angular.copy([], o.recipes);
+                if (errorCB)
+                    errorCB(response);
+            });
         };
+        
+        o.writeSearchFilters = function (filters) {
+            // scrivo i filtri di ricerca nel url
+            var encodedString = btoa(JSON.stringify(filters));
+            $location.search("f", encodedString);
+        };
+        
+        o.readSearchFilters = function () {
+            // leggo i filtri dall'url
+            var encodedFilters = $location.search()["f"];
+            if (encodedFilters) {
+                var decodedFiltersString = atob(encodedFilters);
+                var decodedFilters = JSON.parse(decodedFiltersString);
+                return decodedFilters;
+            }
+            return null;
+        };
+        
+        o.toIdArray = function (objArray) {
+            var temp = [];
+            objArray.forEach(function (element) {
+                temp.push(element.id);
+            }, this);
+            return temp;
+        }
 
         /**
          * Metodo per richiedere una lista di ricette di un dato utente.

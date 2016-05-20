@@ -91,7 +91,6 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             // carica le ricette
                             postPromise: ['Recipe', function(recipes) {
-                                console.log("resolve ext home");
                                 return recipes.getAll("createdAt DESC");
                             }],
                             // carica le collection
@@ -105,14 +104,15 @@ angular.module('appRoutes', []).config([
 
             // SEARCH
             .state('app.search', {
-                url: '/search?q',
+                url: '/search?q&f',
+                reloadOnSearch : false,
                 views: {
                     'content@app': {
                         templateUrl: 'templates/search.html',
                         controller: 'SearchCtrl',
                         onEnter: ['$state', '$stateParams', function($state, $stateParams) {
-                            console.log("resolve home");
-                            console.log($stateParams.q);
+                            console.log("resolve search");
+                            console.info("query params: ", $stateParams);
                         }]
                     }
                 }
@@ -145,7 +145,6 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             // carica le ricette
                             postPromise: ['Recipe', function(recipes) {
-                                console.log("resolve home");
                                 return recipes.getAll("createdAt DESC");
                             }],
                             // carica le collection
@@ -193,7 +192,6 @@ angular.module('appRoutes', []).config([
                             //stampa delle ricette
                             //TODO - stampa delle ricette piu assaggiate
                             postPromise: ['Recipe', function(recipes) {
-                                console.log("resolve home");
                                 return recipes.getAll('viewsCount DESC');
                             }]
                         }
@@ -213,7 +211,6 @@ angular.module('appRoutes', []).config([
                             //stampa delle ricette
                             //TODO - stampa delle ricette piu assaggiate
                             postPromise: ['Recipe', function(recipes) {
-                                console.log("resolve home");
                                 return recipes.getAll('commentsCount DESC');
                             }]
                         }

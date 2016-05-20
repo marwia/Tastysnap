@@ -2,141 +2,171 @@
     <div class="row">
         <!-- Ricerca Avanzata -->
         <div class="col-sm-12 col-md-3 pull-right">
-            
+
             <div class="fluid-container">
-            
+
                 <!-- ricerca row -->
                 <div class="row search_background_gray search_row">
                     <div class="col-md-12">
-                        <input type="text" class="form-control" placeholder="Cerca">
+                        <form role="updateRecipeList" ng-submit="writeQ()">
+                            <input type="text" class="form-control" placeholder="Cerca" ng-model="q" autocomplete="off">
+                        </form>
                     </div>
                 </div>
-                
+
                 <!-- ricette, raccolte, persone -->
                 <div class="row search_background_gray search_row">
                     <div class="col-md-12 text-center">
-                        <a class="search_button_category active" href="#" role="button">RICETTE</a>
-                        <a class="search_button_category" href="#" role="button">RACCOLTE</a>
-                        <a class="search_button_category" href="#" role="button">PERSONE</a>
+                        <a class="search_button_category" ng-class="{'active': searchModel=='recipe'}" ng-click="searchModel='recipe'; writeM();" href="#" role="button">RICETTE</a>
+                        <a class="search_button_category" ng-class="{'active': searchModel=='collection'}" ng-click="searchModel='collection'; writeM();" href="#"
+                            role="button">RACCOLTE</a>
+                        <a class="search_button_category" ng-class="{'active': searchModel=='user'}" ng-click="searchModel='user'; writeM();" href="#" role="button">PERSONE</a>
                     </div>
                 </div>
-                
-                <!-- ricerca row -->
-                <div class="row search_background_white search_row">
-                    <div class="col-md-12 search_title">
-                        <h4>TIPOLOGIA</h4>
+
+                <!-- filtri per ricette-->
+                <div ng-show="searchModel=='recipe'" ng-controller="SearchRecipeCtrl">
+
+                    <!-- ricerca row -->
+                    <div class="row search_background_white search_row">
+                        <div class="col-md-12 search_title">
+                            <h4>TIPOLOGIA</h4>
+                        </div>
+
+                        <div class="col-md-6 col-sm-4 col-xs-6 search_item" ng-repeat="category in recipeCategories" ng-click="toggleCategory(category);"
+                            ng-class="{'active' : recipeFilters.selectedCategories.indexOf(category) != -1}">
+                            <span class="search_item_title">{{category}}</span>
+                            <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                        </div>
+
                     </div>
-                    
-                    <div class="col-md-6 col-sm-4 col-xs-6 search_item" ng-repeat="category in recipeCategories" ng-click="state = !state; toggleCategory(category);" ng-class="{'active' : state}">
-                        <span class="search_item_title">{{category}}</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-     
-                </div>
-                
-                <!-- ricerca row - TEMPO-->
-                <div class="row search_background_white search_row">
-                    <div class="col-md-12 col-sm-6 col-xs-12 search_title">
-                        <h4>TEMPO</h4>
-                    </div>
-  
-                    <div class="col-md-12 col-sm-6 col-xs-12">
+
+                    <!-- ricerca row - TEMPO-->
+                    <div class="row search_background_white search_row">
+                        <div class="col-md-12 col-sm-6 col-xs-12 search_title">
+                            <h4>TEMPO</h4>
+                        </div>
+
+                        <div class="col-md-12 col-sm-6 col-xs-12">
                             <p>
-                                <span ng-hide="timeValue == sliderOptions.ceil || timeValue == sliderOptions.floor">Inferiore a {{timeValue}} minuti</span>
-                                <span ng-show="timeValue == sliderOptions.ceil || timeValue == sliderOptions.floor">Il tempo non è importante</span>
+                                <span ng-hide="recipeFilters.timeValue == sliderOptions.ceil || recipeFilters.timeValue == sliderOptions.floor">Inferiore a {{recipeFilters.timeValue}} minuti</span>
+                                <span ng-show="recipeFilters.timeValue == sliderOptions.ceil || recipeFilters.timeValue == sliderOptions.floor">Il tempo non è importante</span>
                             </p>
-                            <rzslider rz-slider-model="timeValue" rz-slider-options="sliderOptions" ></rzslider>
-                    </div>
-                </div>
-                
-                <!-- ricerca row - INGREDIENTI -->
-                <div class="row search_background_white search_row">
-                    <div class="col-md-12 col-sm-6 col-xs-12 search_title">
-                        <h4>INGREDIENTI</h4>
-                    </div>
-                    <div class="col-md-12 col-sm-6 col-xs-12 search_title">
-                        <input type="text" 
-                            class="form-control" 
-                            placeholder="Nome dell'ingrediente"
-                            ng-model="selectedProduct"
-                            uib-typeahead="product.name.long for product in searchProductsByName($viewValue)"
-                            typeahead-editable="false"
-                            typeahead-on-select="onProductSelect($item); selectedProduct=null;"
-                            autocomplete="off">
-                    </div>
-                    
-                    <div class="col-md-6 col-sm-6 col-xs-12 search_item active" ng-repeat="product in selectedProducts" ng-click="removeProduct($index)">
-                        <span class="search_item_title">{{product.name.long}}</span>
-                        <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
-                    </div>
-                    
-                </div>
-                
-                <!-- ricerca row - OPINIONI -->
-                <div class="row search_background_white search_row">
-                    <div class="col-md-12 col-sm-6 search_title">
-                        <h4>OPINIONI</h4>
-                    </div>
-                    
-                    <div class="col-md-12 col-sm-6">
-                        
-                        <table>
-                            <tr class="recipe_sp_3_tr">
-                                <td class="text-left">DIFFICOLTA</td>
-                                <td class="text-right">
-                                    <div class="recipe_rating_con">
-                                        <div class="rating">
-                                            <div><uib-rating ng-model="difficultyRating" max="max" read-only="isReadonly" titles="difficultyTitles"></uib-rating></div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="recipe_sp_3_tr">
-                                <td class="text-left">COSTO</td>
-                                <td class="text-right">
-                                    <div class="recipe_rating_con">
-                                        <div class="rating">
-                                            <div><uib-rating ng-model="costRating" max="max" read-only="isReadonly" titles="costTitles"></uib-rating></div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="recipe_sp_3_tr">
-                                <td class="text-left">CALORIE</td>
-                                <td class="text-right">
-                                    <div class="recipe_rating_con">
-                                        <div class="rating">
-                                            <div><uib-rating ng-model="caloriesRating" max="max" read-only="isReadonly" titles="caloriesTitles"></uib-rating></div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                            
-                    </div>
-                </div>
-                
-                <!-- ricerca row - ORDINA PER -->
-                <div class="row search_background_white search_row">
-                    <div class="col-md-12 col-sm-6 search_title">
-                        <h4>ORDINA PER</h4>
-                    </div>
-                    
-                    <div class="col-md-12 col-sm-6 ">
-                        <my-dropdown data-menu-type="button" select-val="selectedSortOption = selectedVal" preselected-item="sortOptions[0]"
-                        data-dropdown-data="sortOptions"></my-dropdown>
-                        
-                        <div class="btn-group">
-                            <label class="btn btn-default" ng-model="selectedSortMode" uib-btn-radio="'ASC'" uncheckable><i class="fa fa-caret-up" aria-hidden="true"></i></label>
-                            <label class="btn btn-default" ng-model="selectedSortMode" uib-btn-radio="'DESC'" uncheckable><i class="fa fa-caret-down" aria-hidden="true"></i></label>
+                            <rzslider rz-slider-model="recipeFilters.timeValue" rz-slider-options="sliderOptions"></rzslider>
                         </div>
                     </div>
+
+                    <!-- ricerca row - INGREDIENTI -->
+                    <div class="row search_background_white search_row">
+                        <div class="col-md-12 col-sm-6 col-xs-12 search_title">
+                            <h4>INGREDIENTI</h4>
+                        </div>
+                        <div class="col-md-12 col-sm-6 col-xs-12 search_title">
+                            <input type="text" class="form-control" placeholder="Nome dell'ingrediente" ng-model="selectedProduct" uib-typeahead="product.name.long for product in searchProductsByName($viewValue)"
+                                typeahead-editable="false" typeahead-on-select="onProductSelect($item); selectedProduct=null;"
+                                autocomplete="off">
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 search_item active" ng-repeat="product in recipeFilters.selectedProducts" ng-click="removeProduct($index)">
+                            <span class="search_item_title">{{product.name.long}}</span>
+                            <span class="search_item_icon"><i class="fa fa-times" aria-hidden="true"></i></span>
+                        </div>
+
+                    </div>
+
+                    <!-- ricerca row - OPINIONI -->
+                    <div class="row search_background_white search_row">
+                        <div class="col-md-12 col-sm-6 search_title">
+                            <h4>OPINIONI</h4>
+                        </div>
+
+                        <div class="col-md-12 col-sm-6">
+
+                            <table>
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left">DIFFICOLTA</td>
+                                    <td class="text-right">
+                                        <div class="recipe_rating_con">
+                                            <div class="rating">
+                                                <div>
+                                                    <uib-rating ng-model="recipeFilters.difficultyRating" max="max" read-only="isReadonly"
+                                                        titles="difficultyTitles"></uib-rating>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left">COSTO</td>
+                                    <td class="text-right">
+                                        <div class="recipe_rating_con">
+                                            <div class="rating">
+                                                <div>
+                                                    <uib-rating ng-model="recipeFilters.costRating" max="max" read-only="isReadonly" titles="costTitles"></uib-rating>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="recipe_sp_3_tr">
+                                    <td class="text-left">CALORIE</td>
+                                    <td class="text-right">
+                                        <div class="recipe_rating_con">
+                                            <div class="rating">
+                                                <div>
+                                                    <uib-rating ng-model="recipeFilters.caloriesRating" max="max" read-only="isReadonly" titles="caloriesTitles"></uib-rating>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+                    </div>
+
+                    <!-- ricerca row - ORDINA PER -->
+                    <div class="row search_background_white search_row">
+                        <div class="col-md-12 col-sm-6 search_title">
+                            <h4>ORDINA PER</h4>
+                        </div>
+
+                        <div class="col-md-12 col-sm-6 ">
+                            <my-dropdown data-menu-type="button" select-val="selectedSortOption = selectedVal" preselected-item="sortOptions[recipeFilters.selectedSortOptionIdx]" data-dropdown-data="sortOptions"></my-dropdown>
+
+                            <div class="btn-group">
+                                <label class="btn btn-default" ng-model="recipeFilters.selectedSortMode" uib-btn-radio="'ASC'" uncheckable><i class="fa fa-caret-up" aria-hidden="true"></i></label>
+                                <label class="btn btn-default" ng-model="recipeFilters.selectedSortMode" uib-btn-radio="'DESC'" uncheckable><i class="fa fa-caret-down" aria-hidden="true"></i></label>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 
+                <!-- filtri per raccolte -->
+                <div ng-show="searchModel=='collection'">
+                    
+                    <div class="row search_background_white search_row">
+                        <div class="col-md-12 col-sm-6 search_title">
+                            <h4>ORDINA PER</h4>
+                        </div>
+
+                        <div class="col-md-12 col-sm-6 ">
+                            <my-dropdown data-menu-type="button" select-val="selectedSortOption = selectedVal" preselected-item="sortOptions[selectedSortOptionIdx]" data-dropdown-data="sortOptions"></my-dropdown>
+
+                            <div class="btn-group">
+                                <label class="btn btn-default" ng-model="selectedSortMode" uib-btn-radio="'ASC'" uncheckable><i class="fa fa-caret-up" aria-hidden="true"></i></label>
+                                <label class="btn btn-default" ng-model="selectedSortMode" uib-btn-radio="'DESC'" uncheckable><i class="fa fa-caret-down" aria-hidden="true"></i></label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
             </div>
-                
+
         </div>
-        
+
         <!-- risultati ricerca -->
         <div class="col-md-9 pull-left">
             <!-- -------------------------------- ricette -------------------------------- -->
@@ -159,7 +189,7 @@
 
                     <!-- basic card -->
                     <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
-                    toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" ng-repeat="recipe in recipes" ng-init="checkVote(recipe)"></recipe-card>
+                        toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" ng-repeat="recipe in recipes" ng-init="checkVote(recipe)"></recipe-card>
                     <!-- fine card -->
                 </div>
                 <!-- fine tasty_container -->
