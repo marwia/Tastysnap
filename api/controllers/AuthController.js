@@ -69,7 +69,9 @@ module.exports = {
             successRedirect: '/',
             failureRedirect: '/',
             failureFlash: false,
-            scope: 'https://www.googleapis.com/auth/plus.login'
+            // aggiunta l'autorizzazione a richiedere l'email dell'utente
+            // maggiori info su:  https://developers.google.com/+/web/api/rest/oauth#authorization-scopes
+            scope: ['https://www.googleapis.com/auth/plus.login', "email"]
         })(req, res, next);
     },
 

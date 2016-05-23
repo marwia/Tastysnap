@@ -9,7 +9,7 @@
 var passport = require('passport'),
     FacebookStrategy = require('passport-facebook').Strategy,
     TwitterStrategy = require('passport-twitter').Strategy,
-    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+    GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 // Facebook strategy
 var FBstrategy;
@@ -104,10 +104,10 @@ passport.use(new GoogleStrategy({
 
 // Twitter strategy
 passport.use(new TwitterStrategy({
-    consumerKey: "FPIFJMkD0a91C2PWr4ow42jtI",
-    consumerSecret: "oayhHlz10mYJY84NsuyqUd960UrClxgkUYYLgcok2Z62VLaGJg",
+    consumerKey: "xF1qv1cSAZQEXYMDFB7bFqqlM",
+    consumerSecret: "cQSEQXnPiYIrDef1K6QPo8HigHM4XT3jbX0MXhFihk6DfbNbJO",
     callbackURL: "http://localhost:1337/api/v1/auth/twitter/callback",
-    profileFields: ['id', 'displayName', 'name', 'gender', 'email', 'photos']
+    userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true"
 },
     function(accessToken, refreshToken, profile, done) {
         console.log("Twitter strategy triggered...\n", profile);
