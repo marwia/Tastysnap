@@ -1,5 +1,7 @@
 <!-- per ora dobrebbe elencare tutte le collection card con html fisso per ora -->
 
+<empty-list-holder ng-hide="userCollections.length > 0" msg="'Nessuna raccolta trovata'"></empty-list-holder>
+
 <!-- collection card -->
 <collection-card collection="collection" ng-repeat="collection in userCollections"></collection-card> 
 <!-- collection card -->

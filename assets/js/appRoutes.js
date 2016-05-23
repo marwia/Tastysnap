@@ -340,9 +340,9 @@ angular.module('appRoutes', []).config([
                             userPromise: ['User', '$stateParams', function(user, $stateParams) {
                                 return user.getUserById($stateParams.id);
                             }],
-                            recipePromise: ['Recipe', '$stateParams', function(recipes, $stateParams) {
-                                return recipes.getUserRecipes($stateParams.id, null, //nel caso positivo fai nulla...
-                                    function(response) { //nel caso di errore
+                            recipePromise: ['Recipe', '$stateParams', function(Recipe, $stateParams) {
+                                return Recipe.getUserRecipes($stateParams.id, null, //nel caso positivo fai nulla...
+                                    function (response) { //nel caso di errore
                                         Recipe.recipes = []; //svuoto l'array delle ricette
                                         return true; //prosegui comunque
                                 });
@@ -364,7 +364,11 @@ angular.module('appRoutes', []).config([
                         controller: 'CollectionCtrl',
                         resolve: {
                             collectionPromise: ['Collection', '$stateParams', function(Collection, $stateParams) {
-                                return Collection.getUserCollections($stateParams.id);
+                                return Collection.getUserCollections($stateParams.id, null, 
+                                    function (response) {
+                                        Collection.collections = [];
+                                        return true;
+                                    });
                             }]
                         }
                     }
@@ -380,7 +384,11 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             // carica gli utenti seguiti
                             followerUsersPromise: ['User', '$stateParams', function(User, $stateParams) {
-                                return User.getFollowerUsers($stateParams.id); 
+                                return User.getFollowerUsers($stateParams.id, null, null, null, 
+                                    function (response) {
+                                        User.follower_users = [];
+                                        return true;
+                                    }); 
                             }]
                         }
                         
@@ -397,7 +405,11 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             // carica gli utenti seguiti
                             followingUsersPromise: ['User', '$stateParams', function(User, $stateParams) {
-                                return User.getFollowingUsers($stateParams.id); 
+                                return User.getFollowingUsers($stateParams.id, null, null, null,
+                                    function (response) {
+                                        User.following_users = [];
+                                        return true;
+                                    }); 
                             }]
                         }
                     }
