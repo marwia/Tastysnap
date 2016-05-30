@@ -8,16 +8,16 @@
  */
 
 var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload',
-                'ngMessages', 'uiGmapgoogle-maps', 'angular-spinkit',
+                'ngMessages', 'uiGmapgoogle-maps', 'angular-spinkit', 'angular.filter',
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
                 'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService', 'ImageUtilsService',
-				'ngAnimate', 'appRoutes', 'toastr', 'rzModule',
+				'ngAnimate', 'appRoutes', 'toastr', 'rzModule', 'angular-click-outside',
 				'AuthCtrl', 'MasterCtrl', 'NavCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeDetailCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl', 'UserHomeCtrl', 'CollectionCtrl',
                 'CollectionSelectionModalCtrl', 'CollectionDetailCtrl', 'CommentCtrl', 'ExtHomeCtrl',
                 'SearchCtrl', 'SearchRecipeCtrl',
                 'UserProfileFollowerUsersCtrl', 'UserProfileFollowingUsersCtrl', 'NearRecipesCtrl', 'FollowingCollectionsCtrl',
-                'RecipeReviewCtrl', 'RecipeImageSliderCtrl']);
+                'RecipeReviewCtrl', 'RecipeImageSliderCtrl', 'MapWindowCtrl']);
 
 /**
  * Configurazione iniziale dell'app, viene fatta una sola volta all'avvio.
@@ -54,13 +54,17 @@ myApp.config(['$animateProvider', 'uiGmapGoogleMapApiProvider', function($animat
   
   // Configurazione delle Google Maps API
   uiGmapGoogleMapApiProvider.configure({
-        //    key: 'your api key',
+        key: 'AIzaSyCpj_s-hKfb1dpG__r68JBgTBHNqT4dIb8',
         v: '3.20', //defaults to latest 3.X anyhow
-        libraries: 'weather,geometry,visualization'
+        libraries: 'geometry,visualization',
+        language: "it-IT"
     });
     
 }]);
 
+/**
+ * Configurazione della posizione di default di tutti i toast.
+ */
 myApp.config(function(toastrConfig) {
   angular.extend(toastrConfig, {
     positionClass: 'toast-top-center',

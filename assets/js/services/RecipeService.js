@@ -107,6 +107,25 @@ angular.module('RecipeService', [])
         };
         
         /**
+         * Metodo per eseguire una ricerca per titolo di ricetta.
+         */
+        o.searchByCoordinates = function(latitude, longitude, maxDistance, successCB, errorCB) {
+            return $http.get(server_prefix + '/recipe/search/coordinates', {
+                params: {
+                    latitude: latitude,
+                    longitude: longitude,
+                    maxDistance: maxDistance
+                }
+            }).then(function(response) {
+                // always reset
+                angular.copy(response.data, o.recipes);
+                
+                if (successCB)
+                    successCB(response);
+            }, errorCB);
+        };
+        
+        /**
          * Metodo per eseguire una ricerca AVANZATA per titolo di ricetta.
          * @param {String} recipeTitle - parte del titolo della ricetta
          * @param {String Array} categoryArray - array con le categorie in OR

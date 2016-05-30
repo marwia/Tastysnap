@@ -65,6 +65,11 @@ module.exports = {
     blurredCoverImageUrl : { type: 'String', url: true },
     
     otherImageUrls : { type: 'Array' },
+    
+    // coordinate in geoJSON 
+    coordinates: { type: 'json' },
+    // per riferimento memorizzo anche l'id del posto (offerto da Google)
+    googlePlaceId: { type: 'String' },
 
     // Reference to User
     author : { 

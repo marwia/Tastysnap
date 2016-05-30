@@ -19,6 +19,8 @@
     "angular-messages": "^1.5.0",
     "angular-google-maps": "^2.3.2",
     "angular-toastr": "^1.7.0",
-    "angularjs-slider": "^2.13.0"
+    "angularjs-slider": "^2.13.0",
+    "angular-google-places-autocomplete": "^0.2.7",
+    "angular-click-outside": "^2.8.3"
   }
 }

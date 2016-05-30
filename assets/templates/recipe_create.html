@@ -48,6 +48,27 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="row c_recipe_row">
+                    
+                    <div class="col-md-4 c_recipe_left">
+                        <span><strong>Luogo di appartenenza</strong></span>
+                    </div>
+
+                    <div class="col-md-8 c_recipe_right">               
+                        <input type="text" id="main-menu"
+                            class="form-control" 
+                            name="luogo" 
+                            ng-model="recipePlace" 
+                            googleplace
+                            required 
+                            placeholder="Indica il paese, la regione o la città a cui attribuisci la ricetta"
+                            click-outside="placeValidate()"
+                            search-result="recipePlaceSearchResult"
+                            detailed-result="recipeDetailedPlace"
+                            autocomplete="off"/>
+                    </div>
+                </div>
                                 
                 <!-- RIGA 3.5 - TEMPO DI PREPARAZIONE -->
                 <div class="row c_recipe_row">

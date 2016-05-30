@@ -123,7 +123,7 @@ module.exports = {
         var originalCriteria = actionUtil.parseCriteria(req);
         var sortCriteria = actionUtil.parseSort(req);
         var filteredCriteria = actionUtil.parseCriteria(req);
-        
+
         console.info("sort criteria: ", sortCriteria);
 
         console.info("NOT filtered criteria: ", filteredCriteria);
@@ -146,7 +146,7 @@ module.exports = {
                 if (foundRecipes.length == 0) {
                     return res.notFound({ error: 'No recipe found' });
                 }
-                
+
                 /**
                  * DICHIARAZIONE DEI TASK (di popolamento, conteggio, ecc...)
                  */
@@ -237,13 +237,13 @@ module.exports = {
                     var tasks = counts;
 
                     if (originalCriteria["difficulty"]
-                         || (sortCriteria && sortCriteria.indexOf("difficulty") > -1))
+                        || (sortCriteria && sortCriteria.indexOf("difficulty") > -1))
                         tasks["difficulty"] = averages.difficulty;
                     if (originalCriteria["cost"]
-                         || (sortCriteria && sortCriteria.indexOf("cost") > -1))
+                        || (sortCriteria && sortCriteria.indexOf("cost") > -1))
                         tasks["cost"] = averages.cost;
                     if (originalCriteria["calories"]
-                         || (sortCriteria && sortCriteria.indexOf("calories") > -1))
+                        || (sortCriteria && sortCriteria.indexOf("calories") > -1))
                         tasks["calories"] = averages.calories;
 
                     if (originalCriteria["products"])
@@ -252,7 +252,7 @@ module.exports = {
                     /**
                      * ESECUZIONE DEI TASK IN PARALLELO
                      */
-                    
+
                     async.parallel(tasks, function (err, resultSet) {
                         if (err) { return next(err); }
                         console.info(resultSet);
@@ -291,7 +291,7 @@ module.exports = {
                             }
                         }).results;
                     }
-                    
+
                     if (originalCriteria["cost"]) {
                         foundRecipes = wlFilter(foundRecipes, {
                             where: {
@@ -299,7 +299,7 @@ module.exports = {
                             }
                         }).results;
                     }
-                    
+
                     if (originalCriteria["calories"]) {
                         foundRecipes = wlFilter(foundRecipes, {
                             where: {
@@ -316,7 +316,7 @@ module.exports = {
                             notIn = true;
                             products = products["!"]
                         }
-                        
+
                         // mi assicuro di avere un array
                         if (!(products instanceof Array)) {
                             products = [products];
@@ -330,7 +330,7 @@ module.exports = {
                     /**
                      * SORT
                      */
-                    
+
                     /**
                      * Verifico che il criterio di ordinamento sia tra 
                      * i valori permessi.
@@ -341,23 +341,89 @@ module.exports = {
                         // ordino i risultati secondo un criterio
                         foundRecipes.sort(MyUtils.dynamicSort(sortCriteria));
                     }
-                    
+
                     /**
                      * SKIP OR LIMIT
                      */
-                    
+
                     var limit = sails.config.blueprints.defaultLimit;
                     if (actionUtil.parseLimit(req))
                         limit = actionUtil.parseLimit(req);
                     var skip = 0;
-                    if (actionUtil.parseSkip(req)) 
+                    if (actionUtil.parseSkip(req))
                         skip = actionUtil.parseSkip(req);
                     foundRecipes.slice(skip, skip + limit);
-                        
+
                     return res.json(foundRecipes);
                 });
 
             });
+    },
+
+    searchByCoordinates: function (req, res, next) {
+
+        var searchCriteria = actionUtil.parseCriteria(req);
+        if (!searchCriteria.longitude || !searchCriteria.latitude)
+            return res.badRequest("No coordinates");
+        
+        // distanza in metri
+        var maxDistance = 50000;
+        if (searchCriteria.maxDistance)
+            maxDistance = searchCriteria.maxDistance;
+            
+            /*
+        Recipe.native(function (err, collection) {
+            var query = {};
+
+            collection.find(
+                query.coordinates = {
+                    $near: {
+                        $geometry: {
+                            type: "Point",
+                            coordinates: [
+                                searchCriteria.longitude,
+                                searchCriteria.latitude
+                            ]
+                        },
+                        $maxDistance: 1000
+                    }
+                }
+            ).toArray(function (err, result) {
+                if (err) {
+                    console.log(err);
+                }
+                else
+                    return res.json(result);
+            });
+        });*/
+
+        Recipe.native(function (err, collection) {
+            collection.find({
+ 
+                    "coordinates": {
+                        "$near": {
+                            "$maxDistance": Number(maxDistance),
+                            "$geometry": {
+                                "type": "Point",
+                                "coordinates": [
+                                    Number(searchCriteria.longitude), 
+                                    Number(searchCriteria.latitude)]
+                            }
+                        }
+                    }
+            })
+                //.sort({ "created": -1 })
+                //.limit(24)
+                .toArray(function (err, docs) {
+                    // Handle Error and use docs
+                    if (err) { return next(err); }
+                    
+                    if(docs.length == 0) {
+                        return res.notFound();
+                    }
+                    return res.json(docs);
+                });
+        });
     },
 
     /**

@@ -58,7 +58,27 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 b = parseInt(rgb[2]);
             return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
         };
+
+        $scope.recipePlace = "";
+        $scope.recipePlaceSearchResult = "";
+        $scope.recipeDetailedPlace = {};
         
+        $scope.placeValidate = function () {
+            if ($scope.recipePlace == "") { 
+                // No text entered
+                return true;
+            } else if ($scope.recipePlace == $scope.recipePlaceSearchResult) { 
+                // Success
+                return true;
+            } else { 
+                // place info and search text do not match, perform manual lookup   
+                // when lookup is complete, the callback function will store the place info
+                // and resubmit the form
+                $scope.recipePlace = "";
+            }
+            return false;
+        };
+ 
         /**
          * Funzione che lega il prodotto selezionato dall'utente
          * all'ingrediente.
@@ -170,6 +190,16 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 $scope.createSum += $scope.ingredient_groups[i].ingredients.length // numero di ingredienti di ogni gruppo
             }
             
+            //aggiungi l'eventuale posizione associata alla ricetta
+            if ($scope.recipePlace != "") {
+                var coordinates = [
+                    $scope.recipeDetailedPlace.longitude,
+                    $scope.recipeDetailedPlace.latitude
+                ];
+                    
+                $scope.recipeToCreate.coordinates = coordinates;
+                $scope.recipeToCreate.googlePlaceId = $scope.recipeDetailedPlace.place_id;
+            }
             
             //crea ricetta
             Recipe.create($scope.recipeToCreate, function (response) {

@@ -1,11 +1,49 @@
-<ui-gmap-google-map center='map.center' zoom='map.zoom'>
-    
-    <ui-gmap-marker 
-        ng-show="currentPosition" 
-        coords="currentPositionMarker.coords" 
-        options="currentPositionMarker.options" 
-        events="currentPositionMarker.events" 
+<ui-gmap-google-map control="control" center='map.center' zoom='map.zoom'>
+
+    <ui-gmap-marker ng-show="currentPosition" coords="currentPositionMarker.coords" options="currentPositionMarker.options" events="currentPositionMarker.events"
         idkey="currentPositionMarker.id">
     </ui-gmap-marker>
     
+    <
+    <ui-gmap-marker 
+        ng-repeat="(recipeGroup, groupRecipes) in recipes | groupBy: 'coordinates'"
+        ng-show="true" 
+        coords="groupRecipes[0].coordinates" 
+        idkey="groupRecipes[0]._id">
+        
+        <ui-gmap-window show="true" templateUrl="'templates/map_recipe_window.html'" templateParameter="groupRecipes">
+
+        </ui-gmap-window>
+        
+    </ui-gmap-marker>
+    
+    <!--
+    <ui-gmap-windows
+    models="recipes"
+    coords="'coordinates'"
+    idkey="'_id'"
+    templateUrl="templates/map_recipe_window.html" 
+     ng-cloak>
+    </ui-gmap-windows>
+    -->
+
+    <!--
+    <div ng-repeat="(recipeGroup, groupRecipes) in recipes | groupBy: 'coordinates'">
+        <ui-gmap-marker coords="groupRecipes[0].coordinates">
+            <ui-gmap-window show="true" coords="groupRecipes[0].coordinates" isIconVisibleOnClick="false" options="map.window.options"
+                templateUrl="templates/map_recipe_window.html" templateParameter="groupRecipes" ng-cloak>
+                cazzo
+            </ui-gmap-window>
+        </ui-gmap-marker>
+
+    </div>
+    -->
+
 </ui-gmap-google-map>
+
+<ul ng-repeat="(key, value) in recipes | groupBy: 'coordinates'">
+    Group name: {{ key }}
+    <li ng-repeat="player in value">
+        player: {{ player.title }}
+    </li>
+</ul>
