@@ -1583,12 +1583,33 @@ tr.recipe_sp_3_tr{
 }
 
 .search_row{
-	padding: 15px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.search_left{
+	width: calc(100% - 250px);
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.search_right{
+	width: 250px;
+	
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
 }
 
 .search_button_category{
-    padding: 0 8px;
-    margin: auto;
+	display: inline-block;
+	margin: auto 2px;
     border: none;
 	
 	-webkit-transition: all 0.3s ease-in-out;
@@ -1645,6 +1666,16 @@ tr.recipe_sp_3_tr{
 
 .search_item.active .search_item_icon{
 	opacity: 1;
+}
+
+@media screen and (max-width: 530px){
+    .search_left{
+		width: 100%;
+	}
+
+	.search_right{
+		width: 100%;
+	}
 }
 
 /* ------------------------------------------------------------------ 16 -------------------------------------------------------- */
