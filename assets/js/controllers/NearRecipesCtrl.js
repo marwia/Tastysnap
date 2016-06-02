@@ -39,6 +39,24 @@ angular.module('NearRecipesCtrl', []).controller('NearRecipesCtrl', [
                 parent: $scope
             }
         };
+        
+        // impostazioni generali per tutti i markers
+        $scope.marker = {
+            options: {
+                icon: 'app_images/map_marker_icon.png'
+            }
+        };
+        
+        // metodo per avere soltanto un marker "aperto" alla volta
+        $scope.toggleSelectedMarker = function(markerId) {
+            if ($scope.selectedMarkerId == markerId) {
+                $scope.selectedMarkerId = null;
+            } else {
+                $scope.selectedMarkerId = markerId;
+            }
+        }
+        
+        $scope.selectedMarkerId = undefined;
 
         $scope.control = {};
         $scope.currentPosition = {};
@@ -73,93 +91,60 @@ angular.module('NearRecipesCtrl', []).controller('NearRecipesCtrl', [
 
         IsReady.promise().then(function (maps) {
             var map1 = $scope.control.getGMap();
-            var map2 = maps[0].map;
+            var map2 = maps[0].map;// un altro modo per ottenere la mappa...
 
-            //alert(map1 === map2);
+            /**
+             * Configuro i vari listener dei spostamenti della 
+             * mappa: cambio del centro e dello zoom.
+             */
 
             map1.addListener('center_changed', function () {
                 $timeout.cancel($scope.timer_1);
                 $scope.timer_1 = $timeout(function () {
-                    // 3 seconds after the center of the map has changed, pan back to the
-                    // marker.
                     var map = $scope.control.getGMap();
-                    console.log("center_changed");
-                    console.info(map.getCenter())
                     var dis = getRadius(map);
-                    // converto da miglia in metri
-                    console.log(dis);
-                    dis = dis * 1.60934 * 1000;
-                    console.log("dis: ", dis);
-
+ 
                     Recipe.searchByCoordinates(
                         map.getCenter().lat(),
                         map.getCenter().lng(),
                         dis);
                 }, 2000);
-
-
             });
 
             map1.addListener('zoom_changed', function () {
-                // 3 seconds after the center of the map has changed, pan back to the
-                // marker.
-                var map = $scope.control.getGMap();
-                console.log("zoom_changed");
-                console.log(getRadius(map));
+                $timeout.cancel($scope.timer_1);
+                $scope.timer_1 = $timeout(function () {
+                    var map = $scope.control.getGMap();
+                    var dis = getRadius(map);
+ 
+                    Recipe.searchByCoordinates(
+                        map.getCenter().lat(),
+                        map.getCenter().lng(),
+                        dis);
+                }, 2000);
             });
+            
+            // determinazione della posizione del client
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    // salvo la posizione corrente
+                    $scope.currentPosition.latitude = position.coords.latitude;
+                    $scope.currentPosition.longitude = position.coords.longitude;
+
+                    // centro la mappa 
+                    $scope.map.center.latitude = $scope.currentPosition.latitude;
+                    $scope.map.center.longitude = $scope.currentPosition.longitude;
+                    $scope.map.zoom = 11;
+
+                    // aggiorno il marker sulla mappa
+                    $scope.currentPositionMarker.coords = $scope.currentPosition;
+                });
+            }
         });
 
-        // osservo le ricette e quindi i risultati della ricerca
-        $scope.$watch("recipes", function (newValue, oldValue) {
-            if (newValue !== oldValue) {
-                updateRecipeList();
-                // raggruppo le ricette per posizione
-                
-            }
-
-
-        }, true);
-        
-        $scope.list = [
-        {id: 1, content: "This is first item"},
-        {id: 2, content: "This is second item"},
-        {id: 3, content: "This is third item"}
-      ];
-      
-      $scope.windowParams = {
-        list: $scope.list,
-        doIt: function() {
-          return $scope.doIt()
-        }
-      };
-
-        
-        var updateRecipeList = function () {
-            console.log("lista ricette aggiornata");
-            console.info($scope.recipes);
-            $scope.map.markers = [];
-            $scope.recipes.forEach(function (recipe) {
-                var marker = {
-                    id: recipe._id,
-                    coords: {
-                        latitude: recipe.coordinates[1],
-                        longitude: recipe.coordinates[0]
-                    },
-                    options: {
-                        label: "label",
-                        title: "title",
-                        draggable: false,
-                        labelContent: recipe.title,
-                        labelAnchor: "100 0",
-                        labelClass: "marker-labels"
-                    }
-                };
-                //var map = $scope.control.getGMap();
-                $scope.map.markers.push(marker);
-            });
-            $scope.$apply();
-        };
-
+        /**
+         * Funzione per calcolare il raggio 
+         */
         var getRadius = function (map) {
             var bounds = map.getBounds();
 
@@ -178,34 +163,15 @@ angular.module('NearRecipesCtrl', []).controller('NearRecipesCtrl', [
             // distance = circle radius from center to Northeast corner of bounds
             var dis = r * Math.acos(Math.sin(lat1) * Math.sin(lat2) +
                 Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1));
-
+                
+            // converto il valore da miglia a metri
+            dis = dis * 1.60934 * 1000;
+            
             return dis;
         };
 
-        // uiGmapGoogleMapApi is a promise.
-        // The "then" callback function provides the google.maps object.
-        uiGmapGoogleMapApi.then(function (maps) {
-            console.log("maps loaded");
-        });
-
         var init = function () {
-            // inizializzazione del controller
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    // salvo la posizione corrente
-                    $scope.currentPosition.latitude = position.coords.latitude;
-                    $scope.currentPosition.longitude = position.coords.longitude;
-
-                    // centro la mappa 
-                    $scope.map.center.latitude = $scope.currentPosition.latitude;
-                    $scope.map.center.longitude = $scope.currentPosition.longitude;
-                    $scope.map.zoom = 11;
-
-                    // aggiorno il marker sulla mappa
-                    $scope.currentPositionMarker.coords = $scope.currentPosition;
-
-                });
-            }
+            //....
         };
         // and fire it after definition
         init();

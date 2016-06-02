@@ -1,6 +1,20 @@
-<div class='map-popup'>
+<div class="map-popup">
     <strong>Ultime ricette:</strong>
-    <div ng-repeat="item in parameter">
-        {{item.title}}
+    <div class="media" ng-repeat="item in parameter">
+        <!-- manca di mettere il nome della raccolta nel title -->
+        <div class="media-left media-middle" title="{{item.title}}">
+            <a href="#">
+                <div class="media-object modal-add-recipe-to-collection_img" 
+                    ng-style="{'background-image': 'url(' + item.coverImageUrl + ')'}" 
+                    style="background-color: #464646;">
+                </div>
+            </a>
+        </div>
+        <div class="media-body">
+            <h4 class="media-heading modal-add-recipe-to-collection_title">
+                <a href="app/recipe/{{item._id}}">{{item.title}}</a>
+            </h4>
+        </div>
+        
     </div>
 </div>
