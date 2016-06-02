@@ -53,7 +53,11 @@
                     <div ng-controller="RecipeImageSliderCtrl">
                         <uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
                             <uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
-                                <div class="recipe_sp_2_1" style="background-image:url('{{slide.image}}')"></div>
+                                <div class="wow" data-imagelightbox="div">
+                                    <a href="{{slide.image}}" data-imagelightbox="a">
+                                        <div class="recipe_sp_2_1" style="background-image:url('{{slide.image}}')"></div>
+                                    </a>
+                                </div>
                             </uib-slide>
                         </uib-carousel>
                     </div>
@@ -340,8 +344,8 @@
                                     <div class="media-body">
                                         <h5 class="media-heading"><strong>Mariusz</strong> <span class="recipe_comment_when">1 ora fa</span></h5>
                                         <h6 class="recipe_comment_txt">
-														Eh si! fatti alla griglia vengono buonissimi!
-													</h6>
+                                            Eh si! fatti alla griglia vengono buonissimi!
+                                        </h6>
                                     </div>
                                 </div>
                             </div>
@@ -539,3 +543,10 @@
 
     </div>
 </div>
+
+<!-- script per far funzionare il lightbox (ingrandimento per immagini) -->
+<script>
+    $('.a[data-imagelightbox="a"]').imageLightbox({
+        activity: true
+    });
+</script>
