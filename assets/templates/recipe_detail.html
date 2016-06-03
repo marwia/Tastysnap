@@ -54,7 +54,7 @@
                         <uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
                             <uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
                                 <div class="wow" data-imagelightbox="div">
-                                    <a href="{{slide.image}}" data-imagelightbox="a">
+                                    <a href="{{slide.image}}" data-lightbox="imageSet" data-title="{{detailedRecipe.title}}">
                                         <div class="recipe_sp_2_1" style="background-image:url('{{slide.image}}')"></div>
                                     </a>
                                 </div>
