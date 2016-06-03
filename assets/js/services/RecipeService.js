@@ -180,7 +180,7 @@ angular.module('RecipeService', [])
                 params["skip"] = skip;
                  
             // esecuzione della richiesta
-            return $http.get(server_prefix + '/recipe/search', { params })
+            return $http.get(server_prefix + '/recipe/search', params)
                 .then(function(response) {
                 if (skip) {
                     for (var i = 0; i < response.data.length; i++) {
