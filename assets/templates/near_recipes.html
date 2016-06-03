@@ -9,11 +9,11 @@
         ng-repeat="(recipeGroup, groupRecipes) in recipes | groupBy: 'coordinates'"
         ng-show="true"
         options="marker.options"
-        click="toggleSelectedMarker(groupRecipes[0]._id)"
+        click="toggleSelectedMarker(groupRecipes[0].id)"
         coords="groupRecipes[0].coordinates" 
-        idkey="groupRecipes[0]._id">
+        idkey="groupRecipes[0].id">
         
-        <ui-gmap-window show="selectedMarkerId == groupRecipes[0]._id" templateUrl="'templates/map_recipe_window.html'" templateParameter="groupRecipes" ng-cloak>
+        <ui-gmap-window show="selectedMarkerId == groupRecipes[0].id" templateUrl="'templates/map_recipe_window.html'" templateParameter="groupRecipes" ng-cloak>
 
         </ui-gmap-window>
         
@@ -44,6 +44,6 @@
 </ui-gmap-google-map>
 <div ng-repeat="(recipeGroup, groupRecipes) in recipes | groupBy: 'coordinates'">
     
-    {{groupRecipes[0]._id}}
+    {{groupRecipes[0].id}}
 </div>
     
