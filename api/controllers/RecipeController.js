@@ -360,68 +360,79 @@ module.exports = {
             });
     },
 
+    /**
+     * @api {get} /recipe/search/coordinates List Near Recipes
+     * @apiName ListNearRecipes
+     * @apiGroup Recipe
+     *
+     * @apiDescription Serve per richiedere un lista di ricette vicine ad un punto 
+     * caratterizzato da coordinate.
+     * Attenzione che i risultati sono limitati ad un numero preciso di ricette, massimo 30 per richiesta.<br>
+     * Questo end point accetta prametri.
+     *
+     * @apiParam {Number} latitude Latitude of the point.
+     * @apiParam {Number} longitude Longitutde of the point.
+     * @apiParam {maxDistance} maxDistance Max distance from the point in meteres.
+     *
+     * @apiParamExample Request-Param-Example:
+     *     ?latitude=43&longitude=12&maxDistance=60000
+     *
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     */
     searchByCoordinates: function (req, res, next) {
 
         var searchCriteria = actionUtil.parseCriteria(req);
         if (!searchCriteria.longitude || !searchCriteria.latitude)
             return res.badRequest("No coordinates");
-        
+
         // distanza in metri
         var maxDistance = 50000;
         if (searchCriteria.maxDistance)
             maxDistance = searchCriteria.maxDistance;
-            
-            /*
-        Recipe.native(function (err, collection) {
-            var query = {};
-
-            collection.find(
-                query.coordinates = {
-                    $near: {
-                        $geometry: {
-                            type: "Point",
-                            coordinates: [
-                                searchCriteria.longitude,
-                                searchCriteria.latitude
-                            ]
-                        },
-                        $maxDistance: 1000
-                    }
-                }
-            ).toArray(function (err, result) {
-                if (err) {
-                    console.log(err);
-                }
-                else
-                    return res.json(result);
-            });
-        });*/
 
         Recipe.native(function (err, collection) {
             collection.find({
- 
-                    "coordinates": {
-                        "$near": {
-                            "$maxDistance": Number(maxDistance),
-                            "$geometry": {
-                                "type": "Point",
-                                "coordinates": [
-                                    Number(searchCriteria.longitude), 
-                                    Number(searchCriteria.latitude)]
-                            }
+
+                "coordinates": {
+                    "$near": {
+                        "$maxDistance": Number(maxDistance),
+                        "$geometry": {
+                            "type": "Point",
+                            "coordinates": [
+                                Number(searchCriteria.longitude),
+                                Number(searchCriteria.latitude)]
                         }
                     }
+                }
             })
                 //.sort({ "created": -1 })
                 //.limit(24)
                 .toArray(function (err, docs) {
                     // Handle Error and use docs
                     if (err) { return next(err); }
-                    
-                    if(docs.length == 0) {
+
+                    if (docs.length == 0) {
                         return res.notFound();
                     }
-                    return res.json(docs);
+
+                    var recipeIdList = docs.map(function (recipe) {
+                        return recipe._id
+                    });
+                    
+                    // remove consumed query params
+                    delete searchCriteria["longitude"];
+                    delete searchCriteria["latitude"];
+                    delete searchCriteria["maxDistance"];
+                    
+                    // richiamo la funzione di ricerca "normale" 
+                    // specificando due parametri speciali
+                    sails.controllers.recipe.find(req, res, next, {id: recipeIdList}, searchCriteria);
+ 
                 });
         });
     },
@@ -505,9 +516,9 @@ module.exports = {
      *
      * @apiUse InvalidTokenError
      */
-    find: function (req, res, next) {
-        Recipe.find()
-            .where(actionUtil.parseCriteria(req))
+    find: function (req, res, next, recipeIdList, whereCriteria) {
+        Recipe.find(recipeIdList)
+            .where(whereCriteria ? whereCriteria : actionUtil.parseCriteria(req))
             .limit(actionUtil.parseLimit(req))
             .skip(actionUtil.parseSkip(req))
             .sort(actionUtil.parseSort(req))
