@@ -19,8 +19,7 @@ angular.module('sampleApp')
         link: function(scope, element, attrs, model) {
             var options = {
                 types: ['(regions)'],
-                componentRestrictions: {country: 'it'},
-                key: 'AIzaSyCpj_s-hKfb1dpG__r68JBgTBHNqT4dIb8'
+                componentRestrictions: {country: 'it'}
             };
             scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
 
