@@ -19,11 +19,13 @@ angular.module('sampleApp')
         link: function(scope, element, attrs, model) {
             var options = {
                 types: ['(regions)'],
-                componentRestrictions: {country: 'it'}
+                componentRestrictions: {country: 'it'},
+                key: 'AIzaSyCpj_s-hKfb1dpG__r68JBgTBHNqT4dIb8'
             };
             scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
 
             google.maps.event.addListener(scope.gPlace, 'place_changed', function() {
+                console.log('place_changed');
                 var geoComponents = scope.gPlace.getPlace();
                 console.info(geoComponents);
                 if (geoComponents.geometry) {
