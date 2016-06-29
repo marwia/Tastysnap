@@ -21,11 +21,7 @@ angular.module('CommentService', [])
             return $http.post(
                 server_prefix + '/recipe/' + recipe.id + '/comment',
                 comment,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                null)
                 .then(function(response) {
                     // populo il campo user manualmente (il server non lo fa e non deve)
                     var createdComment = response.data;
@@ -56,11 +52,7 @@ angular.module('CommentService', [])
             return $http.post(
                 server_prefix + '/comment/' + comment.id + '/upvote',
                 null,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                null)
                 .then(function(response) {
                     // populo il campo user manualmente (il server non lo fa e non deve)
                     var createdUpvote = response.data;
@@ -96,11 +88,7 @@ angular.module('CommentService', [])
             return $http.post(
                 server_prefix + '/comment/' + comment.id + '/downvote',
                 null,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                null)
                 .then(function(response) {
                     // populo il campo user manualmente (il server non lo fa e non deve)
                     var createdDownvote = response.data;
@@ -132,11 +120,7 @@ angular.module('CommentService', [])
         o.deleteVote = function(comment, vote) {
             return $http.delete(
                 server_prefix + '/comment/' + comment.id + '/vote',
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                null)
                 .then(function(response) {
                     if (vote.value > 0) {
                         comment.userUpvote = null;
@@ -155,11 +139,7 @@ angular.module('CommentService', [])
         o.checkVote = function(comment) {
             return $http.get(
                 server_prefix + '/comment/' + comment.id + '/voted',
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                null)
                 .then(function(response) {
                     if (response.data.value > 0) {
                         comment.userUpvote = response.data;
@@ -223,11 +203,7 @@ angular.module('CommentService', [])
         o.delete = function(recipe, commentToDelete) {
             return $http.delete(
                 server_prefix + '/comment/' + commentToDelete.id,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                null)
                 .then(function(response) {
 
                     recipe.commentsCount--;

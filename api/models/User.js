@@ -50,6 +50,8 @@ module.exports = {
     
     twitterImageUrl: { type: 'String', url: true },
 
+    lastSeen : {type: 'Datetime'},
+
     // Reference to many Recipes
     recipes : {
       collection: 'recipe',

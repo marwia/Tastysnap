@@ -163,20 +163,17 @@ angular.module('CollectionService', [])
          */
         o.delete = function (collectionId, successCallback, errorCallback) {
             return $http.delete(
-                server_prefix + '/collection/' + collectionId,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-            }).then(successCallback, errorCallback);
+                server_prefix + '/collection/' + collectionId)
+                .then(successCallback, errorCallback);
         }
     
         /**
          * Metodo per richiedere una una collection tramite il suo id.
          */
         o.getCollection= function (collectionId) {
-            return $http.get(server_prefix + '/collection/' + collectionId).success(function (data) {
-                angular.copy(data, o.detailedCollection);
+            return $http.get(server_prefix + '/collection/' + collectionId)
+            .then(function (response) {
+                angular.copy(response.data, o.detailedCollection);
             });
         };
 
@@ -186,12 +183,7 @@ angular.module('CollectionService', [])
         o.create = function (collection, successCallback, errorCallback) {
             return $http.post(
                 server_prefix + '/collection',
-                collection,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                collection)
                 .then(successCallback, errorCallback);
         };
         
@@ -200,12 +192,8 @@ angular.module('CollectionService', [])
          * sta seguendo una raccolta.
          */
         o.areYouFollowing = function (collectionToCheck, successCallback) {
-            return $http.get(server_prefix + '/collection/'+ collectionToCheck.id+'/following/',
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                }).then(function (response) {
+            return $http.get(server_prefix + '/collection/'+ collectionToCheck.id+'/following/')
+                .then(function (response) {
 
                     collectionToCheck.isFollowed = true;
                     if (successCallback)
@@ -221,13 +209,7 @@ angular.module('CollectionService', [])
          */
         o.follow = function (collection, successCallback) {
             return $http.put(
-                server_prefix + '/collection/' + collection.id + '/follow',
-                null,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                server_prefix + '/collection/' + collection.id + '/follow')
                 .then(function(response) {
                     
                     collection.isFollowed = true;
@@ -246,12 +228,8 @@ angular.module('CollectionService', [])
          * Metodo per smettere di seguire una raccolta.
          */
         o.unfollow = function (collection, successCallback) {
-            return $http.delete(server_prefix + '/collection/' + collection.id + '/follow',
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                }).then(function (response) {
+            return $http.delete(server_prefix + '/collection/' + collection.id + '/follow')
+                .then(function (response) {
                     
                     collection.followersCount--;
                     collection.isFollowed = false;
@@ -273,12 +251,7 @@ angular.module('CollectionService', [])
         */
         o.createView = function(collection) {
             return $http.post(
-                server_prefix + '/collection/' + collection.id + '/view', null,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                server_prefix + '/collection/' + collection.id + '/view')
                 .then(function(response) {
                     if (response.status == 201) {// new view
                         collection.viewsCount++;
@@ -293,12 +266,7 @@ angular.module('CollectionService', [])
         o.addRecipeToCollection = function (recipe, collection, successCallback) {
             return $http.put(
                 server_prefix + '/collection/' + collection.id + '/recipe',
-                { recipe_id: recipe.id },
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                { recipe_id: recipe.id })
                 .then(function(response) {
                     
                     //recipe = response.data;

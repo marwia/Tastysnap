@@ -11,6 +11,9 @@
  */
 module.exports = function (req, res, next) {
   var token;
+  // per motivi di sicurezza elimino l'oggetto payload
+  delete req.payload;
+  console.log("attachUser");
  
   if (req.headers && req.headers.authorization) {
     var parts = req.headers.authorization.split(' ');
@@ -29,6 +32,7 @@ module.exports = function (req, res, next) {
     // We delete the token from param to not mess with blueprints
     delete req.query.token;
   } else {
+    console.log("attachUser - senza token");
     return next();// proseguo comunque senza token
   }
   
@@ -37,6 +41,7 @@ module.exports = function (req, res, next) {
   jwToken.verify(token, function (err, decoded) {
     if (err) return next();
     req.payload = decoded; // This is the decrypted token or the payload you provided
+    console.log("req.payload: " + req.payload);
     // ATTENZIONE: Decoded (per come è fatta la procedura di login) rappresenta 
     // l'oggetto 'User'.
     next();// utente trovato!

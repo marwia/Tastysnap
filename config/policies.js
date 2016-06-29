@@ -40,7 +40,9 @@ module.exports.policies = {
       upvote: 'commentParam'
   },*/
 
-  '*' : true, // Di base tutte le operazioni sono autorizzate
+  // Le seguenti sono policy non bloccanti e servono a tutti gli end-point
+  //In realtà servono solo agli end-point che non sono definiti qui di seguito...
+  '*' : ['attachUser', 'updateUserStats'], // Di base tutte le operazioni sono autorizzate
 
   // Elenco dei casi particolari
   
@@ -53,6 +55,7 @@ module.exports.policies = {
     'areYouFollowing' : ['isAuthorized', 'findUser'],
     'isFollowing' : 'findUser',
     'uploadCoverImage': ['isAuthorized', 'findUser'],
+    'getLastSeen': ['isAuthorized']
   },
 
   'CollectionController' : {
@@ -82,7 +85,6 @@ module.exports.policies = {
   'RecipeController' : {
     'create' : 'isAuthorized',
     'update' : ['isAuthorized', 'isRecipeAuthor'],
-    'find' : true,
     'findOne' : ['attachUser','setRecipeViewed'],
     'destroy' : ['isAuthorized', 'isRecipeAuthor', 'findRecipe'],
     'uploadCoverImage' : ['isAuthorized', 'isRecipeAuthor'],
@@ -150,7 +152,6 @@ module.exports.policies = {
     'destroy' : ['isAuthorized', 'isReviewAuthor', 'findRecipe'],
     'update' : ['isAuthorized', 'findRecipe'],
     'find' : 'findRecipe',
-    'findOne' : true,
     'checkReview' : ['isAuthorized', 'findRecipe'],
     'getTotalValueForTypology' : 'findRecipe',
   },

@@ -21,12 +21,7 @@ angular.module('IngredientService', [])
         o.createIngredientGroup = function(recipe, ingredientGroup, successCallback) {
             return $http.post(
                 server_prefix + '/recipe/' + recipe.id + '/ingredient_group',
-                ingredientGroup,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                ingredientGroup)
                 .then(function(response) {
 
                     ingredientGroup.recipe = recipe.id;
@@ -47,12 +42,7 @@ angular.module('IngredientService', [])
         o.createIngredient = function(ingredient, ingredientGroup, successCallback) {
             return $http.post(
                 server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id + '/ingredient',
-                ingredient,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                ingredient)
                 .then(successCallback, function errorCallback(response) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
@@ -67,7 +57,6 @@ angular.module('IngredientService', [])
         o.GetIngredientUnitOfMeasure = function() {
             return $http.get(
                 server_prefix + '/ingredient/unit_of_measure')
-
                 .then(function successCallback(response) {
                     console.info(response.data);
                     angular.copy(response.data.enum, o.unitsOfMeasure);
@@ -86,7 +75,6 @@ angular.module('IngredientService', [])
         o.getIngredientGroupIngredients = function(ingredientGroup, successCB, errorCB) {
             return $http.get(
                 server_prefix + '/ingredientgroup/' + ingredientGroup.id + '/ingredients')
-
                 .then(function successCallback(response) {
                     ingredientGroup.ingredients = [];
                     console.info(response.data);

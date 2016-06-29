@@ -268,6 +268,45 @@ module.exports = {
                 return res.json(obj);
             });
     },
+
+    /**
+     * @api {get} /user/last_seen Get 
+     * @apiName GetUser
+     * @apiGroup UserLastSeen
+     *
+     * @apiDescription Serve per conoscere l'ultima volta che un utente
+     * è stato visto dal server (utile per determinare la query per le notifiche).
+     *
+     * @apiSuccess {Date} lastSeen Date when user was last seen.
+     * 
+     * @apiUse TokenHeader
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+            "lastSeen": "2015-09-15T13:59:50.559Z"
+            }
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     *
+     * @apiUse NoUserError
+     */
+    getLastSeen: function (req, res, next) {
+        var user = req.payload;
+
+        User.findOne(user.id)
+            .exec(function (err, foundUser) {
+                if (err) { return next(err); }
+
+                if (!foundUser) { return res.notFound({ error: 'No user found' }); }
+
+                return res.json({ lastSeen: foundUser.lastSeen});
+            });
+    },
     
     /**
      * @api {get} /user/:id/upvoted_recipe Get a User favorite recipe list

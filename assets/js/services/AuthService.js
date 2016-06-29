@@ -48,15 +48,15 @@ angular.module('AuthService', [])
 
 
     auth.register = function (user) {
-        return $http.post(server_prefix + '/user/create', user).success(function (data) {
-            auth.saveToken(data.token);
+        return $http.post(server_prefix + '/user/create', user).then(function (response) {
+            auth.saveToken(response.data.token);
         });
     };
 
 
     auth.logIn = function (user) {
-        return $http.post(server_prefix + '/login', user).success(function (data) {
-            auth.saveToken(data.token);
+        return $http.post(server_prefix + '/login', user).then(function (response) {
+            auth.saveToken(response.data.token);
         });
     };
 

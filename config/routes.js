@@ -159,6 +159,8 @@ var apiRoutes = addGlobalPrefix({
     
     'put /user/:user/upload_cover_image': 'UserController.uploadCoverImage',
 
+    'get /user/last_seen': 'UserController.getLastSeen',
+
     /***************************************************************************
     *                                                                          *
     * Ricette.                                                                 *

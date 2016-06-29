@@ -318,7 +318,8 @@ angular.module('appRoutes', []).config([
                 url: '/login?token',// query param (opzionale)
                 templateUrl: 'templates/login.html',
                 controller: 'AuthCtrl',
-                onEnter: ['$state', '$stateParams', 'Auth', function($state, $stateParams, Auth) {
+                onEnter: ['$state', '$stateParams', 'Auth', '$http', function($state, $stateParams, Auth, $http) {
+                    alert("ciao!");
                     if ($stateParams.token) {
                         Auth.saveToken($stateParams.token);
                     }

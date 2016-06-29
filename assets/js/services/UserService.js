@@ -144,13 +144,7 @@ angular.module('UserService', [])
          * correntemente loggato.
          */
         service.followUser = function(userToFollow, successCallback) {
-            return $http.put(server_prefix + '/user/' + userToFollow.id + '/follow',
-                null,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                }).then(function(response) {
+            return $http.put(server_prefix + '/user/' + userToFollow.id + '/follow').then(function(response) {
                     service.currentUser.following += 1;
                     userToFollow.followers += 1;
 
@@ -165,12 +159,8 @@ angular.module('UserService', [])
          * correntemente loggato.
          */
         service.unfollowUser = function(userToUnfollow, successCallback) {
-            return $http.delete(server_prefix + '/user/' + userToUnfollow.id + '/follow',
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                }).then(function(response) {
+            return $http.delete(server_prefix + '/user/' + userToUnfollow.id + '/follow')
+                .then(function(response) {
                     service.currentUser.following -= 1;
                     userToUnfollow.followers -= 1;
 
@@ -185,12 +175,8 @@ angular.module('UserService', [])
          * sta seguendo un'altro utente.
          */
         service.areYouFollowing = function(userToCheck, successCallback) {
-            return $http.get(server_prefix + '/user/following/' + userToCheck.id,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                }).then(function(response) {
+            return $http.get(server_prefix + '/user/following/' + userToCheck.id)
+                .then(function(response) {
 
                     userToCheck.isFollowed = true;
                     if (successCallback)
