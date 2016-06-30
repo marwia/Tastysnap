@@ -24,6 +24,7 @@ angular.module('sampleApp')
             scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
 
             google.maps.event.addListener(scope.gPlace, 'place_changed', function() {
+                console.log('place_changed');
                 var geoComponents = scope.gPlace.getPlace();
                 console.info(geoComponents);
                 if (geoComponents.geometry) {
