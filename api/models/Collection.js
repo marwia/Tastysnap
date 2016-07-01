@@ -23,26 +23,26 @@ module.exports = {
 
   	// Reference to User
   	author : { 
-    	model :'user',
+    	  model :'user',
         required : true
     },
 
   	// Reference to many Recipes
     recipes : {
-        collection: 'Recipe',
-        via: 'collections'
+        collection: 'CollectionRecipe',
+        via: 'collection'
     },
 
     // Reference to many Users
     followers : {
-      collection: 'User',
-      via: 'followingCollections'
+        collection: 'FollowCollection',
+        via: 'collection'
     },
     
     // Reference to many Views
     views : {
-      collection: 'ViewCollection',
-      via: 'collection'
+        collection: 'ViewCollection',
+        via: 'collection'
     },
 
     findRecipe : function (recipeId) {

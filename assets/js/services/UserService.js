@@ -16,7 +16,7 @@ angular.module('UserService', [])
             currentUser: {},
             user: {},
             following_users: [],//quelli che si segue
-            follower_users: [],//quelli che si seguono
+            follower_users: [],//quelli che ci seguono
             users: []//lista di utenti (ricerca)
         };
 

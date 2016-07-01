@@ -37,6 +37,7 @@ module.exports = function(req, res, next) {
             if (originalCollection.author == user.id) {
                 // per sicurezza elimino l'author 
                 delete req.body.user;// cancello elementi inopportuni
+                req.collection = originalCollection;
                 next();
             } else
                 return res.json(401, { error: 'NoPermission' });

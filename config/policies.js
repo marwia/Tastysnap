@@ -48,26 +48,13 @@ module.exports.policies = {
   
   'UserController' : {
     'destroy' : false, // Eliminazione non consentita
-    'follow' : ['isAuthorized', 'findUser'],
-    'unfollow' : ['isAuthorized', 'findUser'],
-    'getFollowers' : 'findUser',
-    'getFollowing' : 'findUser',
-    'areYouFollowing' : ['isAuthorized', 'findUser'],
-    'isFollowing' : 'findUser',
     'uploadCoverImage': ['isAuthorized', 'findUser'],
     'getLastSeen': ['isAuthorized']
   },
 
   'CollectionController' : {
     'create' : 'isAuthorized',
-    'destroy' : ['isAuthorized', 'isCollectionAuthor'],
-    'addRecipe' : ['isAuthorized', 'isCollectionAuthor', 'findCollection'],
-    'removeRecipe' : ['isAuthorized', 'isCollectionAuthor', 'findCollection'],
-    'getRecipes' : 'findCollection',
-    'follow' : ['isAuthorized', 'findCollection'],
-    'unfollow' : ['isAuthorized', 'findCollection'],
-    'getFollowers' : true,
-    'areYouFollowing' : ['isAuthorized', 'findCollection']
+    'destroy' : ['isAuthorized', 'isCollectionAuthor']
   },
   
   'ViewCollectionController' : {
@@ -159,7 +146,29 @@ module.exports.policies = {
   'ReportRecipeController' : {
     'create' : ['isAuthorized', 'findRecipe'],
     'find' : 'findRecipe'
+  },
+
+  'FollowCollectionController' : {
+    'create' : ['isAuthorized', 'findCollection'],
+    'find' : 'findRecipe',
+    'areYouFollowing' : ['isAuthorized', 'findCollection']
+  },
+
+  'CollectionRecipeController' : {
+    'create' : ['isAuthorized', 'findCollection'],
+    'destroy' : ['isAuthorized', 'isCollectionAuthor'],
+    'getRecipes' : 'findCollection'
+  },
+
+  'FollowUserController' : {
+    'create' : ['isAuthorized', 'findUser'],
+    'getFollowers' : 'findUser',
+    'getFollowing' : 'findUser',
+    'areYouFollowing' : ['isAuthorized', 'findUser'],
+    'isFollowing' : 'findUser',
   }
+
+
 
   /***************************************************************************
   *                                                                          *

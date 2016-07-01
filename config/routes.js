@@ -137,17 +137,17 @@ var apiRoutes = addGlobalPrefix({
 
     'get /auth/twitter/callback': 'AuthController.twitterCallback',
 
-    'put /user/:user/follow': 'UserController.follow',
+    'put /user/:user/follow': 'FollowUserController.create',
 
-    'delete /user/:user/follow': 'UserController.unfollow',
+    'delete /user/:user/follow': 'FollowUserController.destroy',
 
-    'get /user/:user/follower': 'UserController.getFollowers',
+    'get /user/:user/follower': 'FollowUserController.getFollowers',
 
-    'get /user/:user/following': 'UserController.getFollowing',
+    'get /user/:user/following': 'FollowUserController.getFollowing',
 
-    'get /user/following/:user': 'UserController.areYouFollowing',
+    'get /user/following/:user': 'FollowUserController.areYouFollowing',
 
-    'get /user/:user/following/:target_user': 'UserController.isFollowing',
+    'get /user/:user/following/:target_user': 'FollowUserController.isFollowing',
 
     'get /user/:id/upvoted_recipe': 'UserController.findUserUpvotedRecipes',
 
@@ -155,7 +155,7 @@ var apiRoutes = addGlobalPrefix({
 
     'get /user/:id/tried_recipe': 'UserController.findUserTriedRecipes',
 
-    'get /user/:id/following_collections': 'UserController.findUserFollwingCollections',
+    'get /user/:id/following_collections': 'FollowCollectionController.findUserFollwingCollections',
     
     'put /user/:user/upload_cover_image': 'UserController.uploadCoverImage',
 
@@ -311,19 +311,19 @@ var apiRoutes = addGlobalPrefix({
 
     'get /collection/:collection': 'CollectionController.findOne',
 
-    'put /collection/:collection/recipe': 'CollectionController.addRecipe',
+    'put /collection/:collection/recipe': 'CollectionRecipeController.create',
 
-    'delete /collection/:collection/recipe': 'CollectionController.removeRecipe',
+    'delete /collection/:collection/recipe': 'CollectionRecipeController.destroy',
 
-    'get /collection/:collection/recipe': 'CollectionController.getRecipes',
+    'get /collection/:collection/recipe': 'CollectionRecipeController.getRecipes',
 
-    'put /collection/:collection/follow': 'CollectionController.follow',
+    'put /collection/:collection/follow': 'FollowCollectionController.create',
 
-    'delete /collection/:collection/follow': 'CollectionController.unfollow',
+    'delete /collection/:collection/follow': 'FollowCollectionController.destroy',
 
-    'get /collection/:collection/follower': 'CollectionController.getFollowers',
+    'get /collection/:collection/follower': 'FollowCollectionController.getCollectionFollowers',
 
-    'get /collection/:collection/following': 'CollectionController.areYouFollowing',
+    'get /collection/:collection/following': 'FollowCollectionController.areYouFollowing',
 
     /***************************************************************************
     *                                                                          *

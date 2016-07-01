@@ -16,6 +16,8 @@
 
 <!-- CARD -->
 <div class="row tasty_container text-center">
+
+    <empty-list-holder  ng-hide="recipes.length > 0" msg="'Nessuna ricetta trovata'"></empty-list-holder>
     
     <!-- basic card -->
     <recipe-card 

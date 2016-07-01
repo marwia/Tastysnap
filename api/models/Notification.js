@@ -16,7 +16,7 @@ module.exports = {
   attributes: {
 
     // id dell'elemento riferito alla notifica (commento, ricetta, follow)  
-  	body : { type: 'String', required: true },
+  	event : { type: 'String', required: true },
     // tipo dell'elemento riferito alla notifica (ovvero il model)
     type : { type: 'String', required: true },
 

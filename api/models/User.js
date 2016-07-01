@@ -24,7 +24,7 @@ module.exports = {
   ***************************************************************************/
   attributes: {
     
-    name : { type: 'String', unique: true },
+    name : { type: 'String' },
     
     surname : { type: 'String' },
     
@@ -54,49 +54,49 @@ module.exports = {
 
     // Reference to many Recipes
     recipes : {
-      collection: 'recipe',
+      collection: 'Recipe',
       via: 'author'
     },
 
     // Reference to many Collections
     collections : {
-      collection: 'collection',
+      collection: 'Collection',
       via: 'author'
     },
 
     // Reference to many Users
     followers : {
-      collection: 'user',
+      collection: 'FollowUser',
       via: 'following'
     },
 
     // Reference to many Users
     following : {
-      collection: 'user',
-      via: 'followers'
+      collection: 'FollowUser',
+      via: 'follower'
     },
 
     // Reference to many Collections
     followingCollections : {
-      collection: 'collection',
-      via: 'followers'
+      collection: 'FollowCollection',
+      via: 'user'
     },
     
     // Reference to many votes of recipes
     votes : {
-      collection: 'voteRecipe',
+      collection: 'VoteRecipe',
       via: 'author'
     },
     
     // Reference to many votes of recipes
     viewedRecipes : {
-      collection: 'viewRecipe',
+      collection: 'ViewRecipe',
       via: 'user'
     },
     
     // Reference to many tried recipes
     triedRecipes : {
-      collection: 'tryRecipe',
+      collection: 'TryRecipe',
       via: 'user'
     },
 

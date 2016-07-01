@@ -320,7 +320,7 @@ angular.module('RecipeService', [])
          */
         o.getAllDosageTypes = function() {
             return $http.get(server_prefix + '/recipe/dosage_types')
-                .success(function(response) {
+                .then(function(response) {
                     angular.copy(response.data.enum, o.dosagesTypes);
             });
         };

@@ -1,11 +1,11 @@
 
-<empty-list-holder ng-hide="following_users.length > 0" msg="'Nessuna utente trovato'"></empty-list-holder>
+<empty-list-holder ng-hide="following_users.length > 0" msg="'Nessun utente trovato'"></empty-list-holder>
 
 <!-- profile's cards -->
 <div class="row tasty_container text-center tasty_load_space">
 
     <!-- user card -->
-    <user-card user="user" ng-repeat="user in following_users"></user-card>
+    <user-card user="follow.following" ng-repeat="follow in following_users"></user-card>
     <!-- user card -->
 
 </div>
