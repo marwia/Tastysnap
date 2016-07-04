@@ -48,66 +48,66 @@ module.exports.policies = {
   
   'UserController' : {
     'destroy' : false, // Eliminazione non consentita
-    'uploadCoverImage': ['isAuthorized', 'findUser'],
+    'uploadCoverImage': ['isAuthorized', 'findUser', 'updateUserStats'],
     'getLastSeen': ['isAuthorized']
   },
 
   'CollectionController' : {
-    'create' : 'isAuthorized',
-    'destroy' : ['isAuthorized', 'isCollectionAuthor']
+    'create' : ['isAuthorized', 'updateUserStats'],
+    'destroy' : ['isAuthorized', 'isCollectionAuthor', 'updateUserStats']
   },
   
   'ViewCollectionController' : {
-      'create' : ['isAuthorized', 'findCollection']
+      'create' : ['isAuthorized', 'findCollection', 'updateUserStats']
   },
 
   'CommentController' : {
-    'create' : ['isAuthorized', 'findRecipe'],
-    'update' : ['isAuthorized', 'isCommentAuthor', 'findRecipe'],
-    'destroy' : ['isAuthorized', 'isCommentAuthor', 'findRecipe'],
-    'find' : 'findRecipe',
-    'findOne' : 'findRecipe'
+    'create' : ['isAuthorized', 'findRecipe', 'updateUserStats'],
+    'update' : ['isAuthorized', 'isCommentAuthor', 'findRecipe', 'updateUserStats'],
+    'destroy' : ['isAuthorized', 'isCommentAuthor', 'findRecipe', 'updateUserStats'],
+    'find' : ['findRecipe', 'attachUser', 'updateUserStats'],
+    'findOne' : ['findRecipe', 'attachUser', 'updateUserStats']
   },
 
   'RecipeController' : {
-    'create' : 'isAuthorized',
-    'update' : ['isAuthorized', 'isRecipeAuthor'],
-    'findOne' : ['attachUser','setRecipeViewed'],
-    'destroy' : ['isAuthorized', 'isRecipeAuthor', 'findRecipe'],
-    'uploadCoverImage' : ['isAuthorized', 'isRecipeAuthor'],
-    'uploadBlurredCoverImage' : ['isAuthorized', 'isRecipeAuthor'],
-    'uploadImage' : ['isAuthorized', 'isRecipeAuthor']
+    'create' : ['isAuthorized', 'updateUserStats'],
+    'update' : ['isAuthorized', 'isRecipeAuthor', 'updateUserStats'],
+    'findOne' : ['attachUser','setRecipeViewed', 'updateUserStats'],
+    'destroy' : ['isAuthorized', 'isRecipeAuthor', 'findRecipe', 'updateUserStats'],
+    'uploadCoverImage' : ['isAuthorized', 'isRecipeAuthor', 'updateUserStats'],
+    'uploadBlurredCoverImage' : ['isAuthorized', 'isRecipeAuthor', 'updateUserStats'],
+    'uploadImage' : ['isAuthorized', 'isRecipeAuthor', 'updateUserStats']
   },
   
   'RecipeStepController' : {
-    'create' : ['isAuthorized', 'isRecipeAuthor'],
-    'update' : ['isAuthorized', 'isRecipeAuthor'],
-    'destroy' : ['isAuthorized', 'isRecipeAuthor'],
-    'findSteps' : ['findRecipe'],
+    'create' : ['isAuthorized', 'isRecipeAuthor', 'updateUserStats'],
+    'update' : ['isAuthorized', 'isRecipeAuthor', 'updateUserStats'],
+    'destroy' : ['isAuthorized', 'isRecipeAuthor', 'updateUserStats'],
+    'findSteps' : ['findRecipe', 'attachUser', 'updateUserStats']
   },
 
   'IngredientGroupController' : {
-    'create' : ['isAuthorized', 'isRecipeAuthor'],
-    'update' : ['isAuthorized', 'isRecipeAuthor'],
-    'destroy' : ['isAuthorized', 'isRecipeAuthor']
+    'create' : ['isAuthorized', 'isRecipeAuthor', 'updateUserStats'],
+    'update' : ['isAuthorized', 'isRecipeAuthor', 'updateUserStats'],
+    'destroy' : ['isAuthorized', 'isRecipeAuthor', 'updateUserStats']
   },
 
   'IngredientController' : {
-    'create' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
-    'update' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
-    'destroy' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup']
+    'create' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup', 'updateUserStats'],
+    'update' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup', 'updateUserStats'],
+    'destroy' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup', 'updateUserStats']
   },
 
   'VoteRecipeController' : {
     'create' : false,
     'find' : false,
     'findOne' : false,
-    'destroy' : ['isAuthorized', 'findRecipe'],// isAuthor è implicito
-    'createUpvote' : ['isAuthorized', 'findRecipe'],
-    'createDownvote' : ['isAuthorized', 'findRecipe'],
-    'checkVote' : ['isAuthorized', 'findRecipe'],
-    'findUpvotes' : 'findRecipe',
-    'findDownvotes' : 'findRecipe'
+    'destroy' : ['isAuthorized', 'findRecipe', 'updateUserStats'],// isAuthor è implicito
+    'createUpvote' : ['isAuthorized', 'findRecipe', 'updateUserStats'],
+    'createDownvote' : ['isAuthorized', 'findRecipe', 'updateUserStats'],
+    'checkVote' : ['isAuthorized', 'findRecipe', 'updateUserStats'],
+    'findUpvotes' : ['findRecipe', 'attachUser', 'updateUserStats'],
+    'findDownvotes' : ['findRecipe', 'attachUser', 'updateUserStats']
   },
   
   'VoteCommentController' : {
@@ -118,54 +118,54 @@ module.exports.policies = {
     'createUpvote' : ['isAuthorized', 'findComment'],
     'createDownvote' : ['isAuthorized', 'findComment'],
     'checkVote' : ['isAuthorized', 'findComment'],
-    'findUpvotes' : 'findComment',
-    'findDownvotes' : 'findComment'
+    'findUpvotes' : ['findComment', 'attachUser', 'updateUserStats'],
+    'findDownvotes' : ['findComment', 'attachUser', 'updateUserStats']
   },
   
   'ViewRecipeController' : {
-      'create' : ['isAuthorized', 'findRecipe']
+      'create' : ['isAuthorized', 'findRecipe', 'updateUserStats']
   },
   
   'TryRecipeController' : {
-    'create' : ['isAuthorized', 'findRecipe'],
-    'find' : 'findRecipe',
+    'create' : ['isAuthorized', 'findRecipe', 'updateUserStats'],
+    'find' : ['findRecipe', 'attachUser', 'updateUserStats'],
     'findOne' : false,
-    'destroy' : ['isAuthorized', 'findRecipe'],// isAuthor è implicito
-    'checkTry' : ['isAuthorized', 'findRecipe']
+    'destroy' : ['isAuthorized', 'findRecipe', 'updateUserStats'],// isAuthor è implicito
+    'checkTry' : ['isAuthorized', 'findRecipe', 'updateUserStats']
   },
   
   'ReviewRecipeController' : {
-    'create' : ['isAuthorized', 'findRecipe'],
-    'destroy' : ['isAuthorized', 'isReviewAuthor', 'findRecipe'],
-    'update' : ['isAuthorized', 'findRecipe'],
-    'find' : 'findRecipe',
-    'checkReview' : ['isAuthorized', 'findRecipe'],
-    'getTotalValueForTypology' : 'findRecipe',
+    'create' : ['isAuthorized', 'findRecipe', 'updateUserStats'],
+    'destroy' : ['isAuthorized', 'isReviewAuthor', 'findRecipe', 'updateUserStats'],
+    'update' : ['isAuthorized', 'findRecipe', 'updateUserStats'],
+    'find' : ['findRecipe', 'attachUser', 'updateUserStats'],
+    'checkReview' : ['isAuthorized', 'findRecipe', 'updateUserStats'],
+    'getTotalValueForTypology' : ['findRecipe', 'attachUser', 'updateUserStats']
   },
   
   'ReportRecipeController' : {
-    'create' : ['isAuthorized', 'findRecipe'],
-    'find' : 'findRecipe'
+    'create' : ['isAuthorized', 'findRecipe', 'updateUserStats'],
+    'find' : ['findRecipe', 'attachUser', 'updateUserStats']
   },
 
   'FollowCollectionController' : {
-    'create' : ['isAuthorized', 'findCollection'],
-    'find' : 'findRecipe',
-    'areYouFollowing' : ['isAuthorized', 'findCollection']
+    'create' : ['isAuthorized', 'findCollection', 'updateUserStats'],
+    'find' : ['findRecipe', 'attachUser', 'updateUserStats'],
+    'areYouFollowing' : ['isAuthorized', 'findCollection', 'updateUserStats']
   },
 
   'CollectionRecipeController' : {
-    'create' : ['isAuthorized', 'findCollection'],
-    'destroy' : ['isAuthorized', 'isCollectionAuthor'],
-    'getRecipes' : 'findCollection'
+    'create' : ['isAuthorized', 'findCollection', 'updateUserStats'],
+    'destroy' : ['isAuthorized', 'isCollectionAuthor', 'updateUserStats'],
+    'getRecipes' : ['findCollection', 'attachUser', 'updateUserStats']
   },
 
   'FollowUserController' : {
-    'create' : ['isAuthorized', 'findUser'],
-    'getFollowers' : 'findUser',
-    'getFollowing' : 'findUser',
-    'areYouFollowing' : ['isAuthorized', 'findUser'],
-    'isFollowing' : 'findUser',
+    'create' : ['isAuthorized', 'findUser', 'updateUserStats'],
+    'getFollowers' : ['findUser', 'attachUser', 'updateUserStats'],
+    'getFollowing' : ['findUser', 'attachUser', 'updateUserStats'],
+    'areYouFollowing' : ['isAuthorized', 'findUser', 'updateUserStats'],
+    'isFollowing' : ['findUser', 'attachUser', 'updateUserStats']
   }
 
 

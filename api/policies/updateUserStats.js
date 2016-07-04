@@ -20,8 +20,6 @@
  *     }
  */
 module.exports = function (req, res, next) {
-    console.log("hello!!!");
-    console.info(req.payload);
     if (req.payload) {
       var user = req.payload;
       User.update(user.id, {
@@ -30,7 +28,6 @@ module.exports = function (req, res, next) {
 
       }).exec(function (err, updatedUsers) {
         if (err) { console.info(err); }
-        console.log(updatedUsers);
       });
     }
 
