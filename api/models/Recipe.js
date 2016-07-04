@@ -73,7 +73,7 @@ module.exports = {
 
     // Reference to User
     author : { 
-      model :'user',
+      model :'User',
       required : true
     },
 
@@ -85,44 +85,44 @@ module.exports = {
     
     // Reference to many Collections
     steps : {
-      collection: 'recipeStep',
+      collection: 'RecipeStep',
       via: 'recipe'
     },
 
     // Reference to many Likes or Not likes
     votes : {
-      collection: 'voteRecipe',
+      collection: 'VoteRecipe',
       via: 'recipe'
     },
 
     // Reference to many Views
     views : {
-      collection: 'viewRecipe',
+      collection: 'ViewRecipe',
       via: 'recipe'
     },
 
     // Reference to many Comments
     comments : {
-      collection: 'comment',
+      collection: 'Comment',
       via: 'recipe'
     },
     
     // Reference to many Trials
     trials : {
-      collection: 'tryRecipe',
+      collection: 'TryRecipe',
       via: 'recipe'
     },
     
     // Reference to many Reviews
     reviews : {
-      collection: 'reviewRecipe',
+      collection: 'ReviewRecipe',
       via: 'recipe'
     },
 
     // Reference to many Collections
     collections : {
-      collection: 'collection',
-      via: 'recipes'
+      collection: 'CollectionRecipe',
+      via: 'recipe'
     },
 
   },

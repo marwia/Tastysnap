@@ -20,12 +20,7 @@ angular.module('RecipeStepService', [])
         o.create = function(recipe, step, successCallback, errorCallback) {
             return $http.post(
                 server_prefix + '/recipe/' + recipe.id + '/step',
-                step,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                step)
                 .then(function(response) {
                     // populo il campo user manualmente (il server non lo fa e non deve)
                     var createdStep = response.data;
@@ -90,12 +85,7 @@ angular.module('RecipeStepService', [])
          */
         o.delete = function(recipe, stepToDelete) {
             return $http.delete(
-                server_prefix + '/recipe/' + recipe.id + '/step/'+ stepToDelete.id,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                server_prefix + '/recipe/' + recipe.id + '/step/'+ stepToDelete.id)
                 .then(function(response) {
 
                     for (var i in recipe.steps) {

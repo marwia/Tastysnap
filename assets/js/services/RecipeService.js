@@ -249,8 +249,9 @@ angular.module('RecipeService', [])
          * (con upvote dato dall'utente) di un dato utente.
          */
         o.getUserUpvotedRecipes = function(userId) {
-            return $http.get(server_prefix + '/user/' + userId + '/upvoted_recipe').success(function(data) {
-                angular.copy(data, o.recipes);
+            return $http.get(server_prefix + '/user/' + userId + '/upvoted_recipe')
+                .then(function(response) {
+                    angular.copy(response.data, o.recipes);
             });
         };
 
@@ -259,8 +260,9 @@ angular.module('RecipeService', [])
          * da un dato utente.
          */
         o.getUserViewedRecipes = function(userId) {
-            return $http.get(server_prefix + '/user/' + userId + '/viewed_recipe').success(function(data) {
-                angular.copy(data, o.recipes);
+            return $http.get(server_prefix + '/user/' + userId + '/viewed_recipe')
+                .then(function(response) {
+                    angular.copy(response.data, o.recipes);
             });
         };
 
@@ -269,19 +271,15 @@ angular.module('RecipeService', [])
          * da un dato utente.
          */
         o.getUserTriedRecipes = function(userId) {
-            return $http.get(server_prefix + '/user/' + userId + '/tried_recipe').success(function(data) {
-                angular.copy(data, o.recipes);
+            return $http.get(server_prefix + '/user/' + userId + '/tried_recipe')
+                .then(function(response) {
+                angular.copy(response.data, o.recipes);
             });
         };
 
         o.delete = function(recipeId, successCallback, errorCallback) {
             return $http.delete(
-                server_prefix + '/recipe/' + recipeId,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                server_prefix + '/recipe/' + recipeId)
                 .then(function(response) {
                     // remove the deleted recipe
                     for (var i in o.recipes) {
@@ -301,8 +299,9 @@ angular.module('RecipeService', [])
          * Metodo per richiedere una una ricetta tramite il suo id.
          */
         o.getRecipe = function(recipeId) {
-            return $http.get(server_prefix + '/recipe/' + recipeId).success(function(data) {
-                angular.copy(data, o.detailedRecipe);
+            return $http.get(server_prefix + '/recipe/' + recipeId)
+                .then(function(response) {
+                    angular.copy(response.data, o.detailedRecipe);
             });
         };
 
@@ -310,8 +309,9 @@ angular.module('RecipeService', [])
          * Metodo per richiedere una lista di categorie di ricette.
          */
         o.getAllRecipeCategories = function() {
-            return $http.get(server_prefix + '/recipe/categories').success(function(data) {
-                angular.copy(data.enum, o.recipeCategories);
+            return $http.get(server_prefix + '/recipe/categories')
+                .then(function(response) {
+                    angular.copy(response.data.enum, o.recipeCategories);
             });
         };
 
@@ -319,8 +319,9 @@ angular.module('RecipeService', [])
          * Metodo per richiedere una lista di categorie di ricette.
          */
         o.getAllDosageTypes = function() {
-            return $http.get(server_prefix + '/recipe/dosage_types').success(function(data) {
-                angular.copy(data.enum, o.dosagesTypes);
+            return $http.get(server_prefix + '/recipe/dosage_types')
+                .then(function(response) {
+                    angular.copy(response.data.enum, o.dosagesTypes);
             });
         };
 
@@ -330,12 +331,7 @@ angular.module('RecipeService', [])
         o.create = function(recipe, successCallback) {
             return $http.post(
                 server_prefix + '/recipe',
-                recipe,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                recipe)
                 .then(function(response) {
 
                     User.currentUser.recipesCount++;
@@ -366,14 +362,13 @@ angular.module('RecipeService', [])
             $http.put(url, fd, {
                 transformRequest: angular.identity,
                 headers: {
-                    'Content-Type': undefined,
-                    Authorization: 'Bearer ' + Auth.getToken()
+                    'Content-Type': undefined
                 }
             })
-                .success(function(data) {
-                    successCallback(data);
-                })
-                .error(function(err) {
+                .then(function(response) {
+                    successCallback(response.data);
+
+                }, function(err) {
                     errorCallback(err);
                     console.log(err);
                 });
@@ -381,41 +376,38 @@ angular.module('RecipeService', [])
 
 
         o.upvote = function(recipe) {
-            return $http.post(server_prefix + '/recipe/' + recipe.id + '/upvote', null, {
-                headers: { Authorization: 'Bearer ' + Auth.getToken() }
-            })
-                .success(function(data) {
-                    recipe.votes.push(data);// opzionale...
-                    recipe.userVote = data.value;
+            return $http.post(server_prefix + '/recipe/' + recipe.id + '/upvote')
+                .then(function(response) {
+                    recipe.userVote = response.data.value;
                     recipe.votesCount += 1;
-                })
-                .error(function(err) {
-                    console.log(err);
+
+                }, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    //alert("Errore: " + response);
+                    console.log(response);
                 });
         };
 
         o.deleteVote = function(recipe) {
-            return $http.delete(server_prefix + '/recipe/' + recipe.id + '/vote', {
-                headers: { Authorization: 'Bearer ' + Auth.getToken() }
-            })
-                .success(function(data) {
+            return $http.delete(server_prefix + '/recipe/' + recipe.id + '/vote')
+                .then(function(response) {
                     recipe.userVote = 0;
                     recipe.votesCount -= 1;
-                })
-                .error(function(err) {
-                    console.log(err);
+
+                }, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    //alert("Errore: " + response);
+                    console.log(response);
                 });
         };
 
         o.checkVote = function(recipe) {
-            return $http.get(server_prefix + '/recipe/' + recipe.id + '/voted',
-                {
-                    headers: { Authorization: 'Bearer ' + Auth.getToken() }
-                }).success(
-                function(data) {
-                    recipe.userVote = data.value;
-                }
-                );
+            return $http.get(server_prefix + '/recipe/' + recipe.id + '/voted')
+                .then(function(response) {
+                    recipe.userVote = response.data.value;
+                });
         };
 
         /**
@@ -425,20 +417,14 @@ angular.module('RecipeService', [])
          */
         o.createTry = function(recipe) {
             return $http.post(
-                server_prefix + '/recipe/' + recipe.id + '/try',
-                null,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                server_prefix + '/recipe/' + recipe.id + '/try')
                 .then(function(response) {
                     recipe.userTry = response.data;
                     // per ora non serve
                     //recipe.trials.push(data);
                     recipe.trialsCount++;
-                }
-                , function(response) {
+
+                }, function(response) {
                     console.log(response);
                 });
         };
@@ -449,12 +435,7 @@ angular.module('RecipeService', [])
          */
         o.deleteTry = function(recipe) {
             return $http.delete(
-                server_prefix + '/recipe/' + recipe.id + '/try',
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                server_prefix + '/recipe/' + recipe.id + '/try')
                 .then(function(response) {
                     recipe.userTry = null;
                     recipe.trialsCount--;
@@ -466,18 +447,16 @@ angular.module('RecipeService', [])
                             break;
                         }
                     }*/
-                }
-                , function(response) {
+
+                }, function(response) {
                     console.log(response);
                 });
         };
 
         o.checkTry = function(recipe) {
-            return $http.get(server_prefix + '/recipe/' + recipe.id + '/tried',
-                {
-                    headers: { Authorization: 'Bearer ' + Auth.getToken() }
-                }).success(function(data) {
-                    recipe.userTry = data;
+            return $http.get(server_prefix + '/recipe/' + recipe.id + '/tried')
+                .then(function(response) {
+                    recipe.userTry = response.data;
                 });
         };
 
@@ -488,12 +467,7 @@ angular.module('RecipeService', [])
         */
         o.createView = function(recipe) {
             return $http.post(
-                server_prefix + '/recipe/' + recipe.id + '/view', null,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                server_prefix + '/recipe/' + recipe.id + '/view')
                 .then(function(response) {
                     if (response.status == 201) {// new view
                         recipe.views.push(response.data);
@@ -510,18 +484,13 @@ angular.module('RecipeService', [])
         o.createReport = function(recipeId, reportToCreate, successCallback, errorCallback) {
             return $http.post(
                 server_prefix + '/recipe/' + recipeId + '/report',
-                reportToCreate,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                reportToCreate)
                 .then(function(response) {
                     //nothing
                     if (successCallback) 
                         successCallback(response);
-                }
-                , function(response) {
+                        
+                }, function(response) {
                     console.log(response);
                     
                     if (errorCallback)

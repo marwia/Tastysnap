@@ -143,17 +143,31 @@ angular.module('appRoutes', []).config([
                         controller: 'RecipeCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
+                            
                             // carica le ricette
-                            postPromise: ['Recipe', function(recipes) {
-                                return recipes.getAll("createdAt DESC");
+                            postPromise: ['Recipe', function(Recipe) {
+                                return Recipe.getAll("createdAt DESC", null, null, //nel caso positivo fai nulla...
+                                    function (response) { //nel caso di errore
+                                        Recipe.recipes = []; //svuoto l'array delle ricette
+                                        return true; //prosegui comunque
+                                });
                             }],
                             // carica le collection
-                            collectionPromise: ['Collection', '$stateParams', function(collections, $stateParams) {
-                                return collections.getAll();
+                            collectionPromise: ['Collection', '$stateParams', function(Collection, $stateParams) {
+                                // ATTENZIONE: BUG QUANDO SI TENTA DI ORDINARE LE COLLECTION PER "createdAt DESC"
+                                return Collection.getAll(null, null, null, //nel caso positivo fai nulla...
+                                    function (response) { //nel caso di errore
+                                        Collection.collections = []; //svuoto l'array delle raccolte
+                                        return true; //prosegui comunque
+                                });
                             }],
                             // carica gli utenti seguiti
                             followingUsersPromise: ['User', 'Auth', function(User, Auth) {
-                                return User.getFollowingUsers(Auth.currentUser().id);
+                                return User.getFollowingUsers(Auth.currentUser().id, null, null, null, //nel caso positivo fai nulla...
+                                    function (response) { //nel caso di errore
+                                        User.following_users = []; //svuoto l'array delle raccolte
+                                        return true; //prosegui comunque
+                                });
                             }]
                         }
                     }
@@ -318,7 +332,7 @@ angular.module('appRoutes', []).config([
                 url: '/login?token',// query param (opzionale)
                 templateUrl: 'templates/login.html',
                 controller: 'AuthCtrl',
-                onEnter: ['$state', '$stateParams', 'Auth', function($state, $stateParams, Auth) {
+                onEnter: ['$state', '$stateParams', 'Auth', '$http', function($state, $stateParams, Auth, $http) {
                     if ($stateParams.token) {
                         Auth.saveToken($stateParams.token);
                     }

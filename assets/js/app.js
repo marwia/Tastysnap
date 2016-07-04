@@ -22,17 +22,29 @@ var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies
 /**
  * Configurazione iniziale dell'app, viene fatta una sola volta all'avvio.
  */     
-myApp.run(function($http, $rootScope) {
+myApp.run(function($http, $rootScope, Auth) {
     
     /**
      * Serve per ricevere il token CSRF una volta sola e lo imposta
      * per ogni chiamata successiva.
      */
-    $http.get('csrfToken').success(function(data){
-        console.log(data);
-        $http.defaults.headers.common['x-csrf-token'] = data._csrf;
+    $http.get('csrfToken').then(function(response){
+        $http.defaults.headers.common['x-csrf-token'] = response.data._csrf;
         $http.defaults.withCredentials = true;
     });
+
+    /**
+     * Serve per conoscere l'ultima volta che l'utente (se loggato) è 
+     * stato visto dal server
+     */
+    $http.get('api/v1/user/last_seen').then(function(response){
+        $http.defaults.headers.common['x-csrf-token'] = response.data._csrf;
+        $http.defaults.withCredentials = true;
+    });
+    
+    if (Auth.getToken()) {
+        $http.defaults.headers.common['Authorization'] = 'Bearer ' + Auth.getToken();
+    }
     
     /**
      * Serve a configurare correttamente lo scrolling del ui-router.

@@ -1,7 +1,7 @@
 /**
-* Collection.js
+* Notification.js
 *
-* @description :: Questo modello rappresenta una raccolta di ricette.
+* @description :: Questo modello rappresenta una notifica.
 * @docs        :: http://sailsjs.org/#!documentation/models
 */
 
@@ -15,43 +15,23 @@ module.exports = {
   ***************************************************************************/
   attributes: {
 
-  	title : { type: 'String', required: true },
+    // id dell'elemento riferito alla notifica (commento, ricetta, follow)  
+  	event : { type: 'String', required: true },
+    // tipo dell'elemento riferito alla notifica (ovvero il model)
+    type : { type: 'String', required: true },
 
-  	description : { type: 'String' },
+    // indica se la notifica è stata letta
+    red : {type: 'Boolean', defaultsTo: false},
 
-    isPrivate : { type: 'Boolean', default: false},
-
-  	// Reference to User
-  	author : { 
-    	  model :'user',
-        required : true
+    triggeringUser : { 
+    	model :'user',
+      required : true
     },
 
-  	// Reference to many Recipes
-    recipes : {
-        collection: 'CollectionRecipe',
-        via: 'collection'
+    affectedUser : { 
+    	model :'user',
+      required : true
     },
-
-    // Reference to many Users
-    followers : {
-        collection: 'FollowCollection',
-        via: 'collection'
-    },
-    
-    // Reference to many Views
-    views : {
-        collection: 'ViewCollection',
-        via: 'collection'
-    },
-
-    findRecipe : function (recipeId) {
-      for (var i = 0; i < this.recipes.length; i++) {
-        if(this.recipes[i].id == recipeId)
-          return i;
-      };
-      return -1;
-    }
 
   },
   /***************************************************************************

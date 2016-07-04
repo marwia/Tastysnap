@@ -25,12 +25,7 @@ angular.module('RecipeReviewService', [])
         o.create = function(recipe, review, successCallback, errorCallback) {
             return $http.post(
                 server_prefix + '/recipe/' + recipe.id + '/review',
-                review,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                review)
                 .then(function(response) {
                     // populo il campo user manualmente (il server non lo fa e non deve)
                     var createdReview = response.data;
@@ -72,12 +67,7 @@ angular.module('RecipeReviewService', [])
         o.update = function(recipe, oldReview, newReview, successCallback, errorCallback) {
             return $http.put(
                 server_prefix + '/recipe/' + recipe.id + '/review/' + oldReview.id,
-                newReview,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                newReview)
                 .then(function(response) {
                     // populo il campo user manualmente (il server non lo fa e non deve)
                     var createdReview = response.data;
@@ -114,12 +104,7 @@ angular.module('RecipeReviewService', [])
         
         o.checkReview = function(recipe, successCallback, errorCallback) {
             return $http.get(
-                server_prefix + '/recipe/' + recipe.id + '/reviewed',
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                server_prefix + '/recipe/' + recipe.id + '/reviewed')
                 .then(function(response) {
                     // populo il campo user manualmente (il server non lo fa e non deve)
                     var userReviews = response.data;
@@ -153,9 +138,8 @@ angular.module('RecipeReviewService', [])
         */
         o.getRecipeTotalValueForTypology = function(recipe, typology, successCB, errorCB) {
             return $http.get(
-                server_prefix + '/recipe/' + recipe.id + '/review/total/' + typology,
-                null
-                ).then(function(response) {
+                server_prefix + '/recipe/' + recipe.id + '/review/total/' + typology)
+                .then(function(response) {
     
                     // aggiungo una proprietà con nome della tipologia
                     recipe[typology] = response.data;
@@ -176,12 +160,7 @@ angular.module('RecipeReviewService', [])
          */
         o.delete = function(recipe, reviewToDelete) {
             return $http.delete(
-                server_prefix + '/recipe/' + recipe.id + '/review/'+ reviewToDelete.id,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + Auth.getToken()
-                    }
-                })
+                server_prefix + '/recipe/' + recipe.id + '/review/'+ reviewToDelete.id)
                 .then(function(response) {
                     
                     // modifico una proprietà con nome della tipologia

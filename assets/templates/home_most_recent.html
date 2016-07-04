@@ -15,6 +15,8 @@
 <!-- RECIPE CARD -->
 <div class="row tasty_container text-center">
 
+    <empty-list-holder  ng-hide="recipes.length > 0" msg="'Nessuna ricetta trovata'"></empty-list-holder>
+
     <!-- basic card -->
     <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
     toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" ng-repeat="recipe in recipes" ng-init="checkVote(recipe)"></recipe-card>
@@ -44,6 +46,8 @@
     <!-- container card -->
     <div class="row tasty_container text-center tasty_load_space">
 
+        <empty-list-holder  ng-hide="collections.length > 0" msg="'Nessuna raccolta trovata'"></empty-list-holder>
+
         <!-- collection card -->
         <collection-card collection="collection" ng-repeat="collection in collections"></collection-card>
         <!-- collection card -->
@@ -72,8 +76,10 @@
     <!-- profile's cards -->
     <div class="row tasty_container text-center tasty_load_space">
 
+        <empty-list-holder  ng-hide="following_users.length > 0" msg="'Nessuna persona trovata'"></empty-list-holder>
+
         <!-- user card -->
-        <user-card user="user" ng-repeat="user in following_users"></user-card>
+        <user-card user="user.following" ng-repeat="user in following_users"></user-card>
         <!-- user card -->
 
     </div>

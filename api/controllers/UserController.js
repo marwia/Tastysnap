@@ -268,6 +268,45 @@ module.exports = {
                 return res.json(obj);
             });
     },
+
+    /**
+     * @api {get} /user/last_seen Get 
+     * @apiName GetUser
+     * @apiGroup UserLastSeen
+     *
+     * @apiDescription Serve per conoscere l'ultima volta che un utente
+     * è stato visto dal server (utile per determinare la query per le notifiche).
+     *
+     * @apiSuccess {Date} lastSeen Date when user was last seen.
+     * 
+     * @apiUse TokenHeader
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+            "lastSeen": "2015-09-15T13:59:50.559Z"
+            }
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     *
+     * @apiUse NoUserError
+     */
+    getLastSeen: function (req, res, next) {
+        var user = req.payload;
+
+        User.findOne(user.id)
+            .exec(function (err, foundUser) {
+                if (err) { return next(err); }
+
+                if (!foundUser) { return res.notFound({ error: 'No user found' }); }
+
+                return res.json({ lastSeen: foundUser.lastSeen});
+            });
+    },
     
     /**
      * @api {get} /user/:id/upvoted_recipe Get a User favorite recipe list
@@ -387,241 +426,6 @@ module.exports = {
                 // find recipes
                 RecipeService.find(req, res, next, triedRecipes);
             });
-    },
-    
-    /**
-     * @api {get} /user/:id/following_collections Get a User following collection list
-     * @apiName getUserFollowingCollections
-     * @apiGroup User
-     *
-     * @apiDescription Serve per richiedere la lista di raccolte
-     * seguite da un utente.
-     *
-     * @apiParam {String} id User id.
-     *
-     * @apiSuccess {[CollectionObject]} collectionList JSON that represents the list of collections.
-     *
-     *
-     * @apiErrorExample Error-Response:
-     *     HTTP/1.1 404 Not Found
-     */
-    findUserFollwingCollections: function (req, res, next) {
-        var userId = req.param('id');
-        if (!userId) { return next(); }
-
-        User.findOne(userId)
-            .populate('followingCollections')
-            .exec(function (err, foundUser) {
-                if (err) { return next(err); }
-
-                if (!foundUser) { return res.notFound({ error: 'No user found' }); }
-            
-                // Array con id di ricette provate
-                var followingCollections = new Array();
-
-                for (var i in foundUser.followingCollections) {
-                    followingCollections.push(foundUser.followingCollections[i].id)
-                }
-
-                // find recipes
-                CollectionService.find(req, res, next, followingCollections);
-            });
-    },
-
-    /**
-     * @api {put} /user/:user/follow Follow a User
-     * @apiName FollowUser
-     * @apiGroup User
-     *
-     * @apiDescription Serve seguire un utente.
-     * Richiede l'autenticazione della richiesta. Attenzione: non è possibile seguire se
-     * stessi.
-     *
-     * @apiUse TokenHeader
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 204 No Content
-     *
-     * @apiUse TokenFormatError
-     *
-     * @apiUse NoAuthHeaderError
-     *
-     * @apiUse InvalidTokenError
-     *
-     * @apiUse NoUserError
-     */
-    follow: function (req, res, next) {
-        var user = req.payload;
-        var userToFollow = req.user;
-
-        // seguire se stessi non è permesso
-        //if (user.id == userToFollow.id) { return res.badRequest(); }
-
-        // ricarico l'utente corrente (con l'array dei following) (necessario...)
-        User.findOne(user.id).populate('following').exec(function (err, foundUser) {
-            // seguire più volte non è permesso
-            if (foundUser.isFollowingUser(userToFollow.id) == true) { return res.badRequest(); }
-
-            foundUser.following.add(userToFollow.id);
-
-            foundUser.save(function (err, saved) {
-                if (err) { return next(err); }
-                return res.send(204, null);// OK - No Content
-            });
-        });
-    },
-
-    /**
-     * @api {delete} /user/:user/follow Unfollow a User
-     * @apiName UnfollowUser
-     * @apiGroup User
-     *
-     * @apiDescription Serve non seguire più un utente.
-     * Richiede l'autenticazione della richiesta.
-     *
-     * @apiUse TokenHeader
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 204 No Content
-     *
-     * @apiUse TokenFormatError
-     *
-     * @apiUse NoAuthHeaderError
-     *
-     * @apiUse InvalidTokenError
-     *
-     * @apiUse NoUserError
-     */
-    unfollow: function (req, res, next) {
-        var user = req.payload;
-        var userToFollow = req.user;
-
-        // ricarico l'utente corrente (necessario...)
-        User.findOne(user.id).populate('following').exec(function (err, foundUser) {
-            foundUser.following.remove(userToFollow.id);
-
-            foundUser.save(function (err, saved) {
-                if (err) { return next(err); }
-                return res.send(204, null);// OK - No Content
-            });
-        });
-    },
-
-    /**
-     * @api {get} /user/:user/follower List followers of a User
-     * @apiName FollowerUser
-     * @apiGroup User
-     *
-     * @apiDescription Serve per ricavare la lista degli utenti che seguono un utente.
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 200 OK
-     *
-     *
-     * @apiUse NoUserError
-     */
-    getFollowers: function (req, res, next) {
-        var requestedUser = req.user;
-
-        User.findOne(requestedUser.id).populate('followers').exec(function (err, foundUser) {
-            if (err) { return next(err); }
-            return res.json(foundUser.followers);
-        });
-    },
-
-    /**
-     * @api {get} /user/:user/following List users followed by a User
-     * @apiName FollowingUser
-     * @apiGroup User
-     *
-     * @apiDescription Serve ricavare la lista degli utenti seguiti da un utente.
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 200 OK
-     *
-     *
-     * @apiUse NoUserError
-     */
-    getFollowing: function (req, res, next) {
-        var requestedUser = req.user;
-
-        User.findOne(requestedUser.id).populate('following').exec(function (err, foundUser) {
-            if (err) { return next(err); }
-            return res.json(foundUser.following);
-        });
-    },
-
-    /**
-     * @api {get} /user/following/:user Check if you are following a User
-     * @apiName AreYouFollowing
-     * @apiGroup User
-     *
-     * @apiDescription Serve per verificare se l'utente chiamante sta segundo un altro.
-     * Richiede l'autenticazione della richiesta.
-     *
-     * @apiUse TokenHeader
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 204 No Content
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 404 Not Found
-     *
-     * @apiUse TokenFormatError
-     *
-     * @apiUse NoAuthHeaderError
-     *
-     * @apiUse InvalidTokenError
-     *
-     * @apiUse NoUserError
-     */
-    areYouFollowing: function (req, res, next) {
-        var user = req.payload;
-        var targetUser = req.user;
-
-        // ricarico l'utente corrente (necessario...)
-        User.findOne(user.id).populate('following').exec(function (err, foundUser) {
-            if (err) { return next(err); }
-
-            // seguire più volte non è permesso
-            if (foundUser.isFollowingUser(targetUser.id) == false) { return res.notFound(); }
-
-            return res.send(204, null);// OK - No Content
-        });
-    },
-
-    /**
-     * @api {get} /user/:user/following/:target_user Check if one User is following another
-     * @apiName IsFollowing
-     * @apiGroup User
-     *
-     * @apiDescription Serve per verificare se un utente sta segundo un altro.
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 204 No Content
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 404 Not Found
-     *
-     * @apiUse TokenFormatError
-     *
-     * @apiUse NoAuthHeaderError
-     *
-     * @apiUse InvalidTokenError
-     *
-     * @apiUse NoUserError
-     */
-    isFollowing: function (req, res, next) {
-        var targetUser = req.param('target_user');
-        if (!targetUser) { return res.badRequest(); }
-        var user = req.user;
-
-        // ricarico l'utente corrente (necessario...)
-        User.findOne(user.id).populate('following').exec(function (err, foundUser) {
-            if (err) { return next(err); }
-            // seguire più volte non è permesso
-            if (foundUser.isFollowingUser(targetUser) == false) { return res.notFound(); }
-
-            return res.send(204, null);// OK - No Content
-        });
     },
     
     uploadCoverImage: function(req, res) {
