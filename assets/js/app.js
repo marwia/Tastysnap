@@ -8,7 +8,7 @@
  */
 
 var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload',
-                'ngMessages', 'uiGmapgoogle-maps', 'angular-spinkit', 'angular.filter',
+                'ngMessages', 'uiGmapgoogle-maps', 'angular-spinkit', 'angular.filter', 'ngSails',
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
                 'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService', 'ImageUtilsService',
 				'ngAnimate', 'appRoutes', 'toastr', 'rzModule', 'angular-click-outside',
@@ -17,7 +17,7 @@ var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies
                 'CollectionSelectionModalCtrl', 'CollectionDetailCtrl', 'CommentCtrl', 'ExtHomeCtrl',
                 'SearchCtrl', 'SearchRecipeCtrl',
                 'UserProfileFollowerUsersCtrl', 'UserProfileFollowingUsersCtrl', 'NearRecipesCtrl', 'FollowingCollectionsCtrl',
-                'RecipeReviewCtrl', 'RecipeImageSliderCtrl']);
+                'RecipeReviewCtrl', 'RecipeImageSliderCtrl', 'NotificationCtrl']);
 
 /**
  * Configurazione iniziale dell'app, viene fatta una sola volta all'avvio.

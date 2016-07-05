@@ -20,6 +20,12 @@ module.exports = {
     }
 
   },
+
+  // Lifecycle Callbacks
+  afterCreate: function (values, cb) {
+    // spedisco a tutti
+    sails.sockets.blast(values);
+  },
   
    /***************************************************************************
   *                                                                          *

@@ -50,7 +50,7 @@
         </div>
         
         <!-- Notifiche -->
-        <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
+        <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown" ng-controller="NotificationCtrl">
             <a href="#" ng-hide="active" class="top_menu_notify_icon" uib-dropdown-toggle id="single-button3">
                 <div class="glyphicon glyphicon-bell comment pull-right top_menu_item"><span class="badge badge-notify" ng-init="num_notify=0" ng-hide="num_notify<=0">{{num_notify}}</span></div>
             </a>
