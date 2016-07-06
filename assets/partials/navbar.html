@@ -27,42 +27,213 @@
             <img alt="TastySnap" src="app_images/beta_logo.png" class="tastysnap_logo">
         </a>
         
-        <!-- Dropdown menu example  -->
-        <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
-            <img alt="{{ currentUser.name }}" src="{{ getUserProfileImage(currentUser) }}" id="single-button" uib-dropdown-toggle class="top_menu_profile img-circle pull-right">
-            <ul uib-dropdown-menu class="top_menu_profile_dropdown" role="menu" aria-labelledby="single-button">
-                <li role="menuitem"><a href="/app/profile/{{ currentUser.id }}">Profilo</a></li>
-                <li class="divider"></li>
-                <li role="menuitem"><a href="/login" ng-click="logOut()">Esci</a></li>
-            </ul>
-        </div>
+        <!-- DESTRA -->
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <!-- Notifiche -->
+                <div uib-dropdown auto-close="outsideClick" keyboard-nav ng-show="isLoggedIn()" class="navbar-text top_menu_dropdown">
+                    <a href="#" ng-hide="active" class="top_menu_notify_icon" uib-dropdown-toggle id="single-button3">
+                        <div class="glyphicon glyphicon-bell top_menu_item"><span class="badge badge-notify" ng-init="num_notify=4" ng-hide="num_notify<=0">{{num_notify}}</span></div>
+                    </a>
+                    <ul uib-dropdown-menu class="top_menu_notify_dropdown" role="menu" aria-labelledby="single-button3">
+                        <!--<li role="menuitem"><a href="#">Non ci sono nuove notifiche</a></li>-->
+
+                        <!-- Header Notify -->
+                        <li role="menuitem" class="menuitem_header clearfix">
+                            <span class="pull-left"><b>Notifiche</b></span>
+                            <span class="pull-right"><a href="#">segnala tutte come già lette</a></span>
+                        </li>
+
+                        <!-- Contenitore Notifiche -->
+                        <div class="top_menu_notify_con">
+
+                            <!-- Separator + Notify-->
+                            <li role="menuitem"><hr/></li>
+                            <li role="menuitem">
+                                <div class="media">
+                                    <div class="media-left media-middle">
+                                        <a href="#"><img class="media-object" src="{{ getUserProfileImage(currentUser) }}" alt="..."></a>
+                                    </div>
+                                    <div class="media-body clearfix">
+                                        <div class="pull-left">
+                                            <p class="media-heading"><b>{{ currentUser.name }}</b> ha creato le notifiche!</p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="">
+                                                <i class="fa fa-circle notify_ball active" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Separator + Notify-->
+                            <li role="menuitem"><hr/></li>
+                            <li role="menuitem">
+                                <div class="media">
+                                    <div class="media-left media-middle">
+                                        <a href="#"><img class="media-object" src="{{ getUserProfileImage(currentUser) }}" alt="..."></a>
+                                    </div>
+                                    <div class="media-body clearfix">
+                                        <div class="pull-left">
+                                            <p class="media-heading"><b>{{ currentUser.name }}</b> ha creato le notifiche!</p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="">
+                                                <i class="fa fa-circle notify_ball active" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Separator + Notify-->
+                            <li role="menuitem"><hr/></li>
+                            <li role="menuitem">
+                                <div class="media">
+                                    <div class="media-left media-middle">
+                                        <a href="#"><img class="media-object" src="{{ getUserProfileImage(currentUser) }}" alt="..."></a>
+                                    </div>
+                                    <div class="media-body clearfix">
+                                        <div class="pull-left">
+                                            <p class="media-heading"><b>{{ currentUser.name }}</b> ha creato le notifiche!</p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="">
+                                                <i class="fa fa-circle notify_ball active" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Separator + Notify-->
+                            <li role="menuitem"><hr/></li>
+                            <li role="menuitem">
+                                <div class="media">
+                                    <div class="media-left media-middle">
+                                        <a href="#"><img class="media-object" src="{{ getUserProfileImage(currentUser) }}" alt="..."></a>
+                                    </div>
+                                    <div class="media-body clearfix">
+                                        <div class="pull-left">
+                                            <p class="media-heading"><b>{{ currentUser.name }}</b> ha creato le notifiche!</p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="">
+                                                <i class="fa fa-circle notify_ball active" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Separator + Notify-->
+                            <li role="menuitem"><hr/></li>
+                            <li role="menuitem">
+                                <div class="media">
+                                    <div class="media-left media-middle">
+                                        <a href="#"><img class="media-object" src="{{ getUserProfileImage(currentUser) }}" alt="..."></a>
+                                    </div>
+                                    <div class="media-body clearfix">
+                                        <div class="pull-left">
+                                            <p class="media-heading"><b>{{ currentUser.name }}</b> ha creato le notifiche!</p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="">
+                                                <i class="fa fa-circle notify_ball" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Separator + Notify-->
+                            <li role="menuitem"><hr/></li>
+                            <li role="menuitem">
+                                <div class="media">
+                                    <div class="media-left media-middle">
+                                        <a href="#"><img class="media-object" src="{{ getUserProfileImage(currentUser) }}" alt="..."></a>
+                                    </div>
+                                    <div class="media-body clearfix">
+                                        <div class="pull-left">
+                                            <p class="media-heading"><b>{{ currentUser.name }}</b> ha creato le notifiche!</p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="">
+                                                <i class="fa fa-circle notify_ball" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Separator + Notify-->
+                            <li role="menuitem"><hr/></li>
+                            <li role="menuitem">
+                                <div class="media">
+                                    <div class="media-left media-middle">
+                                        <a href="#"><img class="media-object" src="{{ getUserProfileImage(currentUser) }}" alt="..."></a>
+                                    </div>
+                                    <div class="media-body clearfix">
+                                        <div class="pull-left">
+                                            <p class="media-heading"><b>{{ currentUser.name }}</b> ha creato le notifiche!</p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="">
+                                                <i class="fa fa-circle notify_ball" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Separator + Notify-->
+                            <li role="menuitem"><hr/></li>
+                            <li role="menuitem">
+                                <div class="media">
+                                    <div class="media-left media-middle">
+                                        <a href="#"><img class="media-object" src="{{ getUserProfileImage(currentUser) }}" alt="..."></a>
+                                    </div>
+                                    <div class="media-body clearfix">
+                                        <div class="pull-left">
+                                            <p class="media-heading"><b>{{ currentUser.name }}</b> ha creato le notifiche!</p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a href="">
+                                                <i class="fa fa-circle notify_ball" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </div>
+
+
+                        <!-- Header Notify -->
+                        <li role="menuitem"><hr/></li>
+                        <li role="menuitem" class="clearfix menuitem_header">
+                            <span class="pull-right"><a href="#">Mostra tutte</a></span>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <!-- Profilo  -->
+                <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
+                    <img alt="{{ currentUser.name }}" src="{{ getUserProfileImage(currentUser) }}" id="single-button" uib-dropdown-toggle class="top_menu_profile img-circle pull-right">
+                    <ul uib-dropdown-menu class="top_menu_profile_dropdown" role="menu" aria-labelledby="single-button">
+                        <li role="menuitem"><a href="/app/profile/{{ currentUser.id }}">Profilo</a></li>
+                        <li class="divider"></li>
+                        <li role="menuitem"><a href="/login" ng-click="logOut()">Esci</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <!-- Accedi o registrati -->
+                <p class="navbar-text" ng-hide="isLoggedIn()"><a href="/login" class="navbar-link">Accedi o registrati</a></p>
+            </li>
+        </ul>
         
-        <p class="navbar-text pull-right" ng-hide="isLoggedIn()"><a href="/login" class="navbar-link">Accedi o registrati</a></p>
-        
-        <!-- Messaggi -->
-        <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
-            <a href="#" ng-hide="active" class="top_menu_notify_icon" uib-dropdown-toggle id="single-button2">
-                <div class="glyphicon glyphicon-comment pull-right top_menu_item"><span class="badge badge-notify" ng-init="num_messages=0" ng-hide="num_messages<=0">{{num_messages}}</span></div>
-            </a>
-            <ul uib-dropdown-menu class="top_menu_message_dropdown" role="menu" aria-labelledby="single-button2">
-                <li role="menuitem"><a href="#">Non ci sono messaggi</a></li>
-            </ul>
-        </div>
-        
-        <!-- Notifiche -->
-        <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
-            <a href="#" ng-hide="active" class="top_menu_notify_icon" uib-dropdown-toggle id="single-button3">
-                <div class="glyphicon glyphicon-bell comment pull-right top_menu_item"><span class="badge badge-notify" ng-init="num_notify=0" ng-hide="num_notify<=0">{{num_notify}}</span></div>
-            </a>
-            <ul uib-dropdown-menu class="top_menu_notify_dropdown" role="menu" aria-labelledby="single-button3">
-                <li role="menuitem"><a href="#">Non ci sono nuove notifiche</a></li>
-            </ul>
-        </div>
-        
-        <!-- MENU -->
-        <!--
-		<a href="#" ng-hide="active" class="top_menu_notify_icon"><div class="glyphicon glyphicon-comment pull-right top_menu_item"><span class="badge badge-notify">42</span></div></a>
-		<a href="#" ng-hide="active" class="top_menu_notify_icon"><div class="glyphicon glyphicon-bell pull-right top_menu_item"></div></a>
-        -->
     </div>
 </nav>
