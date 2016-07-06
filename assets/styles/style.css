@@ -22,6 +22,8 @@
 *   -- 16.FOOTER
 *	-- 17.LOADING...
 *	-- 18.WELCOME HOME
+*	-- 19.GOOGLE MAP
+*	-- 20.NOTIFY PANEL NAVBAR
 */
 
 /* ------------------------------------------------------------   1    ------------------------------------------------------ */
@@ -69,7 +71,6 @@ body {
 
 .sidebar_profile_gradient{
     background-image: linear-gradient(to bottom, rgba(0,0,0,0) 25%, rgba(0,0,0,0.75) 98%);
-    /*position: absolute;*/
     width: 100%;
     height: 250px;
     bottom: 0;
@@ -79,7 +80,6 @@ body {
 
 .tasty_icon_default{
     color: inerith;
-    
     -webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
@@ -174,7 +174,6 @@ a:hover{
 .top_menu_item{
 	color: white;
     font-size: 1.2em;
-    margin: 20px 20px auto 20px;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
@@ -239,12 +238,12 @@ a:hover{
 	font-size: 2em;
 }
 
- /* example */
-.dropdown-menu_tasty{
-	left:50% !important;
-	top: 48px;
+/* notify */
+A.top_menu_notify_icon{
+	background-color: transparent !important;
 }
 
+/* profile */
 .top_menu_profile_dropdown{
 	max-width: 200px;
 	right: 0 !important;
@@ -253,28 +252,71 @@ a:hover{
 	text-align:right;
 }
 
+.top_menu_notify_con{
+	max-height: 400px;
+    overflow: scroll;
+}
+
+/* message */
 .top_menu_message_dropdown{
 	right: 0 !important;
+}
+
+/* notify */
+ul.top_menu_notify_dropdown {
+    top: 30px;
+}
+
+.top_menu_notify_dropdown{
+	width: 400px;
+	right: 5%;
 	left: inherit;
 	top: 48px;
 	text-align:right;
 }
 
-.top_menu_notify_dropdown{
-    right: 5% !important;
-    left: inherit;
-    top: 48px;
-    text-align: right;
+.top_menu_notify_dropdown li{
+	color: black;
+	text-align:left;
+	padding: 1px 5px;
+}
+
+.top_menu_notify_dropdown li.menuitem_header A{
+	color: #222;
+}
+
+.notify_ball{
+	padding-top: 20px;
+    padding-right: 15px;
+    color: #FF8E2A;
+    font-size: 0.8em;
+	display: none;
+}
+
+.notify_ball.active{
+	display: block !important;
+}
+
+.top_menu_notify_dropdown hr{
+	margin: 5px 0;
+}
+
+.navbar-text.top_menu_dropdown{
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.navbar-nav>li{
+	margin-left: 10px;
+    margin-right: 10px;
 }
 
 .badge-notify{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	background: red;
-    position: relative;
+    position: absolute;
     top: -15px;
-    left: -12px;
-    width: 23px;
-    padding: 2px 1px 5px 1px;
+    left: 5px;
 }
 
 /* classi da dare, quando l'utente preme il pulsante per ricercare, ma solo se siamo sul mobile */
@@ -1831,3 +1873,6 @@ footer{
 	max-width: 200px;
 	max-height: 300px;
 }
+
+/* ------------------------------------------------------------------ 20 -------------------------------------------------------- */
+/* ----------------------------------------------------------- NOTIFY PANEL NAVBAR -------------------------------------------------- */
