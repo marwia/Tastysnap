@@ -21,26 +21,6 @@ module.exports = {
 
   },
 
-  // Lifecycle Callbacks
-  afterCreate: function (values, cb) {
-    // trovo l'utente affetto dalla notifica
-    Recipe.findOne(values.recipe).exec(function (err, foundRecipe) {
-      if (err) console.log(err);
-      // creo la notifica
-      Notification.create({
-        event: values.id,
-        type: 'ViewRecipe',
-        red: false,
-        triggeringUser: values.user,
-        affectedUser: foundRecipe.author
-      }).exec(function (err, createdNotification) {
-        if (err) console.log(err);
-      });
-    })
-
-    // spedisco a tutti
-    //sails.sockets.blast(values);
-  },
 
   /***************************************************************************
  *                                                                          *

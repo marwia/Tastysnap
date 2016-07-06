@@ -161,6 +161,8 @@ var apiRoutes = addGlobalPrefix({
 
     'get /user/last_seen': 'UserController.getLastSeen',
 
+    'post /user/notification/register': 'UserController.registerToNotifications',
+
     /***************************************************************************
     *                                                                          *
     * Ricette.                                                                 *
@@ -371,7 +373,11 @@ var apiRoutes = addGlobalPrefix({
     *                                                                          *
     ***************************************************************************/
 
-    'post /notification/register': 'ConnectedUserController.create'
+    'get /user/notification': 'NotificationController.find',
+
+    'put /user/notification/red': 'NotificationController.red',
+
+    'put /user/notification/not_red': 'NotificationController.notRed'
 
 });
 

@@ -22,12 +22,26 @@ module.exports = function (req, res, next) {
   if (recipeId && user)// se non ho i dati necessari allora non proseguo
     // verifico se esiste la ricetta richiesta
     Recipe.findOne(recipeId).exec(function (err, foundedRecipe) {
-      if(err){ console.log(err); }
+      if (err) { console.log(err); }
       else {
         // creo l'oggetto che rappresenta la visualizzazione
-        var viewRecipe = {user: user, recipe: foundedRecipe};
-        ViewRecipe.create(viewRecipe).exec(function (err, created){
-          if(err){ console.log(err); }
+        var viewRecipe = { user: user, recipe: foundedRecipe };
+        ViewRecipe.create(viewRecipe).exec(function (err, created) {
+          if (err) { console.log(err); }
+
+          /**
+           * Creo la notifica sapendo che l'utente aflitto dalla notifica
+           * è soltanto il creatore della ricetta.
+           */
+          Notification.create({
+            event: created.id,
+            type: 'ViewRecipe',
+            red: false,
+            triggeringUser: created.user,
+            affectedUser: foundedRecipe.author
+          }).exec(function (err, createdNotification) {
+            if (err) console.log(err);
+          });
         });
       }
     });

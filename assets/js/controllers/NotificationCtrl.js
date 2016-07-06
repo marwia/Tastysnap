@@ -16,7 +16,7 @@ angular.module('NotificationCtrl', []).controller('NotificationCtrl', [
         // Registro l'utente per la ricezione di notifiche
         $sails.request({
             method: 'post',
-            url: "/api/v1/notification/register",
+            url: "/api/v1/user/notification/register",
             headers: {
                 'Authorization': 'Bearer ' + Auth.getToken()
             }
@@ -29,11 +29,8 @@ angular.module('NotificationCtrl', []).controller('NotificationCtrl', [
         });
 
         // Watching for updates
-        var messageHandler = $sails.on("message", function (message) {
-            console.log('New message ::\n', message);
-        });
-        var messageHandler2 = $sails.on("connecteduser", function (message) {
-            console.log('New message from connecteduser ::\n', message);
+        var messageHandler = $sails.on("user", function (message) {
+            console.log('New message to this user ::\n', message);
         });
 
         // Stop watching for updates

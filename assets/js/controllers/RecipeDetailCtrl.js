@@ -183,7 +183,6 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
          * Inizializzazione del controller
          */
         function init() {
-            Recipe.createView($scope.detailedRecipe);
             Recipe.checkTry($scope.detailedRecipe);
             
             for (var i in $scope.detailedRecipe.ingredientGroups) {

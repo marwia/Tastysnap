@@ -30,7 +30,7 @@ var cdn_url = "https://tastysnapcdn.s3.amazonaws.com/";
 var localUploadConfiguration = {
     // don't allow the total upload size to exceed ~5MB
     maxBytes: 5000000,
-    saveAs: function(file, cb) {
+    saveAs: function (file, cb) {
         var d = new Date();
         var extension = file.filename.split('.').pop();
 
@@ -50,7 +50,7 @@ var localUploadConfiguration = {
     }
 };
 
-var s3Upload = function(err, filesUploaded, whenDone) {
+var s3Upload = function (err, filesUploaded, whenDone) {
     if (err) {
         return res.badRequest();
     }
@@ -60,7 +60,7 @@ var s3Upload = function(err, filesUploaded, whenDone) {
     }
 
     // eseguo l'upload dell'immagine sul bucket S3
-    S3FileService.uploadS3Object(filesUploaded[0], function(err, uploadedFiles) {
+    S3FileService.uploadS3Object(filesUploaded[0], function (err, uploadedFiles) {
 
         if (err || !uploadedFiles) {
             return res.badRequest("Errore nell'upload del file sul bucket S3");
@@ -70,7 +70,7 @@ var s3Upload = function(err, filesUploaded, whenDone) {
         var fileUrl = cdn_url + filename;
 
         // elimino il file temporaneo
-        fs.unlink(filesUploaded[0].fd, function(err) {
+        fs.unlink(filesUploaded[0].fd, function (err) {
             if (err) {
                 return console.error(err);
             }
@@ -136,7 +136,7 @@ module.exports = {
             }
         });
     },
-    
+
     /**
      * @api {get} /user List Users
      * @apiName ListUsers
@@ -177,10 +177,10 @@ module.exports = {
             .populate('followingCollections')
             .exec(function (err, foundUsers) {
                 if (err) { return next(err); }
-            
+
                 // array di appoggio
                 var users = new Array();
-            
+
                 // conto gli elementi delle collection
                 for (var i in foundUsers) {
                     foundUsers[i].recipesCount = foundUsers[i].recipes.length;
@@ -188,7 +188,7 @@ module.exports = {
                     foundUsers[i].followersCount = foundUsers[i].followers.length;
                     foundUsers[i].followingCount = foundUsers[i].following.length;
                     foundUsers[i].followingCollectionsCount = foundUsers[i].followingCollections.length;
-                
+
                     /**
                      * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
                      * delle associazioni vengono automaticamente tolte quando si esegue
@@ -201,7 +201,7 @@ module.exports = {
                 return res.json(users);
             });
     },
-    
+
     /**
      * @api {get} /user/:id Get a User
      * @apiName GetUser
@@ -245,14 +245,14 @@ module.exports = {
                 if (err) { return next(err); }
 
                 if (!foundUser) { return res.notFound({ error: 'No user found' }); }
-            
+
                 // conto gli elementi delle collection
                 foundUser.recipesCount = foundUser.recipes.length;
                 foundUser.collectionsCount = foundUser.collections.length;
                 foundUser.followersCount = foundUser.followers.length;
                 foundUser.followingCount = foundUser.following.length;
                 foundUser.followingCollectionsCount = foundUser.followingCollections.length;
-            
+
                 /**
                  * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
                  * delle associazioni vengono automaticamente tolte quando si esegue
@@ -304,10 +304,10 @@ module.exports = {
 
                 if (!foundUser) { return res.notFound({ error: 'No user found' }); }
 
-                return res.json({ lastSeen: foundUser.lastSeen});
+                return res.json({ lastSeen: foundUser.lastSeen });
             });
     },
-    
+
     /**
      * @api {get} /user/:id/upvoted_recipe Get a User favorite recipe list
      * @apiName getUserUpvotedRecipes
@@ -334,7 +334,7 @@ module.exports = {
                 if (err) { return next(err); }
 
                 if (!foundUser) { return res.notFound({ error: 'No user found' }); }
-            
+
                 // Array con voti positivi, cioè con le ricette preferite
                 var positiveVotes = new Array();
 
@@ -346,10 +346,10 @@ module.exports = {
 
                 // find recipes
                 RecipeService.find(req, res, next, positiveVotes);
-                
+
             });
     },
-    
+
     /**
      * @api {get} /user/:id/viewed_recipe Get a User viewed recipe list
      * @apiName getUserViewedRecipes
@@ -376,7 +376,7 @@ module.exports = {
                 if (err) { return next(err); }
 
                 if (!foundUser) { return res.notFound({ error: 'No user found' }); }
-            
+
                 // Array con id di ricette viste
                 var viewedRecipes = new Array();
 
@@ -388,7 +388,7 @@ module.exports = {
                 RecipeService.find(req, res, next, viewedRecipes);
             });
     },
-    
+
     /**
      * @api {get} /user/:id/tried_recipe Get a User tried recipe list
      * @apiName getUserTriedRecipes
@@ -415,7 +415,7 @@ module.exports = {
                 if (err) { return next(err); }
 
                 if (!foundUser) { return res.notFound({ error: 'No user found' }); }
-            
+
                 // Array con id di ricette provate
                 var triedRecipes = new Array();
 
@@ -427,10 +427,10 @@ module.exports = {
                 RecipeService.find(req, res, next, triedRecipes);
             });
     },
-    
-    uploadCoverImage: function(req, res) {
+
+    uploadCoverImage: function (req, res) {
         var user = req.payload;
-        
+
         var coverImage = req.file('image');
         if (!coverImage) { return res.badRequest('No file was found'); }
 
@@ -439,9 +439,9 @@ module.exports = {
                 maxBytes: 5000000,
                 dirname: localImagesDir
 
-            }, function(err, filesUploaded) {
+            }, function (err, filesUploaded) {
                 // eseguo l'upload sul bucket s3
-                s3Upload(err, filesUploaded, function(fileUrl) {
+                s3Upload(err, filesUploaded, function (fileUrl) {
                     // se l'utente ha già una immagine di copertina
                     // elimino l'immagine di copertina vecchia
                     if (user.coverImageUrl) {
@@ -454,7 +454,7 @@ module.exports = {
                         // aggiungo url dell'immagine appena caricata
                         coverImageUrl: fileUrl,
 
-                    }).exec(function(err, updatedUsers) {
+                    }).exec(function (err, updatedUsers) {
                         if (err) return res.negotiate(err);
                         return res.json(updatedUsers[0]);
                     });
@@ -478,12 +478,61 @@ module.exports = {
                         // aggiungo url dell'immagine appena caricata
                         coverImageUrl: fileUrl,
 
-                    }).exec(function(err, updatedUsers) {
+                    }).exec(function (err, updatedUsers) {
                         if (err) return res.negotiate(err);
                         return res.json(updatedUsers[0]);
                     });
                 });
         }
+    },
+
+    /**
+     * @api {post} /user/notification/register Register a User to receive notifications
+     * @apiName registerUserToNotification
+     * @apiGroup User
+     *
+     * @apiDescription Serve per registare un utente ad una socket e ricevere notifiche
+     * in tempo reale. Questa chiamata deve essere fatta tramite web socket e non
+     * tramite chiamata HTTP. Per potersi registare è richiesto il token di autorizzazione
+     * spedito nel header.
+     *
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 400 Bad request
+     * 
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     */
+    registerToNotifications: function (req, res, next) {
+        if (!req.isSocket) {
+            return res.badRequest('Only a client socket can subscribe to notification service.');
+        }
+
+        // Get the socket ID from the reauest
+        var socketId = sails.sockets.getId(req);
+
+        // Get the session from the request
+        var session = req.session;
+
+        // Create the session.users hash if it doesn't exist already
+        session.users = session.users || {};
+
+        // Save this user in the session, indexed by their socket ID.
+        // This way we can look the user up by socket ID later.
+        session.users[socketId] = req.payload;
+
+        var user = req.payload;
+        /**
+         * Registro l'utente attualmente loggato tramite una socket
+         * a ricevere messaggi a lui rivolti.
+         */
+        User.subscribe(req, user.id);
+
+        res.json("200")
+
     },
 
 

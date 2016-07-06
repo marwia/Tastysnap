@@ -121,18 +121,33 @@ module.exports.sockets = {
   *                                                                          *
   ***************************************************************************/
   afterDisconnect: function (session, socket, cb) {
-    /**
-     * A seguito di una disconnessione tento di eliminare l'utente 
-     * dagli utenti attualmente connessi.
-     */
     try {
-      var socketId = sails.sockets.getId(socket);
-      ConnectedUser.destroy({
-        socketId: socketId
-      }).exec(function (err) {
-        console.log("utente disconnesso ed eliminato");
-        return cb();
+      // Look up the user ID using the connected socket
+      var userId = session.users[sails.sockets.getId(socket)].id;
+
+      /**
+       * Deregistro tale socket dalla ricezione di messaggi dell'utente
+       * attualmente collegato.
+       */
+      User.unsubscribe(socket, userId);
+
+      // Tolgo il record dell'utente dall'array delle sessioni
+      delete session.users[sails.sockets.getId(socket)];
+
+      // Aggiorno la data dell'ultima visita dell'utente attualmente disconnesso
+      // (Utile per poter richiedere le notifiche accumulate durante il periodo
+      // di assenza)
+      User.update(userId, {
+
+        lastSeen: new Date()
+
+      }).exec(function (err, updatedUsers) {
+        if (err) { console.info(err); }
       });
+
+      // Continua
+      cb();
+
     } catch (e) {
       console.log("Error in onDisconnect: ", e);
       return cb();

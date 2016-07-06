@@ -37,31 +37,9 @@ module.exports = {
 
   afterCreate: function (values, cb) {
     // spedisco la notifica
-    //sails.sockets.blast(values);
+    User.message(values.affectedUser, values);
 
-    /**
-     * Ricavo gli id delle socket che l'utente
-     * destinatario possa aver creato.
-     */
-    ConnectedUser.find({
-      user: values.affectedUser
-    }).exec(function (err, connectedUsers) {
-      if (err) { 
-        console.log(err);
-        cb();
-      }
-
-      connectedUsers.forEach(function (element) {
-        // spedisco la notifica
-        console.log("spedisco la notifica");
-        ConnectedUser.message(element.id, values);
-      });
-
-      // Continua...
-      cb();
-    });
-
-    sails.sockets.blast(values);
+    cb();
   },
   /***************************************************************************
   *                                                                          *
