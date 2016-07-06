@@ -27,6 +27,7 @@
             <img alt="TastySnap" src="app_images/beta_logo.png" class="tastysnap_logo">
         </a>
         
+<<<<<<< HEAD
         <!-- DESTRA -->
         <ul class="nav navbar-nav navbar-right">
             <li>
@@ -234,6 +235,39 @@
                 <p class="navbar-text" ng-hide="isLoggedIn()"><a href="/login" class="navbar-link">Accedi o registrati</a></p>
             </li>
         </ul>
+=======
+        <!-- Dropdown menu example  -->
+        <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
+            <img alt="{{ currentUser.name }}" src="{{ getUserProfileImage(currentUser) }}" id="single-button" uib-dropdown-toggle class="top_menu_profile img-circle pull-right">
+            <ul uib-dropdown-menu class="top_menu_profile_dropdown" role="menu" aria-labelledby="single-button">
+                <li role="menuitem"><a href="/app/profile/{{ currentUser.id }}">Profilo</a></li>
+                <li class="divider"></li>
+                <li role="menuitem"><a href="/login" ng-click="logOut()">Esci</a></li>
+            </ul>
+        </div>
+        
+        <p class="navbar-text pull-right" ng-hide="isLoggedIn()"><a href="/login" class="navbar-link">Accedi o registrati</a></p>
+        
+        <!-- Messaggi -->
+        <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
+            <a href="#" ng-hide="active" class="top_menu_notify_icon" uib-dropdown-toggle id="single-button2">
+                <div class="glyphicon glyphicon-comment pull-right top_menu_item"><span class="badge badge-notify" ng-init="num_messages=0" ng-hide="num_messages<=0">{{num_messages}}</span></div>
+            </a>
+            <ul uib-dropdown-menu class="top_menu_message_dropdown" role="menu" aria-labelledby="single-button2">
+                <li role="menuitem"><a href="#">Non ci sono messaggi</a></li>
+            </ul>
+        </div>
+        
+        <!-- Notifiche -->
+        <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown" ng-controller="NotificationCtrl">
+            <a href="#" ng-hide="active" class="top_menu_notify_icon" uib-dropdown-toggle id="single-button3">
+                <div class="glyphicon glyphicon-bell comment pull-right top_menu_item"><span class="badge badge-notify" ng-init="num_notify=0" ng-hide="num_notify<=0">{{num_notify}}</span></div>
+            </a>
+            <ul uib-dropdown-menu class="top_menu_notify_dropdown" role="menu" aria-labelledby="single-button3">
+                <li role="menuitem"><a href="#">Non ci sono nuove notifiche</a></li>
+            </ul>
+        </div>
+>>>>>>> 64f264e0656c7c876e4e48228b97002327443afc
         
     </div>
 </nav>
