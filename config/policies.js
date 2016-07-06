@@ -166,7 +166,12 @@ module.exports.policies = {
     'getFollowing' : ['findUser', 'attachUser', 'updateUserStats'],
     'areYouFollowing' : ['isAuthorized', 'findUser', 'updateUserStats'],
     'isFollowing' : ['findUser', 'attachUser', 'updateUserStats']
-  }
+  },
+
+  'ConnectedUserController' : {
+    'create' : ['isAuthorized'],
+    '*' : false
+  },
 
 
 

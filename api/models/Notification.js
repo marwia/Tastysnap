@@ -16,23 +16,52 @@ module.exports = {
   attributes: {
 
     // id dell'elemento riferito alla notifica (commento, ricetta, follow)  
-  	event : { type: 'String', required: true },
+    event: { type: 'String', required: true },
     // tipo dell'elemento riferito alla notifica (ovvero il model)
-    type : { type: 'String', required: true },
+    type: { type: 'String', required: true },
 
     // indica se la notifica è stata letta
-    red : {type: 'Boolean', defaultsTo: false},
+    red: { type: 'Boolean', defaultsTo: false },
 
-    triggeringUser : { 
-    	model :'user',
-      required : true
+    triggeringUser: {
+      model: 'user',
+      required: true
     },
 
-    affectedUser : { 
-    	model :'user',
-      required : true
+    affectedUser: {
+      model: 'user',
+      required: true
     },
 
+  },
+
+  afterCreate: function (values, cb) {
+    // spedisco la notifica
+    //sails.sockets.blast(values);
+
+    /**
+     * Ricavo gli id delle socket che l'utente
+     * destinatario possa aver creato.
+     */
+    ConnectedUser.find({
+      user: values.affectedUser
+    }).exec(function (err, connectedUsers) {
+      if (err) { 
+        console.log(err);
+        cb();
+      }
+
+      connectedUsers.forEach(function (element) {
+        // spedisco la notifica
+        console.log("spedisco la notifica");
+        ConnectedUser.message(element.id, values);
+      });
+
+      // Continua...
+      cb();
+    });
+
+    sails.sockets.blast(values);
   },
   /***************************************************************************
   *                                                                          *

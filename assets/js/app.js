@@ -58,7 +58,7 @@ myApp.run(function($http, $rootScope, Auth) {
     });
 });
 
-myApp.config(['$animateProvider', 'uiGmapGoogleMapApiProvider', function($animateProvider, uiGmapGoogleMapApiProvider){
+myApp.config(['$animateProvider', 'uiGmapGoogleMapApiProvider', '$sailsProvider', function($animateProvider, uiGmapGoogleMapApiProvider, $sailsProvider){
   // restrict animation to elements with the bi-animate css class with a regexp.
   // note: "bi-*" is our css namespace at @Bringr.
   $animateProvider.classNameFilter(/^((?!(fa-spinner)).)*$/);

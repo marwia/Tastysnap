@@ -363,7 +363,15 @@ var apiRoutes = addGlobalPrefix({
     *                                                                          *
     ***************************************************************************/
 
-    'get /product/groups': 'ProductController.getProductGroups'
+    'get /product/groups': 'ProductController.getProductGroups',
+
+    /***************************************************************************
+    *                                                                          *
+    * Notifiche                                                                *
+    *                                                                          *
+    ***************************************************************************/
+
+    'post /notification/register': 'ConnectedUserController.create'
 
 });
 

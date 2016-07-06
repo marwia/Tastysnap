@@ -52,18 +52,18 @@ module.exports.sockets = {
 
 
 
- /***************************************************************************
-  *                                                                          *
-  * Whether to expose a 'get /__getcookie' route with CORS support that sets *
-  * a cookie (this is used by the sails.io.js socket client to get access to *
-  * a 3rd party cookie and to enable sessions).                              *
-  *                                                                          *
-  * Warning: Currently in this scenario, CORS settings apply to interpreted  *
-  * requests sent via a socket.io connection that used this cookie to        *
-  * connect, even for non-browser clients! (e.g. iOS apps, toasters, node.js *
-  * unit tests)                                                              *
-  *                                                                          *
-  ***************************************************************************/
+  /***************************************************************************
+   *                                                                          *
+   * Whether to expose a 'get /__getcookie' route with CORS support that sets *
+   * a cookie (this is used by the sails.io.js socket client to get access to *
+   * a 3rd party cookie and to enable sessions).                              *
+   *                                                                          *
+   * Warning: Currently in this scenario, CORS settings apply to interpreted  *
+   * requests sent via a socket.io connection that used this cookie to        *
+   * connect, even for non-browser clients! (e.g. iOS apps, toasters, node.js *
+   * unit tests)                                                              *
+   *                                                                          *
+   ***************************************************************************/
 
   // grant3rdPartyCookie: true,
 
@@ -116,14 +116,28 @@ module.exports.sockets = {
 
   /***************************************************************************
   *                                                                          *
-  * This custom afterDisconnect function will be run each time a socket         *
+  * This custom afterDisconnect function will be run each time a socket      *
   * disconnects                                                              *
   *                                                                          *
   ***************************************************************************/
-  // afterDisconnect: function(session, socket, cb) {
-  //   // By default: do nothing.
-  //   return cb();
-  // },
+  afterDisconnect: function (session, socket, cb) {
+    /**
+     * A seguito di una disconnessione tento di eliminare l'utente 
+     * dagli utenti attualmente connessi.
+     */
+    try {
+      var socketId = sails.sockets.getId(socket);
+      ConnectedUser.destroy({
+        socketId: socketId
+      }).exec(function (err) {
+        console.log("utente disconnesso ed eliminato");
+        return cb();
+      });
+    } catch (e) {
+      console.log("Error in onDisconnect: ", e);
+      return cb();
+    }
+  },
 
 
 
