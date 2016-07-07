@@ -9,6 +9,20 @@
 var _ = require('lodash');
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
+var setCollectionViewed = function (req, foundCollection) {
+    var user = req.payload;
+
+    if (user != null) {
+        // completo l'oggetto viewCollection
+        var viewCollection = { user: user.id, collection: foundCollection.id };
+
+        ViewCollection.create(viewCollection).exec(function (err, viewCollectionCreated) {
+            if (err) { console.log(err); }
+
+        });
+    }
+};
+
 module.exports = {
 
     /**
@@ -22,13 +36,13 @@ module.exports = {
      *     HTTP/1.1 200 OK
      *
      */
-    findOne: function(req, res, next) {
+    findOne: function (req, res, next) {
         var collectionId = req.param('collection');
         if (!collectionId) { return next(); }
 
         Collection.findOne(collectionId)
             .populate('author')
-            .exec(function(err, foundCollection) {
+            .exec(function (err, foundCollection) {
                 if (err) { return next(err); }
 
                 if (!foundCollection) {
@@ -36,25 +50,25 @@ module.exports = {
                 }
 
                 var counts = {
-                    viewsCount: function(cb) {
-                        ViewCollection.count({ collection: foundCollection.id }).exec(function(err, result) {
+                    viewsCount: function (cb) {
+                        ViewCollection.count({ collection: foundCollection.id }).exec(function (err, result) {
                             cb(err, result);
                         });
                     },
-                    followersCount: function(cb) {
-                        FollowCollection.count({ collection: foundCollection.id }).exec(function(err, result) {
+                    followersCount: function (cb) {
+                        FollowCollection.count({ collection: foundCollection.id }).exec(function (err, result) {
                             cb(err, result);
                         });
                     },
-                    recipesCount: function(cb) {
-                        CollectionRecipe.count({ collection: foundCollection.id }).exec(function(err, result) {
+                    recipesCount: function (cb) {
+                        CollectionRecipe.count({ collection: foundCollection.id }).exec(function (err, result) {
                             cb(err, result);
                         });
                     }
                 };
 
                 // eseguo lo precedenti funzioni in parallelo
-                async.parallel(counts, function(err, resultSet) {
+                async.parallel(counts, function (err, resultSet) {
                     if (err) { return next(err); }
 
                     console.info(resultSet);
@@ -63,6 +77,11 @@ module.exports = {
                     foundCollection.viewsCount = resultSet.viewsCount;
                     foundCollection.followersCount = resultSet.followersCount;
                     foundCollection.recipesCount = resultSet.recipesCount;
+
+                    // setto la collection come vista
+                    // NOTA: tale codice è stato inserito qui
+                    // per ragioni di performance
+                    setCollectionViewed(req, foundCollection);
 
                     // richiamo la callback finale
                     return res.json(foundCollection);
@@ -91,14 +110,14 @@ module.exports = {
      *     HTTP/1.1 200 OK
      *
      */
-    find: function(req, res, next) {
+    find: function (req, res, next) {
         Collection.find()
             .where(actionUtil.parseCriteria(req))
             .limit(actionUtil.parseLimit(req))
             .skip(actionUtil.parseSkip(req))
             .sort(actionUtil.parseSort(req))
             .populate('author')
-            .exec(function(err, foundCollections) {
+            .exec(function (err, foundCollections) {
                 if (err) { return next(err); }
 
                 if (foundCollections.length == 0) {
@@ -107,27 +126,27 @@ module.exports = {
 
                 // per ogni ricetta eseguo delle funzioni asincrono
                 // ma aseptto che tutte finiscono (l'ultima callback)
-                async.each(foundCollections, function(collection, callback) {
+                async.each(foundCollections, function (collection, callback) {
                     var counts = {
-                        viewsCount: function(cb) {
-                            ViewCollection.count({ collection: collection.id }).exec(function(err, result) {
+                        viewsCount: function (cb) {
+                            ViewCollection.count({ collection: collection.id }).exec(function (err, result) {
                                 cb(err, result);
                             });
                         },
-                        followersCount: function(cb) {
-                            FollowCollection.count({ collection: collection.id }).exec(function(err, result) {
+                        followersCount: function (cb) {
+                            FollowCollection.count({ collection: collection.id }).exec(function (err, result) {
                                 cb(err, result);
                             });
                         },
-                        recipesCount: function(cb) {
-                            CollectionRecipe.count({ collection: collection.id }).exec(function(err, result) {
+                        recipesCount: function (cb) {
+                            CollectionRecipe.count({ collection: collection.id }).exec(function (err, result) {
                                 cb(err, result);
                             });
                         }
                     };
 
                     // eseguo lo precedenti funzioni in parallelo
-                    async.parallel(counts, function(err, resultSet) {
+                    async.parallel(counts, function (err, resultSet) {
                         if (err) { return next(err); }
 
                         console.info(resultSet);
@@ -141,7 +160,7 @@ module.exports = {
                         callback();
                     });
 
-                }, function(err) {
+                }, function (err) {
                     if (err) { return next(err); }
                     // finish
                     var sort = actionUtil.parseSort(req);
@@ -201,14 +220,14 @@ module.exports = {
      *
      * @apiUse InvalidTokenError
      */
-    create: function(req, res, next) {
+    create: function (req, res, next) {
         var user = req.payload;
 
         var collection = req.body;
         // setto l'autore della ricetta
         collection.author = user;
 
-        Collection.create(collection).exec(function(err, createdCollection) {
+        Collection.create(collection).exec(function (err, createdCollection) {
             if (err) { return next(err); }
             return res.json(createdCollection);
         });

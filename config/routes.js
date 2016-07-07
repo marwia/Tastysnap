@@ -269,7 +269,7 @@ var apiRoutes = addGlobalPrefix({
     *                                                                          *
     ***************************************************************************/
 
-    'post /recipe/:recipe/view': 'ViewRecipeController.create',
+    // per ora nulla...
 
     /***************************************************************************
     *                                                                          *
@@ -329,11 +329,11 @@ var apiRoutes = addGlobalPrefix({
 
     /***************************************************************************
     *                                                                          *
-    * View di ricette.                                                         *
+    * View di collection.                                                         *
     *                                                                          *
     ***************************************************************************/
 
-    'post /collection/:collection/view': 'ViewCollectionController.create',
+    // per ora nulla...
 
     /***************************************************************************
     *                                                                          *

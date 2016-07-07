@@ -55,11 +55,14 @@ module.exports.policies = {
 
   'CollectionController' : {
     'create' : ['isAuthorized'],
-    'destroy' : ['isAuthorized', 'isCollectionAuthor']
+    'destroy' : ['isAuthorized', 'isCollectionAuthor'],
+    'findOne' : 'attachUser' // includo l'utente per il conteggio delle visualizzazioni
   },
   
   'ViewCollectionController' : {
-      'create' : ['isAuthorized', 'findCollection']
+      'create' : false, // Operazione eseguita quando si richiede una collection
+      'destroy': false, // Operazione vietata
+      'update': false // Operazione vietata
   },
 
   'CommentController' : {
@@ -73,7 +76,7 @@ module.exports.policies = {
   'RecipeController' : {
     'create' : ['isAuthorized'],
     'update' : ['isAuthorized', 'isRecipeAuthor'],
-    'findOne' : ['attachUser','setRecipeViewed'],
+    'findOne' : 'attachUser', // includo l'utente per il conteggio delle visualizzazioni
     'destroy' : ['isAuthorized', 'isRecipeAuthor', 'findRecipe'],
     'uploadCoverImage' : ['isAuthorized', 'isRecipeAuthor'],
     'uploadBlurredCoverImage' : ['isAuthorized', 'isRecipeAuthor'],

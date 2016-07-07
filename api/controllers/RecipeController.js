@@ -88,6 +88,35 @@ var s3Upload = function (err, filesUploaded, whenDone) {
     });
 };
 
+var setRecipeViewed = function (req, foundRecipe) {
+    var user = req.payload;
+
+    if (user != null) {
+        // creo l'oggetto che rappresenta la visualizzazione
+        var viewRecipe = { user: user.id, recipe: foundRecipe.id };
+
+        ViewRecipe.create(viewRecipe).exec(function (err, created) {
+            if (err) { console.log(err); }
+
+            /**
+             * Creo la notifica sapendo che l'utente aflitto dalla notifica
+             * è soltanto il creatore della ricetta.
+             */
+            Notification.create({
+                event: created.id,
+                type: 'ViewRecipe',
+                red: false,
+                triggeringUser: created.user,
+                affectedUser: foundRecipe.author
+            }).exec(function (err, createdNotification) {
+                if (err) console.log(err);
+
+            });
+
+        });
+    }
+};
+
 module.exports = {
 
     /**
@@ -423,16 +452,16 @@ module.exports = {
                     var recipeIdList = docs.map(function (recipe) {
                         return recipe._id
                     });
-                    
+
                     // remove consumed query params
                     delete searchCriteria["longitude"];
                     delete searchCriteria["latitude"];
                     delete searchCriteria["maxDistance"];
-                    
+
                     // richiamo la funzione di ricerca "normale" 
                     // specificando due parametri speciali
-                    sails.controllers.recipe.find(req, res, next, {id: recipeIdList}, searchCriteria);
- 
+                    sails.controllers.recipe.find(req, res, next, { id: recipeIdList }, searchCriteria);
+
                 });
         });
     },
@@ -662,6 +691,11 @@ module.exports = {
                     foundRecipe.votesCount = resultSet.votesCount;
                     foundRecipe.viewsCount = resultSet.viewsCount;
                     foundRecipe.trialsCount = resultSet.trialsCount;
+
+                    // setto la ricetta come vista
+                    // NOTA: tale codice è stato inserito qui
+                    // per ragioni di performance
+                    setRecipeViewed(req, foundRecipe);
 
                     // richiamo la callback finale
                     return res.json(foundRecipe);
