@@ -229,6 +229,10 @@ module.exports = {
 
         Collection.create(collection).exec(function (err, createdCollection) {
             if (err) { return next(err); }
+
+            // Notifico l'evento ai followers dell'autore della raccolta
+            Notification.notifyUserFollowers(user, createdCollection, 'Collection');
+
             return res.json(createdCollection);
         });
     },

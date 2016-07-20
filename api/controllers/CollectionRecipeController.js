@@ -41,7 +41,7 @@ module.exports = {
     },
 
     /**
-     * @api {put} /collection/:collection/recipe Add a recipe to a Collection
+     * @api {put} /collection/:collection/recipe/:recipe Add a recipe to a Collection
      * @apiName AddRecipeCollection
      * @apiGroup Collection
      *
@@ -69,15 +69,15 @@ module.exports = {
      */
     create: function(req, res, next) {
         var collection = req.collection;
-        var recipeId = req.body.recipe_id;
-        if (!recipeId) { return next(); }
+        var recipe = req.recipe;
 
         CollectionRecipe.findOne({
             collection: collection.id,
-            recipe: recipeId
+            recipe: recipe.id
         }).exec( function (err, foundCollectionRecipe) {
             if (err) { return next(err); }
 
+            // Ricetta già presente nella raccolta
             if (foundCollectionRecipe) return res.badRequest();
 
             CollectionRecipe.create({
@@ -85,6 +85,10 @@ module.exports = {
                 recipe: recipeId
             }).exec( function (err, createdCollectionRecipe) {
                 if (err) { return next(err); }
+
+                // Notifico l'evento ai followers della raccolta
+                Notification.notifyCollectionFollowers(collection, createdCollectionRecipe, 'CollectionRecipe');
+
                 return res.send(204, null);// OK - No Content
             });
         });

@@ -108,6 +108,9 @@ module.exports = {
                     VoteComment.create(voteComment).exec(function (err, voteCommentCreated) {
                         if (err) { return next(err); }
 
+                        // Notifico l'evento all'utente autore del comment
+                        Notification.notifyUser(user.id, req.comment.user, voteCommentCreated, 'VoteComment');
+
                         return res.json(voteCommentCreated);
                     });
                 } else {// trovato!
@@ -116,6 +119,9 @@ module.exports = {
                             if (err) { return next(err); }
                             VoteComment.create(voteComment).exec(function (err, voteCommentCreated) {
                                 if (err) { return next(err); }
+
+                                // Notifico l'evento all'utente autore del comment
+                                Notification.notifyUser(user.id, req.comment.user, voteCommentCreated, 'VoteComment');
 
                                 return res.json(voteCommentCreated);
                             });

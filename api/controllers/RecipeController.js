@@ -102,6 +102,8 @@ var setRecipeViewed = function (req, foundRecipe) {
              * Creo la notifica sapendo che l'utente aflitto dalla notifica
              * è soltanto il creatore della ricetta.
              */
+            // LE NOTIFICHE PER LE VISUALIZZAZIONI NON SONO NECESSARIE
+            /*
             Notification.create({
                 event: created.id,
                 type: 'ViewRecipe',
@@ -111,7 +113,7 @@ var setRecipeViewed = function (req, foundRecipe) {
             }).exec(function (err, createdNotification) {
                 if (err) console.log(err);
 
-            });
+            });*/
 
         });
     }
@@ -758,6 +760,10 @@ module.exports = {
 
         Recipe.create(recipe).exec(function (err, recipe) {
             if (err) { return next(err); }
+
+            // Notifico l'evento ai followers dell'autore della ricetta
+            Notification.notifyUserFollowers(user, recipe, 'Recipe');
+
             return res.json(recipe);
         });
     },

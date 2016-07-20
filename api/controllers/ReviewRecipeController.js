@@ -70,6 +70,9 @@ module.exports = {
                     .create(reviewRecipe)
                     .exec(function (err, reviewRecipeCreated){
 				        if(err){ return next(err); }
+
+						// Notifico l'evento all'utente autore della ricetta
+					    Notification.notifyUser(user.id, req.recipe.author, reviewRecipeCreated, 'ReviewRecipe');
 	
 				        return res.json(reviewRecipeCreated);
 			    });

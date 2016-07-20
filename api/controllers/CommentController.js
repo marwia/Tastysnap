@@ -61,6 +61,9 @@ module.exports = {
         Comment.create(comment).exec(function(err, createdComment) {
             if (err) { return next(err); }
 
+            // Notifico l'evento all'utente autore della raccolta
+            Notification.notifyUser(user.id, req.recipe.author, createdComment, 'Comment');
+
             return res.json(createdComment);
         });
 

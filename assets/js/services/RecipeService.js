@@ -105,6 +105,38 @@ angular.module('RecipeService', [])
                     successCB(response);
             }, errorCB);
         };
+
+        /**
+         * Metodo per eseguire una ricerca per id della ricetta
+         * e non settare la ricetta come visualizzata.
+         */
+        o.searchById = function(id, successCB, errorCB) {
+            var recipe;
+            // ricerco la ricetta nelle variabili locali
+            for(var i = 0; i < o.recipes.length; i++) {
+                if(o.recipes[i].id == id) {
+                    collection = o.recipes[i];
+                    break;
+                }
+            }
+
+            if (recipe) return successCB({data: [recipe]});
+
+            // se non ho trovato la ricetta, la richiedo al server
+            return $http.get(server_prefix + '/recipe', {
+                params: {
+                    where: {
+                        "id": id
+                    }
+                }
+            }).then(function(response) {
+                // non lo eseguo
+                //angular.extend(o.recipes, response.data);
+
+                if (successCB)
+                    successCB(response);
+            }, errorCB);
+        };
         
         /**
          * Metodo per eseguire una ricerca per titolo di ricetta.
@@ -149,7 +181,7 @@ angular.module('RecipeService', [])
             skip, 
             reset, successCB, errorCB) {
                 
-                // parametri base
+            // parametri base
             var params = {
                 where: {
                         "title": { "contains": recipeTitle }

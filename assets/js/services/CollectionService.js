@@ -98,6 +98,36 @@ angular.module('CollectionService', [])
                     successCB(response);
             }, errorCB);
         };
+
+        /**
+         * Metodo per eseguire una ricerca per id della raccolta.
+         */
+        o.searchById = function(id, successCB, errorCB) {
+            var collection;
+            // ricerco la raccolta nelle variabili locali
+            for(var i = 0; i < o.collections.length; i++) {
+                if(o.collections[i].id == id) {
+                    collection = o.collections[i];
+                    break;
+                }
+            }
+
+            if (collection) return successCB({data: [collection]});
+
+            // se non ho trovato la raccolta, la richiedo al server
+            return $http.get(server_prefix + '/collection', {
+                params: {
+                    where: {
+                        "id": id
+                    }
+                }
+            }).then(function(response) {
+                //angular.extend(o.collections, response.data);
+                
+                if (successCB)
+                    successCB(response);
+            }, errorCB);
+        };
         
         /**
          * Metodo per richiedere la lista di ricette di 
@@ -265,8 +295,8 @@ angular.module('CollectionService', [])
          */
         o.addRecipeToCollection = function (recipe, collection, successCallback) {
             return $http.put(
-                server_prefix + '/collection/' + collection.id + '/recipe',
-                { recipe_id: recipe.id })
+                server_prefix + '/collection/' + collection.id + '/recipe/' + recipe.id,
+                null)
                 .then(function(response) {
                     
                     //recipe = response.data;

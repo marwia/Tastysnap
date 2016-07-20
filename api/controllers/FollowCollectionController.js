@@ -39,6 +39,7 @@ module.exports = {
         var user = req.payload;
         var collectionToFollow = req.collection;
 
+
         // controllo se esiste già 
         FollowCollection.findOne({
             collection: collectionToFollow.id,
@@ -53,6 +54,10 @@ module.exports = {
                 user: user
             }).exec(function (err, createdFollow) {
                 if (err) { return next(err); }
+
+                // Notifico l'evento all'utente autore della raccolta
+                Notification.notifyUser(user.id, collectionToFollow.author, createdFollow, 'FollowCollection');
+
                 return res.send(204, null);// OK - No Content
             });
 

@@ -5,6 +5,13 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+/**
+ * Module dependencies
+ * 
+ * Prese da https://github.com/balderdashy/sails/blob/master/lib/hooks/blueprints/actions/find.js
+ */
+var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
+
 module.exports = {
 
 	/**
@@ -36,10 +43,29 @@ module.exports = {
             .limit(actionUtil.parseLimit(req))
             .skip(actionUtil.parseSkip(req))
             .sort(actionUtil.parseSort(req))
+            .populate('triggeringUser')
             .exec(function (err, foundNotifications) {
                 if (err) { return next(err); }
+
+                if (foundNotifications.length == 0) {
+                    return res.notFound({ error: 'No notification found' });
+                }
+
+                // per ogni notifica populo il campo 'event' a secondo del type
+                async.each(foundNotifications, function (notification, callback) {
+                    sails.models[notification.type.toLowerCase()].findOne(notification.event).exec(function (err, result) {
+                        if (err) { return callback(err); }
+                        notification.event = result;
+                        callback();
+                    })
+
+                }, function (err) {
+                    if (err) { return next(err); }
+
+                    return res.json(foundNotifications);
+                });
             
-                return res.json(foundNotifications);
+                
             });
     },
 

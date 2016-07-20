@@ -11,6 +11,7 @@ var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies
                 'ngMessages', 'uiGmapgoogle-maps', 'angular-spinkit', 'angular.filter', 'ngSails',
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
                 'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService', 'ImageUtilsService',
+                'NotificationService', 'Utils',
 				'ngAnimate', 'appRoutes', 'toastr', 'rzModule', 'angular-click-outside',
 				'AuthCtrl', 'MasterCtrl', 'NavCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeDetailCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl', 'UserHomeCtrl', 'CollectionCtrl',
@@ -32,16 +33,10 @@ myApp.run(function($http, $rootScope, Auth) {
         $http.defaults.headers.common['x-csrf-token'] = response.data._csrf;
         $http.defaults.withCredentials = true;
     });
-
-    /**
-     * Serve per conoscere l'ultima volta che l'utente (se loggato) è 
-     * stato visto dal server
-     */
-    $http.get('api/v1/user/last_seen').then(function(response){
-        $http.defaults.headers.common['x-csrf-token'] = response.data._csrf;
-        $http.defaults.withCredentials = true;
-    });
     
+    /**
+     * Serve per impostare il header per tutte le chiamate.
+     */
     if (Auth.getToken()) {
         $http.defaults.headers.common['Authorization'] = 'Bearer ' + Auth.getToken();
     }

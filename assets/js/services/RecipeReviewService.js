@@ -167,7 +167,7 @@ angular.module('RecipeReviewService', [])
                     recipe[reviewToDelete.typology].reviewsCount--;
                     recipe[reviewToDelete.typology].total = recipe[reviewToDelete.typology].total - reviewToDelete.value;
                     // elimino il parere dell'utente
-                    recipe.user[reviewToDelete.typology] = {};
+                    recipe.user[reviewToDelete.typology] = null;
                     
                     toastr.success('Giudizio annullato.');
                 }

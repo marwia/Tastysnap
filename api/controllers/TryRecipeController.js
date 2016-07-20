@@ -13,7 +13,7 @@
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
-	
+
 	/**
 	* @api {post} /recipe/:recipe/try Try a Recipe
 	* @apiName CreateTryRecipe
@@ -46,27 +46,31 @@ module.exports = {
 	*/
     create: function (req, res, next) {
         var user = req.payload;
-	
-        // completo l'oggetto voteRecipe
-        var tryRecipe = { user: user, recipe: req.recipe.id };
-	
-        //cerco se c'è gia uno stesso vote
-        TryRecipe.find()
-            .where({ user: user.id, recipe: req.recipe.id })
-            .exec(function (err, tryRecipes) {
-                
+
+        // completo l'oggetto tryRecipe
+        var tryRecipe = { user: user.id, recipe: req.recipe.id };
+
+        // cerco se c'è gia uno stesso try
+        TryRecipe.findOne()
+            .where(tryRecipe)
+            .exec(function (err, foundTry) {
+
                 if (err) { return next(err); }
 
-                if (tryRecipes.length == 0) {// non trovato, quindi ne posso creare uno
-                    TryRecipe.create(tryRecipe).exec(function (err, tryRecipeCreated) {
-                        if (err) { return next(err); }
+                if (foundTry) return res.badRequest();
 
-                        return res.json(tryRecipeCreated);
-                    });
-                } else { return res.json(tryRecipes[0]); }
+				TryRecipe.create(tryRecipe).exec(function (err, tryRecipeCreated) {
+					if (err) { return next(err); }
+
+					// Notifico l'evento all'utente autore della raccolta
+					Notification.notifyUser(user.id, req.recipe.author, tryRecipeCreated, 'TryRecipe');
+
+					return res.json(tryRecipeCreated);
+				});
+
             });
     },
-		
+
 	/**
 	* @api {delete} /recipe/:recipe/try Delete a try related to a Recipe
 	* @apiName DeleteTryRecipe
@@ -103,7 +107,7 @@ module.exports = {
             return res.send(204, null);// eliminato
         })
     },
-		
+
 	/**
 	* @api {get} /recipe/:recipe/try List the trials for a Recipe
 	* @apiName GetTrialsRecipe
@@ -189,14 +193,14 @@ module.exports = {
         TryRecipe.findOne()
             .where({ recipe: req.recipe.id, user: user.id })
             .exec(function (err, tryRecipe) {
-                
-            if (err) { return next(err); }
 
-            if (!tryRecipe) {
-                return res.notFound();
-            }
-            return res.json(tryRecipe);
-        });
+				if (err) { return next(err); }
+
+				if (!tryRecipe) {
+					return res.notFound();
+				}
+				return res.json(tryRecipe);
+			});
     }
 };
 

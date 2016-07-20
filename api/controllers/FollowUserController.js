@@ -44,6 +44,7 @@ module.exports = {
         }).exec(function (err, foundFollow) {
             if (err) { return next(err); }
 
+            // Follower già registrato
             if (foundFollow) return res.badRequest();
 
             FollowUser.create({
@@ -51,6 +52,10 @@ module.exports = {
                 following: userToFollow.id
             }).exec(function (err, createdFollow) {
                 if (err) { return next(err); }
+
+                // Notifico l'evento all'utente da seguire
+                Notification.notifyUser(user.id, userToFollow.id, createdFollow, 'FollowUser');
+
                 return res.send(204, null);// OK - No Content
             });
 

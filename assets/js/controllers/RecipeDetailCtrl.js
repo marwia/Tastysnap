@@ -19,7 +19,8 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
     '$state', // gestione degli stati dell'app (ui-router)
     'User',
     'RecipeStep',
-    function($scope, Recipe, Ingredient, Auth, Collection, $uibModal, $log, $state, User, RecipeStep) {
+    'Utils',
+    function($scope, Recipe, Ingredient, Auth, Collection, $uibModal, $log, $state, User, RecipeStep, Utils) {
 
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
         $scope.isLoggedIn = Auth.isLoggedIn;
@@ -33,6 +34,8 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
         
         // serve a tenere conto del caricamento della ricetta
         $scope.loadingProgress = 0;
+
+        $scope.formatDate = Utils.formatDate;
 
         $scope.deleteCurrentRecipe = function() {
             Recipe.delete($scope.detailedRecipe.id,
@@ -49,7 +52,6 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
             } else {
                 Recipe.createTry(recipe);
             }
-
         };
 
         // MODALE PER CONFERMARE L'ELIMINAZIONE DI UNA RICETTA
@@ -130,12 +132,6 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
                 size: 'md'
             });
         };
-
-        //mi ritorna la data leggibile
-        $scope.formatDate = function(date) {
-            moment.locale("it");
-            return moment(date).fromNow();
-        }
 
         $scope.calculateNutrientValues = function(recipe) {
             // calcolo totale kcal

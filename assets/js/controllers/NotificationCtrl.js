@@ -10,31 +10,51 @@
 angular.module('NotificationCtrl', []).controller('NotificationCtrl', [
     '$scope',
     '$sails',
-    'Auth',
-    function ($scope, $sails, Auth) {
+    'Notification',
+    'User',
+    function ($scope, $sails, Notification, User) {
 
-        // Registro l'utente per la ricezione di notifiche
-        $sails.request({
-            method: 'post',
-            url: "/api/v1/user/notification/register",
-            headers: {
-                'Authorization': 'Bearer ' + Auth.getToken()
-            }
-        }, function (resData, jwres) {
-            if (jwres.error) {
-                console.info(jwres); // => e.g. 403
-                return;
-            }
-            console.log(jwres.statusCode); // => e.g. 200
-        });
+        // service body
+        $scope.notifications = Notification.notifications;
+        Notification.registerForNotification();
 
-        // Watching for updates
-        var messageHandler = $sails.on("user", function (message) {
-            console.log('New message to this user ::\n', message);
-        });
+        $scope.toggled = function (open) {
+            if (open) {
+                //Notification.getAll('createdAt DESC', Notification.getRegistrationDate(), null);
+                User.currentUser.lastSeen = new Date().toISOString();
+            }
+        };
+
+        $scope.countNew = function () {
+            var fromDate = User.currentUser.lastSeen;
+            var count = 0;
+            $scope.notifications.forEach(function(element) {
+                if (!element.red && element.createdAt > fromDate) count++;
+            }, this);
+            return count;
+        };
+
+        $scope.setAllRed = function () {
+            // creo un array di id delle notifiche da segnalare
+            var ids = [];
+            $scope.notifications.forEach(function (element) {
+                ids.push(element.id);
+            });
+
+            Notification.setRed(ids, function (response) {
+                $scope.notifications.forEach(function (element) {
+                    element.red = true;
+                });
+            });
+        };
+
+
+        
 
         // Stop watching for updates
+        /*
         $scope.$on('$destroy', function () {
             $sails.off('message', messageHandler);
         });
+        */
     }]);

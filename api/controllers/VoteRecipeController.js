@@ -107,6 +107,9 @@ module.exports = {
                     VoteRecipe.create(voteRecipe).exec(function (err, voteRecipeCreated) {
                         if (err) { return next(err); }
 
+                        // Notifico l'evento all'utente autore della ricetta
+					    Notification.notifyUser(user.id, req.recipe.author, voteRecipeCreated, 'VoteRecipe');
+
                         return res.json(voteRecipeCreated);
                     });
                 } else {// trovato!
@@ -115,6 +118,9 @@ module.exports = {
                             if (err) { return next(err); }
                             VoteRecipe.create(voteRecipe).exec(function (err, voteRecipeCreated) {
                                 if (err) { return next(err); }
+
+                                // Notifico l'evento all'utente autore della ricetta
+					            Notification.notifyUser(user.id, req.recipe.author, voteRecipeCreated, 'VoteRecipe');
 
                                 return res.json(voteRecipeCreated);
                             });

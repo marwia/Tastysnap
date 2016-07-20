@@ -157,11 +157,12 @@ module.exports.policies = {
   'FollowCollectionController' : {
     'create' : ['isAuthorized', 'findCollection'],
     'find' : ['findRecipe'],
-    'areYouFollowing' : ['isAuthorized', 'findCollection']
+    'areYouFollowing' : ['isAuthorized', 'findCollection'],
+    'destroy': ['isAuthorized', 'findCollection']
   },
 
   'CollectionRecipeController' : {
-    'create' : ['isAuthorized', 'findCollection'],
+    'create' : ['isAuthorized', 'findCollection', 'findRecipe'],
     'destroy' : ['isAuthorized', 'isCollectionAuthor'],
     'getRecipes' : ['findCollection']
   },
