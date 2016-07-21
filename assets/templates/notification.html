@@ -7,18 +7,21 @@
         <div class="media-left media-middle">
             <a href="/app/profile/{{notification.triggeringUser.id}}" class="link"><img class="media-object" src="{{ getUserProfileImage(notification.triggeringUser) }}" alt="..."></a>
         </div>
-        <div class="media-body clearfix">
-            <div class="pull-left">
-                <p class="media-heading">
-                    <a href="/app/profile/{{notification.triggeringUser.id}}" class="link"><b>{{ notification.triggeringUser.name }}</b></a> {{message[notification.type]}} <a href="{{objectLink}}" class="link"><em>{{object}}</em></a>.
-                </p>
-                <div class="notification_date">
-                    {{ formatDate(notification.createdAt) }}
+        <div class="media-body">
+            <div class="row">
+                <div class="col-md-11">
+                    <p class="media-heading">
+                        <a href="/app/profile/{{notification.triggeringUser.id}}" class="link"><b>{{ notification.triggeringUser.name }}</b></a> {{message[notification.type]}} <a href="{{objectLink}}" class="link"><em>{{object}}</em></a>.
+                    </p>
+                    <div class="notification_date">
+                        {{ formatDate(notification.createdAt) }}
+                    </div>
                 </div>
-            <div class="pull-right" ng-hide="notification.red">
-                <a href="" ng-click="setRed(notification)">
-                    <i class="fa fa-circle notify_ball active" aria-hidden="true"></i>
-                </a>
+                <div class="" ng-hide="notification.red">
+                    <a href="" ng-click="setRed(notification)">
+                        <i class="fa fa-circle notify_ball active" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
