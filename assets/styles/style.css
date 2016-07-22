@@ -200,7 +200,6 @@ a:hover{
 
 @media only screen and (max-width : 750px){
 	.top_menu_search_input{width: 175px;}
-	.top_menu_item{margin: 20px 10px auto 10px;}
 }
 
 @media only screen and (max-width : 510px){
