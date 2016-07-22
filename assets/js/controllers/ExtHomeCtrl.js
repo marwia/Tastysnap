@@ -24,7 +24,6 @@ angular.module('ExtHomeCtrl', []).controller('ExtHomeCtrl', [
     }]);
 */
 
-
 angular.module('ExtHomeCtrl', []).controller('ExtHomeCtrl', [
     '$scope',
     'Recipe',
@@ -131,5 +130,94 @@ angular.module('ExtHomeCtrl', []).controller('ExtHomeCtrl', [
         $scope.getMostTasted = function (skip, successCB, errorCB) {
             Recipe.getAll("trialsCount DESC", skip, successCB, errorCB);
         };
+
+
+        //carousel test
+
+        $scope.displayMode = 'mobile'; // default value
+        $scope.$watch('displayMode', function(value){
+            switch (value) {
+            case 'mobile':
+                // do stuff for mobile mode
+                console.log(value);
+                break;
+            case 'tablet':
+                // do stuff for tablet mode
+                console.log(value);
+                break;
+            }
+        });
+
+
+function CarouselDemoCtrl($scope) {
+  var whatDevice = $scope.nowDevice;
+  $scope.myInterval = 7000;
+  $scope.slides = [{
+    image: 'http://placekitten.com/221/200',
+    text: 'Kitten.'
+  }, {
+    image: 'http://placekitten.com/241/200',
+    text: 'Kitty!'
+  }, {
+    image: 'http://placekitten.com/223/200',
+    text: 'Cat.'
+  }, {
+    image: 'http://placekitten.com/224/200',
+    text: 'Feline!'
+  }, {
+    image: 'http://placekitten.com/225/200',
+    text: 'Cat.'
+  }, {
+    image: 'http://placekitten.com/226/200',
+    text: 'Feline!'
+  }, {
+    image: 'http://placekitten.com/227/200',
+    text: 'Cat.'
+  }, {
+    image: 'http://placekitten.com/228/200',
+    text: 'Feline!'
+  }, {
+    image: 'http://placekitten.com/229/200',
+    text: 'Cat.'
+  }, {
+    image: 'http://placekitten.com/230/200',
+    text: 'Feline!'
+  }];
+
+
+    var i, first = [],
+      second, third;
+    var many = 1;
+
+    //##################################################    
+    //Need to be changed to update the carousel since the resolution changed
+    $scope.displayMode = "tablet";
+    //##################################################
+    if ($scope.displayMode == "mobile") {many = 1;}
+    else if ($scope.displayMode == "tablet") {many = 2;} 
+    else {many = 3;}
+    
+    for (i = 0; i < $scope.slides.length; i += many) {
+      second = {
+        image1: $scope.slides[i]
+      };
+      if (many == 1) {}
+      if ($scope.slides[i + 1] && (many == 2 || many == 3)) {
+        second.image2 = $scope.slides[i + 1];
+
+      }
+      if ($scope.slides[i + (many - 1)] && many == 3) {
+        second.image3 = $scope.slides[i + 2];
+      }
+      first.push(second);
+    }
+    $scope.groupedSlides = first;
+}
+        //fine - carousel test
+
+
+
+
+
                 
     }]);
