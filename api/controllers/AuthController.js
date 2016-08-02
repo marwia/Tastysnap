@@ -16,7 +16,7 @@ module.exports = {
 
     facebookCallback: function (req, res, next) {
         passport.authenticate('facebook',
-            function (err, user) {
+            function (err, user, isNewUser) {
 
                 console.log("AUTH Facebook Response error=", err, "user=", user);
                 //se l'utente non esiste allora rimane uguale a false
@@ -27,7 +27,7 @@ module.exports = {
                     // così, ogni volta che verifico il token posso risalire ai dati dell'utente
                     var payload = {id: user.id, name: user.name, surname: user.surname};
                     console.log("payload del token:", payload);
-                    return res.redirect('/login?token=' + jwToken.issue(payload))
+                    return res.redirect('/login?token=' + jwToken.issue(payload) + '&new=' + isNewUser);
                 } else {
                     return res.status(401).json({ message: 'User not found.' });//info contains the error message
                 }
@@ -46,7 +46,7 @@ module.exports = {
 
     googleCallback: function (req, res, next) {
         passport.authenticate('google',
-            function (err, user) {
+            function (err, user, isNewUser) {
 
                 console.log("AUTH Google Response error=", err, "user=", user);
                 //se l'utente non esiste allora rimane uguale a false
@@ -56,7 +56,7 @@ module.exports = {
                     // rispondo con il token generato in base all'oggetto "user"
                     // così, ogni volta che verifico il token posso risalire ai dati dell'utente
                     var payload = {id: user.id, name: user.name, surname: user.surname};
-                    return res.redirect('/login?token=' + jwToken.issue(payload))
+                    return res.redirect('/login?token=' + jwToken.issue(payload) + '&new=' + isNewUser);
                 } else {
                     return res.status(401).json({ message: 'User not found.' });//info contains the error message
                 }
@@ -77,7 +77,7 @@ module.exports = {
 
     twitterCallback: function (req, res, next) {
         passport.authenticate('twitter',
-            function (err, user) {
+            function (err, user, isNewUser) {
 
                 console.log("AUTH Twitter Response error= ", err, "user= ", user);
                 //se l'utente non esiste allora rimane uguale a false
@@ -87,7 +87,7 @@ module.exports = {
                     // rispondo con il token generato in base all'oggetto "user"
                     // così, ogni volta che verifico il token posso risalire ai dati dell'utente
                     var payload = {id: user.id, name: user.name, surname: user.surname};
-                    return res.redirect('/login?token=' + jwToken.issue(payload))
+                    return res.redirect('/login?token=' + jwToken.issue(payload) + '&new=' + isNewUser);
                 } else {
                     return res.status(401).json({ message: 'User not found.' });//info contains the error message
                 }

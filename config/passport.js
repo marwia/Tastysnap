@@ -50,13 +50,13 @@ passport.use(new FacebookStrategy(FBstrategy,
             if (err) { return done(err); }
             if (foundUser[0]) {
                 console.log("Utente FB loggato", foundUser[0]);
-                done(null, foundUser[0]);
+                done(null, foundUser[0], false);// l'ultimo argomento indica se l'utente è nuovo
             } else {
                 User.create(fbUser).exec(function(err, user) {
 
                     if (err) { return done(err); }
                     console.log("Utente FB creato", user);
-                    done(null, user);
+                    done(null, user, true);// l'ultimo argomento indica se l'utente è nuovo
                 });
             }
         });
@@ -89,13 +89,13 @@ passport.use(new GoogleStrategy({
             if (err) { return done(err); }
             if (foundUser[0]) {
                 console.log("Utente Google loggato", foundUser[0]);
-                done(null, foundUser[0]);
+                done(null, foundUser[0], false);// l'ultimo argomento indica se l'utente è nuovo
             } else {
                 User.create(gUser).exec(function(err, user) {
 
                     if (err) { return done(err); }
                     console.log("Utente Google creato", user);
-                    done(null, user);
+                    done(null, user, true);// l'ultimo argomento indica se l'utente è nuovo
                 });
             }
         });
@@ -129,13 +129,13 @@ passport.use(new TwitterStrategy({
             if (err) { return done(err); }
             if (foundUser[0]) {
                 console.log("Utente Twitter loggato", foundUser[0]);
-                done(null, foundUser[0]);
+                done(null, foundUser[0], false);// l'ultimo argomento indica se l'utente è nuovo
             } else {
                 User.create(tUser).exec(function(err, user) {
 
                     if (err) { return done(err); }
                     console.log("Utente Twitter creato", user);
-                    done(null, user);
+                    done(null, user, true);// l'ultimo argomento indica se l'utente è nuovo
                 });
             }
         });

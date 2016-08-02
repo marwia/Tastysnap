@@ -16,14 +16,14 @@ angular.module('appRoutes', []).config([
     '$stateProvider',
     '$urlRouterProvider',
     '$locationProvider',
-    function($stateProvider, $urlRouterProvider, $locationProvider) {
+    function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
         // Dichiaro i vari stati dell'app
         $stateProvider
-        
+
             .state('main', {
                 url: '/',
-                onEnter: ['$state', 'Auth', function($state, Auth) {
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('app.ext_home');
                     } else {
@@ -45,22 +45,22 @@ angular.module('appRoutes', []).config([
                     'navbar@app': {
                         templateUrl: 'partials/navbar.html',
                         resolve: {
-                            userPromise: ['User','Auth', function(user, Auth) {
+                            userPromise: ['User', 'Auth', function (user, Auth) {
                                 if (Auth.isLoggedIn())
                                     return user.getCurrentUser();
-                            }] 
+                            }]
                         }
                     },
                     'sidebar@app': { templateUrl: 'partials/sidebar.html' },
                     'footer@app': { templateUrl: 'partials/footer.html' }
                 },
-                onEnter: ['$state', 'Auth', function($state, Auth) {
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
                     //if (!Auth.isLoggedIn()) {
                     //    $state.go('login');
                     //}
                 }]
             })
-            
+
             .state('app.recipe_create', {
                 url: '/recipe_create',
                 views: {
@@ -69,17 +69,17 @@ angular.module('appRoutes', []).config([
                         controller: 'RecipeCreateCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
-                            postPromise: ['Recipe', function(recipes) {
+                            postPromise: ['Recipe', function (recipes) {
                                 return recipes.getAllRecipeCategories();
                             }],
-                            dosageType: ['Recipe', function(recipes) {
+                            dosageType: ['Recipe', function (recipes) {
                                 return recipes.getAllDosageTypes();
                             }]
                         }
                     }
                 }
             })
-            
+
             // EXTERN HOME
             .state('app.ext_home', {
                 url: '/ext_home',
@@ -90,11 +90,11 @@ angular.module('appRoutes', []).config([
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
                             // carica le ricette
-                            postPromise: ['Recipe', function(recipes) {
+                            postPromise: ['Recipe', function (recipes) {
                                 return recipes.getAll("createdAt DESC");
                             }],
                             // carica le collection
-                            collectionPromise: ['Collection', '$stateParams', function(collections, $stateParams) {
+                            collectionPromise: ['Collection', '$stateParams', function (collections, $stateParams) {
                                 return collections.getAll();
                             }]
                         }
@@ -105,12 +105,12 @@ angular.module('appRoutes', []).config([
             // SEARCH
             .state('app.search', {
                 url: '/search?q&f',
-                reloadOnSearch : false,
+                reloadOnSearch: false,
                 views: {
                     'content@app': {
                         templateUrl: 'templates/search.html',
                         controller: 'SearchCtrl',
-                        onEnter: ['$state', '$stateParams', function($state, $stateParams) {
+                        onEnter: ['$state', '$stateParams', function ($state, $stateParams) {
                             console.log("resolve search");
                             console.info("query params: ", $stateParams);
                         }]
@@ -127,7 +127,7 @@ angular.module('appRoutes', []).config([
                         controller: 'UserHomeCtrl'
                     }
                 },
-                onEnter: ['$state', 'Auth', function($state, Auth) {
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
@@ -136,38 +136,70 @@ angular.module('appRoutes', []).config([
 
             // HOME MOST RECENT
             .state('app.home.most_recent', {
-                url: '/most_recent',
+                url: '/most_recent?new',
+                params: {
+                    new: {
+                        value: '',
+                        squash: true
+                    }
+                },
+                reloadOnSearch: false,
                 views: {
                     'home_content@app.home': {
                         templateUrl: 'templates/home_most_recent.html',
                         controller: 'RecipeCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
-                            
+
+                            openModal: ['$stateParams', '$uibModal', 'User', '$state', function ($stateParams, $uibModal, User, $state) {
+                                if ($stateParams.new == "true") {
+
+                                    var modalInstance = $uibModal.open({
+                                        animation: true,
+                                        templateUrl: 'templates/user_welcome_modal.html',
+                                        controller: function ($uibModalInstance, $scope) {
+                                            // passaggio paramteri
+                                            $scope.currentUser = User.currentUser;
+
+
+                                            $scope.cancel = function () {
+                                                $uibModalInstance.dismiss('cancel');
+                                            };
+                                        },
+                                        size: 'lg'
+                                    });
+
+                                    modalInstance.result.then(null, function () {
+                                        console.info('Modal dismissed at: ' + new Date());
+                                        $state.go('.', { new: 'false' }, { notify: false });
+                                    });
+                                }
+                            }],
+
                             // carica le ricette
-                            postPromise: ['Recipe', function(Recipe) {
+                            postPromise: ['Recipe', function (Recipe) {
                                 return Recipe.getAll("createdAt DESC", null, null, //nel caso positivo fai nulla...
                                     function (response) { //nel caso di errore
                                         Recipe.recipes = []; //svuoto l'array delle ricette
                                         return true; //prosegui comunque
-                                });
+                                    });
                             }],
                             // carica le collection
-                            collectionPromise: ['Collection', '$stateParams', function(Collection, $stateParams) {
+                            collectionPromise: ['Collection', '$stateParams', function (Collection, $stateParams) {
                                 // ATTENZIONE: BUG QUANDO SI TENTA DI ORDINARE LE COLLECTION PER "createdAt DESC"
                                 return Collection.getAll(null, null, null, //nel caso positivo fai nulla...
                                     function (response) { //nel caso di errore
                                         Collection.collections = []; //svuoto l'array delle raccolte
                                         return true; //prosegui comunque
-                                });
+                                    });
                             }],
                             // carica gli utenti seguiti
-                            followingUsersPromise: ['User', 'Auth', function(User, Auth) {
+                            followingUsersPromise: ['User', 'Auth', function (User, Auth) {
                                 return User.getFollowingUsers(Auth.currentUser().id, null, null, null, //nel caso positivo fai nulla...
                                     function (response) { //nel caso di errore
                                         User.following_users = []; //svuoto l'array delle raccolte
                                         return true; //prosegui comunque
-                                });
+                                    });
                             }]
                         }
                     }
@@ -185,7 +217,7 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             //stampa delle ricette
                             //TODO - stampa delle ricette piu assaggiate
-                            recipePromise: ['Recipe', function(recipes) {
+                            recipePromise: ['Recipe', function (recipes) {
                                 console.log("resolve home");
                                 return recipes.getAll("trialsCount DESC");
                             }]
@@ -205,7 +237,7 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             //stampa delle ricette
                             //TODO - stampa delle ricette piu assaggiate
-                            postPromise: ['Recipe', function(recipes) {
+                            postPromise: ['Recipe', function (recipes) {
                                 return recipes.getAll('viewsCount DESC');
                             }]
                         }
@@ -224,14 +256,14 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             //stampa delle ricette
                             //TODO - stampa delle ricette piu assaggiate
-                            postPromise: ['Recipe', function(recipes) {
+                            postPromise: ['Recipe', function (recipes) {
                                 return recipes.getAll('commentsCount DESC');
                             }]
                         }
                     }
                 }
             })
-            
+
             // HOME NEAR RECIPES
             .state('app.near_recipes', {
                 url: '/near_recipes',
@@ -241,7 +273,7 @@ angular.module('appRoutes', []).config([
                         controller: 'NearRecipesCtrl'
                     }
                 },
-                onEnter: ['$state', 'Auth', function($state, Auth) {
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
@@ -256,13 +288,13 @@ angular.module('appRoutes', []).config([
                         templateUrl: 'templates/favorite_recipes.html',
                         controller: 'RecipeCtrl',
                         resolve: {
-                            recipePromise: ['Recipe', 'Auth', function(recipes, Auth) {
+                            recipePromise: ['Recipe', 'Auth', function (recipes, Auth) {
                                 return recipes.getUserUpvotedRecipes(Auth.currentUser().id);
                             }]
                         }
                     }
                 },
-                onEnter: ['$state', 'Auth', function($state, Auth) {
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
@@ -277,13 +309,13 @@ angular.module('appRoutes', []).config([
                         templateUrl: 'templates/viewed_recipes.html',
                         controller: 'RecipeCtrl',
                         resolve: {
-                            recipePromise: ['Recipe', 'Auth', function(recipes, Auth) {
+                            recipePromise: ['Recipe', 'Auth', function (recipes, Auth) {
                                 return recipes.getUserViewedRecipes(Auth.currentUser().id);
                             }]
                         }
                     }
                 },
-                onEnter: ['$state', 'Auth', function($state, Auth) {
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
@@ -299,7 +331,7 @@ angular.module('appRoutes', []).config([
                         controller: 'FollowingCollectionsCtrl'
                     }
                 },
-                onEnter: ['$state', 'Auth', function($state, Auth) {
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
@@ -314,13 +346,13 @@ angular.module('appRoutes', []).config([
                         templateUrl: 'templates/tasted_recipes.html',
                         controller: 'RecipeCtrl',
                         resolve: {
-                            recipePromise: ['Recipe', 'Auth', function(recipes, Auth) {
+                            recipePromise: ['Recipe', 'Auth', function (recipes, Auth) {
                                 return recipes.getUserTriedRecipes(Auth.currentUser().id);
                             }]
                         }
                     }
                 },
-                onEnter: ['$state', 'Auth', function($state, Auth) {
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
                     if (!Auth.isLoggedIn()) {
                         $state.go('login');
                     }
@@ -329,15 +361,15 @@ angular.module('appRoutes', []).config([
 
             // LOGIN PAGE ==========================================================
             .state('login', {
-                url: '/login?token',// query param (opzionale)
+                url: '/login?token&new',// query param (opzionale)
                 templateUrl: 'templates/login.html',
                 controller: 'AuthCtrl',
-                onEnter: ['$state', '$stateParams', 'Auth', '$http', function($state, $stateParams, Auth, $http) {
+                onEnter: ['$state', '$stateParams', 'Auth', '$http', function ($state, $stateParams, Auth, $http) {
                     if ($stateParams.token) {
                         Auth.saveToken($stateParams.token);
                     }
                     if (Auth.isLoggedIn()) {
-                        $state.go('app.home.most_recent');
+                        $state.go('app.home.most_recent', { new: $stateParams.new });
                     }
                 }]
             })
@@ -351,15 +383,15 @@ angular.module('appRoutes', []).config([
                         templateUrl: 'templates/profile.html',
                         controller: 'UserProfileCtrl',
                         resolve: {
-                            userPromise: ['User', '$stateParams', function(user, $stateParams) {
+                            userPromise: ['User', '$stateParams', function (user, $stateParams) {
                                 return user.getUserById($stateParams.id);
                             }],
-                            recipePromise: ['Recipe', '$stateParams', function(Recipe, $stateParams) {
+                            recipePromise: ['Recipe', '$stateParams', function (Recipe, $stateParams) {
                                 return Recipe.getUserRecipes($stateParams.id, null, //nel caso positivo fai nulla...
                                     function (response) { //nel caso di errore
                                         Recipe.recipes = []; //svuoto l'array delle ricette
                                         return true; //prosegui comunque
-                                });
+                                    });
                             }]
                         }
                     },
@@ -377,8 +409,8 @@ angular.module('appRoutes', []).config([
                         templateUrl: 'templates/profile_collections.html',
                         controller: 'CollectionCtrl',
                         resolve: {
-                            collectionPromise: ['Collection', '$stateParams', function(Collection, $stateParams) {
-                                return Collection.getUserCollections($stateParams.id, null, 
+                            collectionPromise: ['Collection', '$stateParams', function (Collection, $stateParams) {
+                                return Collection.getUserCollections($stateParams.id, null,
                                     function (response) {
                                         Collection.collections = [];
                                         return true;
@@ -397,15 +429,15 @@ angular.module('appRoutes', []).config([
                         controller: 'UserProfileFollowerUsersCtrl',
                         resolve: {
                             // carica gli utenti seguiti
-                            followerUsersPromise: ['User', '$stateParams', function(User, $stateParams) {
-                                return User.getFollowerUsers($stateParams.id, null, null, null, 
+                            followerUsersPromise: ['User', '$stateParams', function (User, $stateParams) {
+                                return User.getFollowerUsers($stateParams.id, null, null, null,
                                     function (response) {
                                         User.follower_users = [];
                                         return true;
-                                    }); 
+                                    });
                             }]
                         }
-                        
+
                     }
                 }
             })
@@ -418,12 +450,12 @@ angular.module('appRoutes', []).config([
                         controller: 'UserProfileFollowingUsersCtrl',
                         resolve: {
                             // carica gli utenti seguiti
-                            followingUsersPromise: ['User', '$stateParams', function(User, $stateParams) {
+                            followingUsersPromise: ['User', '$stateParams', function (User, $stateParams) {
                                 return User.getFollowingUsers($stateParams.id, null, null, null,
                                     function (response) {
                                         User.following_users = [];
                                         return true;
-                                    }); 
+                                    });
                             }]
                         }
                     }
@@ -439,7 +471,7 @@ angular.module('appRoutes', []).config([
                         controller: 'RecipeCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
-                            recipePromise: ['Recipe', '$stateParams', function(recipes, $stateParams) {
+                            recipePromise: ['Recipe', '$stateParams', function (recipes, $stateParams) {
                                 return recipes.getRecipe($stateParams.id);
                             }]
                         }
@@ -456,7 +488,7 @@ angular.module('appRoutes', []).config([
                         controller: 'CollectionDetailCtrl',
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
-                            collectionPromise: ['Collection', '$stateParams', function(collections, $stateParams) {
+                            collectionPromise: ['Collection', '$stateParams', function (collections, $stateParams) {
                                 return collections.getCollection($stateParams.id);
                             }]
                         }
@@ -466,13 +498,13 @@ angular.module('appRoutes', []).config([
 
         // DEFAULT PAGE ==========================================================
 
-        $urlRouterProvider.otherwise(function($injector, $location) {
+        $urlRouterProvider.otherwise(function ($injector, $location) {
             var $state = $injector.get("$state");
             var Auth = $injector.get("Auth");
             if (Auth.isLoggedIn())
                 $state.go("app.home.most_recent");
-            else 
-                $state.go("app.ext_home");    
+            else
+                $state.go("app.ext_home");
         });
 
 
