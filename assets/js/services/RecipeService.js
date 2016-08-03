@@ -22,7 +22,7 @@ angular.module('RecipeService', [])
          * Verifica se l'utente loggatto attualmente è l'autore della ricetta.
          */
         o.isRecipeAuthor = function(recipe) {
-            if (Auth.isLoggedIn) {
+            if (Auth.isLoggedIn()) {
                 if (Auth.currentUser().id == recipe.author.id) {
                     return true;
                 }
