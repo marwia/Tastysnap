@@ -254,7 +254,7 @@ module.exports = {
                                         .populate('product')
                                         .exec(function (err2, foundIngredients) {
                                             if (err2) { cb(err2, -1); }// no data
-                                            console.info(foundIngredients);
+                                            
                                             cb(err2, {
                                                 ingredients: foundIngredients,
                                                 productIds: productIds
@@ -344,6 +344,12 @@ module.exports = {
                         recipe.ingredients = resultSet.products ? resultSet.products.ingredients : null;
 
                         // calcoli finali (non eseguiti in parallelo)
+                        /**
+                         * Attenzione!
+                         * Waterline non supporta le subquery, perciò devo assegnare
+                         * il valore direttamente all'elemento e non posso assegnare 
+                         * l'oggetto (come avrei voluto che fosse possibile).
+                         */
                         if (originalCriteria["energy"])
                             recipe.totalEnergy = IngredientService.calculateNutrientTotal(recipe.ingredients, '208').value;
 
@@ -417,8 +423,6 @@ module.exports = {
                         });
                     }
 
-                    console.log("prima dei filtri sui nutrienti: ", foundRecipes)
-
                     // in base ai valori nutrizionali (AND)
                     if (originalCriteria["energy"]) {
                         foundRecipes = wlFilter(foundRecipes, {
@@ -427,9 +431,6 @@ module.exports = {
                             }
                         }).results;
                     }
-                    console.info(originalCriteria["energy"]);
-                    console.log("dopo filtro energia: ", foundRecipes.length)
-
 
                     if (originalCriteria["protein"]) {
                         foundRecipes = wlFilter(foundRecipes, {
@@ -463,8 +464,6 @@ module.exports = {
                         }).results;
                     }
 
-                    console.log("dopo dei filtri sui nutrienti: ", foundRecipes.length)
-
                     
 
                     /**
@@ -494,6 +493,14 @@ module.exports = {
                     if (actionUtil.parseSkip(req))
                         skip = actionUtil.parseSkip(req);
                     foundRecipes.slice(skip, skip + limit);
+
+                    /**
+                     * Eliminazione di alcuni elementi populati
+                     */
+                    for (var i in foundRecipes) {
+                        delete foundRecipes[i].ingredients;
+                        delete foundRecipes[i].productIds;
+                    }
 
                     if (foundRecipes.length == 0)
                         return res.notFound({ error: 'No recipe found' });
