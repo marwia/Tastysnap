@@ -129,7 +129,10 @@ module.exports = {
      * @apiDescription Serve per richiedere un lista di ricette applicando filtri di ricerca.
      * Attenzione che i risultati sono limitati ad un numero preciso di ricette, massimo 30 per richiesta.<br>
      * Questo end point accetta prametri.
-     *
+     * Attenzione! I paramteri nutrizionali sulla base dei quali si può fare le query sono: "energy",
+     * "protein", "sugar", "fat" e "carb". Tutti i valori sono espressi in grammi, ad eccezione 
+     * dell'energia che viene richiesta in kcal.
+     * 
      * @apiParam {Integer} skip The number of records to skip (useful for pagination).
      * @apiParam {Integer} limit The maximum number of records to send back (useful for pagination). Defaults to 30. 
      * @apiParam {String} where Instead of filtering based on a specific attribute, you may instead choose to provide a where parameter with a Waterline WHERE criteria object, encoded as a JSON string.
@@ -147,6 +150,9 @@ module.exports = {
      * @apiParamExample Review-Param-Example:
      *     ?where{"difficulty":{">":3, "<=":5}, "calories":{">":4, "<=":5}}
      * 
+     * @apiParamExample Nutritional-Param-Example:
+     *     ?where{"fat":{">":30}, "sugar":{"<=":5}}
+     * 
      * @apiParamExample Category-Param-Example:
      *     ?where{"category": ["primi piatti", "zuppe"]}
      */
@@ -159,12 +165,23 @@ module.exports = {
 
         console.info("NOT filtered criteria: ", filteredCriteria);
 
-        // cancello i criteri di ricerca secondari
+        /**
+         * Cancello i criteri di ricerca secondari, altrimenti nella
+         * ricerca delle ricette i risultati saranno negativi: zero
+         * ricette trovate. Infatti bisogna sempre togliere i parametri
+         * non presenti nella definizione del modello.
+         */
         delete filteredCriteria["difficulty"];
         delete filteredCriteria["cost"];
         delete filteredCriteria["calories"];
 
         delete filteredCriteria["products"];
+
+        delete filteredCriteria["energy"];
+        delete filteredCriteria["protein"];
+        delete filteredCriteria["carb"];
+        delete filteredCriteria["sugar"];
+        delete filteredCriteria["fat"];
 
         console.info("filtered criteria: ", filteredCriteria);
 
@@ -218,14 +235,33 @@ module.exports = {
                             .populate('ingredients')
                             .exec(function (err, result) {
                                 if (!err && result) {
+
+                                    // Array con id di prodotti e ingredienti
                                     var productIds = [];
+                                    var ingredientIds = [];
+
                                     for (var i = 0; i < result.length; i++) {
                                         if (result[i].ingredients)
                                             for (var j = 0; j < result[i].ingredients.length; j++) {
-                                                productIds.push(result[i].ingredients[j].product)
+                                                productIds.push(result[i].ingredients[j].product);
+                                                ingredientIds.push(result[i].ingredients[i].id);
                                             }
                                     }
-                                    cb(err, productIds);
+
+                                    // Populo i dettagli di ogni ingrediente
+                                    Ingredient.find()
+                                        .where({ id: ingredientIds })
+                                        .populate('product')
+                                        .exec(function (err2, foundIngredients) {
+                                            if (err2) { cb(err2, -1); }// no data
+                                            console.info(foundIngredients);
+                                            cb(err2, {
+                                                ingredients: foundIngredients,
+                                                productIds: productIds
+                                            });
+                                        });
+
+                                    //cb(err, productIds);
                                 } else {
                                     cb(err, -1);// no data
                                 }
@@ -244,7 +280,7 @@ module.exports = {
                                 var avg = tot / result.length;
                                 cb(err, avg);
                             } else {
-                                cb(err, -1);// no data
+                                cb(err, 0);// no data
                             }
                         });
                     };
@@ -277,16 +313,21 @@ module.exports = {
                         || (sortCriteria && sortCriteria.indexOf("calories") > -1))
                         tasks["calories"] = averages.calories;
 
-                    if (originalCriteria["products"])
+                    if (originalCriteria["products"]
+                        || originalCriteria["energy"]
+                        || originalCriteria["protein"]
+                        || originalCriteria["carb"]
+                        || originalCriteria["sugar"]
+                        || originalCriteria["fat"])
                         tasks["products"] = populateIngredients;
-
+                    
                     /**
                      * ESECUZIONE DEI TASK IN PARALLELO
                      */
 
                     async.parallel(tasks, function (err, resultSet) {
                         if (err) { return next(err); }
-                        console.info(resultSet);
+
                         // copio i valori calcolati
                         recipe.commentsCount = resultSet.commentsCount;
                         recipe.votesCount = resultSet.votesCount;
@@ -298,7 +339,25 @@ module.exports = {
                         recipe.cost = resultSet.cost;
                         recipe.calories = resultSet.calories;
 
-                        recipe.products = resultSet.products;
+                        //recipe.products = resultSet.products;
+                        recipe.productIds = resultSet.products ? resultSet.products.productIds : null;
+                        recipe.ingredients = resultSet.products ? resultSet.products.ingredients : null;
+
+                        // calcoli finali (non eseguiti in parallelo)
+                        if (originalCriteria["energy"])
+                            recipe.totalEnergy = IngredientService.calculateNutrientTotal(recipe.ingredients, '208').value;
+
+                        if (originalCriteria["protein"])
+                            recipe.totalProtein = IngredientService.calculateNutrientTotal(recipe.ingredients, '203').value;
+
+                        if (originalCriteria["carb"])
+                            recipe.totalCarb = IngredientService.calculateNutrientTotal(recipe.ingredients, '205').value;
+
+                        if (originalCriteria["sugar"])
+                            recipe.totalSugar = IngredientService.calculateNutrientTotal(recipe.ingredients, '269').value;
+
+                        if (originalCriteria["fat"])
+                            recipe.totalFat = IngredientService.calculateNutrientTotal(recipe.ingredients, '204').value;
 
                         // richiamo la callback finale
                         callback();
@@ -354,9 +413,59 @@ module.exports = {
                         }
 
                         foundRecipes = foundRecipes.filter(function (el) {
-                            return notIn ? !MyUtils.superBag(el.products, products) : MyUtils.superBag(el.products, products);
+                            return notIn ? !MyUtils.superBag(el.products.productIds, products) : MyUtils.superBag(el.products.productIds, products);
                         });
                     }
+
+                    console.log("prima dei filtri sui nutrienti: ", foundRecipes)
+
+                    // in base ai valori nutrizionali (AND)
+                    if (originalCriteria["energy"]) {
+                        foundRecipes = wlFilter(foundRecipes, {
+                            where: {
+                                totalEnergy: originalCriteria["energy"]    
+                            }
+                        }).results;
+                    }
+                    console.info(originalCriteria["energy"]);
+                    console.log("dopo filtro energia: ", foundRecipes.length)
+
+
+                    if (originalCriteria["protein"]) {
+                        foundRecipes = wlFilter(foundRecipes, {
+                            where: {
+                                totalProtein: originalCriteria["protein"]
+                            }
+                        }).results;
+                    }
+
+                    if (originalCriteria["carb"]) {
+                        foundRecipes = wlFilter(foundRecipes, {
+                            where: {
+                                totalCarb: originalCriteria["carb"]
+                            }
+                        }).results;
+                    }
+
+                    if (originalCriteria["sugar"]) {
+                        foundRecipes = wlFilter(foundRecipes, {
+                            where: {
+                                totalSugar: originalCriteria["sugar"]
+                            }
+                        }).results;
+                    }
+
+                    if (originalCriteria["fat"]) {
+                        foundRecipes = wlFilter(foundRecipes, {
+                            where: {
+                                totalFat: originalCriteria["fat"]
+                            }
+                        }).results;
+                    }
+
+                    console.log("dopo dei filtri sui nutrienti: ", foundRecipes.length)
+
+                    
 
                     /**
                      * SORT
@@ -367,9 +476,10 @@ module.exports = {
                      * i valori permessi.
                      */
                     var substrings = ['commentsCount', 'votesCount', 'viewsCount', 'trialsCount',
-                        'difficulty', 'cost', 'calories', 'title', 'preparationTime', 'category', 'author'];
+                        'difficulty', 'cost', 'calories', 'title', 'preparationTime', 'category', 'author',
+                        'energy', 'protein', 'carb', 'sugar', 'fat'];
                     if (new RegExp(substrings.join("|")).test(sortCriteria)) {
-                        // ordino i risultati secondo un criterio
+                        // ordino i risultati secondo un solo criterio
                         foundRecipes.sort(MyUtils.dynamicSort(sortCriteria));
                     }
 
@@ -384,6 +494,9 @@ module.exports = {
                     if (actionUtil.parseSkip(req))
                         skip = actionUtil.parseSkip(req);
                     foundRecipes.slice(skip, skip + limit);
+
+                    if (foundRecipes.length == 0)
+                        return res.notFound({ error: 'No recipe found' });
 
                     return res.json(foundRecipes);
                 });

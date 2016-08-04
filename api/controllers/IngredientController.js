@@ -290,7 +290,7 @@ module.exports = {
 
                 if (!foundGroup) { return res.notFound({ error: 'No ingredient group found' }); }
 
-                // Array con id di ricette
+                // Array con id di ingredienti
                 var ingredientIds = new Array();
 
                 for (var i in foundGroup.ingredients) {
