@@ -27,12 +27,13 @@ angular
             }
             html += '<ul uib-dropdown-menu role="menu"><li role="menuitem" ng-repeat="item in items"><a href="#" tabindex="-1" data-ng-click="selectVal(item)">{{item}}</a></li></ul></div>';
             element.append($compile(html)(scope));
-            for (var i = 0; i < scope.items.length; i++) {
-                if (scope.items[i] === scope.selectedItem) {
-                    scope.bSelectedItem = scope.items[i];
-                    break;
+            if (scope.items)
+                for (var i = 0; i < scope.items.length; i++) {
+                    if (scope.items[i] === scope.selectedItem) {
+                        scope.bSelectedItem = scope.items[i];
+                        break;
+                    }
                 }
-            }
             scope.selectVal = function (item) {
                 switch (attrs.menuType) {
                     case "button":

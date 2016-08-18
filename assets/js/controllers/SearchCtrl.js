@@ -36,7 +36,9 @@ angular.module('SearchCtrl', []).controller('SearchCtrl', [
                 
                 switch ($scope.searchModel) {
                     case 'recipe':
+                        // ricavo i filtri dalla url
                         var recipeFilters = Recipe.readSearchFilters();
+                        console.info("search: ", recipeFilters);
                         Recipe.advancedSearch($scope.q,
                             recipeFilters.selectedCategories,
                             Recipe.toIdArray(recipeFilters.selectedProducts),
@@ -44,6 +46,7 @@ angular.module('SearchCtrl', []).controller('SearchCtrl', [
                             recipeFilters.costRating,
                             recipeFilters.caloriesRating,
                             recipeFilters.timeValue,
+                            recipeFilters.nutrientFilters,
                             recipeFilters.selectedSortOptionIdx,
                             recipeFilters.selectedSortMode, null, true);
                         break;
@@ -56,7 +59,7 @@ angular.module('SearchCtrl', []).controller('SearchCtrl', [
                         // TODO
                         break;
                 }
-            }, 500);
+            }, 750);
         })
 
         // espongo i wrapper per i bottoni 'carica altro'

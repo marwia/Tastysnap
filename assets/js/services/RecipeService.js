@@ -15,7 +15,9 @@ angular.module('RecipeService', [])
             recipeCategories: [],
             dosagesTypes: [],
             sortOptions: ["undefined","commentsCount", "trialsCount", "votesCount", "viewsCount",
-                "difficulty", "cost", "calories", "preparationTime", "title"]
+                "difficulty", "cost", "calories", "preparationTime", "title",
+                "energy", "protein", "carb", "sugar", "fat"],
+            nutrientFilterTypes: ["energy", "protein", "carb", "sugar", "fat"]
         };
 
         /**
@@ -177,6 +179,7 @@ angular.module('RecipeService', [])
             productsIdsArray, 
             difficulty, cost, calories,
             maxTime,
+            nutrientFiltersArray,
             sort_by, sort_mode,
             skip, 
             reset, successCB, errorCB) {
@@ -204,6 +207,17 @@ angular.module('RecipeService', [])
                 
             if (maxTime)
                 params.where["preparationTime"] = { '<=': maxTime};
+
+            if (nutrientFiltersArray != null && nutrientFiltersArray.length > 0) {
+                var nutrientFiltersTransformed = nutrientFiltersArray.map(o.nutrientTransform);
+                // trasformo l'array in un oggetto:
+                // in pratica, prendo ogni elemento e ne ricavo il nome della prima proprietà
+                // poi quella proprietà la inietto nell'oggetto params.where e gli assegno il valore che
+                // quella proprietà aveva nell'array
+                for (var i in nutrientFiltersTransformed) {
+                    params.where[Object.keys(nutrientFiltersTransformed[i])[0]] = nutrientFiltersTransformed[i][Object.keys(nutrientFiltersTransformed[i])[0]];
+                }
+            }
                 
             if (sort_by != null && sort_by > 0)
                 params["sort"] = o.sortOptions[sort_by] + " " + sort_mode;
@@ -212,8 +226,11 @@ angular.module('RecipeService', [])
                 params["skip"] = skip;
                  
             // esecuzione della richiesta
-            return $http.get(server_prefix + '/recipe/search', params)
-                .then(function(response) {
+            return $http.get(server_prefix + '/recipe/search', 
+                {
+                    params: params
+                }
+                ).then(function(response) {
                 if (skip) {
                     for (var i = 0; i < response.data.length; i++) {
                         o.recipes.push(response.data[i]);
@@ -236,7 +253,7 @@ angular.module('RecipeService', [])
         
         o.writeSearchFilters = function (filters) {
             // scrivo i filtri di ricerca nel url
-            var encodedString = btoa(JSON.stringify(filters));
+            var encodedString = btoa(angular.toJson(filters));
             $location.search("f", encodedString);
         };
         
@@ -245,7 +262,7 @@ angular.module('RecipeService', [])
             var encodedFilters = $location.search()["f"];
             if (encodedFilters) {
                 var decodedFiltersString = atob(encodedFilters);
-                var decodedFilters = JSON.parse(decodedFiltersString);
+                var decodedFilters = angular.fromJson(decodedFiltersString);
                 return decodedFilters;
             }
             return null;
@@ -257,6 +274,27 @@ angular.module('RecipeService', [])
                 temp.push(element.id);
             }, this);
             return temp;
+        }
+
+        /**
+         * Funzione che trasforma un filtro nutriente da cosi:
+         * {
+                nutrient: "proteine",
+                nutrientIdx: 2
+                comparator: ">",
+                value: 40
+            }
+            a cosi:
+            "protein": {">":40}
+         */
+        o.nutrientTransform = function (nutrientFilter) {
+            var obj = {};
+            obj[nutrientFilter.comparator] = nutrientFilter.value;
+
+            var transformed = {};
+            transformed[o.nutrientFilterTypes[nutrientFilter.nutrientIdx]] = obj;
+
+            return transformed;
         }
 
         /**

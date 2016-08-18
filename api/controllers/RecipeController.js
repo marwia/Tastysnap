@@ -254,7 +254,7 @@ module.exports = {
                                         .populate('product')
                                         .exec(function (err2, foundIngredients) {
                                             if (err2) { cb(err2, -1); }// no data
-                                            
+
                                             cb(err2, {
                                                 ingredients: foundIngredients,
                                                 productIds: productIds
@@ -312,14 +312,25 @@ module.exports = {
                     if (originalCriteria["calories"]
                         || (sortCriteria && sortCriteria.indexOf("calories") > -1))
                         tasks["calories"] = averages.calories;
-
-                    if (originalCriteria["products"]
-                        || originalCriteria["energy"]
-                        || originalCriteria["protein"]
-                        || originalCriteria["carb"]
-                        || originalCriteria["sugar"]
-                        || originalCriteria["fat"])
+                    
+                    // elenco i criteri che necessitano del popolamento degli ingredienti
+                    var criteriaArray = ['products', 'energy', 'protein', 'carb', 'sugar', 'fat'];
+                    // verifico se nei criteri di ricerca oppure ordinamento vi è uno di 
+                    // questi criteri
+                    if (new RegExp(criteriaArray.join("|")).test(sortCriteria))
                         tasks["products"] = populateIngredients;
+                    else
+                        /**
+                         * Varifico se tra i criteri compare almeno una dei criteri che necessitano
+                         * della popolazione degli ingredienti.
+                         */
+                        for (var i in criteriaArray) {
+                            if (new RegExp((Object.keys(originalCriteria)).join("|")).test(criteriaArray[i])) {
+                                tasks["products"] = populateIngredients;
+                                break;
+                            }
+                        }
+                    
                     
                     /**
                      * ESECUZIONE DEI TASK IN PARALLELO
@@ -350,19 +361,25 @@ module.exports = {
                          * il valore direttamente all'elemento e non posso assegnare 
                          * l'oggetto (come avrei voluto che fosse possibile).
                          */
-                        if (originalCriteria["energy"])
+                        if (originalCriteria["energy"]
+                            || (sortCriteria && sortCriteria.indexOf("energy") > -1))
                             recipe.totalEnergy = IngredientService.calculateNutrientTotal(recipe.ingredients, '208').value;
+        
 
-                        if (originalCriteria["protein"])
+                        if (originalCriteria["protein"]
+                            || (sortCriteria && sortCriteria.indexOf("protein") > -1))
                             recipe.totalProtein = IngredientService.calculateNutrientTotal(recipe.ingredients, '203').value;
 
-                        if (originalCriteria["carb"])
+                        if (originalCriteria["carb"]
+                            || (sortCriteria && sortCriteria.indexOf("carb") > -1))
                             recipe.totalCarb = IngredientService.calculateNutrientTotal(recipe.ingredients, '205').value;
 
-                        if (originalCriteria["sugar"])
+                        if (originalCriteria["sugar"]
+                            || (sortCriteria && sortCriteria.indexOf("sugar") > -1))
                             recipe.totalSugar = IngredientService.calculateNutrientTotal(recipe.ingredients, '269').value;
 
-                        if (originalCriteria["fat"])
+                        if (originalCriteria["fat"]
+                            || (sortCriteria && sortCriteria.indexOf("fat") > -1))
                             recipe.totalFat = IngredientService.calculateNutrientTotal(recipe.ingredients, '204').value;
 
                         // richiamo la callback finale

@@ -17,10 +17,12 @@
                 <!-- ricette, raccolte, persone -->
                 <div class="row search_background_gray search_row">
                     <div class="col-md-12 text-center">
-                        <a class="search_button_category" ng-class="{'active': searchModel=='recipe'}" ng-click="searchModel='recipe'; writeM();" href="#" role="button">RICETTE</a>
-                        <a class="search_button_category" ng-class="{'active': searchModel=='collection'}" ng-click="searchModel='collection'; writeM();" href="#"
-                            role="button">RACCOLTE</a>
-                        <a class="search_button_category" ng-class="{'active': searchModel=='user'}" ng-click="searchModel='user'; writeM();" href="#" role="button">PERSONE</a>
+                        <a class="search_button_category" ng-class="{'active': searchModel=='recipe'}" ng-click="searchModel='recipe'; writeM();"
+                            href="#" role="button">RICETTE</a>
+                        <a class="search_button_category" ng-class="{'active': searchModel=='collection'}" ng-click="searchModel='collection'; writeM();"
+                            href="#" role="button">RACCOLTE</a>
+                        <a class="search_button_category" ng-class="{'active': searchModel=='user'}" ng-click="searchModel='user'; writeM();" href="#"
+                            role="button">PERSONE</a>
 
                     </div>
                 </div>
@@ -75,6 +77,29 @@
 
                     </div>
 
+                    <!-- ricerca row - VALORI NUTRIZIONALI-->
+                    <div class="row search_background_white search_row">
+                        <div class="col-md-12 col-sm-6 col-xs-12 search_title">
+                            <h4>VALORI NUTRIZIONALI</h4>
+                        </div>
+
+
+                        <div class="col-md-12 col-sm-6 col-xs-12">
+
+                            <div class="control-group" ng-repeat="f in recipeFilters.nutrientFilters">
+                                <div class="controls form-inline">
+                                    <my-dropdown data-menu-type="button" select-val="f.nutrient = selectedVal" preselected-item="f.nutrient || remainingNutrientTitles[0]" data-dropdown-data="remainingNutrientTitles"></my-dropdown>
+                                    <my-dropdown data-menu-type="button" select-val="f.comparator = selectedVal" preselected-item="f.comparator || comparatorTitles[0]" data-dropdown-data="comparatorTitles"></my-dropdown>
+                                    <input type="number" class="form-control" name="preparation_time" id="preparation_time" ng-model="f.value" required min="1"
+                                        max="1000" value="30" placeholder="30" />
+                                    <a href="#" ng-click="removeNutrientFilter($index)" class=""><i class="fa fa-times"></i></a>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-default" ng-disabled="remainingNutrientTitles.length == 0" ng-click="addNutrientFilter()">Aggiungi filtro</button>
+                        </div>
+                    </div>
+
                     <!-- ricerca row - OPINIONI -->
                     <div class="row search_background_white search_row">
                         <div class="col-md-12 col-sm-6 search_title">
@@ -90,8 +115,7 @@
                                         <div class="recipe_rating_con">
                                             <div class="rating">
                                                 <div>
-                                                    <uib-rating ng-model="recipeFilters.difficultyRating" max="max" read-only="isReadonly"
-                                                        titles="difficultyTitles"></uib-rating>
+                                                    <uib-rating ng-model="recipeFilters.difficultyRating" max="max" read-only="isReadonly" titles="difficultyTitles"></uib-rating>
                                                 </div>
                                             </div>
                                         </div>
@@ -133,7 +157,8 @@
                         </div>
 
                         <div class="col-md-12 col-sm-6 ">
-                            <my-dropdown data-menu-type="button" select-val="selectedSortOption = selectedVal" preselected-item="sortOptions[recipeFilters.selectedSortOptionIdx]" data-dropdown-data="sortOptions"></my-dropdown>
+                            <my-dropdown data-menu-type="button" select-val="selectedSortOption = selectedVal" preselected-item="sortOptions[recipeFilters.selectedSortOptionIdx]"
+                                data-dropdown-data="sortOptions"></my-dropdown>
 
                             <div class="btn-group">
                                 <label class="btn btn-default" ng-model="recipeFilters.selectedSortMode" uib-btn-radio="'ASC'" uncheckable><i class="fa fa-caret-up" aria-hidden="true"></i></label>
@@ -143,17 +168,18 @@
                     </div>
 
                 </div>
-                
+
                 <!-- filtri per raccolte -->
                 <div ng-show="searchModel=='collection'">
-                    
+
                     <div class="row search_background_white search_row">
                         <div class="col-md-12 col-sm-6 search_title">
                             <h4>ORDINA PER</h4>
                         </div>
 
                         <div class="col-md-12 col-sm-6 ">
-                            <my-dropdown data-menu-type="button" select-val="selectedSortOption = selectedVal" preselected-item="sortOptions[selectedSortOptionIdx]" data-dropdown-data="sortOptions"></my-dropdown>
+                            <my-dropdown data-menu-type="button" select-val="selectedSortOption = selectedVal" preselected-item="sortOptions[selectedSortOptionIdx]"
+                                data-dropdown-data="sortOptions"></my-dropdown>
 
                             <div class="btn-group">
                                 <label class="btn btn-default" ng-model="selectedSortMode" uib-btn-radio="'ASC'" uncheckable><i class="fa fa-caret-up" aria-hidden="true"></i></label>
@@ -161,13 +187,13 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
 
             </div>
 
         </div>
-        
+
         <!-- risultati ricerca -->
         <div class="search_left pull-left">
             <!-- -------------------------------- ricette -------------------------------- -->
@@ -238,7 +264,8 @@
                         <hr class="tasty_title_bar"></hr>
                     </div>
                     <div class="col-md-4">
-                        <h3 class="tasty_title_text">{{users.length}} persone trovate per {{q}}</h3></div>
+                        <h3 class="tasty_title_text">{{users.length}} persone trovate per {{q}}</h3>
+                    </div>
                     <div class="col-md-4">
                         <hr class="tasty_title_bar"></hr>
                     </div>
@@ -258,6 +285,6 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 </div>

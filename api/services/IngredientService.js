@@ -201,7 +201,6 @@ module.exports = {
                 total += nutrient_value.value;
                 unit = nutrient_value.unit;
             }
-
             return { "value": total, "unit": unit };
         }
     }
