@@ -1630,7 +1630,7 @@ tr.recipe_sp_3_tr{
 }
 
 .search_left{
-	width: calc(100% - 250px);
+	width: calc(100% - 300px);
 	
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
