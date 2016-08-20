@@ -31,7 +31,23 @@
 
         <!-- DESTRA -->
         <ul class="nav navbar-nav navbar-right">
-            <li>
+            
+            <li class="pull-right">
+                <!-- Profilo  -->
+                <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
+                    <img alt="{{ currentUser.name }}" src="{{ getUserProfileImage(currentUser) }}" id="single-button" uib-dropdown-toggle class="top_menu_profile img-circle pull-right">
+                    <ul uib-dropdown-menu class="top_menu_profile_dropdown" role="menu" aria-labelledby="single-button">
+                        <li role="menuitem"><a href="/app/profile/{{ currentUser.id }}">Profilo</a></li>
+                        <li class="divider"></li>
+                        <li role="menuitem"><a href="/login" ng-click="logOut()">Esci</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="pull-right" ng-hide="isLoggedIn()">
+                <!-- Accedi o registrati -->
+                <p class="navbar-text"><a href="/login" class="navbar-link">Accedi o registrati</a></p>
+            </li>
+            <li class="pull-right">
                 <!-- Notifiche -->
                 <div uib-dropdown auto-close="outsideClick" keyboard-nav ng-show="isLoggedIn()" ng-controller="NotificationCtrl" class="navbar-text top_menu_dropdown"
                     on-toggle="toggled(open)">
@@ -49,6 +65,7 @@
                         <!-- Contenitore Notifiche -->
                         <div class="top_menu_notify_con">
 
+                            <!-- non ci sono notifiche -->
                             <div ng-show="notifications.length==0">
                                 <li role="menuitem">
                                     <hr/>
@@ -66,8 +83,8 @@
                                 </li>
                             </div>
 
-                            <notification ng-repeat="n in notifications | orderBy:'-createdAt'" notification="n">
-                            </notification>
+                            <!-- stampo le notifiche -->
+                            <notification ng-repeat="n in notifications | orderBy:'-createdAt'" notification="n"></notification>
 
                         </div>
 
@@ -82,21 +99,6 @@
                         </div>
                     </ul>
                 </div>
-            </li>
-            <li>
-                <!-- Profilo  -->
-                <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
-                    <img alt="{{ currentUser.name }}" src="{{ getUserProfileImage(currentUser) }}" id="single-button" uib-dropdown-toggle class="top_menu_profile img-circle pull-right">
-                    <ul uib-dropdown-menu class="top_menu_profile_dropdown" role="menu" aria-labelledby="single-button">
-                        <li role="menuitem"><a href="/app/profile/{{ currentUser.id }}">Profilo</a></li>
-                        <li class="divider"></li>
-                        <li role="menuitem"><a href="/login" ng-click="logOut()">Esci</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li ng-hide="isLoggedIn()">
-                <!-- Accedi o registrati -->
-                <p class="navbar-text"><a href="/login" class="navbar-link">Accedi o registrati</a></p>
             </li>
         </ul>
 
