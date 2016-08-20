@@ -997,6 +997,9 @@ ul.home_navbar{
 	-ms-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
+
+	-webkit-animation: animLoadedContent 1s cubic-bezier(0.7,0,0.3,1) both;
+	animation: animLoadedContent 1s cubic-bezier(0.7,0,0.3,1) both;
 }
 
 .recipe_col_8 {
@@ -1961,6 +1964,8 @@ footer{
   }
 }
 
+/* Styling del footer di un modal */
+
 .modal-footer {
 	background-color: #e5e5e5;
 	border-top: 1px solid #e5e5e5;
@@ -1970,4 +1975,15 @@ footer{
 	-moz-border-radius-bottomright: 5px;
 	border-bottom-left-radius: 5px;
 	border-bottom-right-radius: 5px;
+}
+
+/* ------------------------------------------------------------------ 22 -------------------------------------------------------- */
+/* --------------------------------------------------  ANIMAZIONE DEL DETTAGLIO RICETTA  ---------------------------------------- */
+
+@-webkit-keyframes animLoadedContent {
+	from { opacity: 0; -webkit-transform: translate3d(0,200px,0); }
+}
+
+@keyframes animLoadedContent {
+	from { opacity: 0; -webkit-transform: translate3d(0,200px,0); transform: translate3d(0,200px,0); }
 }
