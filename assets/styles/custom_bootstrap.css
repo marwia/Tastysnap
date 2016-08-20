@@ -47,3 +47,7 @@ fieldset[disabled] .btn-custom.active {
     opacity: 0;
     filter: alpha(opacity=0);
 }
+
+hr {
+  border-top: 2px solid #eee;
+}

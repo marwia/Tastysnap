@@ -1,7 +1,10 @@
 <div class="modal-header">
-    <h3 class="modal-title text-center">Eliminazione di <strong>{{ selectedRecipe.title }}</strong></h3>
+    <h3 class="modal-title">Sei sicuro?</h3>
+</div>
+<div class="modal-body">
+    <p>Una volta eliminata una ricetta, non puoi annullare l'operazione.</p>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-danger" type="button" ng-click="ok()">Elimina <i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
-    <button class="btn btn-warning" type="button" ng-click="cancel()">Annulla</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Annulla</button>
+    <button class="btn btn-danger" type="button" ng-click="ok()">Elimina ricetta<i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
 </div>

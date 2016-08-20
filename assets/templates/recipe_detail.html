@@ -37,8 +37,8 @@
                 </div>
                 <!-- portata + titolo -->
                 <div class="recipe_sp_1_3">
-                    <h5 class="no-margin">{{detailedRecipe.category}}</h5>
-                    <h1 class="no-margin text-uppercase">{{detailedRecipe.title}}</h1>
+                    <h5 class="no-margin recipe_reach">{{detailedRecipe.category}}</h5>
+                    <h1 class="no-margin recipe_title text-uppercase">{{detailedRecipe.title}}</h1>
                 </div>
 
                 <div class="clearfix"></div>
@@ -153,7 +153,7 @@
                 <div class="row">
                     <!-- OPINIONI -->
                     <div class="col-md-12 recipe_sp_3" ng-controller="RecipeReviewCtrl">
-                        <div class="recipe_sp_3_title" style="border-bottom: 1px solid {{getTextColor(detailedRecipe)}};">OPINIONI</div>
+                        <div class="recipe_sp_3_title" style="border-bottom: 2px solid {{getTextColor(detailedRecipe)}};"><strong>OPINIONI</strong></div>
                         <div class="recipe_sp_3_con">
                             <table class="recipe_sp_3_table">
                                 <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringReviewsCount('difficulty')}}">
@@ -203,8 +203,8 @@
                     <div class="col-md-12 recipe_sp_3">
                         <div class="recipe_sp_3_title"
                             uib-tooltip="I valori espressi sono relativi all'insieme degli ingredienti che compongono la ricetta. I risultati sono da considerarsi come stime, pertanto i valori reali dei nutrienti potrebbero variare."
-                            style="border-bottom: 1px solid {{getTextColor(detailedRecipe)}};">
-                            VALORI NUTRIZIONALI
+                            style="border-bottom: 2px solid {{getTextColor(detailedRecipe)}};">
+                            <strong>VALORI NUTRIZIONALI</strong>
                         </div>
                         <div class="recipe_sp_3_con">
                             <table class="recipe_sp_3_table">
@@ -258,8 +258,10 @@
                 </div>
 
                 <!-- SPONSOR -->
-                <div class="recipe_sp_spons_con" style="border-top: 1px solid {{getTextColor(detailedRecipe)}};">
-                    <span class="recipe_sp_spons_title">SPONSORIZZATE</span>
+                <div class="recipe_sp_spons_con">
+                    <div class="recipe_sp_spons_title" style="border-top: 1px solid {{getTextColor(detailedRecipe)}};">
+                        ANNUNCI DEGLI SPONSOR
+                    </div>
 
                     <div class="recipe_sp_spons">
                         <img src="app_images/sponsor.jpg" class="img-responsive">

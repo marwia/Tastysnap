@@ -37,7 +37,7 @@ module.exports = {
         'zuppe', 
         'insalate',
         'antipasti e stuzzichini', 
-        'dessert and torte', 
+        'dessert e torte', 
         'bevande', 
         'cocktails',
         'contorni',

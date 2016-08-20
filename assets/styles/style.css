@@ -530,7 +530,7 @@ ul.top_menu_notify_dropdown {
 }
 
 .card_title{
-	height:36px;
+	height:45px;
 	font-weight:700;
 	text-align: left;
 }
@@ -546,16 +546,18 @@ ul.top_menu_notify_dropdown {
 
 .card_reach{
 	text-align: left;
-	margin: 10px auto 5px auto;
+	margin: 5px auto 5px auto;
+	text-transform: capitalize;          
 }
 
 .card_profile_photo{
-	width: 35px;
+	width: 30px;
 }
 
 .card_profile_name{
 	margin-left: 7px;
-    margin-top: 2px;
+    margin-top: -2px;
+	opacity: 0.7;
 }
 
 .card_profile_name A H6{
@@ -687,19 +689,20 @@ ul.top_menu_notify_dropdown {
 
 .collection_card_info {
     position: absolute;
-    right: 15px;
+    right: 13px;
     bottom: 0px;
     color: white;
 }
 
 .collection_card_profile_photo{
-	width: 35px;
+	width: 30px;
 }
 
 .collection_card_profile_name{
 	color:white; /* example */
 	margin-left: 7px;
-    margin-top: 2px;
+    margin-top: -2px;
+	opacity: 0.7;
 }
 
 .collection_card_info_item{
@@ -731,7 +734,7 @@ ul.top_menu_notify_dropdown {
 /* ------------------------------------------------------------- COLLECTION STYLE ------------------------------------------------- */
 
 .collection_profile_photo{
-	width:50px;
+	width: 40px;
 }
 
 .collection_div_profile_name{
@@ -742,6 +745,7 @@ ul.top_menu_notify_dropdown {
 
 .collection_profile_edited{
 	font-size: 11px;
+	opacity: 0.7;
 }
 
 .collection_title{
@@ -897,7 +901,7 @@ ul.top_menu_notify_dropdown {
 }
 
 .profile_button_item.active{
-	border-bottom:1px solid darkorange;
+	border-bottom: 2px solid darkorange;
 }
 
 @media only screen and (max-width : 1024px) {
@@ -971,7 +975,7 @@ ul.home_navbar{
 
 .home_navbar_item_active>a{
 	color:white !important;
-	border-bottom:1px solid #ff9800;
+	border-bottom: 2px solid #ff9800;
 }
 
 /* --------------------------------------------------------------- 9 ---------------------------------------------------- */
@@ -1019,6 +1023,11 @@ ul.home_navbar{
 	transition: all 0.3s ease-in-out;
 }
 
+.col-md-4.col-sm-4.recipe_col_4{
+	padding-left: 25px;
+	padding-right: 25px;
+}
+
 .recipe_generic_con{
     -webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -1056,8 +1065,8 @@ ul.home_navbar{
 .recipe_sp_1_3 {
 	width:100%;
 	float:left;
-	margin-top: 15px;
-    margin-bottom: 15px;
+	margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .recipe_sp_2_1{
@@ -1070,7 +1079,8 @@ ul.home_navbar{
 
 .recipe_sp_2_2 {
     text-align: center;
-    padding: 20px;
+    padding: 15px;
+	margin-top: 15px;
 }
 
 .recipe_sp_2_2_icon{
@@ -1080,6 +1090,10 @@ ul.home_navbar{
 
 .recipe_sp_2_2_table{
 	width: 100%;
+}
+
+.recipe_sp_3{
+	padding-top: 10px;
 }
 
 .recipe_sp_3_title{
@@ -1102,23 +1116,44 @@ tr.recipe_sp_3_tr{
 }
 
 .recipe_profile_photo{
-	width:50px;
-	color:black;
+	width: 40px;
+	color: black;
 }
 
 .recipe_div_profile_name{
     color: black;
     margin-left: 10px;
-    margin-top: 5px;
+    margin-top: 6px;
+}
+
+.recipe_profile_edited{
+    color: #635A57;
+}
+
+.recipe_reach{
+	text-transform: capitalize;          
+}
+
+.recipe_title{
+	font-weight: 500;  
+	font-size: 48px;     
 }
 
 .recipe_sp_spons_con{
-	border-top: 1px solid white;
-    padding-top: 8px;
+    padding-top: 18px;
 }
 
 .recipe_sp_spons{
     margin: 15px 0 20px 0;
+}
+
+.recipe_sp_spons_title{
+	opacity: 0.4;
+}
+
+.recipe_prep_step{
+	font-size: 28px;
+	padding-top: 7px;
 }
 
 .recipe_ing_con{
@@ -1924,4 +1959,15 @@ footer{
     transform: scale(1);
     opacity: 1;
   }
+}
+
+.modal-footer {
+	background-color: #e5e5e5;
+	border-top: 1px solid #e5e5e5;
+	-webkit-border-bottom-left-radius: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	-moz-border-radius-bottomright: 5px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
