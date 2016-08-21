@@ -11,7 +11,9 @@ angular.module('NotificationService', [])
 
         // service body
         var o = {
-            notifications: []
+            notifications: [],
+            skip: 0,
+            busy: false
         };
 
         // Funzione per salvare il token in locale
@@ -58,41 +60,60 @@ angular.module('NotificationService', [])
          * connessi alla socket real time.
          */
         o.getAll = function (order_by, beforeDate, skip, successCB, errorCB) {
-            console.log("load notifications");
+
+            // segnalo che è in atto un caricamento
+            if (o.busy) return;
+            o.busy = true;
+
             var params = { "sort": order_by };
 
             if (beforeDate) {
                 params["where"] = {
-                    "createdAt": { "<=": beforeDate.toISOString()}
+                    "createdAt": { "<=": beforeDate.toISOString() }
                 };
             }
-            
-            return $http.get(server_prefix + '/user/notification', {params: params})
+
+            if (skip)
+                params["skip"] = skip;
+
+            // salvo lo stato del skip
+            o.skip = skip;
+
+            return $http.get(server_prefix + '/user/notification', { cache: true, params: params })
                 .then(function (response) {
-                /*
-                if (!skip) {
-                    o.notifications = [];
-                }
-                */
-
-                // filtro le notifiche scartando quelle con 'event' nullo
-                var tempArray = [];
-                for (var i = 0; i < response.data.length; i++) {
-                    if (response.data[i].event) {
-                        tempArray.push(response.data[i]);
+                    /*
+                    if (!skip) {
+                        o.notifications = [];
                     }
-                }
-                console.info(tempArray);
-                // vuole per forza 'extend'
-                angular.extend(o.notifications, tempArray);
+                    */
 
-                if (successCB)
-                    successCB(response);
-            }, errorCB);
+                    // filtro le notifiche scartando quelle con 'event' nullo
+                    var tempArray = [];
+                    for (var i = 0; i < response.data.length; i++) {
+                        if (response.data[i].event) {
+                            tempArray.push(response.data[i]);
+                        }
+                    }
+                    console.info(tempArray);
+                    // vuole per forza 'extend'
+                    //angular.extend(o.notifications, tempArray);
+                    for (var i in tempArray) {
+                        // prevengo di inserire duplicati
+                        if (o.notifications.indexOf(tempArray[i]) == -1) {
+                            o.notifications.push(tempArray[i]);
+                        }
+                    }
+
+                    // segnalo che il caricamento è terminato
+                    o.busy = false;
+
+                    if (successCB)
+                        successCB(response);
+                }, errorCB);
         };
 
         /**
-         * Servizio per creare una ricetta.
+         * Servizio per settare una notifica come letta.
          */
         o.setRed = function (idArray, successCB) {
             return $http.put(

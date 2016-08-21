@@ -47,6 +47,22 @@
             + Import stylesheets from other directories
             + Use a different or additional preprocessor, like SASS, SCSS or Stylus
     -->
+
+    <style type="text/css">
+        /**
+         * Hide when Angular is not yet loaded and initialized
+         */
+    
+      [ng\:cloak],
+      [ng-cloak],
+      [data-ng-cloak],
+      [x-ng-cloak],
+      .ng-cloak,
+      .x-ng-cloak {
+        display: none !important;
+      }
+    </style>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/libs/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
@@ -156,6 +172,7 @@
     <script src="libs/lightbox2/dist/js/lightbox.min.js"></script>
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="libs/angular-sails/dist/angular-sails.js"></script>
+    <script src="libs/ngInfiniteScroll/build/ng-infinite-scroll.min.js"></script>
 
     <!-- Attenzione: le righe comprese tra SCRIPTS vengono sovrascritte, non modificare
     manualmente -->

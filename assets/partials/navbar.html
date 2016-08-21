@@ -64,28 +64,31 @@
 
                         <!-- Contenitore Notifiche -->
                         <div class="top_menu_notify_con">
-
-                            <!-- non ci sono notifiche -->
-                            <div ng-show="notifications.length==0">
-                                <li role="menuitem">
-                                    <hr/>
-                                </li>
-                                <li role="menuitem">
-                                    <div class="media">
-                                        <div class="media-body clearfix">
-                                            <p class="media-heading">
-                                                <div class="row tasty_container text-center tasty_load_space">
-                                                    Non ci sono notifiche da mostrare...
-                                                </div>
-                                            </p>
+                            <div  infinite-scroll="nextNotifications()" infinite-scroll-parent="true">
+                                <!-- non ci sono notifiche -->
+                                <div ng-show="notifications.length==0">
+                                    <li role="menuitem">
+                                        <hr/>
+                                    </li>
+                                    <li role="menuitem">
+                                        <div class="media">
+                                            <div class="media-body clearfix">
+                                                <p class="media-heading">
+                                                    <div class="row tasty_container text-center tasty_load_space">
+                                                        Non ci sono notifiche da mostrare...
+                                                    </div>
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                </div>
+
+                                <!-- stampo le notifiche -->
+                                <notification ng-repeat="n in notifications | orderBy:'-createdAt'" notification="n"></notification>
+
+                                <div ng-show='busy'>Loading data...</div>
+                            
                             </div>
-
-                            <!-- stampo le notifiche -->
-                            <notification ng-repeat="n in notifications | orderBy:'-createdAt'" notification="n"></notification>
-
                         </div>
 
                         <div ng-hide="notifications.length==0">

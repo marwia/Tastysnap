@@ -66,8 +66,8 @@ angular.module('sampleApp')
                             });
                         break;
                     case 'Recipe':
-                        scope.object = notification.event.title;
-                        scope.objectLink = "/app/collection/" + notification.event.id;
+                        scope.object = scope.notification.event.title;
+                        scope.objectLink = "/app/collection/" + scope.notification.event.id;
                         break;
                     
                 }

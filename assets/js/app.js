@@ -8,7 +8,7 @@
  */
 
 var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload',
-                'ngMessages', 'uiGmapgoogle-maps', 'angular-spinkit', 'angular.filter', 'ngSails',
+                'ngMessages', 'uiGmapgoogle-maps', 'angular-spinkit', 'angular.filter', 'ngSails', 'infinite-scroll',
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
                 'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService', 'ImageUtilsService',
                 'NotificationService', 'Utils',

@@ -16,13 +16,30 @@ angular.module('NotificationCtrl', []).controller('NotificationCtrl', [
 
         // service body
         $scope.notifications = Notification.notifications;
+        $scope.busy = Notification.busy;
         Notification.registerForNotification();
 
         $scope.toggled = function (open) {
             if (open) {
+                // non serve caricare le notifiche all'apertura perchè ci pensa la direttiva infiniteScroll
                 //Notification.getAll('createdAt DESC', Notification.getRegistrationDate(), null);
                 User.currentUser.lastSeen = new Date().toISOString();
+            } else { // segnalo tutte le notifiche come lette (in stile Twitter)
+                $scope.setAllRed();
             }
+        };
+
+        // Funzione per caricare le notifiche successive ogni volta che
+        // si raggiunge la fine della lista delle notifiche
+        $scope.nextNotifications = function () {
+            if (!$scope.notifications || $scope.notifications.length == 0)
+                Notification.getAll('createdAt DESC', Notification.getRegistrationDate(), null);
+            else
+                Notification.getAll(
+                    'createdAt DESC', 
+                    Notification.getRegistrationDate(), 
+                    Notification.skip + 30);
+
         };
 
         $scope.countNew = function () {

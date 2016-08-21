@@ -23,6 +23,7 @@
     "angular-click-outside": "^2.8.3",
     "lightbox2": "^2.8.2",
     "angular-filter": "^0.5.8",
-    "angular-sails": "^1.1.4"
+    "angular-sails": "^1.1.4",
+    "ngInfiniteScroll": "ng-infinite-scroller-origin#^1.3.0"
   }
 }
