@@ -47,6 +47,13 @@ angular.module('CollectionSelectionModalCtrl', [])
                     
                     $scope.collectionToCreate = response.data
                     $scope.collections.push($scope.collectionToCreate);
+
+                    //visualizzo tutte le raccolte, in alternativa si puo chiudere la modal e inviare una notifica
+                    $scope.showme = false;
+
+                    //inizializzo le variabili
+                    $scope.title = "";
+                    $scope.description= "";
                 })
             }
         });

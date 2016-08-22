@@ -4,7 +4,7 @@
 <div class="modal-body">
     <div class="row">
         <!-- CONTINER CARD -->
-        <div class="col-xs-12 col-sm-5 col-md-5 text-center">
+        <div class="col-xs-12 col-sm-5 col-md-4 text-center">
             <!-- Anteprima della card che aggiungerò alla collection -->
             <!-- basic card -->
             <recipe-card recipe="selectedRecipe"></recipe-card>
@@ -12,95 +12,62 @@
         </div>
 
         <!-- CONTAINER LISTA COLLECTION -->
-        <div class="col-xs-12 col-sm-7 col-md-7">
-            <div class="container-fluid">
-                
-                <!-- Nuova raccolta -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <!-- ng repeat media (collection) -->
-                        <div class="media modal-add-recipe-to-collection_media_add" ng-click="showme=true">
-                            <!-- manca di mettere il nome della raccolta nel title -->
-                            <div class="media-left media-middle">
-                                <i class="fa fa-plus modal-add-recipe-to-collection_add" aria-hidden="true"></i>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading modal-add-recipe-to-collection_title">Nuova Raccolta</h4>
-                            </div>
-                        </div><!-- fine ng-repeat -->
-                    </div>
-                </div>
-                
-                <!-- creazione nuova raccolta -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="panel panel-default modal-add-recipe-to-collection_panel" ng-show="showme">
-                            <div class="panel-body">
-                                <!-- Titolo Raccolta -->
-                                <input type="text" class="form-control modal-add-recipe-to-collection_input_text" placeholder="Titolo Raccolta" ng-model="collectionToCreate.title" autocomplete="off">
+        <div class="col-xs-12 col-sm-7 col-md-8">
+            <div class="row modal-add-recipe-to-collection_con">
 
-                                <!-- Input descrizione -->
-                                <textarea class="form-control modal-add-recipe-to-collection_input_text" rows="3" placeholder="Descrivi brevemente la tua raccolta!"></textarea>
-
-                                <!-- Is private -->
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> Collection Private (puoi vederla solo tu)
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> Collection pubblica
-                                    </label>
-                                </div>
-
-                                <!-- Standard button -->
-                                <button type="button" class="btn btn-warning text-right" ng-click="showme=false">Chiudi</button>
-                                <button type="button" class="btn btn-primary text-right" ng-click="createCollection()">Aggiungi</button>
-                            </div>
-                        </div>
+                <!-- nuova raccolta -->
+                <div class="col-md-4 modal-add-recipe-to-collection_coll" title="Crea una nuova raccolta" role="button" ng-click="showme=true">
+                    <div style="height:auto; padding-bottom: 100%;">
+                        <div class="card_collection_content_bg_1_4" style="background-image: url('{{selectedRecipe.coverImageUrl}}')"></div>
+                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[1].coverImageUrl + ')'}" style="background-color: #555555;"></div>
+                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[2].coverImageUrl + ')'}" style="background-color: #636363;"></div>
+                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[3].coverImageUrl + ')'}" style="background-color: #707070;"></div>
                     </div>
+                    <label ng-hide="showme">Nuova Raccolta</label>
                 </div>
-                
-                <!-- Cerca -->
-                <div class="row" ng-hide="showme">
-                    <div class="col-md-12">
-                         <div class="form-group has-feedback">
-                            <input type="text" name="search_input" class="form-control modal-add-recipe-to-collection_input_text" id="search_input" placeholder="Cerca una raccolta" ng-model="addtocollection">
-                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                        </div>
+
+                <!-- form per inserire le info della collection -->
+                <div class="col-md-8 modal-add-recipe-to-collection_input_text" ng-show="showme">
+                    <!-- Titolo Raccolta -->
+                    <input type="text" class="form-control input-lg" placeholder="Titolo Raccolta" ng-model="collectionToCreate.title" autocomplete="off" ng-value="Nuova Raccolta">
+
+                    <hr/>
+
+                    <!-- Input descrizione -->
+                    <textarea class="form-control" rows="3" placeholder="Descrivi brevemente la tua raccolta!" ng-model="collectionToCreate.description"></textarea>
+
+                    <hr/>
+
+                    <!-- Is private -->
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> Collection Private (puoi vederla solo tu)
+                        </label>
                     </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> Collection pubblica
+                        </label>
+                    </div>
+
+                    <hr/>
+
+                    <button type="button" class="btn btn-default" ng-click="showme=false">Chiudi</button>
+                    <button type="button" class="btn btn-default" ng-click="createCollection()">Aggiungi</button>
+
                 </div>
-                
-                <!-- Elenco raccolte -->
-                <div class="row" ng-hide="showme">
-                    <div class="col-md-12 modal-add-recipe-to-collection_media_con">
-                        <!-- ng repeat media (collection) -->
-                        <div class="media modal-add-recipe-to-collection_media" ng-repeat="collection in collections | filter: addtocollection "
-                        ng-click="addRecipeToCollection(collection)">
-                            <!-- manca di mettere il nome della raccolta nel title -->
-                            <div class="media-left media-middle" title="Aggiungi {{selectedRecipe.title}} a {{collection.title}}">
-                                <a href="#">
-                                    <div class="media-object modal-add-recipe-to-collection_img">
-                                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[0].coverImageUrl + ')'}"
-                                        style="background-color: #464646;"></div>
-                                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[1].coverImageUrl + ')'}"
-                                        style="background-color: #555555;"></div>
-                                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[2].coverImageUrl + ')'}"
-                                        style="background-color: #636363;"></div>
-                                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[3].coverImageUrl + ')'}"
-                                        style="background-color: #707070;"></div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading modal-add-recipe-to-collection_title">{{collection.title}}</h4>
-                            </div>
-                        </div><!-- fine ng-repeat -->
+
+                <!-- manca di mettere il nome della raccolta nel title -->
+                <div ng-hide="showme" class="col-md-4 modal-add-recipe-to-collection_coll" title="Aggiungi {{selectedRecipe.title}} a {{collection.title}}" ng-repeat="collection in collections | filter: addtocollection " ng-click="addRecipeToCollection(collection)" role="button">
+                    <div style="height:auto; padding-bottom: 100%;">
+                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[0].coverImageUrl + ')'}" style="background-color: #464646;"></div>
+                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[1].coverImageUrl + ')'}" style="background-color: #555555;"></div>
+                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[2].coverImageUrl + ')'}" style="background-color: #636363;"></div>
+                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[3].coverImageUrl + ')'}" style="background-color: #707070;"></div>
                     </div>
-                </div><!-- fine elenco raccolte -->
-                
-            </div><!-- fine container fluid -->
+                    <label>{{collection.title}}</label>
+                </div><!-- fine ng-repeat -->
+            </div>
         </div>
     </div>
 </div><!-- /modal body -->
