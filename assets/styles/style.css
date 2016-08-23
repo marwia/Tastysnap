@@ -1704,7 +1704,14 @@ tr.recipe_sp_3_tr{
 
 .search_right{
 	width: 300px;
-	
+	height: calc(100% - 50px);
+	position: fixed;
+
+	background-color: white;
+
+	right: 0;
+	overflow-y: scroll;
+	z-index: 1;
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
 	-ms-transition: all 0.3s ease-in-out;
@@ -1780,6 +1787,20 @@ tr.recipe_sp_3_tr{
 
 	.search_right{
 		width: 100%;
+		height: auto;
+		position: relative;
+		float:right;
+
+		background-color: white;
+
+		right: 0;
+		overflow-y: scroll;
+		z-index: 1;
+		-webkit-transition: all 0.3s ease-in-out;
+		-moz-transition: all 0.3s ease-in-out;
+		-ms-transition: all 0.3s ease-in-out;
+		-o-transition: all 0.3s ease-in-out;
+		transition: all 0.3s ease-in-out;
 	}
 }
 
