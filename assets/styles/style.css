@@ -1847,8 +1847,8 @@ footer{
     line-height: 1.7
 }
 
-.footer_items ul li a:hover{
-	color:white;
+.footer_items a:hover{
+	color: white;
 }
 
 .footer_social_icon{
