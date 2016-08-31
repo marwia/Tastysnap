@@ -23,6 +23,30 @@ var setCollectionViewed = function (req, foundCollection) {
     }
 };
 
+/**
+ * Funzione per filtrare le raccolte private, ovvero per toglierle
+ * dalla risposta se l'utente non risulta essere autorizzato a 
+ * vederle. Infatti, soltanto l'autore di una raccolta privata
+ * può vederla.
+ */
+var filterPrivateCollection = function (collection) {
+
+    // se la raccolta è privata controllo se l'utente che ha
+    // effettuato la richiesta è l'autore della raccolta
+    if (collection.isPrivate) {
+        // riprendo l'utente dalla policy "attachUser"
+        var user = req.payload;
+        /**
+         * se l'utente non è autenticato oppure non è l'autore allora 
+         * non può vedere la raccolta
+         */
+        if (!user || collection.author.id != user.id)
+            return null;
+    }
+
+    return collection;
+};
+
 module.exports = {
 
     /**
@@ -45,8 +69,23 @@ module.exports = {
             .exec(function (err, foundCollection) {
                 if (err) { return next(err); }
 
+                // filtro le collection private
+                foundCollection = filterPrivateCollection(foundCollection);
+
                 if (!foundCollection) {
                     return res.notFound({ error: 'No collection found' });
+                }
+
+                // se la raccolta è privata controllo se l'utente che ha
+                // effettuato la richiesta è l'autore della raccolta
+                if (foundCollection.isPrivate) {
+                    var user = req.payload;
+                    /**
+                     * se l'utente non è autenticato oppure non è l'autore allora 
+                     * non può vedere la raccolta
+                     */
+                    if (!user || foundCollection.author.id != user.id)
+                        return res.notFound({ error: 'No collection found' });
                 }
 
                 var counts = {
@@ -119,6 +158,9 @@ module.exports = {
             .populate('author')
             .exec(function (err, foundCollections) {
                 if (err) { return next(err); }
+
+                // filtro le raccolte private
+                foundCollections = foundCollections.filter(filterPrivateCollection);
 
                 if (foundCollections.length == 0) {
                     return res.notFound({ error: 'No collection found' });
