@@ -91,9 +91,9 @@ angular.module('RecipeService', [])
             return $http.get(server_prefix + '/recipe', {
                 params: {
                     where: {
-                        "title": { "contains": query },
-                        'skip': skip
-                    }
+                        "title": { "contains": query }
+                    },
+                    skip: skip
                 }
             }).then(function(response) {
                 if (skip) {
@@ -251,29 +251,13 @@ angular.module('RecipeService', [])
             });
         };
         
-        o.writeSearchFilters = function (filters) {
-            // scrivo i filtri di ricerca nel url
-            var encodedString = btoa(angular.toJson(filters));
-            $location.search("f", encodedString);
-        };
-        
-        o.readSearchFilters = function () {
-            // leggo i filtri dall'url
-            var encodedFilters = $location.search()["f"];
-            if (encodedFilters) {
-                var decodedFiltersString = atob(encodedFilters);
-                var decodedFilters = angular.fromJson(decodedFiltersString);
-                return decodedFilters;
-            }
-            return null;
-        };
-        
         o.toIdArray = function (objArray) {
-            var temp = [];
-            objArray.forEach(function (element) {
-                temp.push(element.id);
-            }, this);
-            return temp;
+            var tempArray = [];
+            if (objArray)
+                objArray.forEach(function (element) {
+                    tempArray.push(element.id);
+                }, this);
+            return tempArray;
         }
 
         /**

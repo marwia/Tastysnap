@@ -33,7 +33,7 @@ angular.module('UserService', [])
          * Metodo per eseguire una ricerca per nome/cognome
          * di persona.
          */
-        service.search = function(query, skip, successCB, errorCB) {
+        service.search = function(query, skip, reset, successCB, errorCB) {
             return $http.get(server_prefix + '/user', {
                 params: {
                     where: {
@@ -53,7 +53,10 @@ angular.module('UserService', [])
                         service.users.push(response.data[i]);
                     }
                 } else {
-                    angular.extend(service.users, response.data);
+                    if (reset)
+                        angular.copy(response.data, service.users);
+                    else
+                        angular.extend(service.users, response.data);
                 }
                 if (successCB)
                     successCB(response);

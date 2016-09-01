@@ -11,10 +11,11 @@ angular.module('SearchRecipeCtrl', []).controller('SearchRecipeCtrl', [
     '$stateParams',
     'Recipe',
     'Product',
+    'Search',
     'toastr',
     '$timeout',
     '$location',
-    function ($scope, $state, $stateParams, Recipe, Product, toastr, $timeout, $location) {
+    function ($scope, $state, $stateParams, Recipe, Product, Search, toastr, $timeout, $location) {
 
         // metodi di servizi
         $scope.searchProductsByName = Product.searchProductsByName;
@@ -72,7 +73,6 @@ angular.module('SearchRecipeCtrl', []).controller('SearchRecipeCtrl', [
         };
 
         // sorting settings
-        $scope.selectedSortOption = undefined;
         $scope.sortOptions = ["nessun criterio", "commenti", "assaggi", "apprezzamenti",
             "visualizzazioni", "difficoltà", "costo", "calorie", "tempo", "titolo",
             "energia", "proteine", "carboidrati", "zuccheri", "grassi"];
@@ -81,7 +81,10 @@ angular.module('SearchRecipeCtrl', []).controller('SearchRecipeCtrl', [
         $scope.writeSearchFilters = function () {
             var filtersToWrite = {};
 
-            // eseguo una copia dei filtri
+            /**
+             * Eseguo una copia dei filtri perchè alcuni attributi
+             * sono bindati al livello DOM (html)
+             */
             angular.copy($scope.recipeFilters, filtersToWrite);
             // trasformo i filtri sui nutrienti in formato accettato dal server
             if (filtersToWrite.nutrientFilters.length > 0)
@@ -91,9 +94,10 @@ angular.module('SearchRecipeCtrl', []).controller('SearchRecipeCtrl', [
             filtersToWrite.costRating = getValidRating($scope.recipeFilters.costRating);
             filtersToWrite.caloriesRating = getValidRating($scope.recipeFilters.caloriesRating);
             filtersToWrite.timeValue = getPreparationTime();
-            filtersToWrite.selectedSortOptionIdx = $scope.sortOptions.indexOf($scope.selectedSortOption)
+            filtersToWrite.selectedSortOptionIdx = $scope.sortOptions.indexOf($scope.recipeFilters.selectedSortOption)
 
-            Recipe.writeSearchFilters(filtersToWrite);
+            // scrivo nell'url
+            Search.writeSearchFilters(filtersToWrite);
         }
 
         var getPreparationTime = function () {
@@ -169,8 +173,9 @@ angular.module('SearchRecipeCtrl', []).controller('SearchRecipeCtrl', [
             // Ricavo la lista delle categorie di ricette
             Recipe.getAllRecipeCategories();
             // leggo i filtri scritti nella url   
-            $scope.recipeFilters = Recipe.readSearchFilters();
+            $scope.recipeFilters = Search.readSearchFilters();
 
+            // se non presente nessun filtro, inizializzo
             if (!$scope.recipeFilters) {
                 // vari filtri impostabili dall'utente
                 $scope.recipeFilters = {
@@ -183,7 +188,8 @@ angular.module('SearchRecipeCtrl', []).controller('SearchRecipeCtrl', [
                     nutrientFilters: [],
                     // ordinamento
                     selectedSortMode: "ASC",
-                    selectedSortOptionIdx: 0
+                    selectedSortOptionIdx: 0,
+                    selectedSortOption: undefined
                 };
             }
         }

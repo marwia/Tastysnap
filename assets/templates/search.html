@@ -9,7 +9,7 @@
                 <div class="row search_background_gray search_row">
                     <div class="col-md-12">
                         <form role="updateRecipeList" ng-submit="writeQ()">
-                            <input type="text" class="form-control" placeholder="Cerca" ng-model="q" autocomplete="off">
+                            <input type="text" class="form-control" placeholder="Cerca" ng-model="qToWrite" autocomplete="off">
                         </form>
                     </div>
                 </div>
@@ -157,7 +157,7 @@
                         </div>
 
                         <div class="col-md-12 col-sm-6 ">
-                            <my-dropdown data-menu-type="button" select-val="selectedSortOption = selectedVal" preselected-item="sortOptions[recipeFilters.selectedSortOptionIdx]"
+                            <my-dropdown data-menu-type="button" select-val="recipeFilters.selectedSortOption = selectedVal" preselected-item="sortOptions[recipeFilters.selectedSortOptionIdx]"
                                 data-dropdown-data="sortOptions"></my-dropdown>
 
                             <div class="btn-group">
@@ -170,7 +170,7 @@
                 </div>
 
                 <!-- filtri per raccolte -->
-                <div ng-show="searchModel=='collection'">
+                <div ng-show="searchModel=='collection'" ng-controller="SearchCollectionCtrl">
 
                     <div class="row search_background_white search_row">
                         <div class="col-md-12 col-sm-6 search_title">
@@ -178,13 +178,25 @@
                         </div>
 
                         <div class="col-md-12 col-sm-6 ">
-                            <my-dropdown data-menu-type="button" select-val="selectedSortOption = selectedVal" preselected-item="sortOptions[selectedSortOptionIdx]"
+                            <my-dropdown data-menu-type="button" select-val="collectionFilters.selectedSortOption = selectedVal" preselected-item="sortOptions[collectionFilters.selectedSortOptionIdx]"
                                 data-dropdown-data="sortOptions"></my-dropdown>
 
                             <div class="btn-group">
-                                <label class="btn btn-default" ng-model="selectedSortMode" uib-btn-radio="'ASC'" uncheckable><i class="fa fa-caret-up" aria-hidden="true"></i></label>
-                                <label class="btn btn-default" ng-model="selectedSortMode" uib-btn-radio="'DESC'" uncheckable><i class="fa fa-caret-down" aria-hidden="true"></i></label>
+                                <label class="btn btn-default" ng-model="collectionFilters.selectedSortMode" uib-btn-radio="'ASC'" uncheckable><i class="fa fa-caret-up" aria-hidden="true"></i></label>
+                                <label class="btn btn-default" ng-model="collectionFilters.selectedSortMode" uib-btn-radio="'DESC'" uncheckable><i class="fa fa-caret-down" aria-hidden="true"></i></label>
                             </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- filtri per utenti -->
+                <div ng-show="searchModel=='user'">
+
+                    <div class="row search_background_white search_row">
+                        <div class="col-md-12 col-sm-6">
+                            <p>Nessun criterio di ricerca ulteriore disponibile.<br>
+                            Prova a cercare per nome o cognome.</p>
                         </div>
                     </div>
 
@@ -197,7 +209,7 @@
         <!-- risultati ricerca -->
         <div class="search_left pull-left">
             <!-- -------------------------------- ricette -------------------------------- -->
-            <div ng-show="recipes.length > 0">
+            <div ng-show="searchModel=='recipe'">
                 <!-- container card -->
                 <div class="row tasty_container text-center tasty_title_category tasty_load_space">
                     <div class="col-md-4">
@@ -228,7 +240,7 @@
             </div>
 
             <!-- -------------------------------- raccolte -------------------------------- -->
-            <div ng-show="collections.length > 0">
+            <div ng-show="searchModel=='collection'">
                 <!-- container card -->
                 <div class="row tasty_container text-center tasty_title_category tasty_load_space">
                     <div class="col-md-4">
@@ -258,7 +270,7 @@
 
             <!-- -------------------------------- utenti -------------------------------- -->
 
-            <div ng-show="users.length > 0">
+            <div ng-show="searchModel=='user'">
                 <div class="row tasty_container text-center tasty_title_category tasty_load_space">
                     <div class="col-md-4">
                         <hr class="tasty_title_bar"></hr>

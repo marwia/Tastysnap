@@ -14,6 +14,7 @@ angular.module('CollectionService', [])
             collections: [],
             userCollections: [],
             detailedCollection: {}, // one collection 
+            sortOptions: ['undefined', 'viewsCount', 'followersCount', 'recipesCount'],
         };
         
         /**
@@ -77,22 +78,39 @@ angular.module('CollectionService', [])
         };
         
         /**
-         * Metodo per eseguire una ricerca per titolo di raccolta.
+         * Metodo per eseguire una ricerca AVANZATA per titolo di raccolta.
+         * @param {String} query - parte del titolo della raccolta
+         * @param {Number} sort_by - numero che indica per cosa ordinare i risultati (in base all'array 'sortOptions')
+         * @param {String} sort_mode - stringa che indica la modalità di ordinazione ASC o DESC
+         * @param {Number} skip - numero di risultati da saltare, utile per la paginazione
+         * @param {Boolean} reset - se true indica che i risultati devono sovrascrivere quelli
+         * attuali, di default è false
          */
-        o.search = function(query, skip, successCB, errorCB) {
-            return $http.get(server_prefix + '/collection', {
+        o.search = function(query, sort_by, sort_mode, skip, reset, successCB, errorCB) {
+            var params = {
                 params: {
                     where: {
                         "title": { "contains": query }
                     }
                 }
-            }).then(function(response) {
+            };
+
+            if (sort_by != null && sort_by > 0)
+                params["sort"] = o.sortOptions[sort_by] + " " + sort_mode;
+
+            if (skip != null)
+                params["skip"] = skip;
+
+            return $http.get(server_prefix + '/collection', params).then(function(response) {
                 if (skip) {
                     for (var i = 0; i < response.data.length; i++) {
                         o.collections.push(response.data[i]);
                     }
                 } else {
-                    angular.extend(o.collections, response.data);
+                    if (reset)
+                        angular.copy(response.data, o.collections);
+                    else
+                        angular.extend(o.collections, response.data);
                 }
                 if (successCB)
                     successCB(response);
