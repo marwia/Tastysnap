@@ -2041,3 +2041,14 @@ footer{
 @keyframes animLoadedContent {
 	from { opacity: 0; -webkit-transform: translate3d(0,200px,0); transform: translate3d(0,200px,0); }
 }
+
+/* ------------------------------------------------------------------ 23 -------------------------------------------------------- */
+/* --------------------------------------------------------  STYLING DEL RZ-SLIDER  --------------------------------------------- */
+
+rzslider .rz-pointer {
+	background-color: #ff9800;
+}
+
+rzslider .rz-pointer.rz-active:after {
+  	background-color: #be7100;
+}
