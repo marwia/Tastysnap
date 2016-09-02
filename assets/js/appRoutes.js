@@ -264,6 +264,22 @@ angular.module('appRoutes', []).config([
                 }
             })
 
+            .state('app.activites', {
+                url: '/activites',
+                views: {
+                    'content@app': {
+                        templateUrl: 'templates/activites.html',
+                        controller: 'ActivitesCtrl'
+                    }
+
+                },
+                onEnter: ['$state', 'Auth', function ($state, Auth) {
+                    if (!Auth.isLoggedIn()) {
+                        $state.go('login');
+                    }
+                }]
+            })
+
             // HOME NEAR RECIPES
             .state('app.near_recipes', {
                 url: '/near_recipes',

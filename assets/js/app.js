@@ -18,7 +18,7 @@ var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies
                 'CollectionSelectionModalCtrl', 'CollectionDetailCtrl', 'CommentCtrl', 'ExtHomeCtrl',
                 'SearchCtrl', 'SearchRecipeCtrl', 'SearchCollectionCtrl',
                 'UserProfileFollowerUsersCtrl', 'UserProfileFollowingUsersCtrl', 'NearRecipesCtrl', 'FollowingCollectionsCtrl',
-                'RecipeReviewCtrl', 'RecipeImageSliderCtrl', 'NotificationCtrl']);
+                'RecipeReviewCtrl', 'RecipeImageSliderCtrl', 'NotificationCtrl', 'ActivitesCtrl']);
 
 /**
  * Configurazione iniziale dell'app, viene fatta una sola volta all'avvio.
