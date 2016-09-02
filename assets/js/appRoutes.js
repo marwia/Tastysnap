@@ -264,11 +264,12 @@ angular.module('appRoutes', []).config([
                 }
             })
 
+            // ACTIVITIES
             .state('app.activites', {
                 url: '/activites',
                 views: {
                     'content@app': {
-                        templateUrl: 'templates/activites.html',
+                        templateUrl: 'templates/activities.html',
                         controller: 'ActivitesCtrl'
                     }
 
