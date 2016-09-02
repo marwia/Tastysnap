@@ -2052,3 +2052,41 @@ rzslider .rz-pointer {
 rzslider .rz-pointer.rz-active:after {
   	background-color: #be7100;
 }
+
+/* ------------------------------------------------------------------ 24 -------------------------------------------------------- */
+/* --------------------------------------------------------------  ACTIVITY  ---------------------------------------------------- */
+
+.activities_container{
+	max-width: 550px;
+	margin: auto;
+}
+
+.activity{
+	background-color: whitesmoke;
+	margin: 8px auto 8px auto;
+	padding: 0;
+}
+
+.activity img{
+	max-width: 100px;
+}
+
+.activity > div{
+	width: calc(100% - 100px);
+}
+
+.activity_delete{
+	margin-top: 7px
+}
+
+.activity_text{
+
+}
+
+.activity_moment{
+	position: absolute;
+	bottom: 3px;
+	width: calc(100% - 100px);
+	color: gray;
+	font-size: 0.9em;
+}
