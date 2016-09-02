@@ -65,7 +65,12 @@ angular.module('NotificationCtrl', []).controller('NotificationCtrl', [
             });
         };
 
+        var init = function () {
+            // caricamento iniziale delle notifiche
+            Notification.getAll('createdAt DESC', Notification.getRegistrationDate(), null);
+        }
 
+        init();
         
 
         // Stop watching for updates
