@@ -2090,3 +2090,22 @@ rzslider .rz-pointer.rz-active:after {
 	color: gray;
 	font-size: 0.9em;
 }
+
+.card_delete{
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top: -10px;
+	right: -10px;
+	z-index: 1;
+	background-color: #B5B5B5;
+	color: #222;
+	-webkit-border-radius: 250px;
+	-moz-border-radius: 250px;
+	border-radius: 250px;
+	line-height: 2;
+
+	-webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
