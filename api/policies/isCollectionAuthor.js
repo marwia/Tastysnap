@@ -25,6 +25,11 @@ module.exports = function(req, res, next) {
     var user = req.payload;
 
     var collectionId = req.param('collection');// l'id è un parametro
+
+    // caso alternativo se il parametro dell'id ha un nome diverso
+    if (req.param('id'))
+        collectionId = req.param('id');
+
     if (!collectionId) { return res.badRequest(); }
 
     Collection.findOne(collectionId)

@@ -82,7 +82,7 @@ module.exports = {
 
             CollectionRecipe.create({
                 collection: collection.id,
-                recipe: recipeId
+                recipe: req.recipe.id
             }).exec( function (err, createdCollectionRecipe) {
                 if (err) { return next(err); }
 
@@ -96,11 +96,11 @@ module.exports = {
     },
 
     /**
-     * @api {delete} /collection/:collection/recipe Remove a recipe from a Collection
+     * @api {delete} /collection/:collection/recipe/:recipe Remove a recipe from a Collection
      * @apiName RemoveRecipeCollection
      * @apiGroup Collection
      *
-     * @apiDescription Serve per rimuovere una ricetta da un propria collezione.
+     * @apiDescription Serve per rimuovere una ricetta da una propria collezione.
      * Per essere sicuri dell'eliminazione conviene richiedere la stessa collezione.
      * Bisogna essere autori della collezione.<br>
      * Le richieste devono essere con codifica <strong>
@@ -124,7 +124,8 @@ module.exports = {
 
     destroy: function (req, res, next) {
         var collection = req.collection;
-        var recipeId = req.body.recipe_id;
+        
+        var recipeId = req.param('recipe');
         if (!recipeId) { return next(); }
 
         CollectionRecipe.destroy({

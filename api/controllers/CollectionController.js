@@ -33,7 +33,7 @@ var filterPrivateCollection = function (collection) {
 
     // se la raccolta è privata controllo se l'utente che ha
     // effettuato la richiesta è l'autore della raccolta
-    if (collection.isPrivate) {
+    if (collection && collection.isPrivate) {
         // riprendo l'utente dalla policy "attachUser"
         var user = req.payload;
         /**
@@ -276,6 +276,23 @@ module.exports = {
             Notification.notifyUserFollowers(user, createdCollection, 'Collection');
 
             return res.json(createdCollection);
+        });
+    },
+
+    update: function(req, res, next) {
+
+        var newCollection = req.body;
+
+        // elimino gli attributi non modificabili (per protezione)
+        delete newCollection.author;
+        delete newCollection.recipes;
+        delete newCollection.followers;
+        delete newCollection.views;
+
+        Collection.update({ id: req.collection.id }, newCollection).exec(function(err, updatedCollections) {
+            if (err) { return next(err); }
+
+            return res.json(updatedCollections[0]);
         });
     },
 

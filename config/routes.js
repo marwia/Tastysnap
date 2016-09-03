@@ -313,9 +313,9 @@ var apiRoutes = addGlobalPrefix({
 
     'get /collection/:collection': 'CollectionController.findOne',
 
-    'put /collection/:collection/recipe': 'CollectionRecipeController.create',
+    'put /collection/:collection/recipe/:recipe': 'CollectionRecipeController.create',
 
-    'delete /collection/:collection/recipe': 'CollectionRecipeController.destroy',
+    'delete /collection/:collection/recipe/:recipe': 'CollectionRecipeController.destroy',
 
     'get /collection/:collection/recipe': 'CollectionRecipeController.getRecipes',
 
@@ -329,7 +329,7 @@ var apiRoutes = addGlobalPrefix({
 
     /***************************************************************************
     *                                                                          *
-    * View di collection.                                                         *
+    * View di collection.                                                      *
     *                                                                          *
     ***************************************************************************/
 
