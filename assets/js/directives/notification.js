@@ -25,6 +25,9 @@ angular.module('sampleApp')
 
                 scope.formatDate = Utils.formatDate;
 
+                // indica se devo nascondere una notifica non più valida
+                scope.hide = false;
+
                 scope.message = {
                     'VoteComment': 'ha espresso un giudizio ad un tuo commento',
                     'FollowUser': 'ha iniziato a seguirti',
@@ -35,22 +38,32 @@ angular.module('sampleApp')
                     'Recipe': 'ha creato la ricetta',
                     'ReviewRecipe': 'ha recensito la ricetta',
                     'TryRecipe': 'ha assaggiato la ricetta',
-                    'VoteRecipe': 'ha aggiunto ai preferiti la ricetta',
+                    'VoteRecipe': 'ha aggiunto ai preferiti la ricetta'
                 };
 
                 scope.object = "";
                 scope.objectLink = "#";
+
                 switch (scope.notification.type) {
                     case 'CollectionRecipe':
                     case 'FollowCollection':
                     case 'Collection':
                         // trova raccolta
-                        if (typeof scope.notification.event.collection === 'string')
+                        if (typeof scope.notification.event.collection === 'string') {
                             Collection.searchById(scope.notification.event.collection, function success(response) {
+                                console.log("caricato");
                                 scope.object = response.data[0].title;
                                 scope.notification.event.collection = response.data[0];
                                 scope.objectLink = "/app/collection/" + response.data[0].id;
+                            }, function error(response) {
+                                // probabilmente la notifica non è più "integra"
+                                scope.hide = true;
                             });
+                        }
+                        else {
+                            scope.object = scope.notification.event.title;
+                            scope.objectLink = "/app/collection/" + scope.notification.event.id;
+                        }
                         break;
  
                     case 'Comment':
@@ -67,7 +80,7 @@ angular.module('sampleApp')
                         break;
                     case 'Recipe':
                         scope.object = scope.notification.event.title;
-                        scope.objectLink = "/app/collection/" + scope.notification.event.id;
+                        scope.objectLink = "/app/recipe/" + scope.notification.event.id;
                         break;
                     
                 }

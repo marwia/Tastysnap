@@ -9,51 +9,100 @@
  */
 angular.module('CollectionSelectionModalCtrl', [])
     .controller('CollectionSelectionModalCtrl',
-        function ($scope, $uibModalInstance, selectedRecipe, Collection) {
+    function ($scope, $uibModalInstance, selectedRecipe, Collection, $uibModal, toastr) {
 
-            $scope.ok = function () {
-                $uibModalInstance.close();
-            };
+        $scope.ok = function () {
+            $uibModalInstance.close();
+        };
 
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-    
-            // cose aggiunte
-            $scope.selectedRecipe = selectedRecipe;
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
 
-            $scope.collections = Collection.userCollections;
-            
-            // creazione di una nuova collection
-            $scope.collectionToCreate = {
-                title: "",
-                description: "",
-                isPrivate: false
-            };
-            
-            $scope.addRecipeToCollection = function (collection) {
-                Collection.addRecipeToCollection($scope.selectedRecipe,
+        // cose aggiunte
+        $scope.selectedRecipe = selectedRecipe;
+
+        $scope.collections = Collection.userCollections;
+
+        /**
+         * Funzione per aggiungere una ricetta ad una raccolta esistente
+         */
+        $scope.addRecipeToCollection = function (collection) {
+            Collection.addRecipeToCollection($scope.selectedRecipe,
                 collection, function success(response) {
                     // close modal
                     $uibModalInstance.close();
                 })
-            }
-            
-            /**
-             * Metodo per creare una collection nuova.
-             */
-            $scope.createCollection = function () {
-                Collection.create($scope.collectionToCreate, function (response) {
-                    
-                    $scope.collectionToCreate = response.data
-                    $scope.collections.push($scope.collectionToCreate);
+        }
 
-                    //visualizzo tutte le raccolte, in alternativa si puo chiudere la modal e inviare una notifica
-                    $scope.showme = false;
+        /**
+        * Modale per creare una nuova raccolta
+        */
 
-                    //inizializzo le variabili
-                    $scope.title = "";
-                    $scope.description= "";
-                })
-            }
-        });
+        $scope.openCreateCollectionModal = function () {
+            var selectedRecipe = $scope.selectedRecipe;
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'templates/collection_create_modal.html',
+                controller: function ($uibModalInstance, $scope) {
+                    // passaggio paramteri
+                    $scope.loading = false;
+                    // creazione di una nuova collection
+                    $scope.collection = {
+                        title: "",
+                        description: "",
+                        isPrivate: false
+                    };
+
+                    // azioni possibili all'interno della modale
+
+                    // crea
+                    $scope.ok = function () {
+                        $scope.loading = true;
+
+                        Collection.create($scope.collection,
+                            function (response) {
+
+                                // aggiungo la ricetta alla nuova raccolta
+                                Collection.addRecipeToCollection(
+                                    selectedRecipe,
+                                    response.data,
+                                    function success(response) {
+                                        //do what you need here
+                                        $scope.loading = false;
+                                        // close modal
+                                        $uibModalInstance.close(response.data);
+                                    },
+                                    function (response) {
+                                        $scope.loading = false;
+                                    });
+
+                            }, function (response) {
+                                // errore
+                                $scope.loading = false;
+                            });
+                    };
+
+                    // annulla
+                    $scope.cancel = function () {
+                        $uibModalInstance.dismiss('cancel');
+                    };
+
+                },
+                size: 'lg'
+            });
+
+            // aggiorno i risultati
+            modalInstance.result.then(function (collection) {
+                toastr.success('Raccolta creata e ricetta aggiunta');
+                // aggiungo subito la nuova raccolta
+                Collection.userCollections.push(collection);
+                Collection.collections.push(collection);
+                // la raccolta è stata creata e la ricetta è stata aggiunta
+                $uibModalInstance.close();
+            });
+
+        };
+
+    });

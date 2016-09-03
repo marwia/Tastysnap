@@ -50,7 +50,8 @@ angular.module('NotificationService', [])
             var messageHandler = $sails.on("user", function (message) {
                 console.log('New message to this user ::\n', message);
                 // Aggiungi la notifica alla coda
-                o.notifications.push(message.data);
+                if (message.data)
+                    o.notifications.push(message.data);
             });
         };
 

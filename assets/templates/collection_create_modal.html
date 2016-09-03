@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h3 class="modal-title">Crea nuova raccolta</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="inputTitle" class="col-sm-2 control-label">Titolo</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputTitle" ng-model="collection.title" placeholder="Titolo">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputDesc" class="col-sm-2 control-label">Descrizione</label>
+            <div class="col-sm-10">
+                <textarea style="resize: none;" class="form-control" id="inputDesc" ng-model="collection.description" name="description"
+                    rows="3" placeholder="Di cosa parla la tua raccolta?"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="radio" class="col-sm-2 control-label">Privata</label>
+            <div class="col-sm-10">
+                <div class="btn-group" id="radio">
+                    <label class="btn btn-default" ng-model="collection.isPrivate" uib-btn-radio="true">Si</label>
+                    <label class="btn btn-default" ng-model="collection.isPrivate" uib-btn-radio="false">No</label>
+                </div>
+                <strong ng-show="collection.isPrivate" style="color: grey;">Quando la raccolta è privata soltanto tu puoi vederla e consultarla.</strong>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="cancel()">Annulla</button>
+    <button class="btn btn-danger" type="button" ng-click="ok()">Salva<i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
+</div>

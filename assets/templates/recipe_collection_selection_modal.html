@@ -15,49 +15,6 @@
         <div class="col-xs-12 col-sm-7 col-md-8">
             <div class="row modal-add-recipe-to-collection_con">
 
-                <!-- nuova raccolta -->
-                <div class="col-md-4 modal-add-recipe-to-collection_coll" title="Crea una nuova raccolta" role="button" ng-click="showme=true">
-                    <div style="height:auto; padding-bottom: 100%;">
-                        <div class="card_collection_content_bg_1_4" style="background-image: url('{{selectedRecipe.coverImageUrl}}')"></div>
-                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[1].coverImageUrl + ')'}" style="background-color: #555555;"></div>
-                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[2].coverImageUrl + ')'}" style="background-color: #636363;"></div>
-                        <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[3].coverImageUrl + ')'}" style="background-color: #707070;"></div>
-                    </div>
-                    <label ng-hide="showme">Nuova Raccolta</label>
-                </div>
-
-                <!-- form per inserire le info della collection -->
-                <div class="col-md-8 modal-add-recipe-to-collection_input_text" ng-show="showme">
-                    <!-- Titolo Raccolta -->
-                    <input type="text" class="form-control input-lg" placeholder="Titolo Raccolta" ng-model="collectionToCreate.title" autocomplete="off" ng-value="Nuova Raccolta">
-
-                    <hr/>
-
-                    <!-- Input descrizione -->
-                    <textarea class="form-control" rows="3" placeholder="Descrivi brevemente la tua raccolta!" ng-model="collectionToCreate.description"></textarea>
-
-                    <hr/>
-
-                    <!-- Is private -->
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> Collection Private (puoi vederla solo tu)
-                        </label>
-                    </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> Collection pubblica
-                        </label>
-                    </div>
-
-                    <hr/>
-
-                    <button type="button" class="btn btn-default" ng-click="showme=false">Chiudi</button>
-                    <button type="button" class="btn btn-default" ng-click="createCollection()">Aggiungi</button>
-
-                </div>
-
-                <!-- manca di mettere il nome della raccolta nel title -->
                 <div ng-hide="showme" class="col-md-4 modal-add-recipe-to-collection_coll" title="Aggiungi {{selectedRecipe.title}} a {{collection.title}}" ng-repeat="collection in collections | filter: addtocollection " ng-click="addRecipeToCollection(collection)" role="button">
                     <div style="height:auto; padding-bottom: 100%;">
                         <div class="card_collection_content_bg_1_4" ng-style="{'background-image': 'url(' + collection.recipes[0].coverImageUrl + ')'}" style="background-color: #464646;"></div>
@@ -67,7 +24,13 @@
                     </div>
                     <label>{{collection.title}}</label>
                 </div><!-- fine ng-repeat -->
+                
             </div>
         </div>
     </div>
 </div><!-- /modal body -->
+
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="cancel()">Annulla</button>
+    <button class="btn btn-warning" type="button" ng-click="openCreateCollectionModal()">Crea nuova raccolta</button>
+</div>

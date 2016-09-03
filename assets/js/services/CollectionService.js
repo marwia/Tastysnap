@@ -311,7 +311,7 @@ angular.module('CollectionService', [])
         /**
          * Servizio per aggiungere una ricetta ad una raccolta
          */
-        o.addRecipeToCollection = function (recipe, collection, successCallback) {
+        o.addRecipeToCollection = function (recipe, collection, successCallback, errorCallback) {
             return $http.put(
                 server_prefix + '/collection/' + collection.id + '/recipe/' + recipe.id,
                 null)
@@ -321,13 +321,41 @@ angular.module('CollectionService', [])
                     if(successCallback)
                         successCallback(response);
                     
+                }, errorCallback);
+        };
+
+        /**
+         * Servizio per rimuovere una ricetta da una raccolta
+         */
+        o.removeRecipeFromCollection = function (recipe, collection, successCallback) {
+            return $http.delete(
+                server_prefix + '/collection/' + collection.id + '/recipe/' + recipe.id)
+                .then(function(response) {
+
+                    if(successCallback)
+                        successCallback(response);
+
                 }, function errorCallback(response) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
                     //alert("Errore: " + response);
                     console.log(response);
                 });
-        };
+        }
+
+        o.update = function (collection, successCallback, errorCallback) {
+            console.info("update", collection);
+            return $http.put(
+                server_prefix + '/collection/' + collection.id,
+                collection)
+                .then(function(response) {
+
+                    if(successCallback)
+                        successCallback(response);
+
+                }, errorCallback);
+            
+        }
         
         /**
          * Servizio per ricavare la foto casuale di una sua ricetta data una collection

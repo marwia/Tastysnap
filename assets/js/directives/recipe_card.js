@@ -19,7 +19,9 @@ angular.module('sampleApp')
                 recipe: '=recipe',
                 openCollectionModal: '&',
                 openShareModal: '&',
-                toggleUpvoteRecipe: '&'
+                toggleUpvoteRecipe: '&',
+                showRemoveButton: '=',
+                removeCallback: '&'// per la rimozione dalla raccolta
             },
             
             //controller: 'RecipeCtrl',

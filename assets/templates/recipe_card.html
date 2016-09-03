@@ -2,7 +2,7 @@
 <div class="card">
 
     <!-- Button per rimuovere una ricetta -->
-    <div class="card_delete" role="button">
+    <div ng-if="showRemoveButton" ng-cloak class="card_delete" role="button" ng-click="removeCallback(recipe)">
         <i class="fa fa-times" aria-hidden="true"></i>
     </div>
 
