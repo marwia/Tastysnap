@@ -783,6 +783,10 @@ ul.top_menu_notify_dropdown {
 	color:white; /* example */
 }
 
+.collection_desc{
+	color:white; /* example */
+}
+
 .collection_info_item{
 	color:white; /* example */
 	margin-left:5px;
@@ -989,7 +993,7 @@ ul.top_menu_notify_dropdown {
 
 .home_navbar_item:hover>a{
 	color:white;
-	border-bottom:1px solid #FF8E2A;
+	border-bottom: 2px solid #FF8E2A;
 }
 
 li.home_navbar_item {
@@ -2095,11 +2099,11 @@ rzslider .rz-pointer.rz-active:after {
 	width: 30px;
 	height: 30px;
 	position: absolute;
-	top: -10px;
-	right: -10px;
-	z-index: 1;
-	background-color: #B5B5B5;
-	color: #222;
+	top: -15px;
+	right: -15px;
+	z-index: 2;
+	background-color: #F44336;
+	color: white;
 	-webkit-border-radius: 250px;
 	-moz-border-radius: 250px;
 	border-radius: 250px;
