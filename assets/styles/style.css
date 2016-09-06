@@ -45,7 +45,7 @@ body {
 
 .tasty_container{
 	width:100%;
-	max-width:1024px;
+	*max-width:1024px;
 	margin:auto;
 }
 
@@ -1828,50 +1828,9 @@ footer{
     color:white !important;
 }
 
-.footer_top{
+.footer_con{
     background: #be7100;
-    color: #ff9800;
-    min-height: 30px;
-}
-
-.footer_bottom{
-    background: #ff9800;
-    min-height: 250px;
-    padding-top: 70px;
-    padding-bottom: 70px;
-}
-
-.footer_tasty_logo{
-    width: 100%;
-	max-width:250px;
-}
-
-.footer_items ul{
-    padding-left: 70px;
-}
-
-.footer_items ul li{
-    list-style-type:none;
-    line-height: 1.7
-}
-
-.footer_items a:hover{
-	color: white;
-}
-
-.footer_social_icon{
-    font-size: 2em;
-    margin: 0px 7px 0 7px;
-}
-
-@media screen and (max-width: 991px){
-    .footer_items{
-		text-align: center;
-	}
-	
-	.footer_items ul{
-		padding-left: 0 !important;
-	}
+	margin: auto -15px 0 -15px;
 }
 
 /* ------------------------------------------------------------------ 17 -------------------------------------------------------- */
