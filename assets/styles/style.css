@@ -1601,6 +1601,10 @@ tr.recipe_sp_3_tr{
 	margin: auto auto 7px auto;
 }
 
+.modal-add-recipe-to-collection_coll label{
+	height: 40px;
+}
+
 .modal-add-recipe-to-collection_input_text input[type=text], .modal-add-recipe-to-collection_input_text textarea{
 	margin: 0 auto 10px auto;
 	padding: 0;
