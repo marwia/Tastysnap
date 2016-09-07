@@ -70,6 +70,8 @@ module.exports = {
     coordinates: { type: 'json' },
     // per riferimento memorizzo anche l'id del posto (offerto da Google)
     googlePlaceId: { type: 'String' },
+    // per riferimento memorizzo anche il reference del posto (offerto da Google)
+    googlePlaceRef: { type: 'String' },
 
     // Reference to User
     author : { 

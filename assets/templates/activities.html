@@ -4,7 +4,8 @@
         <hr class="tasty_title_bar"></hr>
     </div>
     <div class="col-md-4">
-        <h3 class="tasty_title_text">Attività</h3></div>
+        <h3 class="tasty_title_text">Attività</h3>
+    </div>
     <div class="col-md-4">
         <hr class="tasty_title_bar"></hr>
     </div>
@@ -12,24 +13,30 @@
 
 <div class="row activities_container">
 
-    <!-- Attività -->
-    <!-- ng-repeart qui!!!!  -->
-    <div class="col-md-12 activity" ng-repeat="n in range(5,15)">
-        <img alt="Alan" src="https://pbs.twimg.com/profile_images/1395069826/alan-wolfpack_400x400.jpg" class="img-responsive pull-left" alt="Responsive image">
-        <div class="pull-right">
-            <div class="">
-                <div class="col-md-12 text-right activity_delete">
-                    <i class="fa fa-times" aria-hidden="true" role="button"></i>
+    <div infinite-scroll="nextActivites()" infinite-scroll-parent="true">
+        <!-- non ci sono notifiche -->
+        <div ng-show="activities.length==0">
+            <li role="menuitem">
+                <hr/>
+            </li>
+            <li role="menuitem">
+                <div class="media">
+                    <div class="media-body clearfix">
+                        <p class="media-heading">
+                            <div class="row tasty_container text-center tasty_load_space">
+                                Non ci sono attività da mostrare...
+                            </div>
+                        </p>
+                    </div>
                 </div>
-                <div class="col-md-12 activity_text">
-                    Hai aggiunto ai preferiti la ricetta <strong>Il pollo con le patete al forno</strong>
-                </div>
-                <div class="col-md-12 activity_moment text-left">
-                    10 min fa
-                </div>
-            </div>
+            </li>
         </div>
-        <div class="clearfix"></div>
+
+        <!-- stampo le notifiche -->
+        <activity ng-repeat="n in activities | orderBy:'-createdAt'" activity="n"></activity>
+
+        <div ng-show='busy'>Caricamento...</div>
+
     </div>
 
 </div>

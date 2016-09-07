@@ -37,12 +37,71 @@ angular.module('IngredientService', [])
         };
 
         /**
+         * Servizio per aggiornare un ingrediente di un gruppo di una data ricetta.
+         */
+        o.updateIngredientGroup = function(ingredientGroup, successCallback) {
+            return $http.put(
+                server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id,
+                ingredientGroup)
+                .then(successCallback, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    //alert("Errore: " + response);
+                    console.log(response);
+                });
+        };
+
+        /**
+         * Servizio per eliminare un ingrediente da un gruppo di una data ricetta.
+         */
+        o.deleteIngredientGroup = function(ingredientGroup, successCallback) {
+            return $http.delete(
+                server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id)
+                .then(successCallback, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    //alert("Errore: " + response);
+                    console.log(response);
+                });
+        };
+
+        /**
          * Servizio per creare un gruppo di ingredienti per una data ricetta.
          */
-        o.createIngredient = function(ingredient, ingredientGroup, successCallback) {
+        o.createIngredient = function(ingredientGroup, ingredient, successCallback) {
             return $http.post(
                 server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id + '/ingredient',
                 ingredient)
+                .then(successCallback, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    //alert("Errore: " + response);
+                    console.log(response);
+                });
+        };
+
+        /**
+         * Servizio per aggiornare un ingrediente di un gruppo di una data ricetta.
+         */
+        o.updateIngredient = function(ingredientGroup, ingredient, successCallback) {
+            console.info("updateIngredient", ingredient);
+            return $http.put(
+                server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id + '/ingredient/' + ingredient.id,
+                ingredient)
+                .then(successCallback, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    //alert("Errore: " + response);
+                    console.log(response);
+                });
+        };
+
+        /**
+         * Servizio per eliminare un ingrediente da un gruppo di una data ricetta.
+         */
+        o.deleteIngredient = function(ingredientGroup, ingredient, successCallback) {
+            return $http.delete(
+                server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id + '/ingredient/' + ingredient.id)
                 .then(successCallback, function errorCallback(response) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.

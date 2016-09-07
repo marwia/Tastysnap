@@ -80,6 +80,28 @@ angular.module('appRoutes', []).config([
                 }
             })
 
+            .state('app.recipe_edit', {
+                url: '/recipe_edit/{id}',
+                views: {
+                    'content@app': {
+                        templateUrl: 'templates/recipe_create.html',
+                        controller: 'RecipeCreateCtrl',
+                        // ogni volta che parte da questo stato farà questa funzione
+                        resolve: {
+                            postPromise: ['Recipe', function (recipes) {
+                                return recipes.getAllRecipeCategories();
+                            }],
+                            dosageType: ['Recipe', function (recipes) {
+                                return recipes.getAllDosageTypes();
+                            }],
+                            recipePromise: ['Recipe', '$stateParams', function (recipes, $stateParams) {
+                                return recipes.getRecipe($stateParams.id);
+                            }]
+                        }
+                    }
+                }
+            })
+
             // EXTERN HOME
             .state('app.ext_home', {
                 url: '/ext_home',

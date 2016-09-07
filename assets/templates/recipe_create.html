@@ -1,11 +1,17 @@
 <style>
-    .c_recipe_row{
-        *background-color: {{recipeToCreate.dominantColor}};
+    .c_recipe_row {
+        *background-color: {
+            {
+                recipeToCreate.dominantColor
+            }
+        }
+        ;
     }
 </style>
 
 <div class="panel-body no-padding recipe_creating_message" ng-show="isCreating">
-    <h3><i class="fa fa-cog recipe_creating_message_gear"></i> Creazione ricetta in corso...</h3>
+    <h3 ng-hide="editMode"><i class="fa fa-cog recipe_creating_message_gear"></i> Creazione ricetta in corso...</h3>
+    <h3 ng-show="editMode"><i class="fa fa-cog recipe_creating_message_gear"></i> Salvataggio delle modifiche in corso...</h3>
 </div>
 
 <div class="tasty_container tasty_container_margin recipe_container">
@@ -18,11 +24,12 @@
                     <div class="col-md-4 c_recipe_left"></div>
                     <!-- titolo -->
                     <div class="col-md-8 c_recipe_right">
-                            <h1 class="recipe_create_page_header">
-                                <small>Inserisci la ricetta</small>
-                                <br>
-                                <strong>DAI SFOGO ALLA TUA CREATIVIT&Aacute;</strong>
-                            </h1>
+                        <h1 class="recipe_create_page_header">
+                            <small ng-hide="editMode">Inserisci la ricetta</small>
+                            <small ng-show="editMode">Modifica la tua ricetta</small>
+                            <br>
+                            <strong>DAI SFOGO ALLA TUA CREATIVIT&Aacute;</strong>
+                        </h1>
                     </div>
                 </div>
 
@@ -42,34 +49,28 @@
                         <span><strong>Titolo ricetta</strong></span>
                     </div>
                     <div class="col-md-8 c_recipe_right" ng-class="{ 'has-error': recipeForm.title.$touched && recipeForm.title.$invalid }">
-                        <input type="text" class="form-control" name="title" ng-model="recipeToCreate.title" ng-minlength="3" ng-maxlength="100" required placeholder="Favolose crepes con guarnizione di fragole e crema al cioccolato" autocomplete="off"/>
+                        <input type="text" class="form-control" name="title" ng-model="recipeToCreate.title" ng-minlength="3" ng-maxlength="100"
+                            required placeholder="Favolose crepes con guarnizione di fragole e crema al cioccolato" autocomplete="off"
+                        />
                         <div class="help-block" ng-if="recipeForm.title.$touched && recipeForm.title.$invalid" ng-messages="recipeForm.title.$error">
                             <div ng-messages-include="templates/validation_messages.html"></div>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row c_recipe_row">
-                    
+
                     <div class="col-md-4 c_recipe_left">
                         <span><strong>Luogo di appartenenza</strong></span>
                     </div>
 
-                    <div class="col-md-8 c_recipe_right">               
-                        <input type="text" id="main-menu"
-                            class="form-control" 
-                            name="luogo" 
-                            ng-model="recipePlace" 
-                            googleplace
-                            required 
-                            placeholder="Indica il paese, la regione o la città a cui attribuisci la ricetta"
-                            click-outside="placeValidate()"
-                            search-result="recipePlaceSearchResult"
-                            detailed-result="recipeDetailedPlace"
-                            autocomplete="off"/>
+                    <div class="col-md-8 c_recipe_right">
+                        <input type="text" id="main-menu" class="form-control" name="luogo" ng-model="recipePlace" googleplace required placeholder="Indica il paese, la regione o la città a cui attribuisci la ricetta"
+                            click-outside="placeValidate()" search-result="recipePlaceSearchResult" detailed-result="recipeDetailedPlace"
+                            autocomplete="off" />
                     </div>
                 </div>
-                                
+
                 <!-- RIGA 3.5 - TEMPO DI PREPARAZIONE -->
                 <div class="row c_recipe_row">
                     <!-- categoria ricetta -->
@@ -82,7 +83,8 @@
                                 <table class="recipe_create_min_table">
                                     <tr>
                                         <td>
-                                            <input type="number" class="form-control" name="preparation_time" id="preparation_time" ng-model="recipeToCreate.preparationTime" required min="1" max="1000" value="30" placeholder="30"/>
+                                            <input type="number" class="form-control" name="preparation_time" id="preparation_time" ng-model="recipeToCreate.preparationTime"
+                                                required min="1" max="1000" value="30" placeholder="30" />
                                         </td>
                                         <td>
                                             &nbsp; minuti
@@ -92,7 +94,7 @@
                                         <div class="help-block" ng-messages="recipeForm.preparation_time.$error" ng-if="recipeForm.preparation_time.$touched && recipeForm.preparation_time.$invalid">
                                             <div ng-messages-include="templates/validation_messages.html"></div>
                                         </div>
-                                    </tr> 
+                                    </tr>
                                 </table>
                             </div>
                         </div>
@@ -106,13 +108,12 @@
                         <span><strong>Categoria</strong></span>
                     </div>
                     <div class="col-md-8 c_recipe_right">
-                        <my-dropdown data-menu-type="button" select-val="recipeToCreate.category = selectedVal" preselected-item="recipeCategories[0]"
-                        data-dropdown-data="recipeCategories"></my-dropdown>
+                        <my-dropdown data-menu-type="button" select-val="recipeToCreate.category = selectedVal" preselected-item="recipeCategories[recipeToCreate.preselectedCategoryIdx] || recipeCategories[0]" data-dropdown-data="recipeCategories"></my-dropdown>
                     </div>
                 </div>
-                
+
                 <!-- RIGA 5 - FOTO -->
-                <div class="row c_recipe_row" ng-hide="coverImageUploader.queue.length >= 1">
+                <div class="row c_recipe_row" ng-hide="coverImageUploader.queue.length >= 1 || recipeToCreate.coverImageUrl">
                     <!-- foto -->
                     <div class="col-md-4 c_recipe_left">
                         <span><strong>Immagine di copertina</strong></span><br>
@@ -136,23 +137,30 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- RIGA 6 - IMMAGINI SELEZIONATE -->
-                <div class="row c_recipe_row" ng-show="coverImageUploader.queue.length >= 1">
-                    <!-- colore domaninate -->
+                <div class="row c_recipe_row" ng-show="coverImageUploader.queue.length >= 1 || recipeToCreate.coverImageUrl">
+                    <!-- Descrizione riga -->
                     <div class="col-md-4 c_recipe_left">
                         <span><strong>Immagine selezionata</strong></span><br>
                         <span class="recipe_create_description">Per cambiare immagini premi il pulsante con il simbolo del cestino.</span>
                     </div>
-                    <!-- Carica immagini -->
+                    <!-- Anteprima immagine di copertina selezionata -->
                     <div class="col-md-8 c_recipe_right" ng-repeat="item in coverImageUploader.queue">
                         <button type="button" class="btn btn-danger btn-xs recipe_create_button_remove" ng-click="item.remove()">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
                         <div ng-show="coverImageUploader.isHTML5" ng-thumb="{ file: item._file, width: 425 }"></div>
                     </div>
+                    <!-- Anteprima immagine di copertina esistente (nel caso di modifica ricetta)-->
+                    <div class="col-md-8 c_recipe_right" ng-show="recipeToCreate.coverImageUrl">
+                        <button type="button" class="btn btn-danger btn-xs recipe_create_button_remove" ng-click="recipeToCreate.coverImageUrl = undefined">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                        <img src="{{recipeToCreate.coverImageUrl}}" alt="Immagine di copertina" class="recipe_img">
+                    </div>
                 </div>
-                
+
                 <!-- RIGA 5 - FOTO -->
                 <div class="row c_recipe_row">
                     <!-- foto -->
@@ -180,7 +188,7 @@
                 </div>
 
                 <!-- RIGA 6 - IMMAGINI SELEZIONATE -->
-                <div class="row c_recipe_row" ng-show="otherImageUploader.queue.length >= 1">
+                <div class="row c_recipe_row" ng-show="otherImageUploader.queue.length >= 1 || recipeToCreate.otherImageUrls.length >= 1">
                     <!-- colore domaninate -->
                     <div class="col-md-4 c_recipe_left">
                         <span><strong>Immagini selezionate</strong></span><br>
@@ -188,14 +196,22 @@
                     </div>
                     <!-- Carica immagini -->
                     <div class="col-md-8 c_recipe_right">
-                        
+
                         <div class="col-md-4" ng-repeat="item in otherImageUploader.queue">
                             <button type="button" class="btn btn-danger btn-xs recipe_create_button_remove" ng-click="item.remove()">
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>
                             <div ng-show="otherImageUploader.isHTML5" ng-thumb="{ file: item._file, width: 425 }"></div>
                         </div>
-                        
+
+                        <!-- Anteprima immagine di copertina esistente (nel caso di modifica ricetta)-->
+                        <div class="col-md-4" ng-repeat="image in recipeToCreate.otherImageUrls">
+                            <button type="button" class="btn btn-danger btn-xs recipe_create_button_remove" ng-click="recipeToCreate.otherImageUrls.splice($index, 1)">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                            <img src="{{image}}" alt="Immagine $index" class="recipe_img" >
+                        </div>
+
                     </div>
                 </div>
 
@@ -220,7 +236,7 @@
                                 <div class="col-md-2 col-xs-6" ng-class="{ 'has-error': recipeForm.dosages_for.$touched && recipeForm.dosages_for.$invalid }">
                                     <label class="control-label">Dosi per</label>
                                     <input type="number" class="form-control" name="dosages_for" id="dosages_for" ng-model="recipeToCreate.dosagesFor" required
-                                    min="1" max="99" value="3" placeholder="3"/>
+                                        min="1" max="99" value="3" placeholder="3" />
                                     <div class="help-block" ng-messages="recipeForm.dosages_for.$error" ng-if="recipeForm.dosages_for.$touched && recipeForm.dosages_for.$invalid">
                                         <div ng-messages-include="templates/validation_messages.html"></div>
                                     </div>
@@ -229,168 +245,156 @@
                                     <label class="control-label">Tipologia</label>
                                     <br>
                                     <my-dropdown data-menu-type="button" select-val="recipeToCreate.dosagesType = selectedVal" preselected-item="dosageTypes[0]"
-                                    data-dropdown-data="dosageTypes"></my-dropdown>
+                                        data-dropdown-data="dosageTypes"></my-dropdown>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-            
 
-            <!-- RIGA 9 - GRUPPI DI INGREDIENTI -->
-            <div class="row c_recipe_row">
-                <!-- categoria ricetta -->
-                <div class="col-md-4 c_recipe_left">
-                    <span><strong>Ingredienti</strong></span><br>
-                    <span class="recipe_create_description">Elenca gli ingredienti usati nella tua creazione, se preferisci puoi raggrupparli e assegnare un titolo a ciascun gruppo. Per esempio, ritornando alla ricetta di crepes, potresti creare due gruppi: uno per la base delle crepes e l'altro per la guarnizione.</span>
-                </div>
-                <div class="col-md-8 c_recipe_right">
-                    <!-- GRUPPI DI INGREDIENTI -->
-                    <div class="col-md-12 well recipe_create_add_ingredient_box" ng-repeat="ingredient_group in ingredient_groups">
-                        <ng-form name="recipeForm2" role="form" novalidate>
-                            <div class="form-group">
-                                <div class="row">
-                                    <button type="button" ng-if="ingredient_groups.length!=1" class="btn btn-link pull-right recipe_create_ingredient_close" ng-click="removeIngredientGroup($index)">Elimina gruppo</button>
-                                    <div class="col-xs-4" ng-class="{ 'has-error': recipeForm2.group_name.$touched && recipeForm2.group_name.$invalid }" ng-if="ingredient_groups.length!=1">
-                                        <label class="control-label">Titolo gruppo ingredienti</label>
-                                        <input type="text" class="form-control" name="group_name" ng-model="ingredient_group.name" required plceholder="ingredienti per l'impasto'"/ autocomplete="off">
-                                        <div class="help-block" ng-messages="recipeForm2.group_name.$error" ng-if="recipeForm2.group_name.$touched && recipeForm.group_name.$invalid">
-                                            <div ng-messages-include="templates/validation_messages.html"></div>
+
+                <!-- RIGA 9 - GRUPPI DI INGREDIENTI -->
+                <div class="row c_recipe_row">
+                    <!-- categoria ricetta -->
+                    <div class="col-md-4 c_recipe_left">
+                        <span><strong>Ingredienti</strong></span><br>
+                        <span class="recipe_create_description">Elenca gli ingredienti usati nella tua creazione, se preferisci puoi raggrupparli e assegnare un titolo a ciascun gruppo. Per esempio, ritornando alla ricetta di crepes, potresti creare due gruppi: uno per la base delle crepes e l'altro per la guarnizione.</span>
+                    </div>
+                    <div class="col-md-8 c_recipe_right">
+                        <!-- GRUPPI DI INGREDIENTI -->
+                        <div class="col-md-12 well recipe_create_add_ingredient_box" ng-repeat="ingredient_group in ingredient_groups">
+                            <ng-form name="recipeForm2" role="form" novalidate>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <button type="button" ng-if="ingredient_groups.length!=1" class="btn btn-link pull-right recipe_create_ingredient_close"
+                                            ng-click="removeIngredientGroup($index)">Elimina gruppo</button>
+                                        <div class="col-xs-4" ng-class="{ 'has-error': recipeForm2.group_name.$touched && recipeForm2.group_name.$invalid }" ng-if="ingredient_groups.length!=1">
+                                            <label class="control-label">Titolo gruppo ingredienti</label>
+                                            <input type="text" class="form-control" name="group_name" ng-model="ingredient_group.name" required plceholder="ingredienti per l'impasto'"
+                                            / autocomplete="off">
+                                            <div class="help-block" ng-messages="recipeForm2.group_name.$error" ng-if="recipeForm2.group_name.$touched && recipeForm.group_name.$invalid">
+                                                <div ng-messages-include="templates/validation_messages.html"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </ng-form>
-                        
-                        <!-- INGREDIENTI DI CIASCUN GRUPPO -->
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <table class="table table-condensed table-borderless">
-                                    <tr style="font-weight: bold">
-                                        <td style="width: 70%">Nome</td>
-                                        <td style="width: 15%">Quantità</td>
-                                        <td style="width: 15%">Tipo</td>
-                                    </tr>
-                                    <tr ng-repeat="ingredient in ingredient_group.ingredients">
-                                        <ng-form name="recipeForm3" role="form" novalidate>
-                                        <td ng-class="{ 'has-error': recipeForm3.name.$touched && recipeForm3.name.$invalid }">
+                            </ng-form>
 
-                                             <input type="text" 
-                                                class="form-control" 
-                                                name="name" 
-                                                ng-model="ingredient.name" 
-                                                uib-typeahead="product.name.long for product in searchProductsByName($viewValue)"
-                                                typeahead-editable="false"
-                                                typeahead-no-results="noResults"
-                                                required 
-                                                placeholder="es. zucchero"
-                                                typeahead-on-select="onProductSelect($item, ingredient)"
-                                                autocomplete="off"/>
+                            <!-- INGREDIENTI DI CIASCUN GRUPPO -->
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <table class="table table-condensed table-borderless">
+                                        <tr style="font-weight: bold">
+                                            <td style="width: 65%">Nome</td>
+                                            <td style="width: 15%">Quantità</td>
+                                            <td style="width: 20%">Tipo</td>
+                                        </tr>
+                                        <tr ng-repeat="ingredient in ingredient_group.ingredients">
+                                            <ng-form name="recipeForm3" role="form" novalidate>
+                                                <td ng-class="{ 'has-error': recipeForm3.name.$touched && recipeForm3.name.$invalid }">
 
-                                        </td>
-                                        <td>
+                                                    <input type="text" class="form-control" name="name" ng-model="ingredient.name" uib-typeahead="product.name.long for product in searchProductsByName($viewValue)"
+                                                        typeahead-editable="false" typeahead-no-results="noResults" required
+                                                        placeholder="es. zucchero" typeahead-on-select="onProductSelect($item, ingredient)"
+                                                        autocomplete="off" />
 
-                                            <input type="number" 
-                                                class="form-control" 
-                                                name="quantity" 
-                                                ng-model="ingredient.quantity" 
-                                                min="1" max="999" value="50" placeholder="50" 
-                                                autocomplete="off"
-                                                required />
-                                        </td>
-                                        <td>
+                                                </td>
+                                                <td>
 
-                                            <input type="text" 
-                                                class="form-control" 
-                                                name="unitOfMeasure" 
-                                                ng-model="ingredient.unitOfMeasure" 
-                                                uib-typeahead="unit for unit in unitsOfMeasure | filter:$viewValue"
-                                                typeahead-editable="false"
-                                                required 
-                                                placeholder="es. g" 
-                                                autocomplete="off"/>
-                                        </td>
-                                        </ng-form>
-                                    </tr>
-                                </table>
-                                <button type="button" class="btn btn-default" ng-click="addIngredient($index)">Aggiungi ingrediente</button>
-                                <br>
+                                                    <input type="number" class="form-control" name="quantity" ng-model="ingredient.quantity" min="1" max="999" value="50" placeholder="50"
+                                                        autocomplete="off" required />
+                                                </td>
+                                                <td class="form-inline form-padding">
 
+                                                    <input type="text" style="width: 80%;" class="form-control" name="unitOfMeasure" ng-model="ingredient.unitOfMeasure" uib-typeahead="unit for unit in unitsOfMeasure | filter:$viewValue"
+                                                        typeahead-editable="false" required placeholder="es. g" autocomplete="off"
+                                                    />
+                                                    <a href="#" ng-click="removeIngredient($parent.$index, $index)"><i class="fa fa-times"></i></a>
+
+
+                                                </td>
+                                            </ng-form>
+                                        </tr>
+                                    </table>
+                                    <button type="button" class="btn btn-default" ng-click="addIngredient($index)">Aggiungi ingrediente</button>
+                                    <br>
+
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- RIGA 10 - Aggiungi un nuovo gruppo di ingredienti -->
-            <div class="row c_recipe_row">
-                <!-- vuoto -->
-                <div class="col-md-4 c_recipe_left"></div>
-                <div class="col-md-8 c_recipe_right">
-                    <button type="button" class="btn btn-warning" ng-click="addIngredientGroup()">Aggiungi gruppo ingredienti</button>
+                <!-- RIGA 10 - Aggiungi un nuovo gruppo di ingredienti -->
+                <div class="row c_recipe_row">
+                    <!-- vuoto -->
+                    <div class="col-md-4 c_recipe_left"></div>
+                    <div class="col-md-8 c_recipe_right">
+                        <button type="button" class="btn btn-warning" ng-click="addIngredientGroup()">Aggiungi gruppo ingredienti</button>
+                    </div>
                 </div>
-            </div>
 
 
-            <!-- RIGA 10.5 - INGREDIENTI -->
-            <div class="row c_recipe_row">
-                <!-- vuoto -->
-                <div class="col-md-4 c_recipe_left"></div>
-                <div class="col-md-8 c_recipe_right">
-                    <h3>PREPARAZIONE</h3>
+                <!-- RIGA 10.5 - INGREDIENTI -->
+                <div class="row c_recipe_row">
+                    <!-- vuoto -->
+                    <div class="col-md-4 c_recipe_left"></div>
+                    <div class="col-md-8 c_recipe_right">
+                        <h3>PREPARAZIONE</h3>
+                    </div>
                 </div>
-            </div>
 
-            <!-- RIGA 11 - PROCEDIMENTO -->
-            <div class="row c_recipe_row">
-                <div class="col-md-4 c_recipe_left">
-                    <span><strong>Procedimento della ricetta</strong></span><br>
-                    <span class="recipe_create_description">Quali sono i passi della tua nuova ricetta?<br>Descrivi tutti i passagi che hai fatto per realizzare la tua creazione.</span>
+                <!-- RIGA 11 - PROCEDIMENTO -->
+                <div class="row c_recipe_row">
+                    <div class="col-md-4 c_recipe_left">
+                        <span><strong>Procedimento della ricetta</strong></span><br>
+                        <span class="recipe_create_description">Quali sono i passi della tua nuova ricetta?<br>Descrivi tutti i passagi che hai fatto per realizzare la tua creazione.</span>
+                    </div>
+
+                    <div class="row c_recipe_row">
+                        <div class="col-md-8 c_recipe_right">
+                            <div class="media" ng-repeat="step in recipe_steps">
+                                <h1 class="pull-left">
+                                    <div class="recipe_prep_step">{{$index + 1}}</div>
+                                </h1>
+                                <div class="media-body">
+                                    <ng-form name="recipeStepForm" role="form" novalidate>
+                                        <div class="recipe_comment_txt" ng-class="{ 'has-error': recipeStepForm.description.$touched && recipeStepForm.description.$invalid }">
+                                            <a href="#" ng-if="recipe_steps.length!=1" ng-click="removeRecipeStep($index)" class="recipe_comment_delete"><i class="fa fa-times"></i></a>
+                                            <textarea style="resize: none;" class="form-control" name="description" rows="3" required ng-model="step.description" placeholder="Descrivi qui il passagio numero {{$index + 1}}..."></textarea>
+                                            <div class="help-block" ng-messages="recipeStepForm.description.$error" ng-if="recipeStepForm.description.$touched && recipeStepForm.description.$invalid">
+                                                <div ng-messages-include="templates/validation_messages.html"></div>
+                                            </div>
+                                        </div>
+                                    </ng-form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row c_recipe_row">
-                    <div class="col-md-8 c_recipe_right">
-                        <div class="media" ng-repeat="step in recipe_steps">
-                            <h1 class="pull-left">
-                                 <div class="recipe_prep_step">{{$index + 1}}</div>
-                            </h1>   
-                            <div class="media-body">
-                                <ng-form name="recipeStepForm" role="form" novalidate>
-                                    <div class="recipe_comment_txt" ng-class="{ 'has-error': recipeStepForm.description.$touched && recipeStepForm.description.$invalid }">
-                                        <a href="#" ng-if="recipe_steps.length!=1" ng-click="removeRecipeStep($index)" class="recipe_comment_delete"><i class="fa fa-times"></i></a>
-                                        <textarea style="resize: none;" class="form-control" name="description" rows="3" required ng-model="step.description" placeholder="Descrivi qui il passagio numero {{$index + 1}}..."></textarea>
-                                        <div class="help-block" ng-messages="recipeStepForm.description.$error" ng-if="recipeStepForm.description.$touched && recipeStepForm.description.$invalid">
-                                            <div ng-messages-include="templates/validation_messages.html"></div>
-                                        </div>
-                                    </div>
-                                </ng-form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row c_recipe_row">
-                <div class="col-md-4 c_recipe_left"></div>
-                <div class="col-md-8 c_recipe_right">
-                    <button type="button" class="btn btn-warning" ng-click="addRecipeStep()">Aggiungi un altro passo</button>
-                </div>
-            </div>
-
-            <!-- RIGA 12 - COMPLETAMENTO DELLA CREAZIONE -->
-            <div class="row c_recipe_row">
-                <ng-form name="recipeForm3" role="form" novalidate>
                     <div class="col-md-4 c_recipe_left"></div>
-                    <div class="col-md-8 c_recipe_right text-right">
-
-                        <!-- AZIONI RELATIVE ALLA RICETTA -->
-                        <span class="recipe_create_description" ng-show="recipeForm.$invalid || recipeForm2.$invalid || recipeStepForm.$invalid">Aspetta! Non hai finito di riempire tutti campi della tua ricetta.</span>
-                        <button type="submit" class="btn btn-warning" ng-disabled="recipeForm.$invalid || recipeForm2.$invalid || recipeStepForm.$invalid">Pubblica la ricetta</button>
+                    <div class="col-md-8 c_recipe_right">
+                        <button type="button" class="btn btn-warning" ng-click="addRecipeStep()">Aggiungi un altro passo</button>
                     </div>
-                </ng-form>
-            </div>
-            
+                </div>
+
+                <!-- RIGA 12 - COMPLETAMENTO DELLA CREAZIONE -->
+                <div class="row c_recipe_row">
+                    <ng-form name="recipeForm3" role="form" novalidate>
+                        <div class="col-md-4 c_recipe_left"></div>
+                        <div class="col-md-8 c_recipe_right text-right">
+
+                            <!-- AZIONI RELATIVE ALLA RICETTA -->
+                            <span class="recipe_create_description" ng-show="recipeForm.$invalid || recipeForm2.$invalid || recipeStepForm.$invalid">Aspetta! Non hai finito di riempire tutti campi della tua ricetta.</span>
+                            <button ng-show="editMode" type="submit" class="btn btn-warning" ng-disabled="recipeForm.$invalid || recipeForm2.$invalid || recipeStepForm.$invalid">Salva le modifiche</button>
+                            <button ng-hide="editMode" type="submit" class="btn btn-warning" ng-disabled="recipeForm.$invalid || recipeForm2.$invalid || recipeStepForm.$invalid">Pubblica la ricetta</button>
+                        </div>
+                    </ng-form>
+                </div>
+
             </form>
 
         </div>

@@ -1527,6 +1527,11 @@ tr.recipe_sp_3_tr{
     max-width: 425px
 }
 
+.recipe_img{
+    width:100%;
+    max-width: 425px
+}
+
 .recipe_create_button_remove{
     position:absolute;
     top:2%;
@@ -2072,7 +2077,7 @@ rzslider .rz-pointer.rz-active:after {
 }
 
 .activity img{
-	max-width: 100px;
+	width: 100px;
 }
 
 .activity > div{

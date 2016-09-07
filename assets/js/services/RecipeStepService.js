@@ -42,6 +42,28 @@ angular.module('RecipeStepService', [])
                 });
         };
 
+        /**
+         * Servizio per creare un passo per una ricetta.
+         */
+        o.update = function(recipe, step, successCallback, errorCallback) {
+            return $http.put(
+                server_prefix + '/recipe/' + recipe.id + '/step/' + step.id,
+                step)
+                .then(function(response) {
+
+                    if (successCallback) {
+                        successCallback(response);
+                    }
+                    
+                }
+                , function(response) {
+                    if (errorCallback) {
+                        errorCallback(response);
+                    }
+                    console.log(response);
+                });
+        };
+
         
 
         /**

@@ -345,14 +345,14 @@ var apiRoutes = addGlobalPrefix({
 
     'put /recipe/:recipe/ingredient_group/:ingredient_group': 'IngredientGroupController.update',
 
-    'delete /recipe/:recipe/ingredient_group/:ingredient_group': 'IngredientGroupController.delete',
+    'delete /recipe/:recipe/ingredient_group/:ingredient_group': 'IngredientGroupController.destroy',
 
 
     'post /recipe/:recipe/ingredient_group/:ingredient_group/ingredient': 'IngredientController.create',
 
     'put /recipe/:recipe/ingredient_group/:ingredient_group/ingredient/:ingredient': 'IngredientController.update',
 
-    'delete /recipe/:recipe/ingredient_group/:ingredient_group/ingredient/:ingredient': 'IngredientController.delete',
+    'delete /recipe/:recipe/ingredient_group/:ingredient_group/ingredient/:ingredient': 'IngredientController.destroy',
 
 
     'get /ingredient/unit_of_measure': 'IngredientController.getIngredientUnitOfMeasure',
@@ -374,6 +374,8 @@ var apiRoutes = addGlobalPrefix({
     ***************************************************************************/
 
     'get /user/notification': 'NotificationController.find',
+
+    'get /user/activity': 'NotificationController.findActivity',
 
     'put /user/notification/red': 'NotificationController.red',
 

@@ -30,6 +30,7 @@ angular.module('sampleApp')
 
                 var params = scope.$eval(attributes.ngThumb);
 
+                console.info(params.file);
                 if (!helper.isFile(params.file)) return;
                 if (!helper.isImage(params.file)) return;
 

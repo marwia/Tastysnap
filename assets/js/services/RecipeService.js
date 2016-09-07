@@ -400,6 +400,32 @@ angular.module('RecipeService', [])
                 });
         };
 
+        /**
+         * Servizio per creare una ricetta.
+         */
+        o.update = function(recipe, successCallback) {
+            
+            // elimino possibili attributi in più
+            delete recipe.ingredientGroups;
+            delete recipe.steps;
+
+            return $http.put(
+                server_prefix + '/recipe/' + recipe.id,
+                recipe)
+                .then(function(response) {
+
+                    User.currentUser.recipesCount++;
+
+                    successCallback(response);
+
+                }, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                    //alert("Errore: " + response);
+                    console.log(response);
+                });
+        };
+
 
 
         /**

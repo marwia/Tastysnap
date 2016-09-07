@@ -161,7 +161,7 @@ module.exports = {
         if (!ingredientId) { return next(); }
 
         var ingredientToUpdate = req.body;
-        ingredientToUpdate.ingredientGroup = ingredientGroup;
+        delete ingredientToUpdate.ingredientGroup;// per ragioni di sicurezza
 
         if (!ingredientToUpdate.product) { return next(); }
         //find relative Product
@@ -217,7 +217,7 @@ module.exports = {
      *
      * @apiUse NoIngredientError
      */
-    delete: function (req, res, next) {
+    destroy: function (req, res, next) {
         var ingredientGroup = req.ingredientGroup;
 
         var ingredientId = req.param('ingredient');

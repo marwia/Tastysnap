@@ -7,13 +7,13 @@
  */
 
 angular.module('ImageUtilsService', [])
-    .factory('ImageUtils', ['$http', 'Auth', 'User', function($http, Auth, User) {
+    .factory('ImageUtils', ['$http', 'Auth', 'User', function ($http, Auth, User) {
 
         var server_prefix = '/api/v1';
 
         // service body    
         var o = {};
-        
+
         /**
          * Ricava le dimensioni dell'immagine riducendola proporzionalmente.
          * @param {Image} img
@@ -39,7 +39,7 @@ angular.module('ImageUtilsService', [])
 
             return { width: width, height: height };
         }
-        
+
         /**
          * Converts data uri to Blob. Necessary for uploading.
          * @see
@@ -66,20 +66,20 @@ angular.module('ImageUtilsService', [])
 
             return new Blob([ia], { type: mimeString });
         }
-        
+
         /**
          * Serve a ridurre la qualità e la risoluzione di un elemento del 
          * file uploader.
          * @param {FileItem} fileItem
          * @param {Function} successCallback(canvas)
          */
-         o.reduceImageSizeAndQuality = function (file, MAX_WIDTH, MAX_HEIGHT, quality, successCallback, beforeCallback) {
-                         
+        o.reduceImageSizeAndQuality = function (file, MAX_WIDTH, MAX_HEIGHT, quality, successCallback, beforeCallback) {
+
             // Crea il canvas
             var canvas = document.createElement("canvas");
             // Create a file reader
             var reader = new FileReader();
-            
+
             // Set the image once loaded into file reader
             reader.onload = function (e) {
                 // Create an image
@@ -95,25 +95,47 @@ angular.module('ImageUtilsService', [])
                 var sizes = o.setImageSize(this, MAX_WIDTH, MAX_HEIGHT);
                 canvas.width = sizes.width;
                 canvas.height = sizes.height;
-                
-                if (beforeCallback) 
+
+                if (beforeCallback)
                     beforeCallback(this, canvas);
                 else {
                     // Trasforma il file in canvas
                     canvas.getContext("2d").drawImage(this, 0, 0, sizes.width, sizes.height);
                 }
-                
+
                 // Comprimi il canvas in JPEG e riduci qualità
                 var dataUrl = canvas.toDataURL("image/jpeg", quality);
-                
+
                 // Transofm to blob
                 var blob = o.dataURItoBlob(dataUrl);
 
                 if (successCallback)
                     successCallback(canvas, blob);
-                    
+
                 //return blob;
             }
+        }
+
+        function blobToFile(theBlob, fileName) {
+            //A Blob() is almost a File() - it's just missing the two properties below which we will add
+            theBlob.lastModifiedDate = new Date();
+            theBlob.name = fileName;
+            return theBlob;
+        }
+
+        o.downloadImage = function (url, successCallback) {
+            $http.get(
+                url).then(function (response) {
+                var data = response.data;
+                var blob = new Blob(
+                    [data],
+                    { type: "image/jpeg" }
+                );
+                console.info(blob);
+
+                if (successCallback)
+                    successCallback(blob);
+            });
         }
 
         return o;

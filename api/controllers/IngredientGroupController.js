@@ -158,7 +158,7 @@ module.exports = {
      *
      * @apiUse NoIngredientGroupError
      */
-	delete: function (req, res, next) {
+	destroy: function (req, res, next) {
 		var recipe = req.recipe;
 		var ingredientGroupId = req.param('ingredient_group');
 
