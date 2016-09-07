@@ -1,0 +1,21 @@
+<div class="col-md-12 activity">
+
+    <a href="/app/profile/{{notification.triggeringUser.id}}" class="link"><img class="img-responsive pull-left" ng-src="{{ getUserProfileImage(activity.affectedUser) }}" alt="..."></a>
+    <div class="pull-right">
+        <div class="">
+            <div class="col-md-12 text-right activity_delete">
+                <i class="fa fa-times" aria-hidden="true" role="button"></i>
+            </div>
+            <div class="col-md-12 activity_text">
+                <a href="/app/profile/{{activity.triggeringUser.id}}" class="link"><b>{{ activity.triggeringUser.name }}</b></a>{{message[activity.type]}}
+                <a href="{{objectLink}}" class="link"><em>{{object}}</em></a>.
+            </div>
+            <div class="col-md-12 activity_moment text-left">
+                {{ formatDate(activity.createdAt) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    
+</div>

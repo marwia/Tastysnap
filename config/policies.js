@@ -182,6 +182,7 @@ module.exports.policies = {
     'update' : false,
     'findOne' : false,
     'find' : 'isAuthorized',
+    'findActivity' : 'isAuthorized',
     'red' : ['isAuthorized', 'isNotificationsRecipient'],
     'notRed' : ['isAuthorized', 'isNotificationsRecipient'],
   }

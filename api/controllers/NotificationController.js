@@ -70,6 +70,61 @@ module.exports = {
     },
 
     /**
+     * @api {post} /user/activity Find user activites
+     * @apiName findUserActivity
+     * @apiGroup Notification
+     *
+     * @apiDescription Serve per registare richiedere una lista di attività
+     * svolte dall'utente autenticato. 
+     *
+     * @apiErrorExample Error-Response:
+     *     HTTP/1.1 400 Bad request
+     * 
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     */
+    findActivity: function (req, res, next) {
+        var user = req.payload;
+
+        // Forzo la ricerca di attività svolte dall'utente autenticato
+        var criteria = actionUtil.parseCriteria(req) || {};
+        criteria['triggeringUser'] = user.id;
+
+        Notification.find()
+            .where(criteria)
+            .limit(actionUtil.parseLimit(req))
+            .skip(actionUtil.parseSkip(req))
+            .sort(actionUtil.parseSort(req))
+            .populate('affectedUser')
+            .exec(function (err, foundActivities) {
+                if (err) { return next(err); }
+
+                if (foundActivities.length == 0) {
+                    return res.notFound({ error: 'No notification found' });
+                }
+
+                // per ogni notifica populo il campo 'event' a secondo del type
+                async.each(foundActivities, function (notification, callback) {
+                    sails.models[notification.type.toLowerCase()].findOne(notification.event).exec(function (err, result) {
+                        if (err) { return callback(err); }
+                        notification.event = result;
+                        callback();
+                    })
+
+                }, function (err) {
+                    if (err) { return next(err); }
+
+                    return res.json(foundActivities);
+                });
+            
+                
+            });
+    },
+
+    /**
      * @api {put} /user/notification/red Set user notifications to red
      * @apiName redUserNotification
      * @apiGroup Notification
