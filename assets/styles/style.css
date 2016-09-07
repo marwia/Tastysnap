@@ -821,7 +821,7 @@ ul.top_menu_notify_dropdown {
 .collection_header, .collection_nav-scrolled {
 	position: fixed;
 	width: 100%;
-	top: 0;
+	top: 50px;
 }
 .collection_card_con{
 	background-color: rgb(30, 30, 30);

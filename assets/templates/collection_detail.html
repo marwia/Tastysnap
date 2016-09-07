@@ -31,7 +31,8 @@
         </div>
 
         <!-- Navbar scroll top -->
-        <nav class="collection_nav navbar-inverse">
+        
+        <nav class="collection_nav navbar-inverse" set-class-when-at-top="collection_nav-scrolled" padding-when-at-top="0">
             <p class="navbar-text"><i class="fa fa-eye" aria-hidden="true"></i> {{detailedCollection.viewsCount}}</p>
             <p class="navbar-text"><i class="fa fa-heart" aria-hidden="true"></i> {{detailedCollection.followersCount}}</p>
             <p class="navbar-text"><i class="fa fa-share" aria-hidden="true"></i> Condividi</p>
@@ -45,6 +46,7 @@
                 <div ng-if="detailedCollection.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI RACCOLTA</div>
             </button>
         </nav>
+        
 
         <!-- Card -->
         <div class="collection_card_con tasty_container tasty_container_margin text-center">
@@ -55,19 +57,4 @@
         </div>
     </div>
 </div>
-
-<!-- questo qui non funzionaaaa dove possiamo metterlo?? -->
-<script>
-    var  mn = $(".collection_nav");
-    mns = "collection_nav-scrolled";
-    hdr = $('.collection_header').height();
-
-    $(window).scroll(function() {
-        if( $(this).scrollTop() > hdr ) {
-            mn.addClass(mns);
-        } else {
-            mn.removeClass(mns);
-        }
-    });
-</script>
 
