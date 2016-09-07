@@ -766,12 +766,14 @@ ul.top_menu_notify_dropdown {
 
 .collection_profile_photo{
 	width: 40px;
+	display: inline-block;
 }
 
 .collection_div_profile_name{
     color: white !important; /* example */
     margin-left: 10px;
     margin-top: 5px;
+	display: inline-block;
 }
 
 .collection_profile_edited{
@@ -779,41 +781,51 @@ ul.top_menu_notify_dropdown {
 	opacity: 0.7;
 }
 
-.collection_title{
-	color:white; /* example */
+.collection_detail {
+	padding-top: 250px;
+}
+.collection_header {
+	padding-top: 80px;
+	padding-bottom: 80px;
+	background: #222;
+	color: white;
 }
 
-.collection_desc{
-	color:white; /* example */
+.collection_header H1{
+	margin: 30px 0 0px 0;
+	font-size: 50px;
 }
 
-.collection_info_item{
-	color:white; /* example */
-	margin-left:5px;
-	margin-right:5px;
+.collection_header H3{
+	margin-bottom: 30px;
 }
 
-.collection_info_item_count{
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-	color:white; /* example */
-	margin-left:5px;
-	margin-right:5px;
+.collection_nav, .collection_card_con {
+	position: relative; 
+}
+.collection_nav {
+	background: #151515;
+	height: 50px;
+	z-index: 150;
+	margin-bottom: -80px;
 }
 
-.collection_main_info{
-	text-align:left;
-	margin-top: 5px;
-    margin-bottom: 5px;
+.collection_nav P{
+	font-size: 1.3em;
 }
 
-.collection_gradient{
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.65) 100%);
-    position: absolute;
-    width: 100%;
-    height: 500px;
-    top: -50px;
-    left: 0;
-    z-index: 0;
+.collection_btn{
+	margin: auto 5px auto 5px;
+}
+
+.collection_header, .collection_nav-scrolled {
+	position: fixed;
+	width: 100%;
+	top: 0;
+}
+.collection_card_con{
+	background-color: rgb(30, 30, 30);
+	padding: 110px 0px 0px 0px;
 }
 
 /* ------------------------------------------------------------------------ 7 ----------------------------------------------------------- */
@@ -1824,7 +1836,7 @@ tr.recipe_sp_3_tr{
 /* ---------------------------------------------------------------- FOOTER ------------------------------------------------------ */
 
 footer{
-    padding-top: 70px;
+    padding-top: 50px;
     color:white !important;
 }
 
