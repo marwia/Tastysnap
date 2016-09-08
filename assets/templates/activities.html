@@ -16,24 +16,15 @@
     <div infinite-scroll="nextActivites()" infinite-scroll-parent="true">
         <!-- non ci sono notifiche -->
         <div ng-show="activities.length==0">
-            <li role="menuitem">
-                <hr/>
-            </li>
-            <li role="menuitem">
-                <div class="media">
-                    <div class="media-body clearfix">
-                        <p class="media-heading">
-                            <div class="row tasty_container text-center tasty_load_space">
-                                Non ci sono attività da mostrare...
-                            </div>
-                        </p>
-                    </div>
-                </div>
-            </li>
+            Non ci sono attività da mostrare...
         </div>
 
-        <!-- stampo le notifiche -->
-        <activity ng-repeat="n in activities | orderBy:'-createdAt'" activity="n"></activity>
+        <timeline>
+            <timeline-event ng-repeat="n in activities | orderBy:'-createdAt'" side="">
+            <!-- stampo le notifiche -->
+                <activity  activity="n"></activity>
+            </timeline-event>
+        </timeline>
 
         <div ng-show='busy'>Caricamento...</div>
 

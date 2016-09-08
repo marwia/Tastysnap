@@ -41,6 +41,32 @@ angular.module('sampleApp')
                     'VoteRecipe': 'Hai aggiunto ai preferiti la ricetta'
                 };
 
+                scope.badgeIconClass = {
+                    'VoteComment': 'fa fa-thumbs-o-up',
+                    'FollowUser': 'glyphicon glyphicon-user',
+                    'FollowCollection': 'fa fa-heart',
+                    'Collection': 'glyphicon glyphicon-th-large',
+                    'CollectionRecipe': 'glyphicon glyphicon-plus',
+                    'Comment': 'fa fa-comment',
+                    'Recipe': 'glyphicon glyphicon-list-alt',
+                    'ReviewRecipe': 'glyphicon glyphicon-star',
+                    'TryRecipe': 'fa fa-cutlery',
+                    'VoteRecipe': 'fa fa-heart'
+                };
+
+                scope.badgeClass = {
+                    'VoteComment': 'info',
+                    'FollowUser': 'warning',
+                    'FollowCollection': 'danger',
+                    'Collection': 'danger',
+                    'CollectionRecipe': 'danger',
+                    'Comment': 'info',
+                    'Recipe': 'warning',
+                    'ReviewRecipe': 'info',
+                    'TryRecipe': 'info',
+                    'VoteRecipe': 'info'
+                };
+
                 scope.object = "";
                 scope.objectLink = "#";
 
@@ -85,11 +111,6 @@ angular.module('sampleApp')
                     
                 }
 
-                scope.setRed = function (activity) {
-                    activity.setRed([activity.id], function (response) {
-                        activity.red = true;
-                    });
-                };
             },
             templateUrl: 'templates/activity.html'
         };
