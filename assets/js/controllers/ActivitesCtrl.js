@@ -13,30 +13,33 @@ angular.module('ActivitesCtrl', []).controller('ActivitesCtrl', [
         $scope.activities = Activity.activities;
         $scope.busy = Activity.busy;
 
-        // piccolo script per generare un numero di attività casuali, (esempio da eliminare)
-        $scope.range = function(min, max, step){
-            step = step || 1;
-            var input = [];
-            for (var i = min; i <= max; i += step) input.push(i);
-            return input;
-        };
+        $scope.events = [{
+            badgeClass: 'info',
+            badgeIconClass: 'glyphicon-check',
+            title: 'First heading',
+            content: 'Some awesome content.'
+        }, {
+                badgeClass: 'warning',
+                badgeIconClass: 'glyphicon-credit-card',
+                title: 'Second heading',
+                content: 'More awesome content.'
+            }];
 
         // Funzione per caricare le notifiche successive ogni volta che
         // si raggiunge la fine della lista delle notifiche
         $scope.nextActivites = function () {
             if (!$scope.activities || $scope.activities.length == 0)
-                 Activity.getList('createdAt DESC', null, null);
+                Activity.getList('createdAt DESC', null, null);
             else
-                 Activity.getList(
-                    'createdAt DESC', 
-                    Notification.getRegistrationDate(), 
+                Activity.getList(
+                    'createdAt DESC',
+                    Notification.getRegistrationDate(),
                     Notification.skip + 30);
 
         };
 
         var init = function () {
-            // caricamento iniziale delle notifiche
-            Activity.getList('createdAt DESC', null, null);
+            // caricamento iniziale delle notifiche -> NON SERVE
         }
 
         init();

@@ -12,7 +12,7 @@ var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
                 'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService', 'ImageUtilsService',
                 'NotificationService', 'ActivityService', 'Utils', 'SearchService',
-				'ngAnimate', 'appRoutes', 'toastr', 'rzModule', 'angular-click-outside', 'ngGPlaces',
+				'ngAnimate', 'appRoutes', 'toastr', 'rzModule', 'angular-click-outside', 'ngGPlaces', 'angular-timeline',
 				'AuthCtrl', 'MasterCtrl', 'NavCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeDetailCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl', 'UserHomeCtrl', 'CollectionCtrl',
                 'CollectionSelectionModalCtrl', 'CollectionDetailCtrl', 'CommentCtrl', 'ExtHomeCtrl',
