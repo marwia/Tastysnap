@@ -1231,7 +1231,7 @@ module.exports = {
         if (!blurredCoverImage) { return res.badRequest('No file was found'); }
 
         if (process.env.NODE_ENV === 'production') {
-            coverImage.upload({
+            blurredCoverImage.upload({
                 maxBytes: 5000000,
                 dirname: localImagesDir
 
