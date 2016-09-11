@@ -49,7 +49,7 @@ body {
 }
 
 .tasty_container_margin{
-	margin-top:40px;
+	margin-top: 50px;
 }
 
 .tasty_icon{
@@ -775,10 +775,8 @@ ul.top_menu_notify_dropdown {
 }
 
 .collection_div_profile_name{
-    color: white !important; /* example */
     margin-left: 10px;
-    margin-top: 5px;
-	display: inline-block;
+    margin-top: 6px;
 }
 
 .collection_profile_edited{
@@ -787,36 +785,37 @@ ul.top_menu_notify_dropdown {
 }
 
 .collection_detail {
-	padding-top: 250px;
+	padding-top: 290px;
 }
 .collection_header {
-	padding-top: 20px;
-	padding-bottom: 90px;
+	padding-top: 50px;
+	padding-bottom: 200px;
 	background: #222;
 	color: white;
 }
 
-.collection_header H1{
+.collection_header H2{
 	margin: 30px 0 0px 0;
 	font-size: 50px;
+	font-weight: 300; 
 }
 
-.collection_header H3{
-	margin-bottom: 30px;
+.collection_header H4{  
+	font-weight: 300;
 }
 
 .collection_nav, .collection_card_con {
 	position: relative; 
 }
 .collection_nav {
-	background: #151515;
+	background: rgba(0,0,0,0.4);
 	height: 50px;
 	z-index: 150;
 	margin-bottom: -50px;
 }
 
 .collection_nav P{
-	font-size: 1.3em;
+	font-size: 1.0em;
 }
 
 .collection_btn{
@@ -1848,12 +1847,14 @@ tr.recipe_sp_3_tr{
 
 footer{
     padding-top: 50px;
-    color:white !important;
+    color: #9c9c9c !important;
 }
 
 .footer_con{
-    background: #be7100;
+    background: rgb(24, 24, 24);      
+	border-radius: 0px;
 	margin: auto -15px 0 -15px;
+	padding: 37px 0 39px;
 }
 
 /* ------------------------------------------------------------------ 17 -------------------------------------------------------- */

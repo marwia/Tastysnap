@@ -363,7 +363,7 @@ angular.module('CollectionService', [])
         o.getRandomCoverBlurredImage = function (collection) {
             if (collection.recipes && collection.recipes.length > 0) {
                 var idx = Math.floor(Math.random() * collection.recipes.length) + 0;
-                return collection.recipes[idx].blurredCoverImageUrl;
+                return collection.recipes[idx];
             }
             else {
                 return null;//or sample image...

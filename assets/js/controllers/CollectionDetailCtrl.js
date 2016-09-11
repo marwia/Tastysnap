@@ -26,6 +26,8 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
         $scope.detailedCollection = Collection.detailedCollection;
         $scope.isCollectionAuthor = Collection.isCollectionAuthor;
 
+        $scope.getTextColor = Recipe.getTextColor;
+
         // espongo i metodi del servizio User
         $scope.getUserProfileImage = User.getUserProfileImage;
 
@@ -196,7 +198,8 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
             Collection.createView($scope.detailedCollection);
             Collection.getDetailedCollectionRecipes(function (response) {
 
-                $scope.randomBlurredImage = Collection.getRandomCoverBlurredImage($scope.detailedCollection);
+                 $scope.randomRecipe = Collection.getRandomCoverBlurredImage($scope.detailedCollection);
+                 $scope.randomBlurredImage
             });
 
             Collection.areYouFollowing($scope.detailedCollection, $scope.toggleAction());
