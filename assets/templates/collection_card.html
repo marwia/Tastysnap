@@ -23,7 +23,7 @@
             </div>
             <!-- profilo -->
             <div class="row collection_card_profile">
-                <img src="{{ getUserProfileImage(collection.author) }}" class="img-circle collection_card_profile_photo pull-left">
+                <div class="img-circle collection_card_profile_photo pull-left" back-img="{{ getUserProfileImage(collection.author) }}"></div>
                 <div class="collection_card_profile_name pull-left">
                     <h6>{{collection.author.name}} {{collection.author.surname}}</h6>
                 </div>

@@ -165,9 +165,11 @@ a:hover{
 }
 
 .top_menu_profile{
-	width: 42px;
+	width: 35px;
+	height: 35px;
     cursor: pointer;
-    margin-top: 4px;
+    margin-top: 8px;
+	background-position: center;
 }
 
 .top_menu_item{
@@ -573,6 +575,8 @@ ul.top_menu_notify_dropdown {
 
 .card_profile_photo{
 	width: 30px;
+	height: 30px;
+	background-position: center;
 }
 
 .card_profile_name{
@@ -726,6 +730,8 @@ ul.top_menu_notify_dropdown {
 
 .collection_card_profile_photo{
 	width: 30px;
+	height: 30px;
+	background-position: center;
 }
 
 .collection_card_profile_name{
@@ -771,6 +777,8 @@ ul.top_menu_notify_dropdown {
 
 .collection_profile_photo{
 	width: 40px;
+	height: 40px;
+	background-position: center;
 	display: inline-block;
 }
 
@@ -814,8 +822,9 @@ ul.top_menu_notify_dropdown {
 	margin-bottom: -50px;
 }
 
-.collection_nav P{
+.collection_nav .navbar-text{
 	font-size: 1.0em;
+	color: white;
 }
 
 .collection_btn{
@@ -920,6 +929,8 @@ ul.top_menu_notify_dropdown {
 
 .profile_photo{
 	width: 100px;
+	height: 100px;
+	background-position: center;
 }
 
 .profile_button_item{
@@ -1172,6 +1183,8 @@ tr.recipe_sp_3_tr{
 
 .recipe_profile_photo{
 	width: 40px;
+	height: 40px;
+	background-position: center;
 	color: black;
 }
 
@@ -1234,6 +1247,8 @@ tr.recipe_sp_3_tr{
 
 .recipe_comment_photo{
 	width: 50px;
+	height: 50px;
+	background-position: center;
 }
 
 .recipe_comment_sub_photo{
@@ -1460,8 +1475,7 @@ tr.recipe_sp_3_tr{
     width:90px;
     height:90px;
     margin: auto;
-    background-repeat: no-repeat;
-    background-size: cover;
+	background-position: center;
 }
 
 .profile_card_name{
@@ -1964,6 +1978,12 @@ footer{
     color: gray;
 }
 
+.notification_img {
+	height: 50px;
+	width: 50px;
+	background-position: center;
+}
+
 /* ------------------------------------------------------------------ 21 -------------------------------------------------------- */
 /* -----------------------------------------------------------  WELCOME MODAL  -------------------------------------------------- */
 
@@ -2052,34 +2072,12 @@ rzslider .rz-pointer.rz-active:after {
 	margin: auto;
 }
 
-.activity{
-	background-color: whitesmoke;
-	margin: 8px auto 8px auto;
-	padding: 0;
-}
+/* ------------------------------------------------------------------ 25 -------------------------------------------------------- */
+/* ------------------------------------------------------  MODAL CREAZIONE RICETTA  --------------------------------------------- */
 
-.activity img{
-	width: 100px;
-}
-
-.activity > div{
-	width: calc(100% - 100px);
-}
-
-.activity_delete{
-	margin-top: 7px
-}
-
-.activity_text{
-
-}
-
-.activity_moment{
-	position: absolute;
-	bottom: 3px;
-	width: calc(100% - 100px);
-	color: gray;
-	font-size: 0.9em;
+.create_recipe_modal {
+    /* min-height: 200px; */
+	padding-bottom: 25px;
 }
 
 .card_delete{

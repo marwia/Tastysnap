@@ -13,7 +13,7 @@
         <div class="sidebar-profile" style="background: url({{currentUser.coverImageUrl}}); background-size: cover;">
             <div class="col-xs-12" align="center">
                 <a href="/app/profile/{{currentUser.id}}" class="link">
-                    <img src="{{ getUserProfileImage(currentUser) }}" class="image-circle center-block" />
+                    <div class="image-circle center-block" back-img="{{ getUserProfileImage(currentUser) }}"></div>
                 
                     <br/> {{ currentUser.name }} {{ currentUser.surname }}
                     <br/>

@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'production') {
         clientID: "617087911724851",
         clientSecret: "5e8033ba7bc89b9c72d890862b5d618c",
         callbackURL: "https://tastysnap.com/api/v1/auth/facebook/callback",
-        profileFields: ['id', 'displayName', 'name', 'gender', 'emails', 'photos']
+        profileFields: ['id', 'displayName', 'picture.type(large)', 'name', 'gender', 'emails']
     };
     
 } else {// development
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'production') {
         clientID: "1049533381779590",
         clientSecret: "8a55b07428ba961582bb5d4e870df4b4",
         callbackURL: "http://localhost:1337/api/v1/auth/facebook/callback",
-        profileFields: ['id', 'displayName', 'name', 'gender', 'emails', 'photos']
+        profileFields: ['id', 'displayName', 'picture.type(large)', 'name', 'gender', 'emails']
     };
 }
 passport.use(new FacebookStrategy(FBstrategy,

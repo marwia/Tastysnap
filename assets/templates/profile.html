@@ -3,8 +3,8 @@
 
     <div class="container-fluid text-center prof_personal_info">
         <!-- profile photo -->
-        <div class="row">
-            <img src="{{ getUserProfileImage(user) }}" alt="{{user.name}} {{user.surname}}" class="img-circle profile_photo">
+        <div class="row" style="text-align: center; display:inline-block;">
+            <div class="img-circle profile_photo" back-img="{{ getUserProfileImage(user) }}"></div>
         </div>
         <!-- profile name -->
         <div class="row">

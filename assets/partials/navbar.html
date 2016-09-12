@@ -35,7 +35,7 @@
             <li class="pull-right">
                 <!-- Profilo  -->
                 <div uib-dropdown ng-show="isLoggedIn()" class="top_menu_dropdown">
-                    <img alt="{{ currentUser.name }}" src="{{ getUserProfileImage(currentUser) }}" id="single-button" uib-dropdown-toggle class="top_menu_profile img-circle pull-right">
+                    <div uib-dropdown-toggle class="top_menu_profile img-circle pull-right" back-img="{{ getUserProfileImage(currentUser) }}"></div>
                     <ul uib-dropdown-menu class="top_menu_profile_dropdown" role="menu" aria-labelledby="single-button">
                         <li role="menuitem"><a href="/app/profile/{{ currentUser.id }}">Profilo</a></li>
                         <li class="divider"></li>

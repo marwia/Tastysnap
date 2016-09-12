@@ -66,7 +66,7 @@
                 <!-- profile -->
                 <div class="row recipe_profile_row">
                     <a href="app/profile/{{recipe.author.id}}" class="card_link_profile">
-                        <img src="{{ getUserProfileImage(recipe.author) }}" class="img-circle card_profile_photo pull-left">
+                        <div class="img-circle card_profile_photo pull-left" back-img="{{ getUserProfileImage(recipe.author) }}"></div>
                         <div class="card_profile_name pull-left">
                             <h6 ng-style="cardFontStyle">{{recipe.author.name}} {{recipe.author.surname}}</h6>
                         </div>
