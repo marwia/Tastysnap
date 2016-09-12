@@ -805,11 +805,10 @@ ul.top_menu_notify_dropdown {
 .collection_header H2{
 	margin: 30px 0 0px 0;
 	font-size: 50px;
-	font-weight: 300; 
 }
 
 .collection_header H4{  
-	font-weight: 300;
+	opacity: 0.7;
 }
 
 .collection_nav, .collection_card_con {
