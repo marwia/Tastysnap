@@ -1,22 +1,14 @@
-<style>
-    .c_recipe_row {
-        *background-color: {
-            {
-                recipeToCreate.dominantColor
-            }
-        }
-        ;
-    }
-</style>
 
+<!--
 <div class="panel-body no-padding recipe_creating_message" ng-show="isCreating">
     <h3 ng-hide="editMode"><i class="fa fa-cog recipe_creating_message_gear"></i> Creazione ricetta in corso...</h3>
     <h3 ng-show="editMode"><i class="fa fa-cog recipe_creating_message_gear"></i> Salvataggio delle modifiche in corso...</h3>
 </div>
+-->
 
-<div class="tasty_container tasty_container_margin recipe_container">
+<div class="tasty_container tasty_container_margin recipe_container recipe">
     <div class="panel panel-default no-border">
-        <div class="panel-body no-padding" ng-hide="isCreating">
+        <div class="panel-body no-padding">
             <form name="recipeForm" role="form" ng-submit="createRecipe()" novalidate>
                 <!-- RIGA 1 - TITOLO -->
                 <div class="row c_recipe_row">

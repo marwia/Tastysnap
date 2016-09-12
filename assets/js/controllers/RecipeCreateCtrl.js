@@ -20,7 +20,8 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
     'Utils',
     '$window',
     'ngGPlacesAPI',
-    function ($scope, $state, Recipe, Product, Ingredient, RecipeStep, Auth, ImageUtils, $filter, FileUploader, $http, Utils, $window, ngGPlacesAPI) {
+    '$uibModal',
+    function ($scope, $state, Recipe, Product, Ingredient, RecipeStep, Auth, ImageUtils, $filter, FileUploader, $http, Utils, $window, ngGPlacesAPI, $uibModal) {
 
         // determino se sono in modalità modifica o creazione controllando l'url
         $scope.editMode = $state.current.name.indexOf('app.recipe_edit') > -1;
@@ -41,7 +42,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         $scope.unitsOfMeasure = Ingredient.unitsOfMeasure;
 
-        // variabili per tenere traccia del completameto della crezione di una ricetta
+        // variabili per tenere traccia del completameto della crezione/modifica di una ricetta
         $scope.createSum = 1;
         $scope.createProgress = 0;
 
@@ -175,6 +176,9 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
             $scope.isCreating = true;
 
+            // mostro la finestra modale con il caricamento
+            $scope.progressModalInstance = $scope.openProgressModal($scope.editMode, $scope.createSum, $scope.createProgress);
+
             setTimeout(function () {
 
                 // calcolo del totale delle create che saranno eseguite
@@ -300,6 +304,8 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         $scope.$watch("createProgress", function (newValue, oldValue) {
 
             if ($scope.createProgress >= $scope.createSum) {// fine della creazione della ricetta
+                $scope.progressModalInstance.dismiss('cancel');
+
                 $state.go("app.recipe", { id: $scope.recipeToCreate.id });
             }
         });
@@ -725,7 +731,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
          */
         $scope.$watch("loadingProgress", function (newValue, oldValue) {
 
-            if ($scope.editMode & $scope.loadingProgress >= Recipe.detailedRecipe.ingredientGroups.length) {// fine del caricamento della ricetta
+            if ($scope.editMode && $scope.loadingProgress >= Recipe.detailedRecipe.ingredientGroups.length) {// fine del caricamento della ricetta
 
                 $scope.ingredient_groups = Recipe.detailedRecipe.ingredientGroups;
 
@@ -742,6 +748,26 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 $scope.originalRecipe = angular.copy(Recipe.detailedRecipe);
             }
         });
+
+        $scope.openProgressModal = function(editMode, progressSum, progress) {
+            return $uibModal.open({
+                animation: true,
+                templateUrl: 'templates/recipe_progress_modal.html',
+                controller: function($uibModalInstance, $scope) {
+                    // passaggio paramteri
+                    $scope.editMode = editMode;
+                    $scope.progressSum = progressSum;
+                    $scope.progress = progress;
+
+                    // azioni possibili all'interno della modale
+                    $scope.cancel = function() {
+                        $uibModalInstance.dismiss('cancel');
+                    };
+                },
+                size: 'md'
+            });
+        };
+
 
         var init = function () {
             // inizializzazione del controller
