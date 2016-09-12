@@ -1309,6 +1309,10 @@ tr.recipe_sp_3_tr{
     cursor:pointer;
 }
 
+.recipe_span_pointer:hover{
+    color: black;
+}
+
 .recipe_prep_step{
     background-color: #dedede;
     color: white;
