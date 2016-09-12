@@ -191,6 +191,28 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
         };
 
         /**
+         * Codice per individuare quando mostrare il titolo della 
+         * ricetta sulla seconda navbar, ovvero quando questa navbar
+         * avrà raggiunto la cima.
+         */
+        var element = angular.element( document.querySelector( '#collection_nav' ) );
+        var offsetTop = element.prop('offsetTop');
+        $scope.showUpArrow = true;
+
+        $(window).scroll(function (event) {
+            var scroll = $(window).scrollTop();
+            var oldState = $scope.showUpArrow;
+            if (scroll >= offsetTop || scroll == undefined) {
+                $scope.showUpArrow = false;
+            } else {
+                $scope.showUpArrow = true;
+            }
+            if ($scope.showUpArrow !== oldState) {
+                $scope.$apply();
+            }
+        });
+
+        /**
          * Inizializzazione del controller:
          */
 
@@ -198,8 +220,7 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
             Collection.createView($scope.detailedCollection);
             Collection.getDetailedCollectionRecipes(function (response) {
 
-                 $scope.randomRecipe = Collection.getRandomCoverBlurredImage($scope.detailedCollection);
-                 $scope.randomBlurredImage
+                $scope.randomRecipe = Collection.getRandomCoverBlurredImage($scope.detailedCollection);
             });
 
             Collection.areYouFollowing($scope.detailedCollection, $scope.toggleAction());
