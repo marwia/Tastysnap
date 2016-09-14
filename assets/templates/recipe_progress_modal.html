@@ -1,4 +1,19 @@
 <div class="modal-body text-center create_recipe_modal">
-    <h3 ng-hide="editMode"><i class="fa fa-cog recipe_creating_message_gear"></i> Creazione ricetta in corso...</h3>
-    <h3 ng-show="editMode"><i class="fa fa-cog recipe_creating_message_gear"></i> Salvataggio delle modifiche in corso...</h3>
+    <!-- FINISH -->
+    <div ng-show="finish">
+        <i class="fa fa-check-circle fa-5" style="color: green;" aria-hidden="true"></i>
+        <h3 class="modal-title">Evivva!</h3>
+        <p ng-show="editMode">La ricetta è stata aggiornata con successo.</p>
+        <p ng-hide="editMode">La ricetta è stata creata con successo.</p>
+        <button class="btn btn-default" type="button" ng-click="closeModal()">Mostra ricetta</button>
+    </div>
+
+    <!-- LOADING -->
+    <div ng-hide="finish">
+        <h3 class="modal-title" ng-hide="editMode">Creazione ricetta in corso...</h3>
+        <h3 class="modal-title" ng-show="editMode">Salvataggio delle modifiche in corso...</h3>
+        <br>
+        <uib-progressbar animate="true" value="createProgress" type="success" max="createSum"></uib-progressbar>
+    </div>
+
 </div>

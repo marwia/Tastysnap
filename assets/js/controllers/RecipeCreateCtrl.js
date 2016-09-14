@@ -43,8 +43,9 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         $scope.unitsOfMeasure = Ingredient.unitsOfMeasure;
 
         // variabili per tenere traccia del completameto della crezione/modifica di una ricetta
-        $scope.createSum = 1;
-        $scope.createProgress = 0;
+        $scope.progressSum = 1;
+        $scope.progress = 0;
+        $scope.finish = false;
 
         $scope.isCreating = false;
 
@@ -177,138 +178,142 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             $scope.isCreating = true;
 
             // mostro la finestra modale con il caricamento
-            $scope.progressModalInstance = $scope.openProgressModal($scope.editMode, $scope.createSum, $scope.createProgress);
+            $scope.progressModalInstance = $scope.openProgressModal();
 
-            setTimeout(function () {
+            // calcolo del totale delle create che saranno eseguite
+            $scope.progressSum = 1 // ricetta stessa
+                + coverImageUploader.queue.length * 2 // immagine di copertina + quella sfocata
+                + otherImageUploader.queue.length // altre immagini
+                + $scope.ingredient_groups.length // gruppi di ingredienti
+                + $scope.recipe_steps.length; // numero di passi nella preparazione
 
-                // calcolo del totale delle create che saranno eseguite
-                $scope.createSum = 1 // ricetta stessa
-                    + coverImageUploader.queue.length * 2 // immagine di copertina + quella sfocata
-                    + otherImageUploader.queue.length // altre immagini
-                    + $scope.ingredient_groups.length // gruppi di ingredienti
-                    + $scope.recipe_steps.length; // numero di passi nella preparazione
+            for (var i in $scope.ingredient_groups) {
+                $scope.progressSum += $scope.ingredient_groups[i].ingredients.length // numero di ingredienti di ogni gruppo
+            }
 
-                for (var i in $scope.ingredient_groups) {
-                    $scope.createSum += $scope.ingredient_groups[i].ingredients.length // numero di ingredienti di ogni gruppo
+            /**
+             * Aggiungi l'eventuale posizione associata alla ricetta,
+             * questo soltanto nel caso della creazione di una nuova ricetta oppure
+             * nel caso della modifica effettiva della posizione. In caso contrario, nella
+             * modifica verrà usata la posizione già presente.
+             */
+            if ($scope.recipePlace != "" && $scope.recipeDetailedPlace.reference) {
+                var coordinates = [
+                    $scope.recipeDetailedPlace.longitude,
+                    $scope.recipeDetailedPlace.latitude
+                ];
+
+                $scope.recipeToCreate.coordinates = coordinates;
+                $scope.recipeToCreate.googlePlaceId = $scope.recipeDetailedPlace.place_id;
+                $scope.recipeToCreate.googlePlaceRef = $scope.recipeDetailedPlace.reference;
+            }
+
+            if ($scope.editMode) {
+
+                // calcolo il totale delle update da eseguire degli steps
+                var stepUpdateIdx = 0;
+                if ($scope.originalRecipe.steps.length <= $scope.recipe_steps.length)
+                    stepUpdateIdx = $scope.originalRecipe.steps.length;
+                else
+                    stepUpdateIdx = $scope.recipe_steps.length;
+
+                // calcolo il totale delle update da eseguire dei gruppi di ingredienti
+                var ingredientGroupUpdateIdx = 0;
+                if ($scope.originalRecipe.ingredientGroups.length <= $scope.ingredient_groups.length)
+                    ingredientGroupUpdateIdx = $scope.originalRecipe.ingredientGroups.length;
+                else
+                    ingredientGroupUpdateIdx = $scope.ingredient_groups.length;
+
+
+                // modifico ricetta
+                Recipe.update(angular.copy($scope.recipeToCreate), function (response) {
+                    // salvo l'esito della modifica della ricetta
+                    $scope.recipeToCreate = response.data;
+                    $scope.progress++;
+                });
+
+                // altre operazioni...
+
+                // update degli steps
+                var stepsToUpdate = $scope.recipe_steps.splice(0, stepUpdateIdx);
+
+                updateRecipeSteps(stepsToUpdate);
+
+                // decido cosa fare con l'eccesso
+                if ($scope.originalRecipe.steps.length != $scope.recipe_steps.length + stepUpdateIdx) {
+                    if ($scope.originalRecipe.steps.length < $scope.recipe_steps.length + stepUpdateIdx) {// aggiunta nuovi steps (quelli in fondo all'array - in più)
+                        createRecipeStepsAlt($scope.recipe_steps, $scope.originalRecipe.steps.length + stepUpdateIdx);
+                    }
+                    else {// tolta di steps (quelli in fondo all'array - in più)
+                        deleteRecipeSteps($scope.originalRecipe.steps.splice(stepUpdateIdx, $scope.originalRecipe.steps.length - stepUpdateIdx));
+                    }
                 }
 
-                /**
-                 * Aggiungi l'eventuale posizione associata alla ricetta,
-                 * questo soltanto nel caso della creazione di una nuova ricetta oppure
-                 * nel caso della modifica effettiva della posizione. In caso contrario, nella
-                 * modifica verrà usata la posizione già presente.
-                 */
-                if ($scope.recipePlace != "" && $scope.recipeDetailedPlace.reference) {
-                    var coordinates = [
-                        $scope.recipeDetailedPlace.longitude,
-                        $scope.recipeDetailedPlace.latitude
-                    ];
+                // update dei gruppi di ingredienti
 
-                    $scope.recipeToCreate.coordinates = coordinates;
-                    $scope.recipeToCreate.googlePlaceId = $scope.recipeDetailedPlace.place_id;
-                    $scope.recipeToCreate.googlePlaceRef = $scope.recipeDetailedPlace.reference;
+                updateIngredientGroups($scope.ingredient_groups.splice(0, ingredientGroupUpdateIdx));
+
+                // decido cosa fare con l'eccesso
+                if ($scope.originalRecipe.ingredientGroups.length != $scope.ingredient_groups.length + ingredientGroupUpdateIdx) {
+                    if ($scope.originalRecipe.ingredientGroups.length < $scope.ingredient_groups.length + ingredientGroupUpdateIdx) {// aggiunta nuovi gruppi (quelli in fondo all'array - in più)
+                        createIngredientGroupsAlt($scope.ingredient_groups);
+                    }
+                    else {// tolta di gruppi (quelli in fondo all'array - in più)
+                        deleteIngredientGroups($scope.originalRecipe.ingredientGroups.splice(ingredientGroupUpdateIdx, $scope.originalRecipe.ingredientGroups.length - ingredientGroupUpdateIdx));
+                    }
                 }
 
-                if ($scope.editMode) {
+                // update delle immagini
 
-                    // calcolo il totale delle update da eseguire degli steps
-                    var stepUpdateIdx = 0;
-                    if ($scope.originalRecipe.steps.length <= $scope.recipe_steps.length)
-                        stepUpdateIdx = $scope.originalRecipe.steps.length;
-                    else
-                        stepUpdateIdx = $scope.recipe_steps.length;
+                // carico l'immagine di copertina (compresa quella sfocata)
+                coverImageUploader.uploadAll();
 
-                    // calcolo il totale delle update da eseguire dei gruppi di ingredienti
-                    var ingredientGroupUpdateIdx = 0;
-                    if ($scope.originalRecipe.ingredientGroups.length <= $scope.ingredient_groups.length)
-                        ingredientGroupUpdateIdx = $scope.originalRecipe.ingredientGroups.length;
-                    else
-                        ingredientGroupUpdateIdx = $scope.ingredient_groups.length;
+                // carico le altre immagini aggiuntive
+                otherImageUploader.uploadAll();
+            }
+            else {// creazione di una nuova ricetta
 
+                //crea ricetta
+                Recipe.create($scope.recipeToCreate, function (response) {
 
-                    // modifico ricetta
-                    Recipe.update(angular.copy($scope.recipeToCreate), function (response) {
-                        // salvo l'esito della modifica della ricetta
-                        $scope.recipeToCreate = response.data;
-                        $scope.createProgress++;
-                    });
+                    // salvo l'esito della creazione della ricetta
+                    $scope.recipeToCreate = response.data;
+                    $scope.progress++;
 
-                    // altre operazioni...
+                    // creo i passi per la preparazione
+                    createRecipeSteps();
 
-                    // update degli steps
-                    var stepsToUpdate = $scope.recipe_steps.splice(0, stepUpdateIdx);
-
-                    updateRecipeSteps(stepsToUpdate);
-
-                    // decido cosa fare con l'eccesso
-                    if ($scope.originalRecipe.steps.length != $scope.recipe_steps.length + stepUpdateIdx) {
-                        if ($scope.originalRecipe.steps.length < $scope.recipe_steps.length + stepUpdateIdx) {// aggiunta nuovi steps (quelli in fondo all'array - in più)
-                            createRecipeStepsAlt($scope.recipe_steps, $scope.originalRecipe.steps.length + stepUpdateIdx);
-                        }
-                        else {// tolta di steps (quelli in fondo all'array - in più)
-                            deleteRecipeSteps($scope.originalRecipe.steps.splice(stepUpdateIdx, $scope.originalRecipe.steps.length - stepUpdateIdx));
-                        }
-                    }
-
-                    // update dei gruppi di ingredienti
-
-                    updateIngredientGroups($scope.ingredient_groups.splice(0, ingredientGroupUpdateIdx));
-
-                    // decido cosa fare con l'eccesso
-                    if ($scope.originalRecipe.ingredientGroups.length != $scope.ingredient_groups.length + ingredientGroupUpdateIdx) {
-                        if ($scope.originalRecipe.ingredientGroups.length < $scope.ingredient_groups.length + ingredientGroupUpdateIdx) {// aggiunta nuovi gruppi (quelli in fondo all'array - in più)
-                            createIngredientGroupsAlt($scope.ingredient_groups);
-                        }
-                        else {// tolta di gruppi (quelli in fondo all'array - in più)
-                            deleteIngredientGroups($scope.originalRecipe.ingredientGroups.splice(ingredientGroupUpdateIdx, $scope.originalRecipe.ingredientGroups.length - ingredientGroupUpdateIdx));
-                        }
-                    }
-
-                    // update delle immagini
+                    // crea gruppi di ingredienti
+                    createIngredientGroups();
 
                     // carico l'immagine di copertina (compresa quella sfocata)
                     coverImageUploader.uploadAll();
 
                     // carico le altre immagini aggiuntive
                     otherImageUploader.uploadAll();
-                }
-                else {// creazione di una nuova ricetta
 
-                    //crea ricetta
-                    Recipe.create($scope.recipeToCreate, function (response) {
-
-                        // salvo l'esito della creazione della ricetta
-                        $scope.recipeToCreate = response.data;
-                        $scope.createProgress++;
-
-                        // creo i passi per la preparazione
-                        createRecipeSteps();
-
-                        // crea gruppi di ingredienti
-                        createIngredientGroups();
-
-                        // carico l'immagine di copertina (compresa quella sfocata)
-                        coverImageUploader.uploadAll();
-
-                        // carico le altre immagini aggiuntive
-                        otherImageUploader.uploadAll();
-
-                    });
-                }
-            }, 3000);
+                });
+            }
         };
 
         /**
          * Osserva la variabile che indica il progresso della creazione della ricetta.
          */
-        $scope.$watch("createProgress", function (newValue, oldValue) {
+        $scope.$watch("progress", function (newValue, oldValue) {
 
-            if ($scope.createProgress >= $scope.createSum) {// fine della creazione della ricetta
-                $scope.progressModalInstance.dismiss('cancel');
-
-                $state.go("app.recipe", { id: $scope.recipeToCreate.id });
+            if ($scope.progress >= $scope.progressSum) {// fine della creazione della ricetta
+                // Attendo 4 secondi prima di chiudere la modale
+                setTimeout(function () {
+                    $scope.finish = true;
+                    $scope.$apply();
+                }, 4000);
             }
         });
+
+        $scope.closeModal = function () {
+            $scope.progressModalInstance.dismiss('cancel');
+            $state.go("app.recipe", { id: $scope.recipeToCreate.id });
+        }
 
         /**
          * Crea tutti i passi per la ricetta.
@@ -322,7 +327,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     $scope.recipeToCreate,
                     $scope.recipe_steps[i],
                     function () {// success
-                        $scope.createProgress++;
+                        $scope.progress++;
                     });
             }
         }
@@ -336,7 +341,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     $scope.recipeToCreate,
                     steps[i],
                     function () {// success
-                        $scope.createProgress++;
+                        $scope.progress++;
                     });
             }
         }
@@ -348,7 +353,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             for (var i = 0; i < steps.length; i++) {
 
                 if (steps[i].description.localeCompare($scope.originalRecipe.steps[i].description) == 0)
-                    $scope.createProgress++;// non necessità di update
+                    $scope.progress++;// non necessità di update
                 else {
                     // preparo l'oggetto
                     steps[i].seq_number = i + 1;
@@ -358,7 +363,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                         $scope.recipeToCreate,
                         steps[i],
                         function () {// success
-                            $scope.createProgress++;
+                            $scope.progress++;
                         });
                 }
             }
@@ -374,7 +379,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     $scope.recipeToCreate,
                     steps[i],
                     function () {// success
-                        $scope.createProgress++;
+                        $scope.progress++;
                     });
             }
         }
@@ -420,7 +425,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
                 // se il gruppo è invariato allora non lo aggiorno
                 if (groups[i].name.localeCompare($scope.originalRecipe.ingredientGroups[i].name) == 0) {
-                    $scope.createProgress++;
+                    $scope.progress++;
                 }
                 else {
                     //Se il gruppo non ha nome allora lo setto a " "
@@ -433,7 +438,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     Ingredient.updateIngredientGroup(
                         groups[i],
                         function (response) {
-                            $scope.createProgress++;
+                            $scope.progress++;
                         });// success
                 }
 
@@ -450,7 +455,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 Ingredient.deleteIngredientGroup(
                     groups[i],
                     function () {// success
-                        $scope.createProgress++;
+                        $scope.progress++;
                     });
             }
         }
@@ -459,7 +464,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
          * Crea tutti gli ingredienti per un gruppo di ingredienti.
          */
         function createIngredients(ingredientGroup) {
-            $scope.createProgress++;
+            $scope.progress++;
             for (var k = 0; k < ingredientGroup.ingredients.length; k++) {
 
                 //crea per ogni gruppo di ingredienti gli ingredienti
@@ -467,7 +472,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     ingredientGroup,
                     ingredientGroup.ingredients[k],
                     function (response) {
-                        $scope.createProgress++;
+                        $scope.progress++;
                         console.info(response);
                     });
             }
@@ -481,7 +486,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     ingredientGroup,
                     ingredients[k],
                     function (response) {
-                        $scope.createProgress++;
+                        $scope.progress++;
                         console.info(response);
                     });
             }
@@ -541,7 +546,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 if (ingredients[i].quantity == originalIngredientGroup.ingredients[i].quantity &&
                     ingredients[i].unitOfMeasure.localeCompare(originalIngredientGroup.ingredients[i].unitOfMeasure) == 0 &&
                     ingredients[i].product.id.localeCompare(originalIngredientGroup.ingredients[i].product.id) == 0)
-                    $scope.createProgress++;// non necessità di update
+                    $scope.progress++;// non necessità di update
                 else {
                     // preparo l'oggetto
                     ingredients[i].product = ingredients[i].product.id;
@@ -550,7 +555,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                         ingredientGroup,
                         ingredients[i],
                         function () {// success
-                            $scope.createProgress++;
+                            $scope.progress++;
                         });// success
                 }
             }
@@ -566,7 +571,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     ingredientGroup,
                     ingredients[i],
                     function () {// success
-                        $scope.createProgress++;
+                        $scope.progress++;
                     });
             }
         }
@@ -665,7 +670,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         };
 
         coverImageUploader.onCompleteItem = function (fileItem, response, status, headers) {
-            $scope.createProgress++;
+            $scope.progress++;
             console.info('onCompleteItem', fileItem, response, status, headers);
         };
 
@@ -680,7 +685,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     //fileItem._file = reducedFile;
 
                     Recipe.uploadBlurImage(reducedFile, $scope.recipeToCreate, function (response) {
-                        $scope.createProgress++;
+                        $scope.progress++;
                         //$scope.recipeToCreate = response.data;
                         console.info($scope.recipeToCreate);
 
@@ -715,7 +720,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         };
 
         otherImageUploader.onCompleteItem = function (fileItem, response, status, headers) {
-            $scope.createProgress++;
+            $scope.progress++;
         };
 
         otherImageUploader.onCompleteAll = function () {
@@ -749,21 +754,15 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             }
         });
 
-        $scope.openProgressModal = function(editMode, progressSum, progress) {
+        $scope.openProgressModal = function () {
+            /**
+             * Creo un modale senza controller e gli passo lo scope attuale,
+             * cosi all'interno della modale si avrà un binding a due vie
+             */
             return $uibModal.open({
                 animation: true,
                 templateUrl: 'templates/recipe_progress_modal.html',
-                controller: function($uibModalInstance, $scope) {
-                    // passaggio paramteri
-                    $scope.editMode = editMode;
-                    $scope.progressSum = progressSum;
-                    $scope.progress = progress;
-
-                    // azioni possibili all'interno della modale
-                    $scope.cancel = function() {
-                        $uibModalInstance.dismiss('cancel');
-                    };
-                },
+                scope: $scope,
                 size: 'md'
             });
         };
@@ -773,6 +772,10 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             // inizializzazione del controller
             Ingredient.GetIngredientUnitOfMeasure();
 
+            /**
+             * Se sono in modalità modifica devo caricare 
+             * dei dati della ricetta da modificare.
+             */
             if ($scope.editMode) {
 
                 // aggiorno il riferimento alla ricetta da modificare

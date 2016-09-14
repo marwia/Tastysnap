@@ -2083,6 +2083,10 @@ rzslider .rz-pointer.rz-active:after {
 	padding-bottom: 25px;
 }
 
+.fa-5 {
+	font-size: 12em;
+}
+
 .card_delete{
 	width: 30px;
 	height: 30px;

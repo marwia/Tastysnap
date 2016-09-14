@@ -303,6 +303,7 @@ angular.module('IngredientService', [])
             console.info(scale_factor);
             if (ing_unit.indexOf('l') > -1) {
                 // ottengo la porzione di un bicchiere del prodotto
+                console.info(product);
                 var cupPortion = o.findPortion(product, 'cup');
                 ing_quantity = ing_quantity * scale_factor * cupPortion.g;
 
