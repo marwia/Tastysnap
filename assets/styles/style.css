@@ -44,7 +44,7 @@ body {
 
 .tasty_container{
 	width:100%;
-	*max-width:1024px;
+	max-width:1090px;
 	margin:auto;
 }
 
@@ -456,7 +456,8 @@ ul.top_menu_notify_dropdown {
 .card{
 	width: 233px;
     height: 376px;
-    margin: 7.5px;
+    margin: 15px;
+	margin-bottom: 45px;
     position: relative;
     display: inline-flex;
 	
@@ -497,6 +498,7 @@ ul.top_menu_notify_dropdown {
 	top:0;
 	left:0;
     opacity: 0;
+	z-index: 2;
 	
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -648,13 +650,27 @@ ul.top_menu_notify_dropdown {
 	background-size:cover;
 }
 
+.box .cont_row_share{
+	margin-top: 140px;
+	position: absolute;
+	z-index: 3;
+	width: calc(100% - 30px);
+}
+
+.box:hover .card_share{
+    opacity: 1;
+    background-color:rgba(0,0,0,0.6);
+}
+
 .box{
     position: relative;
-	margin: 10px;
+	margin: 15px;
+	margin-bottom: 45px;
     padding-top: 15px;
     padding-bottom: 15px;
-	width: calc(25% - 20px);
+	width: calc(32.4% - 20px);
 }
+
 .box:before{
     content: "";
     display: block;
