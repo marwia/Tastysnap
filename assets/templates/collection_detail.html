@@ -35,6 +35,7 @@
         <!-- Navbar scroll top -->
         
         <nav class="collection_nav navbar-inverse" id="collection_nav" set-class-when-at-top="collection_nav-scrolled" padding-when-at-top="0">
+            <div class="tasty_container">
             <p class="navbar-text"><i class="fa fa-eye" aria-hidden="true"></i> {{detailedCollection.viewsCount}}</p>
             <p class="navbar-text"><i class="fa fa-heart" aria-hidden="true"></i> {{detailedCollection.followersCount}}</p>
             <p class="navbar-text"><i class="fa fa-share" aria-hidden="true"></i> Condividi</p>
@@ -50,15 +51,18 @@
                 <div ng-if="detailedCollection.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
                 <div ng-if="detailedCollection.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI RACCOLTA</div>
             </button>
+            </div>
         </nav>
         
 
         <!-- Card -->
-        <div class="collection_card_con tasty_container tasty_container_margin text-center">
-            <h4 class="no-margin collection_title text_center" ng-show="detailedCollection.recipes.length == 0">Nessuna ricetta presente</h4>
-            <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
-                show-remove-button="recipeRemoveOn" remove-callback="removeRecipe(recipe)"
-                ng-repeat="recipe in detailedCollection.recipes"></recipe-card>
+        <div class="collection_card_con tasty_container_margin text-center">
+            <div class="tasty_container">
+                <h4 class="no-margin collection_title text_center" ng-show="detailedCollection.recipes.length == 0">Nessuna ricetta presente</h4>
+                <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
+                    show-remove-button="recipeRemoveOn" remove-callback="removeRecipe(recipe)"
+                    ng-repeat="recipe in detailedCollection.recipes"></recipe-card>
+            </div>
         </div>
     </div>
 </div>
