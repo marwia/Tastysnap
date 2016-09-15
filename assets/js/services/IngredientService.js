@@ -176,7 +176,7 @@ angular.module('IngredientService', [])
          */
         o.findPortion = function(product, portion_unit) {
             for (var i in product.portions) {
-                if (product.portions[i].code.localeCompare(portion_unit) == 0) {
+                if (product.portions[i].unit.localeCompare(portion_unit) == 0) {
                     return product.portions[i];
                 }
             }
@@ -307,8 +307,9 @@ angular.module('IngredientService', [])
                 var cupPortion = o.findPortion(product, 'cup');
                 ing_quantity = ing_quantity * scale_factor * cupPortion.g;
 
-                //aggiorno il scale factor di nuovo
-                scale_factor = o.scaleFactor(ing_unit, nutrient_unit)
+                // aggiorno il scale factor di nuovo (sapendo che ormai 
+                // il valore da liquidi è stato converito in peso, grammi per la precisione)
+                scale_factor = o.scaleFactor('g', nutrient_unit)
             }
 
             // ottengo il valore grezzo
