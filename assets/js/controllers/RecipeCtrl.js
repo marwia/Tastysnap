@@ -36,15 +36,6 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
          */
         $scope.isRecipeAuthor = Recipe.isRecipeAuthor;
 
-        $scope.toggleUpvoteRecipe = function (recipe) {
-            if (recipe.userVote == 1) {
-                Recipe.deleteVote(recipe);
-            } else {
-                Recipe.upvote(recipe);
-            }
-
-        };
-
         $scope.openCollectionSelectionModal = function (selectedRecipe) {
 
             var modalInstance = $uibModal.open({

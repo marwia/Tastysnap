@@ -1,7 +1,7 @@
 
 <!-- card collection 1 -->
 <div class="col-xs-12 col-sm-6 col-md-4 box">
-    <a href="app/collection/{{collection.id}}">
+    <!-- <a href="app/collection/{{collection.id}}"> -->
         <!-- versione a 4 immagini -->
         <div class="card_collection_content_bg2">
 
@@ -13,6 +13,23 @@
                 ng-style="{'background-image': 'url(' + collection.recipes[2].coverImageUrl + ')'}" style="background-color: #636363;"></div>
             <div class="card_collection_content_bg_1_4" 
                 ng-style="{'background-image': 'url(' + collection.recipes[3].coverImageUrl + ')'}" style="background-color: #707070;"></div>
+
+            <!-- card hover -->
+            <div hide-during-resolve to-state="'/app/collection/'+collection.id" class="container-fluid card_share" ng-mouseenter="areYouFollowing()">
+                <a href="app/collection/{{collection.id}}" class="card_link"></a>
+                <div class="cont_row_share">
+                    <div class="row text-center">
+                        <span class="glyphicon gly_share_size tasty_icon" ng-class="(collection.isFollowed) ? 'glyphicon-heart tasty_icon_active' : 'glyphicon-heart-empty'"
+                            ng-click="toggleFollow()" title="Inizia a seguire"></span>
+                    </div>
+                </div>
+            </div>
+            <div show-during-resolve to-state="'/app/collection/'+collection.id" class="container-fluid card_share card_share_clicked">
+                <div class="row text-center" style="margin-top: 18%;">
+                    <rotating-plane-spinner></rotating-plane-spinner>
+                </div>
+            </div>
+
         </div>
         
         <!-- div che contiene titolo - profilo - like -->
@@ -37,5 +54,5 @@
         </div>
 
         <div class="collection_card_gradient"></div>
-    </a>
+    <!-- </a> -->
 </div>

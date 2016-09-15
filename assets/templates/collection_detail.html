@@ -57,8 +57,8 @@
         <div class="collection_card_con tasty_container tasty_container_margin text-center">
             <h4 class="no-margin collection_title text_center" ng-show="detailedCollection.recipes.length == 0">Nessuna ricetta presente</h4>
             <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
-                toggle-upvote-recipe="toggleUpvoteRecipe(recipe)" show-remove-button="recipeRemoveOn" remove-callback="removeRecipe(recipe)"
-                ng-init="checkVote(recipe)" ng-repeat="recipe in detailedCollection.recipes"></recipe-card>
+                show-remove-button="recipeRemoveOn" remove-callback="removeRecipe(recipe)"
+                ng-repeat="recipe in detailedCollection.recipes"></recipe-card>
         </div>
     </div>
 </div>
