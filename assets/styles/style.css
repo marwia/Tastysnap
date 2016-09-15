@@ -651,7 +651,7 @@ ul.top_menu_notify_dropdown {
 }
 
 .box .cont_row_share{
-	margin-top: 140px;
+	margin-top: 43%;
 	position: absolute;
 	z-index: 3;
 	width: calc(100% - 30px);
@@ -771,13 +771,13 @@ ul.top_menu_notify_dropdown {
 
 @media only screen and (max-width : 1170px){
 	.box{
-		width: calc(33.3% - 20px);
+		width: calc(32.4% - 30px);
 	}
 }
 
 @media only screen and (max-width : 820px){
 	.box{
-		width: calc(50% - 20px);
+		width: calc(50% - 30px);
 	}
 }
 
