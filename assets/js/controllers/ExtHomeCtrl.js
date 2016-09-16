@@ -54,15 +54,6 @@ angular.module('ExtHomeCtrl', []).controller('ExtHomeCtrl', [
          * Verifica se l'utente loggatto attualmente è l'autore della ricetta.
          */
         $scope.isRecipeAuthor = Recipe.isRecipeAuthor;
-             
-        $scope.toggleUpvoteRecipe = function (recipe) {
-            if (recipe.userVote == 1) {
-                Recipe.deleteVote(recipe);
-            } else {
-                Recipe.upvote(recipe);
-            }
-            
-        };
 
         $scope.openCollectionSelectionModal = function (selectedRecipe) {
 

@@ -106,6 +106,7 @@ angular.module('appRoutes', []).config([
             .state('app.ext_home', {
                 url: '/ext_home',
                 views: {
+                    'sidebar@app': { templateUrl: null},
                     'content@app': {
                         templateUrl: 'templates/ext_home.html',
                         controller: 'ExtHomeCtrl',

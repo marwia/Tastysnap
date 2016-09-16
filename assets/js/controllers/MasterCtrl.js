@@ -14,34 +14,18 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
         
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
     	$scope.isLoggedIn = Auth.isLoggedIn;
+        $scope.toggle = false;
+
+        /**
+         * Setto il toggle memorizzato soltanto se l'utente risulta loggato
+         */
+        if ($scope.isLoggedIn() && angular.isDefined($cookieStore.get('toggle'))) {
+            $scope.toggle = $cookieStore.get('toggle');
+        }
 
         /**
          * Sidebar Toggle & Cookie Control
          */
-        var mobileView = 768;
-
-        $scope.getWidth = function() {
-            return window.innerWidth;
-        };
-
-        $scope.$watch($scope.getWidth, function(newValue, oldValue) {
-            /*
-            if (newValue >= mobileView && $scope.isLoggedIn() == false) {
-                if (angular.isDefined($cookieStore.get('toggle'))) {
-                    $scope.toggle = ! $cookieStore.get('toggle') ? false : true;
-                } else {
-                    $scope.toggle = true;
-                }
-            } else {
-                $scope.toggle = false;
-            }
-            */
-            // inizializzazione
-            if (newValue == oldValue && angular.isDefined($cookieStore.get('toggle'))) {
-                $scope.toggle = $cookieStore.get('toggle');
-            }
-        });
-
         $scope.toggleSidebar = function() {
             $scope.toggle = !$scope.toggle;
             $cookieStore.put('toggle', $scope.toggle);
@@ -55,7 +39,4 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
             $cookieStore.put('toggle', $scope.toggle);
         };
 
-        window.onresize = function() {
-            $scope.$apply();
-        };
     }]);
