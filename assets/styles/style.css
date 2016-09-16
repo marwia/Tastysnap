@@ -394,7 +394,7 @@ ul.top_menu_notify_dropdown {
 }
 
 .social-buttons {
-    max-width: 220px;
+    max-width: 260px;
     margin: auto;
 }
 
@@ -430,12 +430,14 @@ ul.top_menu_notify_dropdown {
 	
 	.login_footer{
 		position: relative;
+		padding-top: 50px;
 	}
 }
 
 @media only screen and (max-height : 563px){	
 	.login_footer{
 		position: relative;
+		padding-top: 50px;
 	}
 }
 
