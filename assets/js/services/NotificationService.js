@@ -16,14 +16,23 @@ angular.module('NotificationService', [])
             busy: false
         };
 
-        // Funzione per salvare il token in locale
+        
+        /**
+         * Serve per salvare la data in cui l'utente ha eseguito la
+         * registrazione alla socket delle notifiche.
+         */
         o.saveRegistrationDate = function () {
             $window.localStorage['registration-date'] = new Date();
         };
 
-        // Funzione per caricare il token salvato in locale
+        /**
+         * Restituisce la data di registrazione alla socket delle notifiche.
+         */
         o.getRegistrationDate = function () {
-            return new Date($window.localStorage['registration-date']);
+            if (angular.isDefined($window.localStorage['registration-date']))
+                return new Date($window.localStorage['registration-date']);
+            else
+                return null;
         }
 
         /**
@@ -68,7 +77,7 @@ angular.module('NotificationService', [])
 
             var params = { "sort": order_by };
 
-            if (beforeDate) {
+            if (beforeDate && angular.isDate(beforeDate)) {    
                 params["where"] = {
                     "createdAt": { "<=": beforeDate.toISOString() }
                 };
