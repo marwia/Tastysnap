@@ -36,21 +36,21 @@
         
         <nav class="collection_nav navbar-inverse" id="collection_nav" set-class-when-at-top="collection_nav-scrolled" padding-when-at-top="0">
             <div class="tasty_container">
-            <p class="navbar-text"><i class="fa fa-eye" aria-hidden="true"></i> {{detailedCollection.viewsCount}}</p>
-            <p class="navbar-text"><i class="fa fa-heart" aria-hidden="true"></i> {{detailedCollection.followersCount}}</p>
-            <p class="navbar-text"><i class="fa fa-share" aria-hidden="true"></i> Condividi</p>
+                <p class="navbar-text"><i class="fa fa-eye" aria-hidden="true"></i> {{detailedCollection.viewsCount}}</p>
+                <p class="navbar-text"><i class="fa fa-heart" aria-hidden="true"></i> {{detailedCollection.followersCount}}</p>
+                <p class="navbar-text"><i class="fa fa-share" aria-hidden="true"></i> Condividi</p>
 
-            <!-- Titolo da centrare -->
-            <p class="navbar-text" ng-hide="showUpArrow"><strong>{{detailedCollection.title}}</strong></p>
+                <!-- Titolo da centrare -->
+                <p class="navbar-text" ng-hide="showUpArrow"><strong>{{detailedCollection.title}}</strong></p>
 
-            <button ng-show="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn" data-wow-delay="0.7s" uib-btn-checkbox ng-model="recipeRemoveOn" >Modifica ricette</button>
-            <button ng-show="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn" data-wow-delay="0.7s" ng-click="openEditModal()">Modifica raccolta</button>
-            
-            <button ng-hide="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn" ng-click="toggleFollow(detailedCollection)" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
-                <div ng-if="action.length>0"><span class="glyphicon glyphicon-user"></span>{{action}}</div>
-                <div ng-if="detailedCollection.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
-                <div ng-if="detailedCollection.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI RACCOLTA</div>
-            </button>
+                <button ng-show="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn" data-wow-delay="0.7s" uib-btn-checkbox ng-model="recipeRemoveOn" >Modifica ricette</button>
+                <button ng-show="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn" data-wow-delay="0.7s" ng-click="openEditModal()">Modifica raccolta</button>
+                
+                <button ng-hide="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn" ng-click="toggleFollow(detailedCollection)" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
+                    <div ng-if="action.length>0"><span class="glyphicon glyphicon-user"></span>{{action}}</div>
+                    <div ng-if="detailedCollection.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
+                    <div ng-if="detailedCollection.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI RACCOLTA</div>
+                </button>
             </div>
         </nav>
         

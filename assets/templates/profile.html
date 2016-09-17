@@ -1,78 +1,89 @@
-<!-- testata cover + profilo -->
-<div class="prof_personal_header" id="profile_header" back-img="{{user.coverImageUrl}}">
+<div class="collection_nav" set-class-when-at-top="prof_personal_header-scrolled" padding-when-at-top="0"
+    add-offset="400">
 
-    <div class="container-fluid text-center prof_personal_info">
-        <!-- profile photo -->
-        <div class="row" style="text-align: center; display:inline-block;">
-            <div class="img-circle profile_photo" back-img="{{ getUserProfileImage(user) }}"></div>
-        </div>
-        <!-- profile name -->
-        <div class="row">
-            <span><h4>{{user.name}} {{user.surname}}</h4></span>
-        </div>
-        <!-- profile where -->
-        <div class="row">
-            <span><h5><span class="glyphicon glyphicon-map-marker"></span> FABRIANO</h5>
-            </span>
-        </div>
-        <!-- profile follow -->
-        <div class="row prof_personal_info_item">
-            <button type="button" class="btn btn-warning btn-sm" ng-click="toggleFollow(user)" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
+    <!-- testata cover + profilo -->
+    <div class="prof_personal_header" id="profile_header" back-img="{{user.coverImageUrl}}">
+
+        <div class="container-fluid text-center prof_personal_info">
+            <!-- profile photo -->
+            <div class="row" style="text-align: center; display:inline-block;">
+                <div class="img-circle profile_photo" back-img="{{ getUserProfileImage(user) }}"></div>
+            </div>
+            <!-- profile name -->
+            <div class="row">
+                <span><h4>{{user.name}} {{user.surname}}</h4></span>
+            </div>
+            <!-- profile where -->
+            <div class="row">
+                <span ng-hide="true">
+                <h5>
+                    <span class="glyphicon glyphicon-map-marker"></span> FABRIANO
+                </h5>
+                </span>
+            </div>
+            <!-- profile follow -->
+            <div class="row prof_personal_info_item">
+                <button type="button" class="btn btn-warning btn-sm" ng-click="toggleFollow(user)" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
                 <div ng-if="action.length>0"><span class="glyphicon glyphicon-user"></span>{{action}}</div>
                 <div ng-if="user.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
                 <div ng-if="user.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI</div>
             </button>
+            </div>
         </div>
+
+        <div class="container-fluid text-right prof_personal_cover_change_button" ng-if="user.id == currentUser.id">
+
+            <!-- selezione dell'immagine di copertina -->
+            <div class="fileUpload btn btn-link" ng-if="coverImageUploader.queue.length == 0">
+                <span class="text-uppercase" style="letter-spacing: 1px;"><i class="fa fa-cog" aria-hidden="true"></i>  Cambia copertina</span>
+                <input type="file" class="upload" nv-file-select="" uploader="coverImageUploader" />
+            </div>
+            <div ng-if="coverImageUploader.queue.length > 0">
+                <button type="button" class="btn btn-default btn-sm" ng-click="cancelCoverImage()">Annulla</button>
+                <button type="button" class="btn btn-warning btn-sm" ng-click="uploadCoverImage()">Applica</button>
+            </div>
+        </div>
+
+        <!-- buttons -->
+        <div class="row text-center profile_menu">
+
+            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile'}">
+                <a href="/app/profile/{{ user.id }}">
+                    <span>{{user.recipesCount}}<br>RICETTE</span>
+                </a>
+            </div>
+
+            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.collections'}">
+                <a href="/app/profile/{{ user.id }}/collections">
+                    <span>{{user.collectionsCount}}<br>RACCOLTE</span>
+                </a>
+            </div>
+
+            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.following'}">
+                <a href="/app/profile/{{ user.id }}/following">
+                    <span>{{user.followingCount}}<br>FOLLOWING</span>
+                </a>
+            </div>
+
+            <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.followers'}">
+                <a href="/app/profile/{{ user.id }}/followers">
+                    <span>{{user.followersCount}}<br>FOLLOWERS</span>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- gradient -->
+        <div class="prof_personal_header_gradient"></div>
     </div>
-    
-    <div class="container-fluid text-right prof_personal_cover_change_button" ng-if="user.id == currentUser.id">
-
-        <!-- selezione dell'immagine di copertina -->
-        <div class="fileUpload btn btn-link" ng-if="coverImageUploader.queue.length == 0">
-            <span class="text-uppercase" style="letter-spacing: 1px;"><i class="fa fa-cog" aria-hidden="true"></i>  Cambia copertina</span>
-            <input type="file" class="upload" nv-file-select="" uploader="coverImageUploader" />
-         </div>
-         <div ng-if="coverImageUploader.queue.length > 0">
-            <button type="button" class="btn btn-default btn-sm" ng-click="cancelCoverImage()">Annulla</button>
-            <button type="button" class="btn btn-warning btn-sm" ng-click="uploadCoverImage()">Applica</button>
-        </div>
-    </div>
-
-    <!-- buttons -->
-    <div class="row text-center profile_menu">
-
-        <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile'}">
-            <a href="/app/profile/{{ user.id }}">
-                <span>{{user.recipesCount}}<br>RICETTE</span>
-            </a>
-        </div>
-
-        <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.collections'}">
-            <a href="/app/profile/{{ user.id }}/collections">
-                <span>{{user.collectionsCount}}<br>RACCOLTE</span>
-            </a>
-        </div>
-
-        <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.following'}">
-            <a href="/app/profile/{{ user.id }}/following">
-                <span>{{user.followingCount}}<br>FOLLOWING</span>
-            </a>
-        </div>
-
-        <div class="profile_button_item" ng-class="{'active': getCurrentState() == 'app.profile.followers'}">
-            <a href="/app/profile/{{ user.id }}/followers">
-                <span>{{user.followersCount}}<br>FOLLOWERS</span>
-            </a>
-        </div>
-
-    </div>
-
-    <!-- gradient -->
-    <div class="prof_personal_header_gradient"></div>
 </div>
 
-<!-- Profile Content -->
-<div class="row tasty_container tasty_container_profile_margin text-center">
-    <div ui-view="profile_content"></div>
+<div class="profile_con tasty_container_margin text-center">
+    <div class="tasty_container">
+
+        <!-- Profile Content -->
+        <div ui-view="profile_content"></div>
+        <!-- End Profile Content -->
+
+    </div>
 </div>
-<!-- End Profile Content -->

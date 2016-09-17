@@ -19,8 +19,12 @@ angular.module('sampleApp')
                 topPadding = parseInt(attrs.paddingWhenAtTop, 10),
                 offsetTop = element.prop('offsetTop'); // get element's offset top relative to document
 
+            var initialOffSet = 0;
+            if (attrs.addOffset)
+                initialOffSet = parseInt(attrs.addOffset, 10);
+                
             $win.on('scroll', function (e) {
-                if ($window.pageYOffset + topPadding >= offsetTop) {
+                if ($window.pageYOffset + topPadding >= offsetTop + initialOffSet) {
                     element.addClass(topClass);
                 } else {
                     element.removeClass(topClass);
