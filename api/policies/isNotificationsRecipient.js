@@ -26,6 +26,8 @@ module.exports = function(req, res, next) {
 
             if (!notifications) { return res.notFound({ error: 'No notifications found' }); }
 
+            // Verifico se effettivamente tutte le notifiche sono destinate all'utente
+            // che ha eseguito la richiesta.
             if (notificationIds.length == notifications.length) {
                 next();
             } else

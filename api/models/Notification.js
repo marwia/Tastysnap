@@ -35,9 +35,16 @@ module.exports = {
 
   },
 
+  /**
+   * Funzionalità usata nella creazione delle notifiche,
+   * serve a prevenire la creazione di notifiche per le
+   * azioni svolte dallo stesso utente che genera e subisce 
+   * la notifica.
+   */
   beforeValidate: function (values, cb) {
     if (process.env.NODE_ENV === 'production') {
-      if (values.triggeringUser == values.affectedUser) {
+      if (values.triggeringUser && values.affectedUser &&
+          values.triggeringUser == values.affectedUser) {
         cb('Triggering user and affected user are the same!');
       }
       else {
@@ -48,6 +55,11 @@ module.exports = {
     }
   },
 
+
+  /**
+   * Dopo che una notifica è stata creata la spedisco agli utenti
+   * affetti da questa notifica.
+   */
   afterCreate: function (values, cb) {
 
     var populates = {
