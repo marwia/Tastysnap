@@ -12,6 +12,8 @@ angular.module('AuthService', [])
     // Funzione per salvare il token in locale
     auth.saveToken = function (token) {
         $window.localStorage['tastysnap-token'] = token;
+        // Imposto il header per tutte le chiamate
+        $http.defaults.headers.common['Authorization'] = 'Bearer ' + token;
     };
 
     // Funzione per caricare il token salvato in locale
