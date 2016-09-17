@@ -207,7 +207,7 @@ a:hover{
 	.top_menu_search_input{width: 175px;}
 }
 
-@media only screen and (max-width : 790px){
+@media only screen and (max-width : 768px){
 	.navbar-nav .open .dropdown-menu{
 		position: absolute;
 		background: white;
@@ -1087,6 +1087,12 @@ ul.home_navbar{
 .home_navbar_item_active>a{
 	color:white !important;
 	border-bottom: 2px solid #ff9800;
+}
+
+@media only screen and (max-width : 768px){
+	li.home_navbar_item {
+		display: table;
+	}
 }
 
 /* --------------------------------------------------------------- 9 ---------------------------------------------------- */
