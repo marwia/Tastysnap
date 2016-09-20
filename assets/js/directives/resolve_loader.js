@@ -29,7 +29,7 @@ angular.module('sampleApp')
                 
                 $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
                     console.log("stateChangeStart");
-                    console.debug(fromState);
+
                     if (fromState.name != "") return;
 
                     $timeout(function () {
