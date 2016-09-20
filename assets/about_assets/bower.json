@@ -1,0 +1,13 @@
+{
+  "name": "tasty_site",
+  "version": "1.0.0",
+  "dependencies": {
+    "font-awesome": "latest",
+    "animate.css": "latest",
+    "jquery": "latest",
+    "masonry": "latest",
+    "imagesloaded": "latest",
+    "smooth-scroll": "latest",
+    "jarallax": "latest"
+  }
+}
