@@ -990,6 +990,7 @@ ul.top_menu_notify_dropdown {
 .profile_button_item A{
     text-align: center;
     width: 100%;
+	text-decoration: none;
 }
 
 .profile_button_item A:hover{
