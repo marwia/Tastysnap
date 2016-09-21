@@ -674,7 +674,7 @@ ul.top_menu_notify_dropdown {
 	margin-bottom: 45px;
     padding-top: 15px;
     padding-bottom: 15px;
-	width: calc(32.4% - 20px);
+	width: calc(32.4% - 30px);
 }
 
 .box:before{
