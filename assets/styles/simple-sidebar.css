@@ -48,6 +48,10 @@
     margin-right: -250px;
 }
 
+.hello{
+    padding: 0 !important;
+}
+
 @media(min-width:768px) {
     #wrapper {
         padding-left: 250px;
