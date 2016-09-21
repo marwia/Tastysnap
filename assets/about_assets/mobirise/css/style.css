@@ -1463,6 +1463,13 @@ html {
   position: relative;
   top: 8px;
 }
+
+@media (max-width: 400px) {
+  .mbr-hero__text {
+    font-size: 2em !important;
+  }
+}
+
 .mbr-hero__subtext {
   font-size: 21px;
   line-height: 29px;
