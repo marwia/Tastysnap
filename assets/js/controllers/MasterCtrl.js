@@ -14,7 +14,7 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
         
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
     	$scope.isLoggedIn = Auth.isLoggedIn;
-        $scope.toggle = false;
+        $scope.toggle = true;
 
         /**
          * Setto il toggle memorizzato soltanto se l'utente risulta loggato
