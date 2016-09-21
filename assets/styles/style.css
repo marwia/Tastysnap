@@ -671,7 +671,6 @@ ul.top_menu_notify_dropdown {
 .box{
     position: relative;
 	margin: 15px;
-	margin-bottom: 45px;
     padding-top: 15px;
     padding-bottom: 15px;
 	width: calc(32.4% - 30px);
