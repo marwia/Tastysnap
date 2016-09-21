@@ -793,10 +793,11 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 RecipeStep.getRecipeSteps(Recipe.detailedRecipe, 30, 0);
 
                 // inizializzazione della posizione
-                ngGPlacesAPI.placeDetails({ reference: $scope.recipeToCreate.googlePlaceRef }).then(function (data) {
+                if ($scope.recipeToCreate.googlePlaceRef)// se questa c'è
+                    ngGPlacesAPI.placeDetails({ reference: $scope.recipeToCreate.googlePlaceRef }).then(function (data) {
 
-                    $scope.recipePlace = data.formatted_address;
-                });
+                        $scope.recipePlace = data.formatted_address;
+                    });
             }
         };
         // and fire it after definition
