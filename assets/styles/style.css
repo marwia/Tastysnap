@@ -456,6 +456,17 @@ ul.top_menu_notify_dropdown {
 	}
 }
 
+@media only screen and (max-width : 560px) {
+	.login_footer_item{
+		font-weight: 300 !important;
+		font-size: 0.8em !important;
+	}
+
+	.footer_con{
+		*padding-bottom: 20px;
+	}
+}
+
 /* ----------------------------------------------------------------- 4 ------------------------------------------------------ */
 /* ------------------------------------------------------------- CARD STYLE ------------------------------------------------- */
 
