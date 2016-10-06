@@ -6,25 +6,38 @@
     </head>
     
     <style>
+        body{
+            background-color: white;
+            color: #222;
+        }
+
+        .container_info{
+            margin-bottom: 20px;
+        }
+
         .terms_tasty_logo{
             display:inline-block;
-            max-width: 200px;
+            max-width: 70px;
             width: 100%;
         }
         
-        h2, p, a, div{
-            color:white;
+        footer P, footer P > A{
+            color: white !important;
+        }
+
+        footer P > A:hover{
+            text-decoration:none;
+            color:orange !important;
+        }
+
+        .text_color > h2, p, a, div{
+            color: #222;
         }
         
         h2{margin-bottom:30px;}
         
         a{
             text-decoration:none;
-        }
-        
-        a:hover{
-            text-decoration:none;
-            color:orange;
         }
         
         .active{
@@ -40,9 +53,9 @@
     </style>
   
     <body>
-        <div class="container">
+        <div class="container container_info">
             <div class="row text-center">
-                <a href="/"><img src="app_images/tastysnaplogo_full.png" class="terms_tasty_logo"></a>
+                <a href="/"><img src="app_images/logo.png" class="terms_tasty_logo"></a>
             </div>
             
             <div class="row">
@@ -56,7 +69,7 @@
             
             <div class="row">
                 <div class="col-md-2"></div>
-                <div class="col-md-8">
+                <div class="col-md-8 text_color">
                     <h2 class="text-center">UTILIZZO DEI COOKIE</h2>
                     
                     <h3>Cosa sono i cookie</h3>
