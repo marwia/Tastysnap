@@ -32,7 +32,6 @@ if (process.env.NODE_ENV === 'production') {
 passport.use(new FacebookStrategy(FBstrategy,
     function(accessToken, refreshToken, profile, done) {
         console.log("Facebook strategy triggered...\n");
-        console.info(profile);
         var fbUser = {
             facebookId: profile.id,
             facebookImageUrl: profile.photos[0].value,
@@ -48,14 +47,11 @@ passport.use(new FacebookStrategy(FBstrategy,
             ]
         }, fbUser).exec(function(err, foundUser) {
             if (err) { return done(err); }
-            if (foundUser[0]) {
-                console.log("Utente FB loggato", foundUser[0]);
+            if (foundUser[0]) {// login
                 done(null, foundUser[0], false);// l'ultimo argomento indica se l'utente è nuovo
-            } else {
+            } else {// register
                 User.create(fbUser).exec(function(err, user) {
-
                     if (err) { return done(err); }
-                    console.log("Utente FB creato", user);
                     done(null, user, true);// l'ultimo argomento indica se l'utente è nuovo
                 });
             }
@@ -71,7 +67,6 @@ passport.use(new GoogleStrategy({
 },
     function(accessToken, refreshToken, profile, done) {
         console.log("Google strategy triggered...\n");
-        console.log("Google profile:", profile);
         var gUser = {
             googleId: profile.id,
             googleImageUrl: profile.photos[0].value,
@@ -87,14 +82,11 @@ passport.use(new GoogleStrategy({
             ]
         }, gUser).exec(function(err, foundUser) {
             if (err) { return done(err); }
-            if (foundUser[0]) {
-                console.log("Utente Google loggato", foundUser[0]);
+            if (foundUser[0]) {// login
                 done(null, foundUser[0], false);// l'ultimo argomento indica se l'utente è nuovo
-            } else {
+            } else {// register
                 User.create(gUser).exec(function(err, user) {
-
                     if (err) { return done(err); }
-                    console.log("Utente Google creato", user);
                     done(null, user, true);// l'ultimo argomento indica se l'utente è nuovo
                 });
             }
@@ -111,7 +103,6 @@ passport.use(new TwitterStrategy({
 },
     function(accessToken, refreshToken, profile, done) {
         console.log("Twitter strategy triggered...\n", profile);
-        console.log("Twitter profile:", profile);
         var tUser = {
             twitterId: profile.id,
             twitterImageUrl: profile.photos[0].value,
@@ -127,14 +118,11 @@ passport.use(new TwitterStrategy({
             ]
         }, tUser).exec(function(err, foundUser) {
             if (err) { return done(err); }
-            if (foundUser[0]) {
-                console.log("Utente Twitter loggato", foundUser[0]);
+            if (foundUser[0]) {// login
                 done(null, foundUser[0], false);// l'ultimo argomento indica se l'utente è nuovo
-            } else {
+            } else {// register
                 User.create(tUser).exec(function(err, user) {
-
                     if (err) { return done(err); }
-                    console.log("Utente Twitter creato", user);
                     done(null, user, true);// l'ultimo argomento indica se l'utente è nuovo
                 });
             }
