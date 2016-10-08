@@ -11,8 +11,6 @@
  * Prese da https://github.com/balderdashy/sails/blob/master/lib/hooks/blueprints/actions/find.js
  */
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
-
-
 var md5 = require('md5');
 var fs = require('fs');
 
@@ -131,8 +129,7 @@ module.exports = {
             // If user created successfuly we return user and token as response
             if (user) {
                 // NOTE: payload is { id: user.id}
-                console.log(user);
-                res.json(200, { user: user, token: jwToken.issue({ id: user.id }) });
+                return res.json(200, { user: user, token: jwToken.issue({ id: user.id }) });
             }
         });
     },
