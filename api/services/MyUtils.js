@@ -5,7 +5,63 @@
  * @help        :: See http://links.sailsjs.org/docs/services
  */
 
+var http = require('http');
+
 module.exports = {
+
+    /**
+     * Funzione per ritrovare l'ip del client che
+     * sta parlando col server.
+     * Link: http://stackoverflow.com/a/19524949/5068914
+     */
+    getClientIp: function (req) {
+        var ip = req.headers['x-forwarded-for'] ||
+            req.connection.remoteAddress ||
+            req.socket.remoteAddress ||
+            req.connection.socket.remoteAddress;
+        return ip;
+    },
+
+    /**
+     * Funzione per ritrovare le informazioni sulla posizione
+     * da un indirizzo IP. Questo processo viene chiamato 
+     * "geolookup". 
+     * In alternativa si potrebbe usare questo modulo ma 
+     * richiede grandi quantità di memoria RAM e non supporta
+     * chiaramente le micro-istanze di AWS: 
+     * https://github.com/bluesmoon/node-geoip
+     */
+    getIpGeoLookup: function (ip, successCallback, errorCallback) {
+
+        var options = {
+            host: 'freegeoip.net',
+            port: 80,
+            path: '/json/' + ip
+        };
+
+        http.get(options, function (res) {
+            console.log("freeGeoIp response: " + res.statusCode);
+
+            var body = '';
+
+            res.on('data', function (chunk) {
+                body += chunk;
+            });
+
+            res.on('end', function () {
+                var jsonBody = JSON.parse(body);
+
+                if (res.statusCode == 200)
+                    successCallback(jsonBody);
+                else {
+                    if (typeof errorCallback === 'function')
+                        errorCallback();
+                }
+            });
+        }).on('error', function (e) {
+            console.log("Got error: " + e.message);
+        });
+    },
 
     /**
      * Funzione di supporto all'ordinamento di array.

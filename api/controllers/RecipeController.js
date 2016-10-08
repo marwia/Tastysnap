@@ -35,7 +35,7 @@ var cdn_url = "https://tastysnapcdn.s3.amazonaws.com/";
  * Funzioni comuni nell'upload di immagini
  */
 var localUploadConfiguration = {
-    // don't allow the total upload size to exceed ~10MB
+    // don't allow the total upload size to exceed ~5MB
     maxBytes: 5000000,
     saveAs: function (file, cb) {
         var d = new Date();
@@ -117,6 +117,30 @@ var setRecipeViewed = function (req, foundRecipe) {
 
         });
     }
+};
+
+/**
+ * Funzione per aggiornare le coordinate dell'autore
+ * della risorsa prese durante la creazione della stessa.
+ */
+var updateCreationCoordinates = function (recipe, req) {
+    var client_ip = MyUtils.getClientIp(req);
+    // Update with author position by IP
+    MyUtils.getIpGeoLookup(client_ip, function (result) {
+        var geoJson = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [result.longitude, result.latitude]
+            },
+            "properties": {}
+        };
+        console.log("----GEO IP------");
+        console.info(geoJson);
+
+        Recipe.update(recipe.id, { creationCoordinates: geoJson })
+            .exec(function (err, updatedRecords) {});
+    });
 };
 
 module.exports = {
@@ -243,8 +267,11 @@ module.exports = {
                                     for (var i = 0; i < result.length; i++) {
                                         if (result[i].ingredients)
                                             for (var j = 0; j < result[i].ingredients.length; j++) {
-                                                productIds.push(result[i].ingredients[j].product);
-                                                ingredientIds.push(result[i].ingredients[i].id);
+                                                // eseguo controllo per assicurarmi che l'elemento non sia null
+                                                if (result[i].ingredients[i]) {
+                                                    productIds.push(result[i].ingredients[j].product);
+                                                    ingredientIds.push(result[i].ingredients[i].id);
+                                                }
                                             }
                                     }
 
@@ -312,7 +339,7 @@ module.exports = {
                     if (originalCriteria["calories"]
                         || (sortCriteria && sortCriteria.indexOf("calories") > -1))
                         tasks["calories"] = averages.calories;
-                    
+
                     // elenco i criteri che necessitano del popolamento degli ingredienti
                     var criteriaArray = ['products', 'energy', 'protein', 'carb', 'sugar', 'fat'];
                     // verifico se nei criteri di ricerca oppure ordinamento vi è uno di 
@@ -330,8 +357,8 @@ module.exports = {
                                 break;
                             }
                         }
-                    
-                    
+
+
                     /**
                      * ESECUZIONE DEI TASK IN PARALLELO
                      */
@@ -364,7 +391,7 @@ module.exports = {
                         if (originalCriteria["energy"]
                             || (sortCriteria && sortCriteria.indexOf("energy") > -1))
                             recipe.totalEnergy = IngredientService.calculateNutrientTotal(recipe.ingredients, '208').value;
-        
+
 
                         if (originalCriteria["protein"]
                             || (sortCriteria && sortCriteria.indexOf("protein") > -1))
@@ -435,8 +462,13 @@ module.exports = {
                             products = [products];
                         }
 
+                        /**
+                         * Filtro l'array delle ricette trovate togliendo
+                         * oppure lasciando soltanto le ricette con determinati 
+                         * prodotti.
+                         */
                         foundRecipes = foundRecipes.filter(function (el) {
-                            return notIn ? !MyUtils.superBag(el.products.productIds, products) : MyUtils.superBag(el.products.productIds, products);
+                            return notIn ? !MyUtils.superBag(el.productIds, products) : MyUtils.superBag(el.productIds, products);
                         });
                     }
 
@@ -444,7 +476,7 @@ module.exports = {
                     if (originalCriteria["energy"]) {
                         foundRecipes = wlFilter(foundRecipes, {
                             where: {
-                                totalEnergy: originalCriteria["energy"]    
+                                totalEnergy: originalCriteria["energy"]
                             }
                         }).results;
                     }
@@ -481,7 +513,7 @@ module.exports = {
                         }).results;
                     }
 
-                    
+
 
                     /**
                      * SORT
@@ -900,6 +932,9 @@ module.exports = {
 
             // Notifico l'evento ai followers dell'autore della ricetta
             Notification.notifyUserFollowers(user, recipe, 'Recipe');
+
+            // Aggiorno la ricetta con la posizione del client
+            updateCreationCoordinates(recipe, req);
 
             return res.json(recipe);
         });

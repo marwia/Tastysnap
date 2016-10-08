@@ -9,6 +9,26 @@
 var _ = require('lodash');
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
+var updateCreationCoordinates = function (follow, req) {
+    var client_ip = MyUtils.getClientIp(req);
+    // Update with author position by IP
+    MyUtils.getIpGeoLookup(client_ip, function (result) {
+        var geoJson = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [result.longitude, result.latitude]
+            },
+            "properties": {}
+        };
+        console.log("----GEO IP------");
+        console.info(geoJson);
+
+        FollowUser.update(follow.id, { creationCoordinates: geoJson })
+            .exec(function (err, updatedRecords) {});
+    });
+};
+
 module.exports = {
 
      /**
@@ -55,6 +75,9 @@ module.exports = {
 
                 // Notifico l'evento all'utente da seguire
                 Notification.notifyUser(user.id, userToFollow.id, createdFollow, 'FollowUser');
+
+                // Aggiorno il follow con la posizione del client
+                updateCreationCoordinates(createdFollow, req);
 
                 return res.send(204, null);// OK - No Content
             });

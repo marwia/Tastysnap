@@ -12,6 +12,25 @@
  */
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
+var updateCreationCoordinates = function (voteId, req) {
+    console.log("updateCreationCoordinates<---------------");
+    var client_ip = MyUtils.getClientIp(req);
+    // Update with author position by IP
+    MyUtils.getIpGeoLookup(client_ip, function (result) {
+        var geoJson = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [result.longitude, result.latitude]
+            },
+            "properties": {}
+        };
+        
+        VoteRecipe.update(voteId, { creationCoordinates: geoJson })
+            .exec(function (err, updatedRecords) {});
+    });
+};
+
 module.exports = {
     /**
      * @api {post} /recipe/:recipe/upvote Upvote a Recipe
@@ -108,7 +127,10 @@ module.exports = {
                         if (err) { return next(err); }
 
                         // Notifico l'evento all'utente autore della ricetta
-					    Notification.notifyUser(user.id, req.recipe.author, voteRecipeCreated, 'VoteRecipe');
+                        Notification.notifyUser(user.id, req.recipe.author, voteRecipeCreated, 'VoteRecipe');
+
+                        // Aggiorno il voto con la posizione del client
+                        updateCreationCoordinates(voteRecipeCreated.id, req);
 
                         return res.json(voteRecipeCreated);
                     });
@@ -120,7 +142,10 @@ module.exports = {
                                 if (err) { return next(err); }
 
                                 // Notifico l'evento all'utente autore della ricetta
-					            Notification.notifyUser(user.id, req.recipe.author, voteRecipeCreated, 'VoteRecipe');
+                                Notification.notifyUser(user.id, req.recipe.author, voteRecipeCreated, 'VoteRecipe');
+
+                                // Aggiorno il voto con la posizione del client
+                                updateCreationCoordinates(voteRecipeCreated.id, req);
 
                                 return res.json(voteRecipeCreated);
                             });
@@ -200,7 +225,7 @@ module.exports = {
      * @apiUse NoRecipeError
      */
     findUpvotes: function (req, res, next) {
-        
+
         VoteRecipe.find()
             .where({ recipe: req.recipe.id, value: 1 })
             .limit(actionUtil.parseLimit(req))
@@ -246,7 +271,7 @@ module.exports = {
      * @apiUse NoRecipeError
      */
     findDownvotes: function (req, res, next) {
-        
+
         VoteRecipe.find()
             .where({ recipe: req.recipe.id, value: -1 })
             .limit(actionUtil.parseLimit(req))
