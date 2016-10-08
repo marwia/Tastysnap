@@ -379,7 +379,7 @@ ul.top_menu_notify_dropdown {
 	width:100%;
 	max-width:500px;
 	height:400px;
-	margin-top:200px;
+	margin-top:150px;
 }
 
 .login_brand{
@@ -808,8 +808,8 @@ ul.top_menu_notify_dropdown {
 /* ------------------------------------------------------------- COLLECTION STYLE ------------------------------------------------- */
 
 .collection_profile_photo{
-	width: 40px;
-	height: 40px;
+	width: 50px;
+	height: 50px;
 	background-position: center;
 	display: inline-block;
 }
