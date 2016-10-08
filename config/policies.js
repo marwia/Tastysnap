@@ -171,6 +171,7 @@ module.exports.policies = {
 
   'FollowUserController' : {
     'create' : ['isAuthorized', 'findUser'],
+    'destroy': ['isAuthorized', 'findUser'],
     'getFollowers' : ['findUser'],
     'getFollowing' : ['findUser'],
     'areYouFollowing' : ['isAuthorized', 'findUser'],
