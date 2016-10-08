@@ -11,17 +11,23 @@ module.exports = {
 
   attributes: {
 
-  	value : { type: 'Integer' },
+  	value : { type: 'Integer', required: true },
+
+    // Coordinate in geoJSON attribuite al momento della creazione
+    creationCoordinates: { type: 'json' },
 
     author : { 
-    	model :'user' 
+    	model :'user',
+      required: true
     },
 
     recipe : { 
-      model :'recipe' 
+      model :'recipe',
+      required: true
     }
 
   },
+
 
    /***************************************************************************
   *                                                                          *

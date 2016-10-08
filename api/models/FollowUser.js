@@ -10,6 +10,9 @@ module.exports = {
 
   attributes: {
 
+    // Coordinate in geoJSON attribuite al momento della creazione
+    creationCoordinates: { type: 'json' },
+
     following : { 
       	model :'user',
       	required : true

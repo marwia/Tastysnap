@@ -73,6 +73,9 @@ module.exports = {
     // per riferimento memorizzo anche il reference del posto (offerto da Google)
     googlePlaceRef: { type: 'String' },
 
+    // Coordinate in geoJSON attribuite al momento della creazione della ricetta
+    creationCoordinates: { type: 'json' },
+
     // Reference to User
     author : { 
       model :'User',
