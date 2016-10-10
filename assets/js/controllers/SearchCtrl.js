@@ -54,16 +54,19 @@ angular.module('SearchCtrl', []).controller('SearchCtrl', [
 
                     switch ($scope.searchModel) {
                         case 'recipe':
-                            Recipe.advancedSearch($scope.q,
-                                searchFilters.selectedCategories,
-                                Recipe.toIdArray(searchFilters.selectedProducts),
-                                searchFilters.difficultyRating,
-                                searchFilters.costRating,
-                                searchFilters.caloriesRating,
-                                searchFilters.timeValue,
-                                searchFilters.nutrientFilters,
-                                searchFilters.selectedSortOptionIdx,
-                                searchFilters.selectedSortMode, null, true);
+                            Recipe.advancedSearch({
+                                title: $scope.q,
+                                categoryArray: searchFilters.selectedCategories,
+                                productsIdsArray: Recipe.toIdArray(searchFilters.selectedProducts),
+                                difficulty: searchFilters.difficultyRating,
+                                cost: searchFilters.costRating,
+                                calories: searchFilters.caloriesRating,
+                                maxTime: searchFilters.timeValue,
+                                nutrientFiltersArray: searchFilters.nutrientFilters,
+                                sort_by: searchFilters.selectedSortOptionIdx,
+                                sort_mode: searchFilters.selectedSortMode,
+                                reset: true
+                                });
                             break;
 
                         case 'collection':

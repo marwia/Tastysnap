@@ -173,43 +173,44 @@ angular.module('RecipeService', [])
          * @param {Boolean} reset - se true indica che i risultati devono sovrascrivere quelli
          * attuali, di default è false
          */
-        o.advancedSearch = function(
-            recipeTitle, 
-            categoryArray, 
-            productsIdsArray, 
-            difficulty, cost, calories,
-            maxTime,
-            nutrientFiltersArray,
-            sort_by, sort_mode,
-            skip, 
-            reset, successCB, errorCB) {
+        o.advancedSearch = function(query, successCB, errorCB) {
                 
             // parametri base
             var params = {
-                where: {
-                        "title": { "contains": recipeTitle }
-                    }
+                where: {}
             };
-            
-            // parametri aggiuntivi
-            if (categoryArray != null && categoryArray.length > 0)
-                params.where["category"] = categoryArray;// categories in OR
-                
-            if (productsIdsArray != null && productsIdsArray.length > 0)
-                params.where["products"] = productsIdsArray;// products in AND
-                
-            if (difficulty != null)
-                params.where["difficulty"] = { '>': difficulty - 1, '<=': difficulty };
-            if (cost != null)
-                params.where["cost"] = { '>': cost - 1, '<=': cost };
-            if (calories != null)
-                params.where["calories"] = { '>': calories - 1, '<=': calories };
-                
-            if (maxTime)
-                params.where["preparationTime"] = { '<=': maxTime};
 
-            if (nutrientFiltersArray != null && nutrientFiltersArray.length > 0) {
-                var nutrientFiltersTransformed = nutrientFiltersArray.map(o.nutrientTransform);
+            // parametri aggiuntivi
+            if (query.hasOwnProperty('title'))
+                params.where["title"] = { "contains": query.recipeTitle };
+            
+            if (query.hasOwnProperty('author'))
+                params.where["author"] = query.author;
+
+            if (query.hasOwnProperty('categoryArray') 
+                && query.categoryArray instanceof Array 
+                && categoryArray.length > 0)
+                params.where["category"] = query.categoryArray;// categories in OR
+                
+            if (query.hasOwnProperty('productsIdsArray') 
+                && query.productsIdsArray instanceof Array 
+                && productsIdsArray.length > 0)
+                params.where["products"] = query.productsIdsArray;// products in AND
+                
+            if (query.hasOwnProperty('difficulty'))
+                params.where["difficulty"] = { '>': query.difficulty - 1, '<=': query.difficulty };
+            if (query.hasOwnProperty('cost'))
+                params.where["cost"] = { '>': query.cost - 1, '<=': query.cost };
+            if (query.hasOwnProperty('calories'))
+                params.where["calories"] = { '>': query.calories - 1, '<=': query.calories };
+                
+            if (query.hasOwnProperty('maxTime'))
+                params.where["preparationTime"] = { '<=': query.maxTime};
+
+            if (query.hasOwnProperty('nutrientFiltersArray') 
+                && query.nutrientFiltersArray instanceof Array 
+                && nutrientFiltersArray.length > 0) {
+                var nutrientFiltersTransformed = query.nutrientFiltersArray.map(o.nutrientTransform);
                 // trasformo l'array in un oggetto:
                 // in pratica, prendo ogni elemento e ne ricavo il nome della prima proprietà
                 // poi quella proprietà la inietto nell'oggetto params.where e gli assegno il valore che
@@ -219,11 +220,14 @@ angular.module('RecipeService', [])
                 }
             }
                 
-            if (sort_by != null && sort_by > 0)
-                params["sort"] = o.sortOptions[sort_by] + " " + sort_mode;
+            if (query.hasOwnProperty('sort_by') && query.sort_by > 0 && query.hasOwnProperty('sort_mode'))
+                params["sort"] = o.sortOptions[query.sort_by] + " " + query.sort_mode;
                 
-            if (skip != null)
-                params["skip"] = skip;
+            if (query.hasOwnProperty('skip'))
+                params["skip"] = query.skip;
+
+            if (query.hasOwnProperty('limit'))
+                params["limit"] = query.limit;
                  
             // esecuzione della richiesta
             return $http.get(server_prefix + '/recipe/search', 
@@ -231,15 +235,16 @@ angular.module('RecipeService', [])
                     params: params
                 }
                 ).then(function(response) {
-                if (skip) {
+                    console.info("advancedSearch response: ", response.data);
+                if (query.hasOwnProperty('skip')) {
                     for (var i = 0; i < response.data.length; i++) {
                         o.recipes.push(response.data[i]);
                     }
                 } else {
-                    if (reset)
-                        angular.copy(response.data, o.recipes);
+                    if (query.hasOwnProperty('reset') && query.reset)
+                        angular.copy(response.data, o.recipes);// reset
                     else
-                        angular.extend(o.recipes, response.data);
+                        angular.extend(o.recipes, response.data);// not reset
                 }
                 if (successCB)
                     successCB(response);
@@ -352,11 +357,14 @@ angular.module('RecipeService', [])
         /**
          * Metodo per richiedere una una ricetta tramite il suo id.
          */
-        o.getRecipe = function(recipeId) {
+        o.getRecipe = function(recipeId, successCallback, errorCallback) {
             return $http.get(server_prefix + '/recipe/' + recipeId)
                 .then(function(response) {
                     angular.copy(response.data, o.detailedRecipe);
-            });
+
+                    if (successCallback)
+                        successCallback(response);
+            }, errorCallback);
         };
 
         /**
@@ -571,6 +579,28 @@ angular.module('RecipeService', [])
                         successCallback(response);
                         
                 }, function(response) {
+                    console.log(response);
+                    
+                    if (errorCallback)
+                        errorCallback(response);
+                });
+        };
+
+        /**
+         * Metodo per richiedere una lista di ricette raccomandate
+         * per l'utente attualmente loggato.
+         */
+        o.getRecommendedRecipes = function(reset, successCallback, errorCallback) {
+            return $http.get(server_prefix + '/recipe/recommendation')
+                .then(function(response) {
+                    if (reset)
+                        angular.copy(response.data, o.recipes);
+                    else
+                        angular.extend(o.recipes, response.data);
+
+                    if (successCallback) 
+                        successCallback(response);
+            }, function(response) {
                     console.log(response);
                     
                     if (errorCallback)
