@@ -538,10 +538,12 @@ module.exports = {
                     var limit = sails.config.blueprints.defaultLimit;
                     if (actionUtil.parseLimit(req))
                         limit = actionUtil.parseLimit(req);
+
                     var skip = 0;
                     if (actionUtil.parseSkip(req))
                         skip = actionUtil.parseSkip(req);
-                    foundRecipes.slice(skip, skip + limit);
+
+                    foundRecipes = foundRecipes.slice(skip, skip + limit);
 
                     /**
                      * Eliminazione di alcuni elementi populati
