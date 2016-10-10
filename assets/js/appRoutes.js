@@ -512,7 +512,30 @@ angular.module('appRoutes', []).config([
                         // ogni volta che parte da questo stato farà questa funzione
                         resolve: {
                             recipePromise: ['Recipe', '$stateParams', function (recipes, $stateParams) {
-                                return recipes.getRecipe($stateParams.id);
+                                return recipes.getRecipe($stateParams.id, function recipeLoaded(response) {
+                                    var recipe = response.data;
+
+                                    // carico le ricette correlate
+
+                                    // carico le ricette più viste dello stesso autore
+                                    recipes.advancedSearch({
+                                        author: recipe.author.id, 
+                                        sort_by: 'viewsCount',
+                                        sort_mode: 'DESC',
+                                        limit: 4,
+                                        reset: false});
+
+                                    // carico le ricette della stessa categoria più recenti
+                                    recipes.advancedSearch({
+                                        author: recipe.author.id, 
+                                        sort_by: 'viewsCount',
+                                        sort_mode: 'DESC',
+                                        limit: 4,
+                                        reset: false});
+
+                                    // carico le ricette raccomandate
+                                    recipes.getRecommendedRecipes(false);// without reset
+                                });
                             }]
                         }
                     }
