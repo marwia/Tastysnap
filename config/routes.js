@@ -388,7 +388,19 @@ var apiRoutes = addGlobalPrefix({
 
     'put /user/notification/red': 'NotificationController.red',
 
-    'put /user/notification/not_red': 'NotificationController.notRed'
+    'put /user/notification/not_red': 'NotificationController.notRed',
+
+    /***************************************************************************
+    *                                                                          *
+    * Consigli di ricette e persone simili                                     *
+    *                                                                          *
+    ***************************************************************************/
+
+    'get /recipe/recommendation': 'RecipeRecommendationController.recommendFor',
+
+    'get /user/most_similar': 'RecipeRecommendationController.mostSimilarUsers',
+
+    'get /user/least_similar': 'RecipeRecommendationController.leastSimilarUsers',
 
 });
 

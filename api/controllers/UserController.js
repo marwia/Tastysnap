@@ -162,41 +162,7 @@ module.exports = {
      * @apiUse InvalidTokenError
      */
     find: function (req, res, next) {
-        User.find()
-            .where(actionUtil.parseCriteria(req))
-            .limit(actionUtil.parseLimit(req))
-            .skip(actionUtil.parseSkip(req))
-            .sort(actionUtil.parseSort(req))
-            .populate('recipes')
-            .populate('collections')
-            .populate('followers')
-            .populate('following')
-            .populate('followingCollections')
-            .exec(function (err, foundUsers) {
-                if (err) { return next(err); }
-
-                // array di appoggio
-                var users = new Array();
-
-                // conto gli elementi delle collection
-                for (var i in foundUsers) {
-                    foundUsers[i].recipesCount = foundUsers[i].recipes.length;
-                    foundUsers[i].collectionsCount = foundUsers[i].collections.length;
-                    foundUsers[i].followersCount = foundUsers[i].followers.length;
-                    foundUsers[i].followingCount = foundUsers[i].following.length;
-                    foundUsers[i].followingCollectionsCount = foundUsers[i].followingCollections.length;
-
-                    /**
-                     * Tolgo gli elementi popolati, per qualche ragione gli elementi che sono
-                     * delle associazioni vengono automaticamente tolte quando si esegue
-                     * il seguente metodo.
-                     */
-                    var obj = foundUsers[i].toObject();
-                    users.push(obj);
-                }
-
-                return res.json(users);
-            });
+        UserService.find(req, res, next);
     },
 
     /**

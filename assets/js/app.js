@@ -16,7 +16,7 @@ var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies
 				'AuthCtrl', 'MasterCtrl', 'NavCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeDetailCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl', 'UserHomeCtrl', 'CollectionCtrl',
                 'CollectionSelectionModalCtrl', 'CollectionDetailCtrl', 'CommentCtrl', 'ExtHomeCtrl',
-                'SearchCtrl', 'SearchRecipeCtrl', 'SearchCollectionCtrl',
+                'SearchCtrl', 'SearchRecipeCtrl', 'SearchCollectionCtrl', 'SimilarRecipeCtrl',
                 'UserProfileFollowerUsersCtrl', 'UserProfileFollowingUsersCtrl', 'NearRecipesCtrl', 'FollowingCollectionsCtrl',
                 'RecipeReviewCtrl', 'RecipeImageSliderCtrl', 'NotificationCtrl', 'ActivitesCtrl']);
 

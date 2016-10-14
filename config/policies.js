@@ -185,7 +185,13 @@ module.exports.policies = {
     'find' : 'isAuthorized',
     'findActivity' : 'isAuthorized',
     'red' : ['isAuthorized', 'isNotificationsRecipient'],
-    'notRed' : ['isAuthorized', 'isNotificationsRecipient'],
+    'notRed' : ['isAuthorized', 'isNotificationsRecipient']
+  },
+
+  'RecipeRecommendationController' : {
+    'recommendFor' : 'isAuthorized',
+    'mostSimilarUsers' : 'isAuthorized',
+    'leastSimilarUsers' : 'isAuthorized'
   }
 
 
