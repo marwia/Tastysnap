@@ -1,6 +1,6 @@
 <!-- Colorazione dinamica della colonna di sinistra -->
 <style>
-    .recipe_col_4, .recipe_prep_step {
+    .recipe_prep_step {
         background-color: {{detailedRecipe.dominantColor}};
         color:{{getTextColor(detailedRecipe)}};
     }
@@ -13,152 +13,164 @@
 </style>
 
 <div ng-controller="RecipeDetailCtrl">
-    <div class="container-fluid">
-        <div class="row recipe tasty_container">
+   <div class="recipe">
+        <div class="container-fluid">
 
-            <!-- Profilo + Titolo -->
-            <div class="col-md-8 col-sm-8 recipe_col_8 recipe_sp_1 recipe_generic_con">
-                <!-- +aggiungi - condividi -->
-                <div class="recipe_sp_1_1 text-right">
-                    <span ng-click="openReportModal(detailedRecipe)" class="recipe_span_pointer"><i class="fa fa-exclamation-circle"></i> Sgnala</span>
-                    <span ng-show="isRecipeAuthor(detailedRecipe)" ng-click="edit()" class="recipe_span_pointer"><i class="fa fa-pencil"></i> Modifica</span>
-                    <span ng-show="isRecipeAuthor(detailedRecipe)" ng-click="openEliminationModal(detailedRecipe)" class="recipe_span_pointer"><i class="fa fa-trash-o"></i> Elimina</span>
-                    <span ng-click="openCollectionSelectionModal(detailedRecipe)" class="recipe_span_pointer"><i class="fa fa-plus"></i> Aggiungi a</span>
-                    <span class="recipe_span_pointer"><i class="fa fa-share-alt"></i> Condividi</span>
-                </div>
-                <!-- profilo -->
-                <div class="recipe_sp_1_2">
-                    <a href="app/profile/{{detailedRecipe.author.id}}">
-                        <div class="img-circle recipe_profile_photo pull-left" back-img="{{ getUserProfileImage(detailedRecipe.author) }}"></div>
-                    </a>
-                    <div class="recipe_div_profile_name pull-left">
-                        <h5 class="recipe_profile_name no-margin"><strong>{{detailedRecipe.author.name}} {{detailedRecipe.author.surname}}</strong></h5>
-                        <h6 class="recipe_profile_edited no-margin">
-                            {{formatDate(detailedRecipe.createdAt)}}
-                        </h6>
+            <!-- RECIPE HEADER -->
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="row recipe_header">
+
+                        <!-- SLIDER -->
+                        <div class="recipe_header1" ng-controller="RecipeImageSliderCtrl">
+                            <uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
+                                <uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
+                                    <div data-imagelightbox="div">
+                                        <a href="{{slide.image}}" data-lightbox="imageSet" data-title="{{detailedRecipe.title}}">
+                                            <div class="recipe_sp_2_1" style="background-image:url('{{slide.image}}')"></div>
+                                        </a>
+                                    </div>
+                                </uib-slide>
+                            </uib-carousel>
+                        </div>
+
+                        <!-- header information -->
+                        <div class="recipe_header2">
+                            <div class="col-md-12">
+                                <!-- TODO -->
+                                <h3><i class="fa fa-comment"></i> facile</h3>
+                                <h3><i class="fa fa-comment"></i> molto calorica</h3>
+                                <h3><i class="fa fa-comment"></i> costosissima</h3>
+                            </div>
+                        </div>
+
+                        <!-- header title and cooker -->
+                        <div class="row recipe_header3">
+                            <div class="col-md-12">
+                                <!-- profilo -->
+                                <div class="recipe_profile text-center">
+                                    <a href="#" class="text-center"><div class="img-circle" style="background-image: url('https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/13173648_1345637995462670_3918097297388053058_n.jpg?oh=42202735f5db9e78c0a600157df3d7d4&oe=58710296')"></div></a>
+                                    <h5><strong>{{detailedRecipe.author.name}} {{detailedRecipe.author.surname}}</strong></h5>
+                                    <h6>{{formatDate(detailedRecipe.createdAt)}}</h6>
+                                </div>
+                            </div>
+                            <div class="col-md-12 text-center" style="margin-top: 35px;">
+                                <h3 class="recipe_header_title">{{detailedRecipe.category}}</h3>
+                            </div>
+                            <div class="col-md-12 text-center text-uppercase">
+                                <h1 class="recipe_header_title">{{detailedRecipe.title}}</h1>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-                <!-- portata + titolo -->
-                <div class="recipe_sp_1_3">
-                    <h5 class="no-margin recipe_reach">{{detailedRecipe.category}}</h5>
-                    <h1 class="no-margin recipe_title text-uppercase">{{detailedRecipe.title}}</h1>
-                </div>
 
-                <div class="clearfix"></div>
             </div>
 
-            <!-- Foto + like-->
-            <div class="col-md-4 col-sm-4 recipe_col_4 no-padding">
-                <!-- immagine fissa ricetta -->
-                <!--<div class="recipe_sp_2_1" style="background-image:url('{{detailedRecipe.coverImageUrl}}')"></div>-->
-
-                <!-- inizio carousel -->
-                    <div ng-controller="RecipeImageSliderCtrl">
-                        <uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides">
-                            <uib-slide ng-repeat="slide in slides track by slide.id" index="slide.id">
-                                <div class="wow" data-imagelightbox="div">
-                                    <a href="{{slide.image}}" data-lightbox="imageSet" data-title="{{detailedRecipe.title}}">
-                                        <div class="recipe_sp_2_1" style="background-image:url('{{slide.image}}')"></div>
-                                    </a>
+            <!-- RECIPE CONTAINER -->
+            <div class="row">
+                <!-- Colonna 1 - Ingrendienti e Descrizione -->
+                <div class="col-xs-12 col-sm-7 col-sm-push-3 col-md-7 col-md-push-3 recipe_column">
+                   <div class="panel panel-default">
+                        <div class="panel-body text-left">
+                            <h4>INGREDIENTI <span class="pull-right"><i class="fa fa-balance-scale"></i> per {{detailedRecipe.dosagesFor}} {{detailedRecipe.dosagesType}}</span></h4>
+                            <hr class="recipe_hr">
+                            <!-- gruppi di ingredienti -->
+                            <div class="row">
+                                <div ng-repeat="ingredientGroup in detailedRecipe.ingredientGroups">
+                                    <div class="col-md-12">
+                                        <h4>{{ingredientGroup.name}}</h4>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient" ng-repeat="ingredient in ingredientGroup.ingredients">
+                                            <div class="col-xs-7 col-sm-7 col-md-7">
+                                                <div class="text-left">
+                                                    <p class="recipe_ing_txt"><a href="">{{ingredient.product.name.long}}</a></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-5 col-sm-5 col-md-5">
+                                                <div class="text-right">
+                                                    <p class="recipe_ing_txt">{{ingredient.quantity}} {{ingredient.unitOfMeasure}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </uib-slide>
-                        </uib-carousel>
+                            </div>
+                        </div>
                     </div>
                 
-                <!-- fine carousel -->
+                    <div class="panel panel-default">
+                        <div class="panel-body text-left">
+                            <h4>
+                                DESCRIZIONE
+                                <span class="pull-right"><i class="fa fa-clock-o"></i> {{detailedRecipe.preparationTime}} minuti</span>
+                            </h4>
+                            <hr class="recipe_hr">
 
-                <!-- icone + valori -->
-                <div class="recipe_sp_2_2">
-                    <table class="recipe_sp_2_2_table">
-                        <tr>
-                            <td uib-tooltip="Persone che adorano questa ricetta" tooltip-append-to-body="true"><i class="fa fa-heart recipe_sp_2_2_icon"></i></td>
-                            <td uib-tooltip="Numero di commenti" tooltip-append-to-body="true"><i class="fa fa-comment recipe_sp_2_2_icon"></i></td>
-                            <td uib-tooltip="Numero di visualizzazioni" tooltip-append-to-body="true"><i class="fa fa-eye recipe_sp_2_2_icon"></i></td>
-                            <td uib-tooltip="Persone che hanno provato questa ricetta" tooltip-append-to-body="true">
-                                <span class="fa-stack" ng-click="toggleTryRecipe(detailedRecipe)">
-                                    <i class="fa fa-cutlery tasty_icon recipe_sp_2_2_icon"
-                                       ng-class="(detailedRecipe.userTry == null) ? 'tasty_icon_default' : 'tasty_icon_active'"></i>
-                                </span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>{{detailedRecipe.votesCount}}</td>
-                            <td>{{detailedRecipe.commentsCount}}</td>
-                            <td>{{detailedRecipe.viewsCount}}</td>
-                            <td>{{detailedRecipe.trialsCount}}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-
-            <!-- INGREDIENTI + PREPARAZIONE -->
-            <div class="col-md-8 col-sm-8 recipe_col_8 recipe_generic_con">
-   
-                <!-- INGREDIENTI -->
-                <div class="row recipe_ing_con">
-                    <div class="col-md-12">
-                        <div class="recipe_sub_title">INGREDIENTI
-                            <span class="pull-right"><i class="fa fa-balance-scale"></i> per {{detailedRecipe.dosagesFor}} {{detailedRecipe.dosagesType}}</span>
-                        </div>
-                    </div>
-
-                    <!-- gruppi di ingredienti -->
-                    <div ng-repeat="ingredientGroup in detailedRecipe.ingredientGroups">
-                        <div class="col-md-12">
-                            <h4>{{ingredientGroup.name}}</h4>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient" ng-repeat="ingredient in ingredientGroup.ingredients">
-                                <div class="col-xs-7 col-sm-7 col-md-7">
-                                    <div class="text-left">
-                                        <p class="recipe_ing_txt"><a href="">{{ingredient.product.name.long}}</a></p>
-                                    </div>
+                            <div class="row" ng-repeat="step in detailedRecipe.steps">
+                                <div class="col-md-12 text-center" style="margin-top: 15px; margin-bottom: 10px;">
+                                    <button type="button" class="btn btn-default recipe_btn-circle recipe_prep_step">{{step.seq_number}}</button>
                                 </div>
-                                <div class="col-xs-5 col-sm-5 col-md-5">
-                                    <div class="text-right">
-                                        <p class="recipe_ing_txt">{{ingredient.quantity}} {{ingredient.unitOfMeasure}}</p>
-                                    </div>
+                                <div class="col-md-12">
+                                    <p>{{step.description}}</p>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-                   
-                </div>
                 </div>
 
-                <!-- PREPARAZIONE -->
-                <div class="col-md-8 col-sm-8 recipe_col_8 recipe_generic_con">
-                <div class="row recipe_ing_con">
-                    <div class="col-md-12">
-                        <div class="recipe_sub_title">
-                            PREPARAZIONE
-                            <span class="pull-right"><i class="fa fa-clock-o"></i> {{detailedRecipe.preparationTime}} minuti</span>
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="media" ng-repeat="step in detailedRecipe.steps">
-                            <div class="media-left media-middle" style="height: 100px; width: 100px;">
-                                <h1>
-                                    <div class="recipe_prep_step">{{step.seq_number}}</div>
-                                </h1>
-                            </div>
-                            <div class="media-body media-middle">    
-                                <span>{{step.description}}<span>
+                <!-- Colonna 2 - Pulsanti -->
+                <div class="col-xs-12 col-sm-2 col-sm-push-3 col-md-2 col-md-push-3 recipe_column">
+                    <div class="panel panel-default">
+                        <div class="panel-body recipe_like">
+                            <div class="row">
+                                <div class="col-xs-4 col-sm-12 col-md-12 text-center"><button type="button" class="btn btn-primary recipe_btn" ng-show="isRecipeAuthor(detailedRecipe)" ng-click="edit()"><i class="fa fa-pencil"></i> MODIFICA</button></div>
+                                <div class="col-xs-4 col-sm-12 col-md-12 text-center"><button type="button" class="btn btn-danger recipe_btn" ng-show="isRecipeAuthor(detailedRecipe)" ng-click="openEliminationModal(detailedRecipe)"><i class="fa fa-trash-o"></i> ELIMINA</button></div>
+                                <div class="col-xs-4 col-sm-12 col-md-12 text-center"><button type="button" class="btn btn-warning recipe_btn" ng-click="openReportModal(detailedRecipe)"><i class="fa fa-exclamation-circle"></i> SEGNALA</button></div>
+                                <div class="col-xs-4 col-sm-12 col-md-12 text-center"><button type="button" class="btn btn-info recipe_btn" ng-click="openCollectionSelectionModal(detailedRecipe)"><i class="fa fa-plus"></i> AGGIUNGI A</button></div>
+                                <div class="col-xs-4 col-sm-12 col-md-12 text-center"><button type="button" class="btn btn-success recipe_btn"><i class="fa fa-share-alt"></i> CONDIVIDI</button></div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            
 
-            <!-- OPINIONI + VALORI NUTRIZIONALI + SPONSOR -->
-            <div class="col-md-4 col-sm-4 recipe_col_4">
+                <!-- Colonna 1 - Like e Valori Nutrizionali -->
+                <div class="col-xs-12 col-sm-3 col-sm-pull-9 col-md-3 col-md-pull-9 recipe_column">
+                    <!-- Like -->
+                    <div class="panel panel-default">
+                        <div class="panel-body recipe_like text-center">
+                            <table>
+                                <tr>
+                                    <td uib-tooltip="Persone che adorano questa ricetta" tooltip-append-to-body="true"><i class="fa fa-heart"></i></td>
+                                    <td uib-tooltip="Numero di commenti" tooltip-append-to-body="true"><i class="fa fa-comment"></i></td>
+                                    <!-- numero di visualizzazioni -->
+                                    <!--<td uib-tooltip="Numero di visualizzazioni" tooltip-append-to-body="true"><i class="fa fa-eye"></i></td>-->
+                                    <td uib-tooltip="Persone che hanno provato questa ricetta" tooltip-append-to-body="true">
+                                        <span class="fa-stack" ng-click="toggleTryRecipe(detailedRecipe)">
+                                            <i class="fa fa-cutlery tasty_icon" ng-class="(detailedRecipe.userTry == null) ? 'tasty_icon_default' : 'tasty_icon_active'"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{detailedRecipe.votesCount}}</td>
+                                    <td>{{detailedRecipe.commentsCount}}</td>
+                                    <!-- numero di visualizzazioni -->
+                                    <!--<td>{{detailedRecipe.viewsCount}}</td>-->
+                                    <td>{{detailedRecipe.trialsCount}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
 
-                <div class="row">
-                    <!-- OPINIONI -->
-                    <div class="col-md-12 recipe_sp_3" ng-controller="RecipeReviewCtrl">
-                        <div class="recipe_sp_3_title" style="border-bottom: 2px solid {{getTextColor(detailedRecipe)}};"><strong>OPINIONI</strong></div>
-                        <div class="recipe_sp_3_con">
+                    <!-- Opinioni  -->
+                    <div class="panel panel-default" ng-controller="RecipeReviewCtrl">
+                        <div class="panel-body text-left recipe_val_nutriz">
+                            <h5 class="text-left"><strong>OPINIONI</strong></h5>
+                            <hr class="recipe_hr">
+
                             <table class="recipe_sp_3_table">
                                 <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringReviewsCount('difficulty')}}">
                                     <td class="text-left">DIFFICOLTA</td>
@@ -200,355 +212,184 @@
                                     </td>
                                 </tr>
                             </table>
+
                         </div>
                     </div>
 
-                    <!-- VALORI NUTRIZIONALI -->
-                    <div class="col-md-12 recipe_sp_3">
-                        <div class="recipe_sp_3_title"
-                            uib-tooltip="I valori espressi sono relativi all'insieme degli ingredienti che compongono la ricetta. I risultati sono da considerarsi come stime, pertanto i valori reali dei nutrienti potrebbero variare."
-                            style="border-bottom: 2px solid {{getTextColor(detailedRecipe)}};">
-                            <strong>VALORI NUTRIZIONALI</strong>
-                        </div>
-                        <div class="recipe_sp_3_con">
-                            <table class="recipe_sp_3_table">
-                                <tr class="recipe_sp_3_tr">
+                    <!-- Valori Nutrizionali -->
+                    <div class="panel panel-default">
+                        <div class="panel-body text-left recipe_val_nutriz">
+                            <h5 class="text-left"><strong>VALORI NUTRIZIONALI</strong></h5>
+                            <hr class="recipe_hr">
+                            <table>
+                                <tr>
                                     <td class="text-left"><strong>Valore energetico</strong></td>
                                     <td class="text-right">{{detailedRecipe.totalEnergy.value.toFixed(2)}} {{detailedRecipe.totalEnergy.unit}}</td>
                                 </tr>
 
-                                <tr class="recipe_sp_3_tr">
+                                <tr>
                                     <td class="text-left"><strong>Proteine</strong></td>
                                     <td class="text-right">{{detailedRecipe.totalProtein.value.toFixed(2)}} {{detailedRecipe.totalProtein.unit}}</td>
                                 </tr>
 
-                                <tr class="recipe_sp_3_tr">
+                                <tr>
                                     <td class="text-left"><strong>Carboidrati</strong></td>
                                     <td class="text-right">{{detailedRecipe.totalCarbs.value.toFixed(2)}} {{detailedRecipe.totalCarbs.unit}}</td>
                                 </tr>
 
-                                <tr class="recipe_sp_3_tr">
-                                    <td class="text-left recipe_sp_3_val_nut_sec"><strong>di cui zuccheri</strong></td>
+                                <tr>
+                                    <td class="text-left"><strong>di cui zuccheri</strong></td>
                                     <td class="text-right">{{detailedRecipe.totalSugar.value.toFixed(2)}} {{detailedRecipe.totalSugar.unit}}</td>
                                 </tr>
 
-                                <tr class="recipe_sp_3_tr">
+                                <tr>
                                     <td class="text-left"><strong>Grassi</strong></td>
                                     <td class="text-right">{{detailedRecipe.totalFat.value.toFixed(2)}} {{detailedRecipe.totalFat.unit}}</td>
                                 </tr>
 
-                                <tr class="recipe_sp_3_tr">
-                                    <td class="text-left recipe_sp_3_val_nut_sec"><strong>di cui saturi</strong></td>
+                                <tr>
+                                    <td class="text-left"><strong>di cui saturi</strong></td>
                                     <td class="text-right">{{detailedRecipe.totalFatSat.value.toFixed(2)}} {{detailedRecipe.totalFatSat.unit}}</td>
                                 </tr>
 
-                                <tr class="recipe_sp_3_tr">
+                                <tr>
                                     <td class="text-left"><strong>Liquidi</strong></td>
                                     <td class="text-right">{{detailedRecipe.totalWater.value.toFixed(2)}} {{detailedRecipe.totalWater.unit}}</td>
                                 </tr>
 
-                                <tr class="recipe_sp_3_tr">
+                                <tr>
                                     <td class="text-left"><strong>Fibre</strong></td>
                                     <td class="text-right">{{detailedRecipe.totalFibers.value.toFixed(2)}} {{detailedRecipe.totalFibers.unit}}</td>
                                 </tr>
 
-                                <tr class="recipe_sp_3_tr">
+                                <tr>
                                     <td class="text-left"><strong>Sodio</strong></td>
                                     <td class="text-right">{{detailedRecipe.totalSod.value.toFixed(2)}} {{detailedRecipe.totalSod.unit}}</td>
                                 </tr>
                             </table>
                         </div>
                     </div>
-                </div>
-
-                <!-- SPONSOR -->
-                <div class="recipe_sp_spons_con">
-                    <div class="recipe_sp_spons_title" style="border-top: 1px solid {{getTextColor(detailedRecipe)}};">
-                        ANNUNCI DEGLI SPONSOR
-                    </div>
-
-                    <div class="recipe_sp_spons">
-                        <img src="app_images/sponsor.jpg" class="img-responsive">
-                        <h5><strong>NUOVA COLLEZIONE BARILLA</strong></h5>
-                        <h6>Scopri la qualità della nostra pasta ottenuto unicamente dal nostro grano 100% italiano.</h6>
-                    </div>
-
-                    <div class="recipe_sp_spons">
-                        <img src="app_images/sponsor1.png" class="img-responsive">
-                        <h5><strong>COCA-COLA</strong></h5>
-                        <h6>La nuova coca-cola senza zuccheri aggiunti!</h6>
-                    </div>
-
-                    <div class="clearfix"></div>
 
                 </div>
-                <div class="clearfix"></div>
             </div>
 
-            <!-- COMMENTI -->
-            <div class="col-md-8 col-sm-8 recipe_col_8 recipe_generic_con" ng-controller="CommentCtrl">
-                <div class="row recipe_comment_con">
-                    <!-- commenti - title -->
-                    <div class="col-md-12">
-                        <div class="recipe_sub_title">COMMENTI</div>
-                    </div>
+            <!-- RECIPE COMMMENTS -->
+            <div class="row recipe_comments">
+                <div class="col-md-12 recipe_comment_title">
+                    <h3>Commenti</h3>
+                </div>
+                <div class="col-md-12">
+                    <hr/>
+                </div>
+                <div class="col-md-8 col-md-offset-2 recipe_generic_con" ng-controller="CommentCtrl">
+                    <div class="row">
 
-                    <!-- commenti - list -->
-                    <div class="col-md-12">
+                        <!-- commenti - list -->
+                        <div class="col-md-12">
 
-                        <!-- nuovo commento (del profilo loggato) -->
-                        <form ng-submit="create()" role="form">
-                            <div class="media">
-                                <a class="pull-left" href="">
-                                    <div class="media-object img-circle recipe_comment_photo" back-img="{{ getUserProfileImage(currentUser) }}"></div>
-                                </a>
-                                <div class="media-body">
-                                    <input type="text" class="form-control recipe_comment_input" placeholder="Scrivi cosa ne pensi..." ng-model="commentToCreate.body">
-                                </div>
-                            </div>
-                            <input type="submit" 
-                                style="position: absolute; left: -9999px; width: 1px; height: 1px;"
-                                tabindex="-1" />
-                        </form>
-                        
-                        <!-- placeholder se non ci sono commenti -->
-                        <div class="media" ng-hide="detailedRecipe.commentsCount > 0">
-                            <div class="media-body">
-                                <h5 class="media-heading text-center">Nessun commento trovato</h5>
-                            </div>
-                        </div>
-
-                        <!-- commento singolo -->
-                        <div class="media" ng-repeat="comment in detailedRecipe.comments" ng-init="checkVote(comment)">
-                            <a class="pull-left" href="">
-                                <div class="media-object img-circle recipe_comment_photo" back-img="{{ getUserProfileImage(comment.user) }}"></div>
-                            </a>
-                            <div class="media-body">
-                                <h5 class="media-heading">
-                                    <strong>{{comment.user.name}} {{comment.user.surname}} </strong><span class="recipe_comment_when">{{formatDate(comment.createdAt)}}</span>
-                                    <a href="#" ng-show="comment.user.id == currentUser.id" ng-click="deleteComment(detailedRecipe, comment)" class="recipe_comment_delete"><i class="fa fa-times"></i></a>
-                                </h5>
-                                <h6 class="recipe_comment_txt">
-												{{comment.body}}
-											</h6>
-                                <!-- Rispondi -->
-                                <div class="recipe_comment_reply">
-                                    <a href="" ng-hide="true"><span>Rispondi</span></a>
-                                    <a href="" ng-click="toggleUpvote(comment, comment.userUpvote)">
-                                        <i class="fa" ng-class="(comment.userUpvote == null) ? 'fa-thumbs-o-up' : 'fa-thumbs-up'"></i>{{comment.upvotesCount}}
-                                    </a>
-                                    <a href="" ng-click="toggleDownvote(comment, comment.userDownvote)">
-                                        <i class="fa" ng-class="(comment.userDownvote == null) ? 'fa-thumbs-o-down' : 'fa-thumbs-down'"></i>{{comment.downvotesCount}}
-                                    </a>
-                                </div>
-                                
-                                <!-- commento di commento -->
-                                <div class="media" ng-repeat="response in comment.responses">
-                                    <a class="pull-left" href="personal_profile.php">
-                                        <img class="media-object img-circle recipe_comment_photo recipe_comment_sub_photo" src="imm/mario.jpg" alt="Mariusz Wiazowski">
+                            <!-- nuovo commento (del profilo loggato) -->
+                            <form ng-submit="create()" role="form">
+                                <div class="media">
+                                    <a class="pull-left" href="">
+                                        <div class="media-object img-circle recipe_comment_photo" back-img="{{ getUserProfileImage(currentUser) }}"></div>
                                     </a>
                                     <div class="media-body">
-                                        <h5 class="media-heading"><strong>Mariusz</strong> <span class="recipe_comment_when">1 ora fa</span></h5>
-                                        <h6 class="recipe_comment_txt">
-                                            Eh si! fatti alla griglia vengono buonissimi!
-                                        </h6>
+                                        <input type="text" class="form-control recipe_comment_input" placeholder="Scrivi cosa ne pensi..." ng-model="commentToCreate.body">
+                                    </div>
+                                </div>
+                                <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
+                            </form>
+                            
+                            <!-- placeholder se non ci sono commenti -->
+                            <div class="media" ng-hide="detailedRecipe.commentsCount > 0">
+                                <div class="media-body">
+                                    <h5 class="media-heading text-center">Nessun commento trovato</h5>
+                                </div>
+                            </div>
+
+                            <!-- commento singolo -->
+                            <div class="media" ng-repeat="comment in detailedRecipe.comments" ng-init="checkVote(comment)">
+                                <a class="pull-left" href="">
+                                    <div class="media-object img-circle recipe_comment_photo" back-img="{{ getUserProfileImage(comment.user) }}"></div>
+                                </a>
+                                <div class="media-body">
+                                    <h5 class="media-heading">
+                                        <strong>{{comment.user.name}} {{comment.user.surname}} </strong><span class="recipe_comment_when">{{formatDate(comment.createdAt)}}</span>
+                                        <a href="#" ng-show="comment.user.id == currentUser.id" ng-click="deleteComment(detailedRecipe, comment)" class="recipe_comment_delete"><i class="fa fa-times"></i></a>
+                                    </h5>
+                                    <h6 class="recipe_comment_txt">
+                                                    {{comment.body}}
+                                                </h6>
+                                    <!-- Rispondi -->
+                                    <div class="recipe_comment_reply">
+                                        <a href="" ng-hide="true"><span>Rispondi</span></a>
+                                        <a href="" ng-click="toggleUpvote(comment, comment.userUpvote)">
+                                            <i class="fa" ng-class="(comment.userUpvote == null) ? 'fa-thumbs-o-up' : 'fa-thumbs-up'"></i>{{comment.upvotesCount}}
+                                        </a>
+                                        <a href="" ng-click="toggleDownvote(comment, comment.userDownvote)">
+                                            <i class="fa" ng-class="(comment.userDownvote == null) ? 'fa-thumbs-o-down' : 'fa-thumbs-down'"></i>{{comment.downvotesCount}}
+                                        </a>
+                                    </div>
+                                    
+                                    <!-- commento di commento -->
+                                    <div class="media" ng-repeat="response in comment.responses">
+                                        <a class="pull-left" href="personal_profile.php">
+                                            <img class="media-object img-circle recipe_comment_photo recipe_comment_sub_photo" src="imm/mario.jpg" alt="Mariusz Wiazowski">
+                                        </a>
+                                        <div class="media-body">
+                                            <h5 class="media-heading"><strong>Mariusz</strong> <span class="recipe_comment_when">1 ora fa</span></h5>
+                                            <h6 class="recipe_comment_txt">
+                                                Eh si! fatti alla griglia vengono buonissimi!
+                                            </h6>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- metodo per caricare ulteriori commenti -->
-                        <div class="media text-center">
-                            <div class="media-body">
-                                <load-more-button elements="detailedRecipe.comments"
-                                on-click-function="getRecipeComments(skip, successCB, errorCB)"
-                                step="5"></load-more-button>
+                            
+                            <!-- metodo per caricare ulteriori commenti -->
+                            <div class="media text-center">
+                                <div class="media-body">
+                                    <load-more-button elements="detailedRecipe.comments"
+                                    on-click-function="getRecipeComments(skip, successCB, errorCB)"
+                                    step="5"></load-more-button>
+                                </div>
                             </div>
-                        </div>
-                        
+                            
 
+                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
-        <!-- end recipe -->
-
     </div>
+</div>
 
-    <!-- CONSIGLIATE -->
-
-    <div class="container-fluid tasty_container" ng-hide="true">
-        <!-- title -->
-        <div class="row  text-center">
-            <div class="col-md-4">
-                <hr class="recipe_title_bar"></hr>
-            </div>
-            <div class="col-md-4">
-                <h3 class="recipe_title_text">Consigliate</h3></div>
-            <div class="col-md-4">
-                <hr class="recipe_title_bar"></hr>
-            </div>
+<div ng-controller="SimilarRecipeCtrl">
+    <!-- container card -->
+    <div class="row tasty_container text-center tasty_title_category tasty_load_space">
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
         </div>
-
-        <!-- Card Like -->
-        <div class="row tasty_container_margin text-center">
-
-            <!-- card 1 -->
-            <div class="card">
-                <div class="thumbnail no-padding no-border card_info no-border-radius">
-                    <div class="card_img"></div>
-                    <div class="caption color_caption">
-                        <div class="container-fluid">
-
-                            <!-- icone + valori -->
-                            <div class="row text-right">
-                                <i class="fa fa-heart card_icon"> 30</i>
-                                <i class="fa fa-comment card_icon"> 112</i>
-                                <i class="fa fa-eye card_icon"> 90</i>
-                                <i class="fa fa-cutlery card_icon"> 8</i>
-                            </div>
-
-                            <!-- tipo portata -->
-                            <div class="row">
-                                <span><h6 class="card_reach">Primi piatti</h6></span>
-                            </div>
-
-                            <!-- titolo portata -->
-                            <div class="row">
-                                <span class="text-uppercase"><h5 class="no-margin card_title">Tagliatelle alla Thai</h5></span>
-                            </div>
-
-                            <!-- profile -->
-                            <div class="row card_profile">
-                                <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
-                                <div class="card_profile_name pull-left">
-                                    <h6>Matteo Bolognesi</h6></div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- fine card -->
-
-            <!-- card 2 -->
-            <div class="card">
-                <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#BC922B;">
-                    <div class="card_img" style="background-image: url('imm/arrosto_tb.jpg');"></div>
-                    <div class="caption color_caption">
-                        <div class="container-fluid">
-
-                            <!-- icone + valori -->
-                            <div class="row text-right">
-                                <i class="fa fa-heart card_icon"> 30</i>
-                                <i class="fa fa-comment card_icon"> 112</i>
-                                <i class="fa fa-eye card_icon"> 90</i>
-                                <i class="fa fa-cutlery card_icon"> 8</i>
-                            </div>
-
-                            <!-- tipo portata -->
-                            <div class="row">
-                                <span><h6 class="card_reach">Secondi piatti</h6></span>
-                            </div>
-
-                            <!-- titolo portata -->
-                            <div class="row">
-                                <span class="text-uppercase"><h5 class="no-margin card_title">tagliata con patate al forno</h5></span>
-                            </div>
-
-                            <!-- profile -->
-                            <div class="row card_profile">
-                                <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
-                                <div class="card_profile_name pull-left">
-                                    <h6>Matteo Bolognesi</h6></div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- fine card -->
-
-            <!-- card 3 -->
-            <div class="card">
-                <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#FFB555;">
-                    <div class="card_img" style="background-image: url('imm/pizza_tb.jpg');"></div>
-                    <div class="caption color_caption">
-                        <div class="container-fluid">
-
-                            <!-- icone + valori -->
-                            <div class="row text-right">
-                                <i class="fa fa-heart card_icon"> 30</i>
-                                <i class="fa fa-comment card_icon"> 112</i>
-                                <i class="fa fa-eye card_icon"> 90</i>
-                                <i class="fa fa-cutlery card_icon"> 8</i>
-                            </div>
-
-                            <!-- tipo portata -->
-                            <div class="row">
-                                <span><h6 class="card_reach">Pizza</h6></span>
-                            </div>
-
-                            <!-- titolo portata -->
-                            <div class="row">
-                                <span class="text-uppercase"><h5 class="no-margin card_title">Pizza La parmigiana</h5></span>
-                            </div>
-
-                            <!-- profile -->
-                            <div class="row card_profile">
-                                <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
-                                <div class="card_profile_name pull-left">
-                                    <h6>Matteo Bolognesi</h6></div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- fine card -->
-
-            <!-- card 4 -->
-            <div class="card">
-                <div class="thumbnail no-padding no-border card_info no-border-radius" style="background-color:#B37D4C;">
-                    <div class="card_img" style="background-image: url('imm/snack_tb.jpg');"></div>
-                    <div class="caption color_caption">
-                        <div class="container-fluid">
-
-                            <!-- icone + valori -->
-                            <div class="row text-right">
-                                <i class="fa fa-heart card_icon"> 30</i>
-                                <i class="fa fa-comment card_icon"> 112</i>
-                                <i class="fa fa-eye card_icon"> 90</i>
-                                <i class="fa fa-cutlery card_icon"> 8</i>
-                            </div>
-
-                            <!-- tipo portata -->
-                            <div class="row">
-                                <span><h6 class="card_reach">Dolci</h6></span>
-                            </div>
-
-                            <!-- titolo portata -->
-                            <div class="row">
-                                <span class="text-uppercase"><h5 class="no-margin card_title">Bocconcini al cocco</h5></span>
-                            </div>
-
-                            <!-- profile -->
-                            <div class="row card_profile">
-                                <img src="imm/matt.jpg" class="img-circle card_profile_photo pull-left">
-                                <div class="card_profile_name pull-left">
-                                    <h6>Matteo Bolognesi</h6></div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- fine card -->
+        <div class="col-md-4">
+            <h3 class="tasty_title_text">Ricette correlate</h3></div>
+        <div class="col-md-4">
+            <hr class="tasty_title_bar"></hr>
         </div>
+    </div>
+    <!-- CARD -->
+    <div class="row tasty_container text-center">
+
+        <empty-list-holder  ng-hide="recipes.length > 0" msg="'Nessuna ricetta trovata'"></empty-list-holder>
+
+        <!-- basic card -->
+        <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
+        ng-repeat="recipe in recipes"></recipe-card>
+        <!-- fine card -->
 
     </div>
 </div>
+
 
 <!-- script per far funzionare il lightbox (ingrandimento per immagini) -->
 <script>
