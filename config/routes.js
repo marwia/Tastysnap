@@ -402,6 +402,15 @@ var apiRoutes = addGlobalPrefix({
 
     'get /user/least_similar': 'RecipeRecommendationController.leastSimilarUsers',
 
+    /***************************************************************************
+    *                                                                          *
+    * Invitation                                                               *
+    *                                                                          *
+    ***************************************************************************/
+    
+    'get /auth/invitation': 'AuthController.isInvitationRequired'
+
+
 });
 
 var paths = Object.keys(apiRoutes);

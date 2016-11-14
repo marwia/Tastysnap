@@ -10,7 +10,7 @@
  
 var jwt = require('jsonwebtoken');
 
-var tokenSecret = "SECRET";
+var tokenSecret = "fbaafcc2-9aee-11e6-9f33-a24fc0d9649c";
  
 // Generates a token from supplied payload
 module.exports.issue = function (payload) {

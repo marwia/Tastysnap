@@ -14,6 +14,37 @@ module.exports = {
      * sta parlando col server.
      * Link: http://stackoverflow.com/a/19524949/5068914
      */
+    isValidInvitation: function (invitation) {
+        var fs = require('fs');
+        var list = JSON.parse(fs.readFileSync('invitation_list.json', 'utf8'));
+
+
+        for (var i = 0; i < list.length; i++) {
+            for (var j = 0; j < list[i]['list'].length; j++) {
+                if (list[i]['list'][j] == invitation) {
+                    // elimino l'invito usato appena
+                    delete list[i]['list'][j];
+                    // salvo il file
+                    console.log("salvo il file");
+                    fs.writeFile('invitation_list.json', JSON.stringify(list, null, 4), function (err) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log("JSON saved...");
+                        }
+                    });
+                    return true;
+                }
+            }
+        }
+        return false;
+    },
+
+    /**
+     * Funzione per ritrovare l'ip del client che
+     * sta parlando col server.
+     * Link: http://stackoverflow.com/a/19524949/5068914
+     */
     getClientIp: function (req) {
         var ip = req.headers['x-forwarded-for'] ||
             req.connection.remoteAddress ||

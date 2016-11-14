@@ -62,6 +62,11 @@ angular.module('AuthService', [])
         });
     };
 
+    auth.isInvitationRequired = function (successCB) {
+        return $http.get(server_prefix + '/auth/invitation').then(function (response) {
+            successCB(response.data);
+        });
+    };
 
     auth.logOut = function () {
         $window.localStorage.removeItem('tastysnap-token');

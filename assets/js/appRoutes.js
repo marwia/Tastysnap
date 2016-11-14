@@ -401,7 +401,7 @@ angular.module('appRoutes', []).config([
 
             // LOGIN PAGE ==========================================================
             .state('login', {
-                url: '/login?token&new',// query param (opzionale)
+                url: '/login?token&new&invitation_id&error',// query param (opzionale)
                 templateUrl: 'templates/login.html',
                 controller: 'AuthCtrl',
                 onEnter: ['$state', '$stateParams', 'Auth', '$http', function ($state, $stateParams, Auth, $http) {

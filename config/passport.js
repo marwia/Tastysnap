@@ -11,6 +11,8 @@ var passport = require('passport'),
     TwitterStrategy = require('passport-twitter').Strategy,
     GoogleStrategy = require('passport-google-oauth20').Strategy;
 
+
+
 // Facebook strategy
 var FBstrategy;
 if (process.env.NODE_ENV === 'production') {
@@ -40,23 +42,11 @@ passport.use(new FacebookStrategy(FBstrategy,
             email: profile.emails[0].value
         };
 
-        User.update({
-            or: [
-                { facebookId: profile.id },
-                { email: profile.emails[0].value }
-            ]
-        }, fbUser).exec(function(err, foundUser) {
-            if (err) { return done(err); }
-            if (foundUser[0]) {// login
-                done(null, foundUser[0], false);// l'ultimo argomento indica se l'utente è nuovo
-            } else {// register
-                User.create(fbUser).exec(function(err, user) {
-                    if (err) { return done(err); }
-                    done(null, user, true);// l'ultimo argomento indica se l'utente è nuovo
-                });
-            }
-        });
+        done(null, fbUser, null);
+   
     }));
+
+
 
 // Google strategy
 passport.use(new GoogleStrategy({
@@ -75,24 +65,11 @@ passport.use(new GoogleStrategy({
             email: profile.emails[0].value
         };
 
-        User.update({
-            or: [
-                { googleId: profile.id },
-                { email: profile.emails[0].value }
-            ]
-        }, gUser).exec(function(err, foundUser) {
-            if (err) { return done(err); }
-            if (foundUser[0]) {// login
-                done(null, foundUser[0], false);// l'ultimo argomento indica se l'utente è nuovo
-            } else {// register
-                User.create(gUser).exec(function(err, user) {
-                    if (err) { return done(err); }
-                    done(null, user, true);// l'ultimo argomento indica se l'utente è nuovo
-                });
-            }
-        });
-    }
-));
+        done(null, gUser, null);
+
+    }));
+
+
 
 // Twitter strategy
 passport.use(new TwitterStrategy({
@@ -111,21 +88,6 @@ passport.use(new TwitterStrategy({
             email: profile.emails[0].value
         };
 
-        User.update({
-            or: [
-                { twitterId: profile.id },
-                { email: profile.emails[0].value }
-            ]
-        }, tUser).exec(function(err, foundUser) {
-            if (err) { return done(err); }
-            if (foundUser[0]) {// login
-                done(null, foundUser[0], false);// l'ultimo argomento indica se l'utente è nuovo
-            } else {// register
-                User.create(tUser).exec(function(err, user) {
-                    if (err) { return done(err); }
-                    done(null, user, true);// l'ultimo argomento indica se l'utente è nuovo
-                });
-            }
-        });
-    }
-));
+        done(null, tUser, null);
+
+    }));

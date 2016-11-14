@@ -14,7 +14,7 @@ var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 module.exports = {
 
-	/**
+   /**
    * @api {post} /recipe/:recipe/comment Comment a Recipe
    * @apiName CommentRecipe
    * @apiGroup Comment Recipe
