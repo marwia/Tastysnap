@@ -368,6 +368,10 @@ var apiRoutes = addGlobalPrefix({
 
     'get /ingredientgroup/:id/ingredients': 'IngredientController.getIngredientsGroupIngredients',
 
+
+
+    'post /ingredient/add_request': 'IngredientController.addIngredientReq',
+
     /***************************************************************************
     *                                                                          *
     * Prodotti                                                                 *

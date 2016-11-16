@@ -101,7 +101,8 @@ module.exports.policies = {
   'IngredientController' : {
     'create' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
     'update' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
-    'destroy' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup']
+    'destroy' : ['isAuthorized', 'isRecipeAuthor', 'findIngredientGroup'],
+    'addIngredientReq': 'isAuthorized'
   },
 
   'VoteRecipeController' : {

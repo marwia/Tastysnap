@@ -767,6 +767,50 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             });
         };
 
+        // MODALE PER ESEGUIRE LA RICHIESTA DI AGGIUNTA DI UN INGREDIENTE
+
+        $scope.openIngredientAddReqModal = function() {
+            $uibModal.open({
+                animation: true,
+                templateUrl: 'templates/ingredient_req_modal.html',
+                controller: function($uibModalInstance, $scope) {
+                    // passaggio paramteri
+                    $scope.loading = false;
+                    $scope.ingredient = {
+                        name: "",
+                        description: ""
+                    };
+                    $scope.finish = false;
+                    // azioni possibili all'interno della modale
+                    $scope.ok = function() {
+                        if ($scope.finish) {
+                            $uibModalInstance.dismiss('cancel');
+                        } else {
+                            $scope.loading = true
+
+                            Ingredient.addIngredientReq(
+                                $scope.ingredient.name,
+                                $scope.ingredient.description,
+                                function(response) {
+                                    $scope.loading = false;
+                                    $scope.finish = true;// sono pronto a uscire
+                                    $uibModalInstance.close();
+                                }, 
+                                function(response) {
+                                    // errore
+                                    $scope.loading = false;
+                                })
+                        }
+                    };
+
+                    $scope.cancel = function() {
+                        $uibModalInstance.dismiss('cancel');
+                    };
+                },
+                size: 'md'
+            });
+        };
+
 
         var init = function () {
             // inizializzazione del controller

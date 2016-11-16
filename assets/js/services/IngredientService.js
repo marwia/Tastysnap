@@ -5,7 +5,7 @@
  * gli ingredienti e i gruppi di ingredienti.
  */
 angular.module('IngredientService', [])
-    .factory('Ingredient', ['$http', 'Auth', function($http, Auth) {
+    .factory('Ingredient', ['$http', 'Auth', 'toastr', function($http, Auth, toastr) {
 
         var server_prefix = '/api/v1';
 
@@ -182,6 +182,25 @@ angular.module('IngredientService', [])
             }
             return null;
         }
+
+        /**
+         * Servizio per inviare una richiesta di aggiunta di un ingrediente.
+         */
+        o.addIngredientReq = function(name, description, successCallback, errorCallback) {
+            return $http.post(
+                server_prefix + '/ingredient/add_request',
+                {
+                    name: name,
+                    description: description
+                }
+                ).then(function (response) {
+
+                    toastr.success('Richiesta inviata');
+
+                    if(successCallback)
+                        successCallback(response);
+                }, errorCallback);
+        };
 
         /**
          * Parto con il presupposto che i valori nutrizionali sono su base 100g.
