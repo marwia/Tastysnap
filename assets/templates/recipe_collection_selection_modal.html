@@ -13,6 +13,12 @@
 
         <!-- CONTAINER LISTA COLLECTION -->
         <div class="col-xs-12 col-sm-7 col-md-8">
+            
+            <div ng-show="collections.length == 0">
+                <h4>Nessuna raccolta trovata</h4>
+                <p>Provare a creare una nuova raccolta con il pulsante in basso.</p>
+            </div>
+
             <div class="row modal-add-recipe-to-collection_con">
 
                 <div ng-hide="showme" class="col-md-4 modal-add-recipe-to-collection_coll" title="Aggiungi {{selectedRecipe.title}} a {{collection.title}}" ng-repeat="collection in collections | filter: addtocollection " ng-click="addRecipeToCollection(collection)" role="button">
