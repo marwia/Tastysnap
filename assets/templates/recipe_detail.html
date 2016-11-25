@@ -1,23 +1,18 @@
 <!-- Colorazione dinamica della colonna di sinistra -->
 <style>
-    .recipe{
-        background-color: {{detailedRecipe.dominantColor}};
-    }
-
-    .recipe_prep_step{
+    .recipe_prep_step {
         background-color: {{detailedRecipe.dominantColor}};
         color: {{getTextColor(detailedRecipe)}};
     }
 
-    .recipe_prep_step:hover{
+    .recipe_prep_step:hover {
         background-color: {{detailedRecipe.dominantColor}};
         color: {{getTextColor(detailedRecipe)}};
         cursor: auto;
     }
     
     body {
-        background: url("{{detailedRecipe.blurredCoverImageUrl}}") no-repeat center center fixed;
-        background-size: cover;
+        background-color: {{detailedRecipe.dominantColor}};
         padding: 50px 0 0 0;
     }
 </style>
@@ -60,7 +55,7 @@
                             <div class="col-md-12">
                                 <!-- profilo -->
                                 <div class="recipe_profile text-center">
-                                    <a href="app/profile/{{detailedRecipe.author.id}}" class="text-center"><div class="img-circle" style="background-image: url('https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/13173648_1345637995462670_3918097297388053058_n.jpg?oh=42202735f5db9e78c0a600157df3d7d4&oe=58710296')"></div></a>
+                                    <a href="app/profile/{{detailedRecipe.author.id}}" class="text-center"><div class="img-circle" back-img="{{ getUserProfileImage(detailedRecipe.author) }}"></div></a>
                                     <h5><strong>{{detailedRecipe.author.name}} {{detailedRecipe.author.surname}}</strong></h5>
                                     <h6>{{formatDate(detailedRecipe.createdAt)}}</h6>
                                 </div>
@@ -118,7 +113,7 @@
                             <hr class="recipe_hr">
 
                             <div class="row" ng-repeat="step in detailedRecipe.steps">
-                                <div class="col-md-12 text-center" style="margin-top: 15px; margin-bottom: 10px;">
+                                <div class="col-md-12" style="margin-top: 15px; margin-bottom: 10px;">
                                     <button type="button" class="btn btn-default recipe_btn-circle recipe_prep_step">{{step.seq_number}}</button>
                                 </div>
                                 <div class="col-md-12">
