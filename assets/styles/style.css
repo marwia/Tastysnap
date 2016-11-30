@@ -1182,6 +1182,11 @@ ul.home_navbar{
 	margin-bottom: 15px;
 }
 
+.row_recipe_con{
+	padding-left: 7px;
+	padding-right: 7px;
+}
+
 H4.recipe_title{
 	font-size: 16px;
 }
@@ -1201,6 +1206,21 @@ H4.recipe_title{
 .recipe_btn{
 	width: 100%;
 	margin: 7px 0 7px 0;
+	background: transparent;
+	color: gray !important;
+	border: 1px solid #CCC;
+
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.recipe_btn:hover{
+	background: transparent !important;
+	color: #ff9800 !important;
+	border: 1px solid #ff9800;
 }
 
 .recipe_comment_title{
