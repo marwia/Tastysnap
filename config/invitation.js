@@ -8,5 +8,5 @@
  */
 
 module.exports.invitation = {
-    on: true
+    on: false
 };
