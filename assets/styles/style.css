@@ -1178,6 +1178,10 @@ ul.home_navbar{
 	transition: all 0.3s ease-in-out;
 }
 
+.recipe_column .panel{
+	
+}
+
 H4.recipe_title{
 	font-size: 16px;
 }
@@ -1209,6 +1213,12 @@ H4.recipe_title{
 	margin-bottom: 20px;
 }
 
+@media screen and (max-width: 690px){
+	.recipe_comment_title H3{
+		line-height: 2;
+	}
+}
+
 .recipe_sp_2_1{
     width: 100%;
 	height: auto;
@@ -1224,6 +1234,14 @@ H1.recipe_header_title{
 .recipe_prep_step{
 	width: 40px;
 	text-align: center;
+	background-color: gray;
+	color: white;
+}
+
+.recipe_prep_step:hover {
+	background-color: gray;
+	color: white;
+	cursor: initial;
 }
 
 .recipe_sp_3_table{
