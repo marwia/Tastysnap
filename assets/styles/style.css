@@ -1179,7 +1179,7 @@ ul.home_navbar{
 }
 
 .recipe_column .panel{
-	
+	margin-bottom: 15px;
 }
 
 H4.recipe_title{
@@ -1208,15 +1208,9 @@ H4.recipe_title{
 	color: white;
 }
 
-.recipe_comment_title H3{
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
-
-@media screen and (max-width: 690px){
-	.recipe_comment_title H3{
-		line-height: 2;
-	}
+.recipe_comment_title span{
+	font-size: 2em;
+	line-height: 2;
 }
 
 .recipe_sp_2_1{
