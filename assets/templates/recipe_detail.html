@@ -57,11 +57,11 @@
 
                         <!-- header information -->
                         <div class="recipe_header2">
-                            <div class="col-md-12">
+                            <div class="col-md-12" ng-controller="RecipeReviewCtrl">
                                 <!-- TODO -->
-                                <h3><i class="fa fa-comment"></i> facile</h3>
-                                <h3><i class="fa fa-comment"></i> molto calorica</h3>
-                                <h3><i class="fa fa-comment"></i> costosissima</h3>
+                                <h4><i class="fa fa-book"></i> <br> {{detailedRecipe.category}}</h4>
+                                <h4><i class="fa fa-balance-scale"></i> <br> {{detailedRecipe.dosagesFor}} {{detailedRecipe.dosagesType}}</h4>
+                                <h4><i class="fa fa-clock-o"></i> <br> {{detailedRecipe.preparationTime}} minuti</h4>
                             </div>
                         </div>
 
@@ -75,10 +75,7 @@
                                     <h6>{{formatDate(detailedRecipe.createdAt)}}</h6>
                                 </div>
                             </div>
-                            <div class="col-md-12 text-center" style="margin-top: 35px;">
-                                <h3 class="recipe_header_title">{{detailedRecipe.category}}</h3>
-                            </div>
-                            <div class="col-md-12 text-center text-uppercase">
+                            <div class="col-md-12 text-center">
                                 <h1 class="recipe_header_title">{{detailedRecipe.title}}</h1>
                             </div>
                         </div>
@@ -94,7 +91,7 @@
                 <div class="col-xs-12 col-sm-7 col-sm-push-3 col-md-7 col-md-push-3 recipe_column">
                    <div class="panel panel-default">
                         <div class="panel-body text-left">
-                            <h4 class="recipe_title">INGREDIENTI <span class="pull-right"><i class="fa fa-balance-scale"></i> per {{detailedRecipe.dosagesFor}} {{detailedRecipe.dosagesType}}</span></h4>
+                            <h5 class="text-left"><strong>INGREDIENTI</strong></h5>
                             <hr class="recipe_hr">
                             <!-- gruppi di ingredienti -->
                             <div class="row">
@@ -124,8 +121,7 @@
                     <!-- Descrizione -->
                     <div class="panel panel-default">
                         <div class="panel-body text-left">
-                            <h4 class="recipe_title"> DESCRIZIONE <span class="pull-right"><i class="fa fa-clock-o"></i> {{detailedRecipe.preparationTime}} minuti</span>
-                            </h4>
+                            <h5 class="text-left"><strong>DESCRIZIONE</strong></h5>
                             <hr class="recipe_hr">
                             <div class="row" ng-repeat="step in detailedRecipe.steps">
                                 <div class="col-md-12 text-center" style="margin-top: 15px; margin-bottom: 10px;">
@@ -161,9 +157,9 @@
                     <div class="panel panel-default">
                         <div class="panel-body recipe_like text-center">
                             <table>
-                                <tr>
-                                    <td uib-tooltip="Persone che adorano questa ricetta" tooltip-append-to-body="true"><i class="fa fa-heart"></i></td>
-                                    <td uib-tooltip="Numero di commenti" tooltip-append-to-body="true"><i class="fa fa-comment"></i></td>
+                                <tr style="font-size:20px;">
+                                    <td uib-tooltip="Persone che adorano questa ricetta" tooltip-append-to-body="true"><i class="fa fa-heart" style="color: red;"></i></td>
+                                    <td uib-tooltip="Numero di commenti" tooltip-append-to-body="true"><i class="fa fa-comment" style="color: lightblue;"></i></td>
                                     <!-- numero di visualizzazioni -->
                                     <!--<td uib-tooltip="Numero di visualizzazioni" tooltip-append-to-body="true"><i class="fa fa-eye"></i></td>-->
                                     <td uib-tooltip="Persone che hanno provato questa ricetta" tooltip-append-to-body="true">
@@ -173,11 +169,11 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>{{detailedRecipe.votesCount}}</td>
-                                    <td>{{detailedRecipe.commentsCount}}</td>
+                                    <td><strong>{{detailedRecipe.votesCount}}</strong></td>
+                                    <td><strong>{{detailedRecipe.commentsCount}}</strong></td>
                                     <!-- numero di visualizzazioni -->
                                     <!--<td>{{detailedRecipe.viewsCount}}</td>-->
-                                    <td>{{detailedRecipe.trialsCount}}</td>
+                                    <td><strong>{{detailedRecipe.trialsCount}}</strong></td>
                                 </tr>
                             </table>
                         </div>
@@ -190,11 +186,10 @@
                             <hr class="recipe_hr">
 
                             <table class="recipe_sp_3_table">
-                                <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringReviewsCount('difficulty')}}">
-                                    <td class="text-left">DIFFICOLTÀ</td>
+                                <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringAverageValue('difficulty', 'difficultyTitles')}} secondo {{getStringReviewsCount('difficulty')}}">   
+                                    <td class="text-left">Difficoltà</td>
                                     <td class="text-right">
                                         <div class="recipe_rating_con">
-                                            <div class="recipe_rating_1">{{getStringAverageValue("difficulty", "difficultyTitles")}}</div>
                                             <div class="recipe_rating_2">
                                                 <div class="rating">
                                                     <div><uib-rating ng-click="toggleRecipeReview('difficulty', difficultyRating)" ng-model="difficultyRating" max="max" read-only="isReadonly" titles="difficultyTitles" on-hover="hoveringOver(value)"></uib-rating></div>
@@ -203,11 +198,10 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="recipe_sp_3_tr" uib-tooltip="{{getStringReviewsCount('cost')}}">
-                                    <td class="text-left">COSTO</td>
+                                <tr class="recipe_sp_3_tr" uib-tooltip="{{getStringAverageValue('cost', 'costTitles')}} secondo {{getStringReviewsCount('cost')}}">
+                                    <td class="text-left">Costo</td>
                                     <td class="text-right">
                                         <div class="recipe_rating_con">
-                                            <div class="recipe_rating_1">{{getStringAverageValue("cost", "costTitles")}}</div>
                                             <div class="recipe_rating_2">
                                                 <div class="rating">
                                                     <div><uib-rating ng-click="toggleRecipeReview('cost', costRating)" ng-model="costRating" max="max" read-only="isReadonly" titles="costTitles" on-hover="hoveringOver(value)"></uib-rating></div>
@@ -216,11 +210,10 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringReviewsCount('calories')}}">
-                                    <td class="text-left">CALORIE</td>
+                                <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringAverageValue('calories', 'caloriesTitles')}} secondo {{getStringReviewsCount('calories')}}">
+                                    <td class="text-left">Calorie</td>
                                     <td class="text-right">
                                         <div class="recipe_rating_con">
-                                            <div class="recipe_rating_1">{{getStringAverageValue("calories", "caloriesTitles")}}</div>
                                             <div class="recipe_rating_2">
                                                 <div class="rating">
                                                     <div><uib-rating ng-click="toggleRecipeReview('calories', caloriesRating)" ng-model="caloriesRating" max="max" read-only="isReadonly" titles="caloriesTitles" on-hover="hoveringOver(value)"></uib-rating></div>
@@ -294,7 +287,7 @@
             <!-- RECIPE COMMMENTS -->
             <div class="row recipe_comments">
                 <div class="col-md-12 recipe_comment_title text-center">
-                    <span>COMMENTI</span>
+                    <span>Commenti</span>
                 </div>
 
                 <div class="col-md-8 col-md-offset-2 recipe_comment_cont" ng-controller="CommentCtrl">
@@ -331,7 +324,7 @@
                                 <div class="media-body">
                                     <h5 class="media-heading">
                                         <strong>{{comment.user.name}} {{comment.user.surname}} </strong><span class="recipe_comment_when">{{formatDate(comment.createdAt)}}</span>
-                                        <a href="#" ng-show="comment.user.id == currentUser.id" ng-click="deleteComment(detailedRecipe, comment)" class="recipe_comment_delete"><i class="fa fa-times"></i></a>
+                                        <a href="#" ng-show="comment.user.id == currentUser.id" ng-click="deleteComment(detailedRecipe, comment)" class="recipe_comment_delete pull-right"><i class="fa fa-times"></i></a>
                                     </h5>
                                     <h6 class="recipe_comment_txt">
                                         {{comment.body}}
@@ -380,7 +373,7 @@
     </div>
 </div>
 
-<div ng-controller="SimilarRecipeCtrl">
+<div ng-controller="SimilarRecipeCtrl" class="similar_recipe_con">
     <!-- container card -->
     <div class="row tasty_container text-center tasty_title_category tasty_load_space">
         <div class="col-md-4">

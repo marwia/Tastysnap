@@ -58,9 +58,9 @@ angular.module('RecipeReviewCtrl', []).controller('RecipeReviewCtrl', [
         $scope.getStringReviewsCount = function (property) {
             if ($scope.detailedRecipe[property]) {
                 if ($scope.detailedRecipe[property].reviewsCount > 1) {
-                    return $scope.detailedRecipe[property].reviewsCount + " recensioni";
+                    return $scope.detailedRecipe[property].reviewsCount + " utenti";
                 } else if ($scope.detailedRecipe[property].reviewsCount > 0) {
-                    return $scope.detailedRecipe[property].reviewsCount + " recensione";
+                    return $scope.detailedRecipe[property].reviewsCount + " utente";
                 }
             }
             return "Nessuna recensione";
