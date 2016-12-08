@@ -99,7 +99,7 @@ body {
 }
 
 .tasty_title_category{
-	color: white;
+	color: #b7b7b7;
 }
 
 .tasty_title_bar{
@@ -112,8 +112,8 @@ body {
 
 .tasty_title_text{
 	margin-top: 3px;
-    font-weight: 700;
-    font-size: 2.1em;
+    /*font-weight: 700;*/
+    /*font-size: 2.1em;*/      
 	
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -602,6 +602,12 @@ ul.top_menu_notify_dropdown {
 	margin-left: 7px;
     margin-top: -2px;
 	opacity: 0.7;
+
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
 }
 
 .card_profile_name A H6{
@@ -610,6 +616,10 @@ ul.top_menu_notify_dropdown {
 
 .card_profile_name A:hover{
     text-decoration:none;
+}
+
+.card_link_profile:hover .card_profile_name {
+	opacity: 1;
 }
 
 .card_premium{
