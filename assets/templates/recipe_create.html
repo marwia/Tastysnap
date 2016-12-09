@@ -302,7 +302,7 @@
                                                     <input type="text" style="width: 80%;" class="form-control" name="unitOfMeasure" ng-model="ingredient.unitOfMeasure" uib-typeahead="unit for unit in unitsOfMeasure | filter:$viewValue"
                                                         typeahead-editable="false" required placeholder="es. g" autocomplete="off"
                                                     />
-                                                    <a href="#" ng-click="removeIngredient($parent.$index, $index)"><i class="fa fa-times"></i></a>
+                                                    <a href="#" ng-hide="ingredient_group.ingredients.length==1" ng-click="removeIngredient($parent.$index, $index)"><i class="fa fa-times"></i></a>
 
 
                                                 </td>
