@@ -32,6 +32,15 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
         $scope.toggleSidebar = function() {
             $scope.toggle = !$scope.toggle;
             $cookieStore.put('toggle', $scope.toggle);
+            
+            //toogle sidebar
+            var sidebar = $('#sidebar');
+            sidebar.toggleClass('open');
+            if ((sidebar.hasClass('sidebar-fixed-left') || sidebar.hasClass('sidebar-fixed-right')) && sidebar.hasClass('open')) {
+                overlay.addClass('active');
+            } else {
+                overlay.removeClass('active');
+            }
         };
         
         /**
@@ -41,5 +50,6 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
             $scope.toggle = false;
             $cookieStore.put('toggle', $scope.toggle);
         };
+
 
     }]);

@@ -7,76 +7,109 @@
 
 -->
 
-<!-- Sidebar -->
-<div id="sidebar-wrapper" ng-controller="SideBarCtrl">
-    <ul class="sidebar-nav sidebar">
-        <div class="sidebar-profile" style="background: url({{currentUser.coverImageUrl}}); background-size: cover;">
-            <div class="col-xs-12" align="center">
-                <a href="/app/profile/{{currentUser.id}}" class="link">
-                    <div class="image-circle center-block" back-img="{{ getUserProfileImage(currentUser) }}"></div>
-                
-                    <br/> {{ currentUser.name }} {{ currentUser.surname }}
-                    <br/>
-                </a>
-                <span>FABRIANO</span>
+<!-- Sidebar header -->
+<div class="sidebar-header header-cover" style="background-image: url({{currentUser.coverImageUrl}});">
+    <div class="col-xs-12 text-center">
+        <a href="/app/profile/{{currentUser.id}}" class="link">
+            <div class="sidebar-image">
+                <img src="{{ getUserProfileImage(currentUser) }}">
             </div>
-            <div class="col-xs-6">
-                <a href="/app/profile/{{currentUser.id}}/following" class="link">
-                    {{currentUser.followingCount}} <br/> <span>FOLLOWING</span>
-                </a>
-            </div>
-            <div class="col-xs-6">
-                <a href="/app/profile/{{currentUser.id}}/followers" class="link">
-                    {{currentUser.followersCount}} <br/> <span>FOLLOWERS</span>
-                </a>
-            </div>
-            <div class="col-xs-6">
-                <a href="/app/profile/{{currentUser.id}}" class="link">
-                    {{currentUser.recipesCount}} <br/> <span>RICETTE</span>
-                </a>
-            </div>
-            <div class="col-xs-6">
-                <a href="/app/profile/{{currentUser.id}}/collections" class="link">
-                    {{currentUser.collectionsCount}} <br/> <span>RACCOLTE</span>
-                </a>
-            </div>
-            
-            <!-- gradient -->
-            <div class="sidebar_profile_gradient"></div>
-        </div>
-        
-        <a href="/app/recipe_create" class="btn btn-warning btn-circle btn-lg sidebar_create_recipe">
-            <i class="fa fa-pencil"></i>
         </a>
-        
-        <div style="width: 100%; height: 15px;"></div>
-  
+    </div>
+    <div class="col-xs-12 text-center">
+        <a class="sidebar-brand" href="/app/profile/{{currentUser.id}}">
+            {{ currentUser.name }} {{ currentUser.surname }}
+        </a>
+    </div>
+    <div class="col-xs-6 text-center">
+        <a href="/app/profile/{{currentUser.id}}/following" class="link">
+            {{currentUser.followingCount}} <br/> <span>FOLLOWING</span>
+        </a>
+    </div>
+    <div class="col-xs-6 text-center">
+        <a href="/app/profile/{{currentUser.id}}/followers" class="link">
+            {{currentUser.followersCount}} <br/> <span>FOLLOWERS</span>
+        </a>
+    </div>
+    <div class="col-xs-6 text-center">
+        <a href="/app/profile/{{currentUser.id}}" class="link">
+            {{currentUser.recipesCount}} <br/> <span>RICETTE</span>
+        </a>
+    </div>
+    <div class="col-xs-6 text-center">
+        <a href="/app/profile/{{currentUser.id}}/collections" class="link">
+            {{currentUser.collectionsCount}} <br/> <span>RACCOLTE</span>
+        </a>
+    </div>
 
-        <li class="sidebar-title"><span>PRINCIPALE</span></li>
-        <li class="sidebar-list">
-            <a href="/app/home/most_recent" ng-class="{'active': getCurrentState().indexOf('app.home') > -1}">Home <span class="menu-icon fa fa-home"></span></a>
-        </li>
-        <li class="sidebar-list">
-            <a href="/app/activites">Attività <span class="menu-icon fa fa-users"></span></a>
-        </li>
-        <li class="sidebar-list">
-            <a href="/app/near_recipes" ng-class="{'active': getCurrentState().indexOf('app.near_recipes') > -1}">Nelle vicinanze <span class="menu-icon fa fa-globe"></span></a>
-        </li>
-        <li class="sidebar-title"><span>I TUOI GUSTI</span></li>
-        <li class="sidebar-list">
-            <a href="/app/favorite_recipes" ng-class="{'active': getCurrentState().indexOf('app.favorite_recipes') > -1}">Ricette preferite<span class="menu-icon fa fa-heart"></span></a>
-        </li>
-        <li class="sidebar-list">
-            <a href="/app/viewed_recipes" ng-class="{'active': getCurrentState().indexOf('app.viewed_recipes') > -1}">Ricette viste <span class="menu-icon fa fa-eye"></span></a>
-        </li>
-        <li class="sidebar-list">
-            <a href="/app/followed_collections" ng-class="{'active': getCurrentState().indexOf('app.followed_collections') > -1}">Raccolte che segui <span class="menu-icon fa fa-th"></span></a>
-        </li>
-        <li class="sidebar-list">
-            <a href="/app/tasted_recipes" ng-class="{'active': getCurrentState().indexOf('app.tasted_recipes') > -1}">Ricette provate <span class="menu-icon fa fa-cutlery"></span></a>
-        </li>
-        
-        <div class="sidebar_footer">Versione BETA</div>
-        
-    </ul>
+    <div class="sidebar_profile_gradient"></div>
 </div>
+
+<!-- Sidebar navigation -->
+<ul class="nav sidebar-nav">
+    <a href="/app/recipe_create" class="btn btn-warning btn-circle btn-lg sidebar_create_recipe">
+        <i class="fa fa-pencil"></i>
+    </a>
+    <li>
+        <span>MENU PRINCIPALE</span>
+    </li>
+    <!--
+    <li>
+        <a href="/app/recipe_create">
+            Nuova Ricetta
+            <i class="fa fa-pencil sidebar-badge" aria-hidden="true"></i>
+        </a>
+    </li>
+    -->
+    <li ng-class="{'active': getCurrentState().indexOf('app.home') > -1}">
+        <a href="/app/home/most_recent">
+            Home
+            <i class="fa fa-home sidebar-badge" aria-hidden="true"></i>
+        </a>
+    </li>
+    <li ng-class="{'active': getCurrentState().indexOf('app.activites') > -1}">
+        <a href="/app/activites">
+            Attività
+            <i class="fa fa-users sidebar-badge" aria-hidden="true"></i>
+        </a>
+    </li>
+    <li ng-class="{'active': getCurrentState().indexOf('app.near_recipes') > -1}">
+        <a href="/app/near_recipes">
+            Nelle Vicinanze
+            <i class="fa fa-globe sidebar-badge" aria-hidden="true"></i>
+        </a>
+    </li>
+    <li ng-class="{'active': getCurrentState().indexOf('app.viewed_recipes') > -1}">
+        <a href="/app/viewed_recipes">
+            Ricette Viste
+            <i class="fa fa-eye sidebar-badge" aria-hidden="true"></i>
+        </a>
+    </li>
+    <li>
+        <span>I TUOI GUSTI</span>
+    </li>
+    <li ng-class="{'active': getCurrentState().indexOf('app.favorite_recipes') > -1}">
+        <a href="/app/favorite_recipes">
+            Ricette Preferite
+            <i class="fa fa-heart sidebar-badge" aria-hidden="true"></i>
+        </a>
+    </li>
+    <li ng-class="{'active': getCurrentState().indexOf('app.followed_collections') > -1}">
+        <a href="/app/followed_collections">
+            Raccolte che segui
+            <i class="fa fa-th sidebar-badge" aria-hidden="true"></i>
+        </a>
+    </li>
+    <li ng-class="{'active': getCurrentState().indexOf('app.tasted_recipes') > -1}">
+        <a href="/app/tasted_recipes">
+            Ricette Provate
+            <i class="fa fa-cutlery sidebar-badge" aria-hidden="true"></i>
+        </a>
+    </li>
+    <li>
+        <span>Versione BETA</span>
+    </li>
+    <!--
+        <div class="sidebar_footer">Versione BETA</div>
+    -->
+</ul>
