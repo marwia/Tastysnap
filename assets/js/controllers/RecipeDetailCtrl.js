@@ -50,11 +50,19 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
             $state.go('app.recipe_edit', {id: $scope.detailedRecipe.id});
         }
 
-        $scope.toggleTryRecipe = function(recipe) {
-            if (recipe.userTry) {
-                Recipe.deleteTry(recipe);
+        $scope.toggleTryRecipe = function() {
+            if ($scope.detailedRecipe.userTry) {
+                Recipe.deleteTry($scope.detailedRecipe);
             } else {
-                Recipe.createTry(recipe);
+                Recipe.createTry($scope.detailedRecipe);
+            }
+        };
+
+        $scope.toggleUpvoteRecipe = function() {
+            if ($scope.detailedRecipe.userVote == 1) {
+                Recipe.deleteVote($scope.detailedRecipe);
+            } else {
+                Recipe.upvote($scope.detailedRecipe);
             }
         };
 
@@ -184,6 +192,7 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
          */
         function init() {
             Recipe.checkTry($scope.detailedRecipe);
+            Recipe.checkVote($scope.detailedRecipe);
             
             // carico i vari gruppi di ingredienti
             for (var i in $scope.detailedRecipe.ingredientGroups) {

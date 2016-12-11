@@ -158,12 +158,16 @@
                         <div class="panel-body recipe_like text-center">
                             <table>
                                 <tr style="font-size:20px;">
-                                    <td uib-tooltip="Persone che adorano questa ricetta" tooltip-append-to-body="true"><i class="fa fa-heart" style="color: red;"></i></td>
+                                    <td uib-tooltip="Persone che adorano questa ricetta" tooltip-append-to-body="true">
+                                        <span ng-click="toggleUpvoteRecipe()" style="color: red;">
+                                            <i class="fa fa-heart tasty_icon" ng-class="(detailedRecipe.userVote == 1) ? 'tasty_icon_active' : 'tasty_icon_default'"></i>
+                                        </span>
+                                    </td>
                                     <td uib-tooltip="Numero di commenti" tooltip-append-to-body="true"><i class="fa fa-comment" style="color: lightblue;"></i></td>
                                     <!-- numero di visualizzazioni -->
                                     <!--<td uib-tooltip="Numero di visualizzazioni" tooltip-append-to-body="true"><i class="fa fa-eye"></i></td>-->
                                     <td uib-tooltip="Persone che hanno provato questa ricetta" tooltip-append-to-body="true">
-                                        <span ng-click="toggleTryRecipe(detailedRecipe)">
+                                        <span ng-click="toggleTryRecipe()">
                                             <i class="fa fa-cutlery tasty_icon" ng-class="(detailedRecipe.userTry == null) ? 'tasty_icon_default' : 'tasty_icon_active'"></i>
                                         </span>
                                     </td>
@@ -324,7 +328,7 @@
                                 <div class="media-body">
                                     <h5 class="media-heading">
                                         <strong>{{comment.user.name}} {{comment.user.surname}} </strong><span class="recipe_comment_when">{{formatDate(comment.createdAt)}}</span>
-                                        <a href="#" ng-show="comment.user.id == currentUser.id" ng-click="deleteComment(detailedRecipe, comment)" class="recipe_comment_delete pull-right"><i class="fa fa-times"></i></a>
+                                        <a href="#" ng-show="comment.user.id == currentUser.id" ng-click="deleteComment(detailedRecipe, comment)" class="recipe_comment_delete pull-right" uib-tooltip="Elimina commento" tooltip-append-to-body="true"><i class="fa fa-times"></i></a>
                                     </h5>
                                     <h6 class="recipe_comment_txt">
                                         {{comment.body}}

@@ -1372,6 +1372,11 @@ tr.recipe_sp_3_tr{
     color: gray;
 }
 
+.recipe_comment_reply a:hover {
+    font-size: 0.85em;
+    color: black;
+}
+
 .recipe_comment_reply > A > i {
     font-size: 1.1em;
     color: gray;
@@ -1388,8 +1393,12 @@ tr.recipe_sp_3_tr{
 	margin-bottom:2px;
 }
 
-.recipe_comment_reply > i:hover{
+.recipe_comment_reply a:hover i{
 	color:black;
+}
+
+.recipe_comment_delete {
+	color: lightgray;
 }
 
 .recipe_comment_when{
