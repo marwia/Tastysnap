@@ -3,17 +3,18 @@
 <div class="col-xs-12 col-sm-6 col-md-4 box">
     <!-- <a href="app/collection/{{collection.id}}"> -->
         <!-- versione a 4 immagini -->
-        <div class="card_collection_content_bg2">
+        <div class="card_collection_content_bg2" ng-style="{'background-image': 'url(' + collection.coverImageUrl + ')'}">
 
-            <div class="card_collection_content_bg_1_4" 
-                ng-style="{'background-image': 'url(' + collection.recipes[0].coverImageUrl + ')'}" style="background-color: #464646;"></div>
-            <div class="card_collection_content_bg_1_4" 
-                ng-style="{'background-image': 'url(' + collection.recipes[1].coverImageUrl + ')'}" style="background-color: #555555;"></div>
-            <div class="card_collection_content_bg_1_4" 
-                ng-style="{'background-image': 'url(' + collection.recipes[2].coverImageUrl + ')'}" style="background-color: #636363;"></div>
-            <div class="card_collection_content_bg_1_4" 
-                ng-style="{'background-image': 'url(' + collection.recipes[3].coverImageUrl + ')'}" style="background-color: #707070;"></div>
-
+            <div ng-hide="collection.coverImageUrl">
+                <div class="card_collection_content_bg_1_4" 
+                    ng-style="{'background-image': 'url(' + collection.recipes[0].coverImageUrl + ')'}" style="background-color: #464646;"></div>
+                <div class="card_collection_content_bg_1_4" 
+                    ng-style="{'background-image': 'url(' + collection.recipes[1].coverImageUrl + ')'}" style="background-color: #555555;"></div>
+                <div class="card_collection_content_bg_1_4" 
+                    ng-style="{'background-image': 'url(' + collection.recipes[2].coverImageUrl + ')'}" style="background-color: #636363;"></div>
+                <div class="card_collection_content_bg_1_4" 
+                    ng-style="{'background-image': 'url(' + collection.recipes[3].coverImageUrl + ')'}" style="background-color: #707070;"></div>
+            </div>
             <!-- card hover -->
             <div hide-during-resolve to-state="'/app/collection/'+collection.id" class="container-fluid card_share" ng-mouseenter="areYouFollowing()">
                 <a href="app/collection/{{collection.id}}" class="card_link"></a>

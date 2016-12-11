@@ -11,82 +11,11 @@
  * Prese da https://github.com/balderdashy/sails/blob/master/lib/hooks/blueprints/actions/find.js
  */
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
-var md5 = require('md5');
-var fs = require('fs');
 
 // libreria per gestire gli array
 var _ = require('lodash');
 
 var wlFilter = require('waterline-criteria');
-
-/**
- * Codice in comune
- */
-
-// setting allowed file types
-var allowedTypes = ['image/jpeg', 'image/png'];
-// skipper default upload directory .tmp/uploads/
-var localImagesDir = sails.config.appPath + "/assets/images";
-
-var server_name = "https://tastysnap.com";
-var cdn_url = "https://tastysnapcdn.s3.amazonaws.com/";
-
-/**
- * Funzioni comuni nell'upload di immagini
- */
-var localUploadConfiguration = {
-    // don't allow the total upload size to exceed ~5MB
-    maxBytes: 5000000,
-    saveAs: function (file, cb) {
-        var d = new Date();
-        var extension = file.filename.split('.').pop();
-
-        if (extension == 'blob') { extension = 'jpg'; }
-        // generating unique filename with extension
-        var uuid = md5(d.getMilliseconds()) + "." + extension;
-
-        console.log(file.headers['content-type']);
-        // seperate allowed and disallowed file types
-        if (allowedTypes.indexOf(file.headers['content-type']) === -1) {
-            // don't accept not allowed file types
-            return res.badRequest('Not supported file type');
-        } else {
-            // save as allowed files
-            cb(null, localImagesDir + "/" + uuid);
-        }
-    }
-};
-
-var s3Upload = function (err, filesUploaded, whenDone) {
-    if (err) {
-        return res.badRequest();
-    }
-    // If no files were uploaded, respond with an error.
-    if (filesUploaded.length === 0) {
-        return res.badRequest('No file was uploaded');
-    }
-
-    // eseguo l'upload dell'immagine sul bucket S3
-    S3FileService.uploadS3Object(filesUploaded[0], function (err, uploadedFiles) {
-
-        if (err || !uploadedFiles) {
-            return res.badRequest("Errore nell'upload del file sul bucket S3");
-        }
-
-        var filename = filesUploaded[0].fd.replace(/^.*[\\\/]/, '');
-        var fileUrl = cdn_url + filename;
-
-        // elimino il file temporaneo
-        fs.unlink(filesUploaded[0].fd, function (err) {
-            if (err) {
-                return console.error(err);
-            }
-            console.log("File deleted successfully!");
-        });
-
-        whenDone(fileUrl);
-    });
-};
 
 var setRecipeViewed = function (req, foundRecipe) {
     var user = req.payload;
@@ -1201,11 +1130,11 @@ module.exports = {
         if (process.env.NODE_ENV === 'production') {
             coverImage.upload({
                 maxBytes: 5000000,
-                dirname: localImagesDir
+                dirname: ImageUploadService.localImagesDir
 
             }, function (err, filesUploaded) {
                 // eseguo l'upload sul bucket s3
-                s3Upload(err, filesUploaded, function (fileUrl) {
+                ImageUploadService.s3Upload(err, filesUploaded, function (fileUrl) {
 
                     // se la ricetta ha già una immagine di copertina
                     // elimino l'immagine di copertina vecchia
@@ -1228,7 +1157,7 @@ module.exports = {
         }
         else {
             coverImage.upload(
-                localUploadConfiguration,
+                ImageUploadService.localUploadConfiguration,
                 function whenDone(err, uploadedFiles) {
                     if (err) { return res.negotiate(err); }
 
@@ -1270,11 +1199,11 @@ module.exports = {
         if (process.env.NODE_ENV === 'production') {
             blurredCoverImage.upload({
                 maxBytes: 5000000,
-                dirname: localImagesDir
+                dirname: ImageUploadService.localImagesDir
 
             }, function (err, filesUploaded) {
                 // eseguo l'upload sul bucket s3
-                s3Upload(err, filesUploaded, function (fileUrl) {
+                ImageUploadService.s3Upload(err, filesUploaded, function (fileUrl) {
 
                     // se la ricetta ha già una immagine di copertina
                     // elimino l'immagine di copertina vecchia
@@ -1297,7 +1226,7 @@ module.exports = {
         }
         else {
             blurredCoverImage.upload(
-                localUploadConfiguration,
+                ImageUploadService.localUploadConfiguration,
                 function whenDone(err, uploadedFiles) {
                     if (err) { return res.negotiate(err); }
 
@@ -1339,11 +1268,11 @@ module.exports = {
         if (process.env.NODE_ENV === 'production') {
             coverImage.upload({
                 maxBytes: 5000000,
-                dirname: localImagesDir
+                dirname: ImageUploadService.localImagesDir
 
             }, function (err, filesUploaded) {
                 // eseguo l'upload sul bucket s3
-                s3Upload(err, filesUploaded, function (fileUrl) {
+                ImageUploadService.s3Upload(err, filesUploaded, function (fileUrl) {
 
                     if (recipe.otherImageUrls == null)
                         recipe.otherImageUrls = new Array();
@@ -1365,7 +1294,7 @@ module.exports = {
         }
         else {
             image.upload(
-                localUploadConfiguration,
+                ImageUploadService.localUploadConfiguration,
                 function whenDone(err, uploadedFiles) {
                     if (err) { return res.negotiate(err); }
 

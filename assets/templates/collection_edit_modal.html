@@ -17,6 +17,33 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="inputDesc" class="col-sm-2 control-label">Immagine di copertina</label>
+            <div class="col-sm-10">
+                 <div nv-file-drop class="well my-drop-zone text-center recipe_create_add_photo_box" nv-file-over="" uploader="coverImageUploader" ng-hide="collection.coverImageUrl != null || coverImageUploader.queue.length == 1">
+                    <i class="fa fa-camera recipe_create_add_photo_icon"></i>
+                    <h5>Trascina un'immagine oppure usa il seguente pulsante</h5>
+                    <div class="fileUpload btn btn-warning">
+                        <span>Seleziona immagine</span>
+                        <input type="file" class="upload" nv-file-select="" uploader="coverImageUploader" />
+                    </div>
+                </div>
+                <!-- Anteprima immagine di copertina selezionata -->
+                <div ng-repeat="item in coverImageUploader.queue">
+                    <button type="button" class="btn btn-danger btn-xs recipe_create_button_remove" ng-click="item.remove()">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <div ng-show="coverImageUploader.isHTML5" ng-thumb="{ file: item._file, width: 425 }"></div>
+                </div>
+                <!-- Anteprima immagine di copertina esistente (nel caso di modifica ricetta)-->
+                <div ng-show="collection.coverImageUrl">
+                    <button type="button" class="btn btn-danger btn-xs recipe_create_button_remove" ng-click="collection.coverImageUrl = undefined">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <img src="{{collection.coverImageUrl}}" alt="Immagine di copertina" class="recipe_img">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
             <label for="radio" class="col-sm-2 control-label">Privata</label>
             <div class="col-sm-10">
                 <div class="btn-group" id="radio">

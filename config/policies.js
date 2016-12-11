@@ -58,7 +58,9 @@ module.exports.policies = {
     'destroy' : ['isAuthorized', 'isCollectionAuthor'],
     'findOne' : 'attachUser', // includo l'utente per il conteggio delle visualizzazioni e per togliere le collection private di altri utenti
     'find' : 'attachUser', // includo l'utente per togliere le collection private di altri utenti
-    'update': ['isAuthorized', 'isCollectionAuthor']
+    'update': ['isAuthorized', 'isCollectionAuthor'],
+    'uploadCoverImage' : ['isAuthorized', 'isCollectionAuthor'],
+    'deleteCoverImage' : ['isAuthorized', 'isCollectionAuthor']
   },
   
   'ViewCollectionController' : {

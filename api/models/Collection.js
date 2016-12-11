@@ -27,6 +27,9 @@ module.exports = {
         required : true
     },
 
+    // Url which represents the main image of the collection (can be null)
+    coverImageUrl : { type: 'String', url: true },
+
   	// Reference to many Recipes
     recipes : {
         collection: 'CollectionRecipe',

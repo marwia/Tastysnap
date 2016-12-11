@@ -1,7 +1,14 @@
-<style ng-if="detailedCollection.recipes && detailedCollection.recipes.length > 0">
+<style ng-if="detailedCollection.recipes && detailedCollection.recipes.length > 0 && detailedCollection['coverImageUrl'] == null">
     .collection_header_background {
         background-color: #282828;
         background: url("{{randomRecipe.blurredCoverImageUrl}}") no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
+<style ng-if="detailedCollection['coverImageUrl'] != null">
+    .collection_header_background {
+        background-color: #282828;
+        background: url("{{detailedCollection.coverImageUrl}}") no-repeat center center fixed;
         background-size: cover;
     }
 </style>

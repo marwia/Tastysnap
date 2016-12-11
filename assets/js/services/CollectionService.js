@@ -214,6 +214,15 @@ angular.module('CollectionService', [])
                 server_prefix + '/collection/' + collectionId)
                 .then(successCallback, errorCallback);
         }
+
+        /**
+         * Metodo per cancellare una collection.
+         */
+        o.deleteCoverImage = function (collectionId, successCallback, errorCallback) {
+            return $http.delete(
+                server_prefix + '/collection/' + collectionId + '/cover_image')
+                .then(successCallback, errorCallback);
+        }
     
         /**
          * Metodo per richiedere una una collection tramite il suo id.

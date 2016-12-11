@@ -90,58 +90,13 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
          */
 
         $scope.openEditModal = function () {
-            var collection = $scope.detailedCollection;
-            var openEliminationModal = $scope.openEliminationModal;
-
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'templates/collection_edit_modal.html',
-                controller: function ($uibModalInstance, $scope) {
-                    // passaggio paramteri
-                    $scope.loading = false;
-                    $scope.collection = angular.copy(collection);
-
-                    console.info("scope", $scope);
-
-                    // azioni possibili all'interno della modale
-
-                    // salva
-                    $scope.ok = function () {
-                        $scope.loading = true;
-
-                        Collection.update($scope.collection,
-                            function (response) {
-                                //do what you need here
-                                $scope.loading = false;
-
-                                // aggiorno le modifiche e chiudo
-                                $uibModalInstance.close($scope.collection);
-
-                            }, function (response) {
-                                // errore
-                                $scope.loading = false;
-                            });
-                    };
-
-                    // annulla
-                    $scope.cancel = function () {
-                        $uibModalInstance.dismiss('cancel');
-                    };
-
-                    // elimina raccolta
-                    $scope.delete = function () {
-                        var eliminationModalInstance = openEliminationModal();
-
-                        // attendo la conferma dell'eliminazione'
-                        eliminationModalInstance.result.then(function (result) {
-                            toastr.success('Raccolta eliminata');
-
-                            // chiudo la modale corrente
-                            $uibModalInstance.dismiss('cancel');
-                            // cambio stato
-                            $state.go('app.home.most_recent');
-                        });
-                    }
+                controller: 'CollectionEditModalCtrl',
+                resolve: {
+                    // passaggio dei parametri
+                    selectedCollection: $scope.detailedCollection
                 },
                 size: 'lg'
             });
@@ -153,42 +108,7 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
 
         };
 
-        /**
-         * Modale per eliminare una raccolta
-         */
-
-        $scope.openEliminationModal = function () {
-            var collection = $scope.detailedCollection;
-            return $uibModal.open({
-                animation: true,
-                templateUrl: 'templates/collection_elimination_modal.html',
-                controller: function ($uibModalInstance, $scope) {
-                    // passaggio paramteri
-                    $scope.loading = false;
-                    $scope.collection = collection;
-                    // azioni possibili all'interno della modale
-                    $scope.ok = function () {
-                        $scope.loading = true;
-
-                        Collection.delete(collection.id,
-                            function (response) {
-                                //do what you need here
-                                $scope.loading = false;
-                                $uibModalInstance.close(true);
-
-                            }, function (response) {
-                                // errore
-                                $scope.loading = false;
-                            });
-                    };
-
-                    $scope.cancel = function () {
-                        $uibModalInstance.dismiss('cancel');
-                    };
-                },
-                size: 'sm'
-            });
-        };
+        
 
         /**
          * Codice per individuare quando mostrare il titolo della 

@@ -336,6 +336,10 @@ var apiRoutes = addGlobalPrefix({
 
     'get /collection/:collection/following': 'FollowCollectionController.areYouFollowing',
 
+    'put /collection/:collection/upload_cover_image': 'CollectionController.uploadCoverImage',
+
+    'delete /collection/:collection/cover_image': 'CollectionController.deleteCoverImage',
+
     /***************************************************************************
     *                                                                          *
     * View di collection.                                                      *

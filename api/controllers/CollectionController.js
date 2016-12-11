@@ -279,6 +279,21 @@ module.exports = {
         });
     },
 
+
+    /**
+     * @api {put} /collection/:collection Update a Collection
+     * @apiName UpdateCollection
+     * @apiGroup Collection
+     *
+     * @apiDescription Serve per aggiornare una propria collezione.
+     * Si deve inviare qualsiasi richiesta con il token del suo autore.<br>
+     * Le richieste devono essere con codifica <strong>
+     * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
+     *
+     * @apiUse TokenHeader
+     *
+     * @apiSuccess {json} recipe JSON that represents the updated collection object.
+     **/
     update: function(req, res, next) {
 
         var newCollection = req.body;
@@ -295,6 +310,8 @@ module.exports = {
             return res.json(updatedCollections[0]);
         });
     },
+
+
 
     /**
      * @api {delete} /collection/:collection Delete a Collection
@@ -337,6 +354,178 @@ module.exports = {
      */
 
     // USO LA FUNZIONE DI DEFAULT CON UNA POLICY PER VERIFICARE I PERMESSI
+
+     /********************************************************************************************
+     * 
+     *                          UPLOADING DELLE IMMAGINI PER LE RACCOLTE
+     * 
+     ********************************************************************************************/
+
+    /**
+    * @api {put} /collection/:collection/upload_cover_image Upload the cover image
+    * @apiName UploadCoverImage
+    * @apiGroup Collection
+    *
+    * @apiDescription Serve per caricare l'immagine principale per una raccolta
+    * Ogni richiesta necessità di autenticazione e di essere l'autore della
+    * ricetta che si sta modificando.
+    * Le richieste devono essere con codifica <strong>
+    * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
+    *
+    * @apiUse TokenHeader
+    *
+    * @apiParam {File} coverImage Cover image file.
+    *
+    * @apiSuccess {json} collection JSON that represents the collection object.
+    *
+    * @apiSuccessExample {json} Success-Response-Example:
+    *     HTTP/1.1 200 OK
+    *     {
+    *     "collection": 
+    *       {
+    *         "createdAt": "2015-08-11T18:58:46.329Z",
+    *         "updatedAt": "2015-08-11T18:58:46.329Z",
+    *         "id": "55ca45e69b4246110b319cb1"
+    *       }
+    *     }
+    *
+    * @apiUse TokenFormatError
+    *
+    * @apiUse NoAuthHeaderError
+    *
+    * @apiUse InvalidTokenError
+    * 
+    * @apiError message Breve descrizione dell'errore che ha riscontrato il server.
+    *
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 400 Bad Request
+    *     {
+    *       "message": "No file was found"
+    *     }
+    * 
+    * @apiErrorExample Error-Response:
+    *     HTTP/1.1 400 Bad Request
+    *     {
+    *       "message": "No file was uploaded"
+    *     }
+    */
+    uploadCoverImage: function (req, res) {
+        var collection = req.collection;
+
+        var coverImage = req.file('image');
+        if (!coverImage) { return res.badRequest('No file was found'); }
+
+        if (process.env.NODE_ENV === 'production') {
+            coverImage.upload({
+                maxBytes: 5000000,
+                dirname: ImageUploadService.localImagesDir
+
+            }, function (err, filesUploaded) {
+                // eseguo l'upload sul bucket s3
+                ImageUploadService.s3Upload(err, filesUploaded, function (fileUrl) {
+
+                    // se la raccolta ha già una immagine di copertina
+                    // elimino l'immagine di copertina vecchia
+                    if (collection.coverImageUrl) {
+                        var filename = collection.coverImageUrl.replace(/^.*[\\\/]/, '');
+                        S3FileService.deleteS3Object(filename);
+                    }
+
+                    // aggiorno la ricetta
+                    Collection.update(collection.id, {
+                        // aggiungo url dell'immagine appena caricata
+                        coverImageUrl: fileUrl,
+
+                    }).exec(function (err, updatedCollections) {
+                        if (err) return res.negotiate(err);
+                        return res.json(updatedCollections[0]);
+                    });
+                });
+            });
+        }
+        else {
+            coverImage.upload(
+                ImageUploadService.localUploadConfiguration,
+                function whenDone(err, uploadedFiles) {
+                    if (err) { return res.negotiate(err); }
+
+                    // If no files were uploaded, respond with an error.
+                    if (uploadedFiles.length === 0) { return res.badRequest('No file was uploaded'); }
+
+                    // get the file name from a path
+                    var filename = uploadedFiles[0].fd.replace(/^.*[\\\/]/, '');
+                    var fileUrl = require('util').format('%s%s', sails.getBaseUrl(), '/images/' + filename);
+                    //console.log("immagine di copertina: " + fileUrl);
+                    Collection.update(collection.id, {
+                        // aggiungo url dell'immagine appena caricata
+                        coverImageUrl: fileUrl,
+
+                    }).exec(function (err, updatedCollections) {
+                        if (err) return res.negotiate(err);
+                        //console.info(updatedRecipes[0]);
+                        return res.json(updatedCollections[0]);
+                    });
+                });
+        }
+    },
+
+
+
+    /**
+    * @api {put} /collection/:collection/delete_cover_image Delete the cover image
+    * @apiName DeleteCoverImage
+    * @apiGroup Collection
+    *
+    * @apiDescription Serve per eliminare l'immagine principale per una raccolta
+    * Ogni richiesta necessità di autenticazione e di essere l'autore della
+    * ricetta che si sta modificando.
+    * Le richieste devono essere con codifica <strong>
+    * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
+    *
+    * @apiUse TokenHeader
+    *
+    * @apiSuccess {json} collection JSON that represents the collection object.
+    *
+    * @apiSuccessExample {json} Success-Response-Example:
+    *     HTTP/1.1 200 OK
+    *     {
+    *     "collection": 
+    *       {
+    *         "createdAt": "2015-08-11T18:58:46.329Z",
+    *         "updatedAt": "2015-08-11T18:58:46.329Z",
+    *         "id": "55ca45e69b4246110b319cb1"
+    *       }
+    *     }
+    *
+    * @apiUse TokenFormatError
+    *
+    * @apiUse NoAuthHeaderError
+    *
+    * @apiUse InvalidTokenError
+    **/
+    deleteCoverImage: function (req, res) {
+        var collection = req.collection;
+        
+        if (process.env.NODE_ENV === 'production') {
+            // se la raccolta ha già una immagine di copertina
+                    // elimino l'immagine di copertina vecchia
+                    if (collection.coverImageUrl) {
+                        var filename = collection.coverImageUrl.replace(/^.*[\\\/]/, '');
+                        S3FileService.deleteS3Object(filename);
+                    }
+        }
+
+        // aggiorno la raccolta
+        Collection.update(collection.id, {
+            // aggiungo url dell'immagine appena caricata
+            coverImageUrl: null,
+
+        }).exec(function (err, updatedCollections) {
+            if (err) return res.negotiate(err);
+            return res.json(updatedCollections[0]);
+        });
+
+    }
 
 };
 
