@@ -26,5 +26,4 @@ angular.module('SideBarCtrl', []).controller('SideBarCtrl', [
         $scope.getCurrentState = function () {
             return $state.current.name;
         };
-    
     }]);

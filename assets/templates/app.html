@@ -1,28 +1,15 @@
-
 <!-- Navbar -->
 <div ui-view="navbar"></div>
 <!-- End Navbar -->
 
-<div style="clear:both;"></div>
-  
-<div id="wrapper" ng-class="{'toggled': toggle, 'hello': hellow}"> <!-- ng-cloak -->
-  
-  <!-- Sidebar -->
-  <div ui-view="sidebar"></div>
-  <!-- End Sidebar -->
-  
-  <div style="clear:both;"></div>
-  
-  <!-- Page Content -->
-  <div id="page-content-wrapper">
-      <div class="container-fluid">
-          <div class="row">
-              <div style="min-height: 750px">
-                <div ui-view="content"></div>
-              </div>
-              <div ui-view="footer" class="col-md-12"></div>
-          </div>
-      </div>
-  </div><!-- End Page Content -->
-  
-</div><!-- End Page Wrapper -->
+<!-- Sidebar -->
+<!-- sidebar-stacked -->
+<!-- sidebar-fixed-left -->
+<aside ui-view="sidebar" id="sidebar" class="sidebar sidebar-inverse sidebar-stacked open" role="navigation" ng-controller="SideBarCtrl"></aside>
+<!-- End Sidebar -->
+
+<div class="wrapper">
+    <!-- Sidebar Constructor -->
+    <div class="constructor" ui-view="content"></div>
+    <div ui-view="footer" class="col-md-12"></div>
+</div>
