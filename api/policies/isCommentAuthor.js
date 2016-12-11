@@ -34,7 +34,7 @@ module.exports = function(req, res, next) {
             if (!originalComment) { return res.notFound({error: 'No comment found'})}
 
             // verifico che l'utente è il creatore della risorsa
-            if (originalComment[0].user == user.id) {
+            if (originalComment.user == user.id) {
                 // per sicurezza elimino l'author 
                 delete req.body.user;// cancello elementi inopportuni
                 next();
