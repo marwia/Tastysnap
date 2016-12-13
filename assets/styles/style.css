@@ -593,7 +593,6 @@ ul.top_menu_notify_dropdown {
 .card_link_profile{
     position:absolute;
     z-index:2;
-    width:100%;
     left:0;
 }
 
