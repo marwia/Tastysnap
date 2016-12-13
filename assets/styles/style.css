@@ -852,6 +852,10 @@ ul.top_menu_notify_dropdown {
 	height: 50px;
 	background-position: center;
 	display: inline-block;
+
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
 .collection_div_profile_name{
@@ -1020,6 +1024,10 @@ ul.top_menu_notify_dropdown {
 	width: 100px;
 	height: 100px;
 	background-position: center;
+
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 }
 
 .profile_button_item{
