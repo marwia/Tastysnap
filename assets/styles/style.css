@@ -1116,8 +1116,23 @@ ul.top_menu_notify_dropdown {
     text-align: center;
 }
 
+.home_navbar2{
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.sidebar-stacked.open + .wrapper .home_navbar2{
+	width: calc(100% - 250px);
+	right: 0;
+	left:auto;
+}
+
 .home_navbar_item>a{
 	color:white;
+
 	border-bottom:1px solid transparent;
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -1885,7 +1900,7 @@ footer{
 	padding: 37px 0 39px;
 }
 
-.sidebar-stacked.open + .wrapper .footer.constructor{
+.sidebar-stacked.open + .wrapper .footer{
 	width: calc(100% - 250px);
 }
 
