@@ -70,8 +70,14 @@
                             <div class="col-md-12">
                                 <!-- profilo -->
                                 <div class="recipe_profile text-center">
-                                    <a href="app/profile/{{detailedRecipe.author.id}}" class="text-center"><div class="img-circle" back-img="{{ getUserProfileImage(detailedRecipe.author) }}"></div></a>
-                                    <h5><strong>{{detailedRecipe.author.name}} {{detailedRecipe.author.surname}}</strong></h5>
+                                    <div class="recipe_profile_photo">   
+                                    <a href="app/profile/{{detailedRecipe.author.id}}" class="text-center">
+                                        <div class="img-circle " back-img="{{ getUserProfileImage(detailedRecipe.author) }}"> 
+                                        </div>
+                                        <h5><strong>{{detailedRecipe.author.name}} {{detailedRecipe.author.surname}}</strong></h5>
+                                    </a>
+                                    </div>
+                                    
                                     <h6>{{formatDate(detailedRecipe.createdAt)}}</h6>
                                 </div>
                             </div>
@@ -158,15 +164,15 @@
                         <div class="panel-body recipe_like text-center">
                             <table>
                                 <tr style="font-size:20px;">
-                                    <td uib-tooltip="Persone che adorano questa ricetta" tooltip-append-to-body="true">
+                                    <td uib-tooltip="Apprezzamenti" tooltip-append-to-body="true">
                                         <span ng-click="toggleUpvoteRecipe()" style="color: red;">
                                             <i class="fa fa-heart tasty_icon" ng-class="(detailedRecipe.userVote == 1) ? 'tasty_icon_active' : 'tasty_icon_default'"></i>
                                         </span>
                                     </td>
-                                    <td uib-tooltip="Numero di commenti" tooltip-append-to-body="true"><i class="fa fa-comment" style="color: lightblue;"></i></td>
+                                    <td uib-tooltip="Commenti" tooltip-append-to-body="true"><i class="fa fa-comment" style="color: lightblue;"></i></td>
                                     <!-- numero di visualizzazioni -->
                                     <!--<td uib-tooltip="Numero di visualizzazioni" tooltip-append-to-body="true"><i class="fa fa-eye"></i></td>-->
-                                    <td uib-tooltip="Persone che hanno provato questa ricetta" tooltip-append-to-body="true">
+                                    <td uib-tooltip="Assaggi" tooltip-append-to-body="true">
                                         <span ng-click="toggleTryRecipe()">
                                             <i class="fa fa-cutlery tasty_icon" ng-class="(detailedRecipe.userTry == null) ? 'tasty_icon_default' : 'tasty_icon_active'"></i>
                                         </span>

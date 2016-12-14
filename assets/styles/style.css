@@ -876,6 +876,18 @@ ul.top_menu_notify_dropdown {
 	padding-bottom: 200px;
 	background: #222;
 	color: white;
+	text-shadow: 0 0 15px #000000;
+    
+    -webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.collection_header A{
+	color: inherit;
+	text-decoration: none;
 }
 
 .collection_header H2{
@@ -1025,9 +1037,9 @@ ul.top_menu_notify_dropdown {
 	height: 100px;
 	background-position: center;
 
-	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-	-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-	box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	-webkit-box-shadow: 0px 0px 25px 0px rgba(50, 50, 50, 0.75);
+	-moz-box-shadow:    0px 0px 25px 0px rgba(50, 50, 50, 0.75);
+	box-shadow:         0px 0px 25px 0px rgba(50, 50, 50, 0.75);
 }
 
 .profile_button_item{
@@ -1116,8 +1128,23 @@ ul.top_menu_notify_dropdown {
     text-align: center;
 }
 
+.home_navbar2{
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+}
+
+.sidebar-stacked.open + .wrapper .home_navbar2{
+	width: calc(100% - 250px);
+	right: 0;
+	left:auto;
+}
+
 .home_navbar_item>a{
 	color:white;
+
 	border-bottom:1px solid transparent;
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -1479,6 +1506,14 @@ HR.recipe_hr{
 
 .similar_recipe_con {
 	padding-bottom: 60px;
+}
+ 
+.recipe_profile_photo:hover, .collection_profile_link:hover {
+    -webkit-filter: brightness(70%);
+	-moz-filter: brightness(70%);
+	-o-filter: brightness(70%);
+	-ms-filter: brightness(70%);
+	filter: brightness(70%);
 }
 
 
@@ -1889,7 +1924,7 @@ footer{
 	padding: 37px 0 39px;
 }
 
-.sidebar-stacked.open + .wrapper .footer.constructor{
+.sidebar-stacked.open + .wrapper .footer, .sidebar-stacked.open + .wrapper .collection_header{
 	width: calc(100% - 250px);
 }
 

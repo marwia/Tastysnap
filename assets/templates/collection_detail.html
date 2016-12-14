@@ -22,20 +22,22 @@
     
         <!-- HEADER (titolo + sfondo + profilo) -->
         <div class="collection_header collection_header_background">
+            <!-- Profilo -->
+            <div class="text-center collection_profile_link" uib-tooltip="Ultima modifica {{formatDate(detailedCollection)}}" >
+                <a href="app/profile/{{detailedCollection.author.id}}">
+                    <div class="img-circle collection_profile_photo" back-img="{{ getUserProfileImage(detailedCollection.author) }}"></div>
+                    <div ng-hide="false" class="collection_div_profile_name">
+                        <h5 class="collection_profile_name no-margin">
+                            <strong>{{detailedCollection.author.name}} {{detailedCollection.author.surname}}</strong>
+                        </h5>
+                    </div>
+                </a>
+                
+            </div>
             <!-- Titolo collection -->
             <div class="text-center">
                 <h2>{{detailedCollection.title}}</h2>
                 <h4>{{detailedCollection.description}}</h4>
-            </div>
-            <!-- Profilo -->
-            <div class="text-center">
-                <a href="app/profile/{{detailedCollection.author.id}}" uib-tooltip="{{detailedCollection.author.name}} {{detailedCollection.author.surname}}" tooltip-placement="right">
-                    <div class="img-circle collection_profile_photo" back-img="{{ getUserProfileImage(detailedCollection.author) }}"></div>
-                </a>
-                <div ng-hide="false" class="collection_div_profile_name">
-                    <h5 class="collection_profile_name no-margin"><strong>{{detailedCollection.author.name}} {{detailedCollection.author.surname}}</strong></h5>
-                    <h6 class="collection_profile_edited no-margin">Ultima modifica {{formatDate(detailedCollection)}}</h6>
-                </div>
             </div>
         </div>
 
@@ -43,8 +45,8 @@
         
         <nav class="collection_nav navbar-inverse" id="collection_nav" set-class-when-at-top="collection_nav-scrolled" padding-when-at-top="0">
             <div class="tasty_container">
-                <p class="navbar-text"><i class="fa fa-eye" aria-hidden="true"></i> {{detailedCollection.viewsCount}}</p>
-                <p class="navbar-text"><i class="fa fa-heart" aria-hidden="true"></i> {{detailedCollection.followersCount}}</p>
+                <p class="navbar-text" uib-tooltip="Visualizzazioni" tooltip-append-to-body="true"><i class="fa fa-eye" aria-hidden="true"></i> {{detailedCollection.viewsCount}}</p>
+                <p class="navbar-text" uib-tooltip="Followers" tooltip-append-to-body="true"><i class="fa fa-heart" aria-hidden="true"></i> {{detailedCollection.followersCount}}</p>
                 <p class="navbar-text"><i class="fa fa-share" aria-hidden="true"></i> Condividi</p>
 
                 <!-- Titolo da centrare -->
