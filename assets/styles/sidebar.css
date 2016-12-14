@@ -67,6 +67,8 @@
 }
 .sidebar-stacked.open + .wrapper .constructor {
   margin-left: 235px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 @media (max-width: 768px) {
   .sidebar-stacked.open + .wrapper .constructor {
