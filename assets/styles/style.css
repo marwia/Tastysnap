@@ -876,6 +876,12 @@ ul.top_menu_notify_dropdown {
 	padding-bottom: 200px;
 	background: #222;
 	color: white;
+    
+    -webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
 }
 
 .collection_header H2{
@@ -1900,7 +1906,7 @@ footer{
 	padding: 37px 0 39px;
 }
 
-.sidebar-stacked.open + .wrapper .footer{
+.sidebar-stacked.open + .wrapper .footer, .sidebar-stacked.open + .wrapper .collection_header{
 	width: calc(100% - 250px);
 }
 
