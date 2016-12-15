@@ -70,6 +70,11 @@
   padding-left: 15px;
   padding-right: 15px;
 }
+
+.sidebar-stacked.open + .wrapper .collection_nav-scrolled{
+	width: calc(100% - 250px);
+}
+
 @media (max-width: 768px) {
   .sidebar-stacked.open + .wrapper .constructor {
     margin-left: 240px;
