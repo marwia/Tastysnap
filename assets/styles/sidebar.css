@@ -120,6 +120,7 @@
   -webkit-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
+  padding-top: 35px;
 }
 .sidebar .sidebar-header.header-cover {
   background-repeat: no-repeat;
@@ -163,10 +164,20 @@
 .sidebar .icon-material-sidebar-arrow:before {
   content: "\e610";
 }
+
+.sidebar-image {
+  margin-bottom: 20px;
+}
+
+.sidebar-image a:hover {
+  color: white;
+}
+
 .sidebar .sidebar-image img {
   width: 54px;
   height: 54px;
   margin-top: 16px;
+  margin-bottom: 16px;
   border-radius: 50%;
   -webkit-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;

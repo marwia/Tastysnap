@@ -109,6 +109,7 @@ body {
 	-ms-transition: all 0.3s ease-in-out;
 	-o-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
+	border-top: 2px solid #b7b7b7;
 }
 
 .tasty_title_text{
@@ -169,6 +170,18 @@ a:hover{
 	right: 20px;
 	top: -20px;
 	z-index: 30;
+}
+
+.image-link {
+  display: inline-block;
+}
+
+.image-link img {
+  display: block;
+}
+
+.image-link img-circle {
+  display: block;
 }
 
 /* --------------------------------------------------------------- 2 ---------------------------------------------------- */
@@ -1507,8 +1520,12 @@ HR.recipe_hr{
 .similar_recipe_con {
 	padding-bottom: 60px;
 }
+
+.darken_profile_photo {
+	display: inline-block;
+}
  
-.recipe_profile_photo:hover, .collection_profile_link:hover {
+.darken_profile_photo:hover, .sidebar-image:hover {
     -webkit-filter: brightness(70%);
 	-moz-filter: brightness(70%);
 	-o-filter: brightness(70%);
@@ -2043,6 +2060,10 @@ footer{
 	height: 50px;
 	width: 50px;
 	background-position: center;
+}
+
+.top_menu_notify_dropdown a:hover {
+	text-decoration: underline;
 }
 
 /* ------------------------------------------------------------------ 21 -------------------------------------------------------- */

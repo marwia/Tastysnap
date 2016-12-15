@@ -59,9 +59,9 @@
                         <div class="recipe_header2">
                             <div class="col-md-12" ng-controller="RecipeReviewCtrl">
                                 <!-- TODO -->
-                                <h4><i class="fa fa-book"></i> <br> {{detailedRecipe.category}}</h4>
-                                <h4><i class="fa fa-balance-scale"></i> <br> {{detailedRecipe.dosagesFor}} {{detailedRecipe.dosagesType}}</h4>
-                                <h4><i class="fa fa-clock-o"></i> <br> {{detailedRecipe.preparationTime}} minuti</h4>
+                                <h4 uib-tooltip="Categoria" tooltip-append-to-body="true"><i class="fa fa-book"></i> <br> {{detailedRecipe.category}}</h4>
+                                <h4 uib-tooltip="Quantità per" tooltip-append-to-body="true"><i class="fa fa-balance-scale"></i> <br> {{detailedRecipe.dosagesFor}} {{detailedRecipe.dosagesType}}</h4>
+                                <h4 uib-tooltip="Tempo richiesto" tooltip-append-to-body="true"><i class="fa fa-clock-o"></i> <br> {{detailedRecipe.preparationTime}} minuti</h4>
                             </div>
                         </div>
 
@@ -70,12 +70,12 @@
                             <div class="col-md-12">
                                 <!-- profilo -->
                                 <div class="recipe_profile text-center">
-                                    <div class="recipe_profile_photo">   
-                                    <a href="app/profile/{{detailedRecipe.author.id}}" class="text-center">
-                                        <div class="img-circle " back-img="{{ getUserProfileImage(detailedRecipe.author) }}"> 
-                                        </div>
-                                        <h5><strong>{{detailedRecipe.author.name}} {{detailedRecipe.author.surname}}</strong></h5>
-                                    </a>
+                                    <div class="darken_profile_photo" uib-tooltip="Visualizza profilo" tooltip-append-to-body="true"> 
+                                        <a href="app/profile/{{detailedRecipe.author.id}}" class="text-center image-link">
+                                            <div class="img-circle " back-img="{{ getUserProfileImage(detailedRecipe.author) }}"> 
+                                            </div>
+                                            <h5><strong>{{detailedRecipe.author.name}} {{detailedRecipe.author.surname}}</strong></h5>
+                                        </a>
                                     </div>
                                     
                                     <h6>{{formatDate(detailedRecipe.createdAt)}}</h6>

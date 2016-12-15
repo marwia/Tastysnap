@@ -25,8 +25,8 @@
         </form>
 
         <!-- Tastysnap Logo -->
-        <a href="/app/most_recent">
-            <img alt="TastySnap" src="app_images/beta_logo.png" class="tastysnap_logo">
+        <a href="/app/most_recent">     
+            <img alt="TastySnap" src="app_images/beta_logo.png" class="tastysnap_logo" uib-tooltip="Home" tooltip-placement="bottom">    
         </a>
 
         <!-- DESTRA -->
@@ -51,7 +51,7 @@
                 <!-- Notifiche -->
                 <div uib-dropdown auto-close="outsideClick" keyboard-nav ng-show="isLoggedIn()" ng-controller="NotificationCtrl" class="navbar-text top_menu_dropdown"
                     on-toggle="toggled(open)">
-                    <a href="#" ng-hide="active" class="top_menu_notify_icon" uib-dropdown-toggle id="single-button3">
+                    <a href="#" ng-hide="active" class="top_menu_notify_icon" uib-dropdown-toggle id="single-button3" uib-tooltip="Notifiche" tooltip-placement="bottom" tooltip-append-to-body="true">
                         <div class="glyphicon glyphicon-bell top_menu_item"><span class="badge badge-notify" ng-hide="countNew()<=0">{{countNew()}}</span></div>
                     </a>
                     <ul uib-dropdown-menu class="top_menu_notify_dropdown" role="menu" aria-labelledby="single-button3">

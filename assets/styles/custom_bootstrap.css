@@ -48,10 +48,6 @@ fieldset[disabled] .btn-custom.active {
     filter: alpha(opacity=0);
 }
 
-hr {
-  border-top: 2px solid #b7b7b7;
-}
-
 /*
  * Personalizzazione di Bootstrap per dare un carattere unico al nostro prodotto.
  *

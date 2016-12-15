@@ -9,8 +9,18 @@
 
 <!-- Sidebar header -->
 <div class="sidebar-header header-cover" style="background-image: url({{currentUser.coverImageUrl}});">
-    <div class="col-xs-12 text-center">
-        <a href="/app/profile/{{currentUser.id}}" class="link">
+    <div class="col-xs-12 text-center"> 
+        <div class="darken_profile_photo sidebar-image" uib-tooltip="Visualizza profilo" tooltip-append-to-body="true">   
+            <a href="app/profile/{{currentUser.id}}" class="text-center image-link">
+                <div class="img-circle collection_profile_photo" back-img="{{ getUserProfileImage(currentUser) }}"></div>
+
+                <h5><strong>{{currentUser.name}} {{currentUser.surname}}</strong></h5>
+            </a>
+        </div>
+    </div>
+                <!--
+    <div class="col-xs-12 text-center">         
+        <a href="/app/profile/{{currentUser.id}}" class="image-link">      
             <div class="sidebar-image">
                 <img src="{{ getUserProfileImage(currentUser) }}">
             </div>
@@ -21,6 +31,8 @@
             {{ currentUser.name }} {{ currentUser.surname }}
         </a>
     </div>
+    -->
+
     <div class="col-xs-6 text-center">
         <a href="/app/profile/{{currentUser.id}}/following" class="link">
             {{currentUser.followingCount}} <br/> <span>FOLLOWING</span>
@@ -47,7 +59,7 @@
 
 <!-- Sidebar navigation -->
 <ul class="nav sidebar-nav">
-    <a href="/app/recipe_create" class="btn btn-warning btn-circle btn-lg sidebar_create_recipe">
+    <a href="/app/recipe_create" class="btn btn-warning btn-circle btn-lg sidebar_create_recipe"  uib-tooltip="Crea ricetta">
         <i class="fa fa-pencil"></i>
     </a>
     <li>
