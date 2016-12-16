@@ -18,14 +18,12 @@ module.exports = {
 
                 if (!foundRecipe) { return res.notFound({ error: 'No recipe found' }); }
 
-                console.log("ciao!");
-
                 return res.view('static',
                         {
                             title: foundRecipe.title, 
                             description: foundRecipe.steps[0].description,
                             imageUrl: foundRecipe.coverImageUrl,
-                            url: 'https://www.tastysnap/app/recipe/' + foundRecipe.id,
+                            url: 'https://www.tastysnap/static/app/recipe/' + foundRecipe.id,
                             layout: false
                         });
             });
