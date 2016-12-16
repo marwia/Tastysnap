@@ -11,7 +11,7 @@ var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies
                 'ngMessages', 'uiGmapgoogle-maps', 'angular-spinkit', 'angular.filter', 'ngSails', 'infinite-scroll',
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
                 'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService', 'ImageUtilsService',
-                'NotificationService', 'ActivityService', 'Utils', 'SearchService',
+                'NotificationService', 'ActivityService', 'Utils', 'SearchService', 'PageService',
 				'ngAnimate', 'appRoutes', 'toastr', 'rzModule', 'angular-click-outside', 'ngGPlaces', 'angular-timeline',
 				'AuthCtrl', 'MasterCtrl', 'NavCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeDetailCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl', 'UserHomeCtrl', 'CollectionCtrl',
@@ -19,7 +19,7 @@ var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies
                 'SearchCtrl', 'SearchRecipeCtrl', 'SearchCollectionCtrl', 'SimilarRecipeCtrl',
                 'UserProfileFollowerUsersCtrl', 'UserProfileFollowingUsersCtrl', 'NearRecipesCtrl', 'FollowingCollectionsCtrl',
                 'RecipeReviewCtrl', 'RecipeImageSliderCtrl', 'NotificationCtrl', 'ActivitesCtrl',
-                'CollectionEditModalCtrl']);
+                'CollectionEditModalCtrl', 'HeadCtrl']);
 
 /**
  * Configurazione iniziale dell'app, viene fatta una sola volta all'avvio.

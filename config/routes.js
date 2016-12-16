@@ -66,19 +66,35 @@ var viewRoutes = {
     },
     
     'get /info': {
-        view: 'informazioni'
+        view: 'informazioni',
+        locals: {
+            title: "Informazioni",
+            layout: 'static_layout'
+        }
     },
 
     'get /terms': {
-        view: 'termini_di_servizio'
+        view: 'termini_di_servizio',
+        locals: {
+            title: "Termini di servizio",
+            layout: 'static_layout'
+        }
     },
     
     'get /privacy': {
-        view: 'privacy'
+        view: 'privacy',
+        locals: {
+            title: "Privacy policy",
+            layout: 'static_layout'
+        }
     },
     
     'get /cookie': {
-        view: 'cookie'
+        view: 'cookie',
+        locals: {
+            title: 'Cookie policy',
+            layout: 'static_layout'
+        }
     },
 
     'get /about': {

@@ -20,7 +20,9 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
     'User',
     'RecipeStep',
     'Utils',
-    function($scope, Recipe, Ingredient, Auth, Collection, $uibModal, $log, $state, User, RecipeStep, Utils) {
+    'Page',
+    '$location',
+    function($scope, Recipe, Ingredient, Auth, Collection, $uibModal, $log, $state, User, RecipeStep, Utils, Page, $location) {
 
         // espongo allo scope il metodo di auth chiamato "isLoggedIn"
         $scope.isLoggedIn = Auth.isLoggedIn;
@@ -204,6 +206,12 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
             
             // carico i vari passi della ricetta
             RecipeStep.getRecipeSteps($scope.detailedRecipe, 30, 0);
+
+            // Configurazione del head
+            Page.title = $scope.detailedRecipe.title;
+            Page.description = $scope.detailedRecipe.description;
+            Page.imageUrl = $scope.detailedRecipe.coverImageUrl;
+            Page.url = $location.absUrl().split('?')[0];        
         }
         
         init();
