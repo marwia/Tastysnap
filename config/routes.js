@@ -103,6 +103,12 @@ var viewRoutes = {
             layout: false
         }
     },
+
+    /**
+     * Gestione di pagine statiche per i web crawler.
+     */
+
+    'get /static/app/recipe/:recipe': 'StaticController.recipe'
 }
 
 
@@ -447,7 +453,7 @@ var paths = Object.keys(apiRoutes);
 Credo che la regex significhi esegui questa route se non contiene la parola api ne la parola csrfToken
 (ne view aggiunte in questo modo: "|^\/prova" aggiunta prima dell'ultimo "/") 
 */
-apiRoutes['get *'] = { view: 'index', skipAssets: true, skipRegex: /^\/api\/.*$|csrfToken|^\/terms|^\/info|^\/cookie|^\/privacy|^\/about/};
+apiRoutes['get *'] = { view: 'index', skipAssets: true, skipRegex: /^\/api\/.*$|csrfToken|^\/terms|^\/info|^\/cookie|^\/privacy|^\/about|^\/static/};
 
 // ritorno il merge dei due oggetti contenenti routes
 var extend = require('util')._extend
