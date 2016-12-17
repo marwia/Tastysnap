@@ -108,7 +108,8 @@ var viewRoutes = {
      * Gestione di pagine statiche per i web crawler.
      */
 
-    'get /static/app/recipe/:recipe': 'StaticController.recipe'
+    'get /static/app/recipe/:recipe': 'StaticController.recipe',
+    'get /static/app/collection/:collection': 'StaticController.collection',
 }
 
 
