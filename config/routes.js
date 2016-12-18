@@ -114,7 +114,7 @@ var viewRoutes = {
     'get /static/app/profile/:user/:type': 'StaticController.profile',
 
     // Defaults for app
-    'get /login': 'StaticController.default',
+    'get /static/login': 'StaticController.default',
     'get /static/about': 'StaticController.default',
     'get /static/app/home/:type': 'StaticController.default',
     'get /static/app/near_recipes': 'StaticController.default',
