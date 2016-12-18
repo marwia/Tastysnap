@@ -68,7 +68,7 @@ module.exports.http = {
         var user_agent = req.headers['user-agent'];
         console.info("user agent: ", user_agent);
 
-        if (new RegExp('facebookexternalhit\/[0-9]|Twitterbot|Pinterest|Google.*snippet').test(user_agent)) {
+        if (new RegExp('facebookexternalhit\/[0-9]|Twitterbot|Pinterest|Google.*snippet|WhatsApp\/[0-9]').test(user_agent)) {
           return res.redirect('/static' + req.url);
         } else {
           console.log("non è un crawler");
