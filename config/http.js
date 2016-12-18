@@ -71,7 +71,7 @@ module.exports.http = {
     serverSideRender: function (req, res, next) {
       
       // se non si tratta di una richiesta già static allora procedo
-      if (new RegExp('^\/static').test(req.url) == false) {
+      if (new RegExp('^\/static|^\/app_images|^\/about_assets').test(req.url) == false) {
         var user_agent = req.headers['user-agent'];
         console.info("user agent: ", user_agent);
 
