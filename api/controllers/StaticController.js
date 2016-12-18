@@ -5,10 +5,16 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var getBaseUrl = function(req) {
+    var protocol = req.connection.encrypted?'https':'http';
+    var baseUrl = protocol + '://' + req.headers.host;
+    return baseUrl;
+}
+
 var defaults = {
     title: 'Tastysnap',
     description: 'Immergiti nel fantastico mondo della cucina e fatti ispirare da altri utenti provenienti da ogni parte del mondo.',
-    imageUrl: sails.getBaseurl() + '/app_images/tasty_header.jpg'
+    imageUrl: '/app_images/tasty_header.jpg'
 }
 
 module.exports = {
@@ -38,7 +44,7 @@ module.exports = {
                         title: foundUser.title,
                         description: foundUser.steps[0].description,
                         imageUrl: foundUser.coverImageUrl,
-                        url: sails.getBaseurl() + '/app/recipe/' + foundUser.id,
+                        url: getBaseUrl(req) + '/app/recipe/' + foundUser.id,
                         layout: false
                     });
             });
@@ -83,7 +89,7 @@ module.exports = {
                                         title: foundCollection.title,
                                         description: foundCollection.description,
                                         imageUrl: foundCollection.coverImageUrl,
-                                        url: sails.getBaseurl() + '/app/collection/' + foundCollection.id,
+                                        url: getBaseUrl(req) + '/app/collection/' + foundCollection.id,
                                         layout: false
                                     });
                             }
@@ -94,7 +100,7 @@ module.exports = {
                                     title: foundCollection.title,
                                     description: foundCollection.description,
                                     imageUrl: foundCollectionRecipe.recipe.coverImageUrl,
-                                    url: sails.getBaseurl() + '/app/collection/' + foundCollection.id,
+                                    url: getBaseUrl(req) + '/app/collection/' + foundCollection.id,
                                     layout: false
                                 });
                         });
@@ -105,7 +111,7 @@ module.exports = {
                         title: foundCollection.title,
                         description: foundCollection.description,
                         imageUrl: foundCollection.coverImageUrl,
-                        url: sails.getBaseurl() + '/app/collection/' + foundCollection.id,
+                        url: getBaseUrl(req) + '/app/collection/' + foundCollection.id,
                         layout: false
                     });
 
@@ -137,20 +143,20 @@ module.exports = {
                         title: foundUser.name + ' ' + foundUser.surname,
                         description: defaults.description,
                         imageUrl: foundUser.coverImageUrl,
-                        url: sails.getBaseurl() + '/app/profile/' + foundUser.id,
+                        url: getBaseUrl(req) + '/app/profile/' + foundUser.id,
                         layout: false
                     });
             });
     },
 
     default: function (req, res, next) {
-        var new_url = sails.getBaseurl() + req.url.replace('static/', '');
+        var new_url = getBaseUrl(req) + req.url.replace('static/', '');
 
         return res.view('static',
         {
             title: defaults.title,
             description: defaults.description,
-            imageUrl: defaults.imageUrl,
+            imageUrl: getBaseUrl(req) + defaults.imageUrl,
             url: new_url,
             layout: false
         });
