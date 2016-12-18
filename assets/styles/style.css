@@ -1116,7 +1116,7 @@ ul.top_menu_notify_dropdown {
 
 @media only screen and (max-width : 400px) {
 	.prof_personal_info{
-		top:5px;
+		top:20px;
 	}
 	
 	.profile_button_item span{
