@@ -5,6 +5,12 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
 
+var defaults = {
+    title: 'Tastysnap',
+    description: 'Immergiti nel fantastico mondo della cucina e fatti ispirare da altri utenti provenienti da ogni parte del mondo.',
+    imageUrl: sails.getBaseurl() + '/app_images/tasty_header.jpg'
+}
+
 module.exports = {
 
     /**
@@ -17,22 +23,22 @@ module.exports = {
     *
     */
     recipe: function (req, res, next) {
-        var collectionId = req.param('recipe');
-        if (!collectionId) { return next(); }
+        var recipeId = req.param('recipe');
+        if (!recipeId) { return next(); }
 
-        Recipe.findOne(collectionId)
+        Recipe.findOne(recipeId)
             .populate('steps')
-            .exec(function (err, foundRecipe) {
+            .exec(function (err, foundUser) {
                 if (err) { return next(err); }
 
-                if (!foundRecipe) { return res.notFound({ error: 'No recipe found' }); }
+                if (!foundUser) { return res.notFound({ error: 'No recipe found' }); }
 
                 return res.view('static',
                     {
-                        title: foundRecipe.title,
-                        description: foundRecipe.steps[0].description,
-                        imageUrl: foundRecipe.coverImageUrl,
-                        url: 'https://www.tastysnap/app/recipe/' + foundRecipe.id,
+                        title: foundUser.title,
+                        description: foundUser.steps[0].description,
+                        imageUrl: foundUser.coverImageUrl,
+                        url: sails.getBaseurl() + '/app/recipe/' + foundUser.id,
                         layout: false
                     });
             });
@@ -77,7 +83,7 @@ module.exports = {
                                         title: foundCollection.title,
                                         description: foundCollection.description,
                                         imageUrl: foundCollection.coverImageUrl,
-                                        url: 'https://www.tastysnap/app/collection/' + foundCollection.id,
+                                        url: sails.getBaseurl() + '/app/collection/' + foundCollection.id,
                                         layout: false
                                     });
                             }
@@ -88,7 +94,7 @@ module.exports = {
                                     title: foundCollection.title,
                                     description: foundCollection.description,
                                     imageUrl: foundCollectionRecipe.recipe.coverImageUrl,
-                                    url: 'https://www.tastysnap/app/collection/' + foundCollection.id,
+                                    url: sails.getBaseurl() + '/app/collection/' + foundCollection.id,
                                     layout: false
                                 });
                         });
@@ -99,12 +105,55 @@ module.exports = {
                         title: foundCollection.title,
                         description: foundCollection.description,
                         imageUrl: foundCollection.coverImageUrl,
-                        url: 'https://www.tastysnap/app/collection/' + foundCollection.id,
+                        url: sails.getBaseurl() + '/app/collection/' + foundCollection.id,
                         layout: false
                     });
 
 
             });
+    },
+
+     /**
+    * @api {get} /static/app/profile/:user Serve a Profile content
+    * @apiName StaticContent
+    * @apiGroup Profile
+    *
+    * @apiDescription Serve per servire pagine statiche ai scraper
+    * dei social network. In questo caso viene usato per i profili.
+    *
+    */
+    profile: function (req, res, next) {
+        var userId = req.param('user');
+        if (!userId) { return next(); }
+
+        User.findOne(userId)
+            .exec(function (err, foundUser) {
+                if (err) { return next(err); }
+
+                if (!foundUser) { return res.notFound({ error: 'No user found' }); }
+
+                return res.view('static',
+                    {
+                        title: foundUser.name + ' ' + foundUser.surname,
+                        description: defaults.description,
+                        imageUrl: foundUser.coverImageUrl,
+                        url: sails.getBaseurl() + '/app/profile/' + foundUser.id,
+                        layout: false
+                    });
+            });
+    },
+
+    default: function (req, res, next) {
+        var new_url = sails.getBaseurl() + req.url.replace('static/', '');
+
+        return res.view('static',
+        {
+            title: defaults.title,
+            description: defaults.description,
+            imageUrl: defaults.imageUrl,
+            url: new_url,
+            layout: false
+        });
     }
 
 };

@@ -55,12 +55,19 @@ module.exports.http = {
     *                                                                           *
     ****************************************************************************/
 
+    /**
+     * Middleware che si occupa di loggare le richieste.
+     */
     myRequestLogger: function (req, res, next) {
       console.log("Requested :: ", req.method, req.url);
       //console.log(req.headers);
       return next();
     },
 
+    /**
+     * Middleware usato per gestire le richieste da parte di scraper di
+     * vari social network ecc..
+     */
     serverSideRender: function (req, res, next) {
       
       // se non si tratta di una richiesta già static allora procedo
@@ -68,10 +75,10 @@ module.exports.http = {
         var user_agent = req.headers['user-agent'];
         console.info("user agent: ", user_agent);
 
+        // se si tratta di un scraper (crawler) allora lo reinderizzo su 
+        // una pagina statica corrispondente a quella richiesta
         if (new RegExp('facebookexternalhit\/[0-9]|Twitterbot|Pinterest|Google.*snippet|WhatsApp\/[0-9]').test(user_agent)) {
           return res.redirect('/static' + req.url);
-        } else {
-          console.log("non è un crawler");
         }
       }
 

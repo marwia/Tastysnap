@@ -105,11 +105,30 @@ var viewRoutes = {
     },
 
     /**
-     * Gestione di pagine statiche per i web crawler.
+     * Gestione di pagine statiche per i web scrapers.
      */
 
     'get /static/app/recipe/:recipe': 'StaticController.recipe',
     'get /static/app/collection/:collection': 'StaticController.collection',
+    'get /static/app/profile/:user': 'StaticController.profile',
+    'get /static/app/profile/:user/:type': 'StaticController.profile',
+
+    // Defaults for app
+    'get /login': 'StaticController.default',
+    'get /static/about': 'StaticController.default',
+    'get /static/app/home/:type': 'StaticController.default',
+    'get /static/app/near_recipes': 'StaticController.default',
+    'get /static/app/activites': 'StaticController.default',
+    'get /static/app/viewed_recipes': 'StaticController.default',
+    'get /static/app/favorite_recipes': 'StaticController.default',
+    'get /static/app/followed_collections': 'StaticController.default',
+    'get /static/app/tasted_recipes': 'StaticController.default',
+
+    // Other defaults
+    'get /static/info': 'StaticController.default',
+    'get /static/terms': 'StaticController.default',
+    'get /static/privacy': 'StaticController.default',
+    'get /static/cookie': 'StaticController.default',
 }
 
 
