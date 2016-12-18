@@ -66,6 +66,7 @@ module.exports.http = {
       // se non si tratta di una richiesta già static allora procedo
       if (new RegExp('^\/static').test(req.url) == false) {
         var user_agent = req.headers['user-agent'];
+        console.info("user agent: ", user_agent);
 
         if (new RegExp('facebookexternalhit\/[0-9]|Twitterbot|Pinterest|Google.*snippet').test(user_agent)) {
           return res.redirect('/static' + req.url);
