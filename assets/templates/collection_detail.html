@@ -19,12 +19,10 @@
 
 <div class="container-fluid collection_detail">
     <div class="row">
-    
         <!-- HEADER (titolo + sfondo + profilo) -->
         <div class="collection_header collection_header_background">
             <!-- Profilo -->
-            <div class="text-center collection_profile_link"  >
-                
+            <div class="text-center collection_profile_link">
                 <div class="darken_profile_photo" uib-tooltip="Ultima modifica {{formatDate(detailedCollection)}}" tooltip-append-to-body="true">   
                     <a href="app/profile/{{detailedCollection.author.id}}" class="text-center image-link">
                         <div class="img-circle collection_profile_photo" back-img="{{ getUserProfileImage(detailedCollection.author) }}"></div>
@@ -32,7 +30,6 @@
                         <h5><strong>{{detailedCollection.author.name}} {{detailedCollection.author.surname}}</strong></h5>
                     </a>
                 </div>
-                
             </div>
             <!-- Titolo collection -->
             <div class="text-center">
@@ -42,7 +39,6 @@
         </div>
 
         <!-- Navbar scroll top -->
-        
         <nav class="collection_nav navbar-inverse" id="collection_nav" set-class-when-at-top="collection_nav-scrolled" padding-when-at-top="0">
             <div class="tasty_container">
                 <p class="navbar-text" uib-tooltip="Visualizzazioni" tooltip-append-to-body="true"><i class="fa fa-eye" aria-hidden="true"></i> {{detailedCollection.viewsCount}}</p>
@@ -62,7 +58,6 @@
                 </button>
             </div>
         </nav>
-        
 
         <!-- Card -->
         <div class="collection_card_con tasty_container_margin text-center">
@@ -71,6 +66,7 @@
                 <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
                     show-remove-button="recipeRemoveOn" remove-callback="removeRecipe(recipe)"
                     ng-repeat="recipe in detailedCollection.recipes"></recipe-card>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
