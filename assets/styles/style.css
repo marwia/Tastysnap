@@ -520,8 +520,7 @@ ul.top_menu_notify_dropdown {
     margin: 15px;
 	margin-bottom: 45px;
     position: relative;
-	float: left;
-    /*display: inline-flex;*/
+    display: inline-flex;
 	
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
