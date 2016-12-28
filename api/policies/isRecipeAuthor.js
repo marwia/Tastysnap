@@ -10,7 +10,7 @@
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Policies
  */
 
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
     var user = req.payload;
 
     var id = req.param('id');
@@ -21,7 +21,7 @@ module.exports = function(req, res, next) {
 
     Recipe
         .findOne(id)
-        .exec(function(err, originalRecipe) {
+        .exec(function (err, originalRecipe) {
             if (err) { return next(err); }
 
             if (!originalRecipe) { return res.notFound({ error: 'No recipe found' }); }
@@ -32,10 +32,18 @@ module.exports = function(req, res, next) {
                 delete req.body.author;// cancello elementi inopportuni
                 req.recipe = originalRecipe;
                 next();
-            
-            // altrimenti verifico se l'utente possiede permessi d'amministratore   
+
+                // altrimenti verifico se l'utente possiede permessi d'amministratore   
             } else {
-                sails.policies.hasAdminPermission(req, res, next);
+                UserPermission
+                    .findOne({ email: user.email, type: 'admin' })
+                    .exec(function (err, foundUser) {
+                        if (err) { return next(err); }
+
+                        if (!foundUser) { return res.json(401, { error: 'NoPermission' }); }
+
+                        next();
+                    });
             }
         });
 

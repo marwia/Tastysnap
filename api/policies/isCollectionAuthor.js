@@ -47,9 +47,16 @@ module.exports = function(req, res, next) {
 
             // altrimenti verifico se l'utente possiede permessi d'amministratore   
             } else {
-                sails.policies.hasAdminPermission(req, res, next);
+                UserPermission
+                    .findOne({ email: user.email, type: 'admin' })
+                    .exec(function (err, foundUser) {
+                        if (err) { return next(err); }
+
+                        if (!foundUser) { return res.json(401, { error: 'NoPermission' }); }
+
+                        next();
+                    });
             }
-                //return res.json(401, { error: 'NoPermission' });
         });
 
 };
