@@ -73,7 +73,6 @@ module.exports.http = {
       // se non si tratta di una richiesta già static allora procedo
       if (new RegExp('^\/static|^\/app_images|^\/about_assets').test(req.url) == false) {
         var user_agent = req.headers['user-agent'];
-        console.info("user agent: ", user_agent);
 
         // se si tratta di un scraper (crawler) allora lo reinderizzo su 
         // una pagina statica corrispondente a quella richiesta

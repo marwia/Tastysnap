@@ -1,0 +1,22 @@
+<div class="starter-template">
+        <h1>Gestione raccolte</h1>
+        <p class="lead">Interfaccia amministratore per gestire le raccolte.<br> Nel caso che una raccolta viola le regole può essere eliminata.</p>
+      </div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Titolo</th>
+      <th>Autore</th>
+      <th>Azioni</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="collection in collections">
+      <td><a href="app/collection/{{collection.id}}" target="_blank">{{collection.id}}</a></td>
+      <td>{{collection.title}}</td>
+      <td>{{collection.author.name}} {{collection.author.surname}}</td>
+      <td><button type="button" class="btn btn-warning btn-sm" ng-click="openEliminationModal(collection)">Elimina raccolta</button></td>
+    </tr>
+  </tbody>
+</table>

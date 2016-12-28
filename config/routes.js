@@ -97,6 +97,20 @@ var viewRoutes = {
         }
     },
 
+    'get /admin': {
+        view: 'admin',
+        locals: {
+            layout: false
+        }
+    },
+
+    'get /admin/*': {
+        view: 'admin',
+        locals: {
+            layout: false
+        }
+    },
+
     'get /about': {
         view: 'about',
         locals: {
@@ -458,7 +472,15 @@ var apiRoutes = addGlobalPrefix({
     *                                                                          *
     ***************************************************************************/
     
-    'get /auth/invitation': 'AuthController.isInvitationRequired'
+    'get /auth/invitation': 'AuthController.isInvitationRequired',
+
+    /***************************************************************************
+    *                                                                          *
+    * User Permission                                                          *
+    *                                                                          *
+    ***************************************************************************/
+
+    'get /auth/permission': 'UserPermissionController.findOne'
 
 
 });
@@ -473,7 +495,7 @@ var paths = Object.keys(apiRoutes);
 Credo che la regex significhi esegui questa route se non contiene la parola api ne la parola csrfToken
 (ne view aggiunte in questo modo: "|^\/prova" aggiunta prima dell'ultimo "/") 
 */
-apiRoutes['get *'] = { view: 'index', skipAssets: true, skipRegex: /^\/api\/.*$|csrfToken|^\/terms|^\/info|^\/cookie|^\/privacy|^\/about|^\/static/};
+apiRoutes['get *'] = { view: 'index', skipAssets: true, skipRegex: /^\/api\/.*$|csrfToken|^\/terms|^\/info|^\/cookie|^\/privacy|^\/about|^\/admin|^\/static/};
 
 // ritorno il merge dei due oggetti contenenti routes
 var extend = require('util')._extend

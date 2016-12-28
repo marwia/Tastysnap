@@ -47,7 +47,7 @@ module.exports.policies = {
   // Elenco dei casi particolari
   
   'UserController' : {
-    'destroy' : false, // Eliminazione non consentita
+    'destroy' : ['isAuthorized', 'hasAdminPermission'], // Eliminazione consentita soltanto all'amministratore
     'uploadCoverImage': ['isAuthorized', 'findUser'],
     'getLastSeen': ['isAuthorized'],
     'registerToNotifications' : ['isAuthorized'],
@@ -91,7 +91,7 @@ module.exports.policies = {
     'create' : ['isAuthorized', 'isRecipeAuthor'],
     'update' : ['isAuthorized', 'isRecipeAuthor'],
     'destroy' : ['isAuthorized', 'isRecipeAuthor'],
-    'findSteps' : ['findRecipe']
+    'findSteps' : ['findRecipe'],
   },
 
   'IngredientGroupController' : {
@@ -195,6 +195,11 @@ module.exports.policies = {
     'recommendFor' : 'isAuthorized',
     'mostSimilarUsers' : 'isAuthorized',
     'leastSimilarUsers' : 'isAuthorized'
+  },
+
+  'UserPermissionController' : {
+    '*': false,
+    'findOne' : 'isAuthorized'
   }
 
 

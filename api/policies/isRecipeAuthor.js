@@ -32,8 +32,11 @@ module.exports = function(req, res, next) {
                 delete req.body.author;// cancello elementi inopportuni
                 req.recipe = originalRecipe;
                 next();
-            } else
-                return res.json(401, { error: 'NoPermission' });
+            
+            // altrimenti verifico se l'utente possiede permessi d'amministratore   
+            } else {
+                hasAdminPermission(req, res, next);
+            }
         });
 
 };

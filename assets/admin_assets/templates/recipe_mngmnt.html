@@ -1,0 +1,22 @@
+<div class="starter-template">
+  <h1>Gestione ricette</h1>
+  <p class="lead">Interfaccia amministratore per gestire le ricette.<br> Nel caso che una ricetta viola le regole può essere eliminata.</p>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Titolo</th>
+      <th>Autore</th>
+      <th>Azioni</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="recipe in recipes">
+      <td><a href="app/recipe/{{recipe.id}}" target="_blank">{{recipe.id}}</a></td>
+      <td>{{recipe.title}}</td>
+      <td>{{recipe.author.name}} {{recipe.author.surname}}</td>
+      <td><button type="button" class="btn btn-warning btn-sm" ng-click="openEliminationModal(recipe)">Elimina ricetta</button></td>
+    </tr>
+  </tbody>
+</table>

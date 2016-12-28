@@ -162,7 +162,15 @@ module.exports = {
      * @apiUse InvalidTokenError
      */
     find: function (req, res, next) {
-        UserService.find(req, res, next);
+        if (req.param('count')) {
+            User.count().exec(function(err, count) {
+                if (err) { return next(err); }
+
+                return res.json(count);
+            });
+        } else {
+            UserService.find(req, res, next);
+        }
     },
 
     /**

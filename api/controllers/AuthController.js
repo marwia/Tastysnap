@@ -26,7 +26,7 @@ var finishLogin = function (res, user, isNewUser) {
     if (user) {
         // rispondo con il token generato in base all'oggetto "user"
         // così, ogni volta che verifico il token posso risalire ai dati dell'utente
-        var payload = { id: user.id, name: user.name, surname: user.surname };
+        var payload = { id: user.id, name: user.name, surname: user.surname, email: user.email };
         console.log("payload del token:", payload);
         return res.redirect('/login?token=' + jwToken.issue(payload) + '&new=' + isNewUser);
     } else {

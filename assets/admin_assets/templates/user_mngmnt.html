@@ -1,0 +1,24 @@
+<div class="starter-template">
+  <h1>Gestione utenti</h1>
+  <p class="lead">Interfaccia amministratore per gestire gli utenti.<br> Nel caso che un utente violi le regole può essere eliminato.</p>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Firstname</th>
+      <th>Lastname</th>
+      <th>Email</th>
+      <th>Azioni</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="user in users">
+      <td><a href="app/profile/{{user.id}}" target="_blank">{{user.id}}</a></td>
+      <td>{{user.name}}</td>
+      <td>{{user.surname}}</td>
+      <td>{{user.email}}</td>
+      <td><button type="button" class="btn btn-warning btn-sm" ng-click="openEliminationModal(user)">Elimina utente</button></td>     
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="adminApp">
+
+<head>
+    <title>TastySnap</title>
+
+    <base href="/admin">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="/libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/font-awesome/css/font-awesome.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">TastySnap admin</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/admin/user_mngmnt">Gestione utenti</a></li>
+            <li><a href="/admin/recipe_mngmnt">Gestione ricette</a></li>
+            <li><a href="/admin/collection_mngmnt">Gestione raccolte</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container" style="padding-top: 50px;" ui-view="main">   
+
+      
+
+    </div><!-- /.container -->
+
+
+    <!-- Custom JS -->
+    <script src="libs/lodash/dist/lodash.min.js"></script>
+    <script src="libs/jquery/dist/jquery.min.js"></script>
+    <script src="libs/angular/angular.js"></script>
+    <script src="libs/angular-filter/dist/angular-filter.min.js"></script>
+    <script src="libs/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="libs/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="libs/angular-cookies/angular-cookies.min.js"></script>
+    <script src="libs/angular-animate/angular-animate.min.js"></script>
+    
+
+    <!-- Angular Admin App -->
+    <script src="admin_assets/js/app.js"></script>
+    <script src="admin_assets/js/appRoutes.js"></script>
+    <script src="admin_assets/js/services/AuthService.js"></script>
+    <script src="admin_assets/js/services/UserService.js"></script>
+    <script src="admin_assets/js/services/RecipeService.js"></script>
+    <script src="admin_assets/js/services/CollectionService.js"></script>
+    <script src="admin_assets/js/controllers/UserMngmntCtrl.js"></script>
+    <script src="admin_assets/js/controllers/RecipeMngmntCtrl.js"></script>
+    <script src="admin_assets/js/controllers/CollectionMngmntCtrl.js"></script>
+    
+</body>
+
+</html>
