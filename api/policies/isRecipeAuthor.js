@@ -26,11 +26,12 @@ module.exports = function (req, res, next) {
 
             if (!originalRecipe) { return res.notFound({ error: 'No recipe found' }); }
 
+            // per sicurezza elimino l'author 
+            delete req.body.author;// cancello elementi inopportuni
+            req.recipe = originalRecipe;
+
             // verifico che l'utente è il creatore della risorsa
             if (originalRecipe.author == user.id) {
-                // per sicurezza elimino l'author 
-                delete req.body.author;// cancello elementi inopportuni
-                req.recipe = originalRecipe;
                 next();
 
                 // altrimenti verifico se l'utente possiede permessi d'amministratore   

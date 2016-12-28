@@ -37,12 +37,13 @@ module.exports = function(req, res, next) {
             if (err) { return next(err); }
 
             if (!originalCollection) { return res.notFound({error: 'No collection found'}); }
+
+            // per sicurezza elimino l'author 
+            delete req.body.user;// cancello elementi inopportuni
+            req.collection = originalCollection;
             
             // verifico che l'utente è il creatore della risorsa
             if (originalCollection.author == user.id) {
-                // per sicurezza elimino l'author 
-                delete req.body.user;// cancello elementi inopportuni
-                req.collection = originalCollection;
                 next();
 
             // altrimenti verifico se l'utente possiede permessi d'amministratore   
