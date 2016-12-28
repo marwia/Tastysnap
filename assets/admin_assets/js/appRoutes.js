@@ -48,11 +48,7 @@ angular.module('adminAppRoutes', []).config([
                 resolve: {
                     userPromise: ['User', function (User) {
                         console.log("getUsers");
-                        return User.search('a', null, null, function (response) {
-                            console.info("success", response);
-                        }, function (response) {
-                            console.info("errore", response)
-                        });
+                        return User.getUsers();
                     }]
                 }
             })

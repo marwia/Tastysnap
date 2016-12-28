@@ -34,7 +34,7 @@ angular.module('UserService', [])
                             o.users.push(response.data[i]);
                         }
                     } else {
-                        angular.copy(o.users, response.data);
+                        angular.extend(o.users, response.data);
                     }
                     if (successCB)
                         successCB(response);
@@ -62,13 +62,13 @@ angular.module('UserService', [])
         o.delete = function(user,successCB, errorCB) {
             return $http.delete(server_prefix + '/user/' + user.id)
                 .then(function(response) {
-                    // tolgo l'eventuale elemento 
-                    for (var i = 0; i < o.users; i++) {
-                            if (o.users[i].id == user.id){
-                                o.users.splice(i, 1);
-                                break;
-                            }
+                    // remove the deleted collection
+                    for (var i in o.users) {
+                        if (o.users[i].id == user.id) {
+                            o.users.splice(i, 1);
+                            break;
                         }
+                    }
                     if (successCB)
                         successCB(response);
 
