@@ -113,9 +113,7 @@ body {
 }
 
 .tasty_title_text{
-	margin-top: 3px;
-    /*font-weight: 700;*/
-    /*font-size: 2.1em;*/      
+	margin-top: 3px;  
 	
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -505,10 +503,6 @@ ul.top_menu_notify_dropdown {
 		font-weight: 300 !important;
 		font-size: 0.8em !important;
 	}
-
-	.footer_con{
-		*padding-bottom: 20px;
-	}
 }
 
 /* ----------------------------------------------------------------- 4 ------------------------------------------------------ */
@@ -518,7 +512,6 @@ ul.top_menu_notify_dropdown {
 	width: 233px;
     height: 376px;
     margin: 15px;
-	margin-bottom: 45px;
     position: relative;
     display: inline-flex;
 	
@@ -583,7 +576,6 @@ ul.top_menu_notify_dropdown {
 .card_info{
 	width: 100%;
 	height: 100%;
-	background-color: #62231D; /* example */
 }
 
 .color_caption{
@@ -791,7 +783,7 @@ ul.top_menu_notify_dropdown {
 }
 
 .collection_card_title{
-	color:white; /* example */
+	color:white;
     position: absolute;
     bottom: 46px;
     width: 100%;
@@ -1037,7 +1029,6 @@ ul.top_menu_notify_dropdown {
 }
 
 .profile_menu{
-	width:100%;
 	position: absolute;
     bottom: 0px;
     left: 0;
@@ -1359,23 +1350,6 @@ tr.recipe_sp_3_tr{
     height: 35px;
 }
 
-/*
-.recipe_rating_con:hover .recipe_rating_2{
-    display: block;
-}
-
-.recipe_rating_con:hover .recipe_rating_1{
-    display: none;
-}
-
-.recipe_rating_1{
-    display: block;
-}
-
-.recipe_rating_2{
-    display: none;
-}*/
-
 .rating > span:hover:before {
    content: "\2605";
    position: absolute;
@@ -1523,6 +1497,12 @@ HR.recipe_hr{
 
 .darken_profile_photo {
 	display: inline-block;
+
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
 }
  
 .darken_profile_photo:hover, .sidebar-image:hover {
@@ -1763,24 +1743,25 @@ HR.recipe_hr{
     margin: 5px -15px 5px -15px;
 }
 
-.modal-share-collection_media{
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgb(233, 233, 233);
-    border-top: 1px solid rgb(233, 233, 233);
+.share_button{
+	width: 80%;
+	max-width: 233px;
+	margin-top: 15px;
 }
 
-.modal-share-collection_img{
-    width: 40px;
-    height: 40px;
-    position: relative;
-    background-size: cover;
-    background-position: center;
+.share_button.facebook{
+	background-color: #3B5999;
+	color: white;
 }
 
-.modal-share-collection_title{
-    margin-top:10px;
-    font-size: 15px
+.share_button.twitter{
+	background-color: #55ACEE;
+	color: white;
+}
+
+.share_button.google{
+	background-color: #DD4B39;
+	color: white;
 }
 
 @media screen and (max-width: 720px){
@@ -1979,16 +1960,8 @@ footer{
 	width: 100%;
 	height: 500px;
 	margin-top: -30px;
-	/*background-color: rgba(0, 0, 0, 1);*/   
 	position: absolute;
 	z-index: 5;
-	
-	/*
-	-webkit-box-shadow: 0px 120px 75px 20px rgba(40, 40, 40, 1);
-	-moz-box-shadow:    0px 120px 75px 20px rgba(40, 40, 40, 1);
-	box-shadow:         0px 120px 75px 20px rgba(40, 40, 40, 1);
-	*/
-	
 }
 
 .welcome_home_card_container{
@@ -2076,7 +2049,6 @@ footer{
 }
 
 /* Il seguente stile serve a centrare la modal su desktop */
-
 @media only screen and (min-width: 768px) {
   .modal {
     text-align: center;
@@ -2112,7 +2084,6 @@ footer{
 }
 
 /* Styling del footer di un modal */
-
 .modal-footer {
 	background-color: #e5e5e5;
 	border-top: 1px solid #e5e5e5;
@@ -2158,7 +2129,6 @@ rzslider .rz-pointer.rz-active:after {
 /* ------------------------------------------------------  MODAL CREAZIONE RICETTA  --------------------------------------------- */
 
 .create_recipe_modal {
-    /* min-height: 200px; */
 	padding-bottom: 25px;
 }
 
