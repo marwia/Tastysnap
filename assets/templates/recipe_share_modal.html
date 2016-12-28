@@ -16,13 +16,13 @@
             <div class="container-fluid">
                 <div class="row modal-share-collection_row text-center">
                     <div class="col-md-12">
-                        <a class="btn btn-default share_button facebook" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.tastysnap.com%2F&amp;src=sdkpreparse" role="button" target="_blanc">Facebook</a>
+                        <a class="btn btn-default share_button facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://tastysnap.com/app/recipe/{{selectedRecipe.id}}" role="button" target="_blanc">Facebook</a>
                     </div>
                     <div class="col-md-12">
-                        <a class="btn btn-default share_button twitter" href="https://twitter.com/intent/tweet?text=Hello%20world" role="button" target="_blanc">Twitter</a>
+                        <a class="btn btn-default share_button twitter" href="https://twitter.com/intent/tweet?text={{selectedRecipe.title}}&url=http://tastysnap.com/app/recipe/{{selectedRecipe.id}}" role="button" target="_blanc">Twitter</a>
                     </div>
                     <div class="col-md-12">
-                        <a class="btn btn-default share_button google" href="https://plus.google.com/share?url=http://www.tastysnap.com" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                        <a class="btn btn-default share_button google" href="https://plus.google.com/share?url=http://tastysnap.com/app/recipe/{{selectedRecipe.id}}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
                             GOOGLE+
                         </a>
                     </div>

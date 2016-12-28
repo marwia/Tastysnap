@@ -81,8 +81,7 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                     $scope.selectedRecipe = selectedRecipe;
                     // azioni possibili all'interno della modale
                     $scope.ok = function () {
-                        // todo
-
+                        // to do
                         $uibModalInstance.dismiss('cancel');
                     };
 
