@@ -914,33 +914,21 @@ module.exports = {
             // eliminazione immagine di copertina
             if (recipe.coverImageUrl != "") {
                 var filename = recipe.coverImageUrl.split('/').pop();
-                fs.unlink(localImagesDir + "/" + filename, function (err) {
-                    if (err) {
-                        return console.error(err);
-                    }
-                    console.log("File deleted successfully!");
-                });
+
+                ImageUploadService.deleteLocalImage(filename);
             }
             // eliminazione immagine di copertina sfocata
             if (recipe.blurredCoverImageUrl != "") {
                 var filename = recipe.blurredCoverImageUrl.split('/').pop();
-                fs.unlink(localImagesDir + "/" + filename, function (err) {
-                    if (err) {
-                        return console.error(err);
-                    }
-                    console.log("File deleted successfully!");
-                });
+
+                ImageUploadService.deleteLocalImage(filename);
             }
             // eliminazione delle ulteriori immagini
             for (var i in recipe.otherImageUrls) {
                 var fileUrl = recipe.otherImageUrls[i];
                 var filename = fileUrl.split('/').pop();
-                fs.unlink(localImagesDir + "/" + filename, function (err) {
-                    if (err) {
-                        return console.error(err);
-                    }
-                    console.log("File deleted successfully!");
-                });
+                
+                ImageUploadService.deleteLocalImage(filename);
             }
         }
         else {

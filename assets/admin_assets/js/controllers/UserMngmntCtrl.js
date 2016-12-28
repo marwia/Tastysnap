@@ -26,7 +26,7 @@ angular.module('UserMngmntCtrl', [])
                         $scope.ok = function () {
                             $scope.loading = true
 
-                            User.delete(selectedUser.id,
+                            User.delete(selectedUser,
                                 function (response) {
                                     //do what you need here
                                     $scope.loading = false;

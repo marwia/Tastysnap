@@ -59,7 +59,7 @@ angular.module('UserService', [])
             }, errorCB);
         };
 
-        o.delete = function(user) {
+        o.delete = function(user,successCB, errorCB) {
             return $http.delete(server_prefix + '/user/' + user.id)
                 .then(function(response) {
                     // tolgo l'eventuale elemento 

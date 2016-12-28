@@ -47,6 +47,19 @@ module.exports = {
     },
 
     /**
+     * Funzione per cancellare le immagini locali.
+     * Usato solo in fase di sviluppo.
+     */
+    deleteLocalImage: function (filename) {
+        fs.unlink(localImagesDir + "/" + filename, function (err) {
+            if (err) {
+                return console.error(err);
+            }
+            console.log("File deleted successfully!");
+        });
+    },
+
+    /**
      * Upload su un bucket S3.
      */
     s3Upload: function (err, filesUploaded, whenDone) {
