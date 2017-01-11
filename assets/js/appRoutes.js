@@ -47,7 +47,11 @@ angular.module('appRoutes', []).config([
                         resolve: {
                             userPromise: ['User', 'Auth', function (user, Auth) {
                                 if (Auth.isLoggedIn())
-                                    return user.getCurrentUser();
+                                    return user.getCurrentUser(null, function(response) {
+                                        // il token è valido ma l'utente non è stato trovato
+                                        Auth.logOut();// cancello il token
+                                        $state.go('app.ext_home');// vado nella home per non iscritti
+                                    });
                             }]
                         }
                     },

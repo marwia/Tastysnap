@@ -23,10 +23,13 @@ angular.module('UserService', [])
         /**
          * Metodo per richiedere l'utente correntemente loggato.
          */
-        service.getCurrentUser = function() {
+        service.getCurrentUser = function(successCB, errorCB) {
             return $http.get(server_prefix + '/user/' + Auth.currentUser().id).then(function(response) {
                 angular.copy(response.data, service.currentUser);
-            });
+
+                if (successCB)
+                    successCB(response);
+            }, errorCB);
         };
 
         /**
