@@ -49,6 +49,9 @@ angular.module('adminAppRoutes', []).config([
                     userPromise: ['User', function (User) {
                         console.log("getUsers");
                         return User.getUsers();
+                    }],
+                    invitationCheckPromise: ['Auth', function (Auth) {
+                        return Auth.isInvitationRequired();
                     }]
                 }
             })

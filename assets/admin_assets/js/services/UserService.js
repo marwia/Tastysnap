@@ -90,7 +90,7 @@ angular.module('UserService', [])
                     if (successCB)
                         successCB(response);
                 }, errorCB);
-        }
+        };
 
         return o;
 
