@@ -724,6 +724,14 @@ ul.top_menu_notify_dropdown {
     background-color:rgba(0,0,0,0.6);
 }
 
+.share_collection .box{
+	width: 100% !important;
+}
+
+.share_collection .box .cont_row_share{
+	margin-top: 30%;
+}
+
 .box{
     position: relative;
 	margin: 15px;
