@@ -9,8 +9,9 @@
 
 var myApp = angular.module('adminApp', ['ui.router', 'ui.bootstrap', 'ngCookies',
 				'AuthService', 'UserService', 'RecipeService', 'CollectionService',
+                'ProductService', 'myDropdown-directive',
                 'adminAppRoutes', 'UserMngmntCtrl', 'RecipeMngmntCtrl',
-                'CollectionMngmntCtrl']);
+                'CollectionMngmntCtrl', 'ProductMngmntCtrl']);
 
 /**
  * Configurazione iniziale dell'app, viene fatta una sola volta all'avvio.

@@ -6,7 +6,7 @@
  */
 
 angular
-    .module('sampleApp')
+    .module('myDropdown-directive', [])
     .directive('myDropdown', function ($compile) {
     return {
         restrict: 'E',
