@@ -45,9 +45,9 @@ angular.module('appRoutes', []).config([
                     'navbar@app': {
                         templateUrl: 'partials/navbar.html',
                         resolve: {
-                            userPromise: ['User', 'Auth', function (user, Auth) {
+                            userPromise: ['User', 'Auth', function (User, Auth) {
                                 if (Auth.isLoggedIn())
-                                    return user.getCurrentUser(null, function(response) {
+                                    return User.getCurrentUser(null, function(response) {
                                         // il token è valido ma l'utente non è stato trovato
                                         Auth.logOut();// cancello il token
                                         $state.go('app.ext_home');// vado nella home per non iscritti

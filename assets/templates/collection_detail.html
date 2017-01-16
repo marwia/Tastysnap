@@ -43,7 +43,7 @@
             <div class="tasty_container">
                 <p class="navbar-text" uib-tooltip="Visualizzazioni" tooltip-append-to-body="true"><i class="fa fa-eye" aria-hidden="true"></i> {{detailedCollection.viewsCount}}</p>
                 <p class="navbar-text" uib-tooltip="Followers" tooltip-append-to-body="true"><i class="fa fa-heart" aria-hidden="true"></i> {{detailedCollection.followersCount}}</p>
-                <p class="navbar-text"><i class="fa fa-share" aria-hidden="true"></i> Condividi</p>
+                <p class="navbar-text"><a href="#" ng-click="openShareModal()"><i class="fa fa-share" aria-hidden="true"></i> Condividi</a></p>
 
                 <!-- Titolo da centrare -->
                 <p class="navbar-text" ng-hide="showUpArrow"><strong>{{detailedCollection.title}}</strong></p>

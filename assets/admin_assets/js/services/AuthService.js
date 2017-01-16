@@ -11,7 +11,9 @@ angular.module('AuthService', [])
     var server_prefix = '/api/v1';
         
     // service body    
-    var auth = {};
+    var auth = {
+        isInvitationRequired: false
+    };
 
     // Funzione per salvare il token in locale
     auth.saveToken = function (token) {
@@ -66,15 +68,16 @@ angular.module('AuthService', [])
         });
     };
 
-    auth.isInvitationRequired = function (successCB) {
+    auth.isInvitationRequired = function (successCB, errorCB) {
         return $http.get(server_prefix + '/auth/invitation').then(function (response) {
-            successCB(response.data);
-        });
+            auth.isInvitationRequired = response.data.on;
+            if(successCB)
+                successCB(response);
+        }, errorCB);
     };
 
     auth.getPermission = function (successCB, errorCB) {
         return $http.get(server_prefix + '/auth/permission').then(function (response) {
-            
             if(successCB)
                 successCB(response);
         }, errorCB);

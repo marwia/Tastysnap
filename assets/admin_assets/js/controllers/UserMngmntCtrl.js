@@ -8,11 +8,12 @@
 angular.module('UserMngmntCtrl', [])
     .controller('UserMngmntCtrl', [
         '$scope',
-        'User',
+        'User', 'Auth',
         '$uibModal',
-        function ($scope, User, $uibModal) {
+        function ($scope, User, Auth, $uibModal) {
 
             $scope.users = User.users;
+            $scope.isInvitationRequired = Auth.isInvitationRequired;
 
             $scope.openEliminationModal = function (selectedUser) {
                 $uibModal.open({

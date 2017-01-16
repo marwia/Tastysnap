@@ -1,0 +1,125 @@
+<div class="modal-header">
+    <h3 class="modal-title">Aggiungi prodotto</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="inputName" class="col-sm-2 control-label">Nome</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputName" ng-model="product.name.long" placeholder="Nome">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputCategory" class="col-sm-2 control-label">Categoria</label>
+            <div class="col-sm-10">
+                <my-dropdown id="inputCategory" data-menu-type="button" select-val="product.group = selectedVal" preselected-item="ingredientGroups[0]" data-dropdown-data="ingredientGroups"></my-dropdown>           
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPortions" class="col-sm-2 control-label">Porzioni</label>
+            <div class="col-sm-10">
+
+                <div class="input-group" style=" padding-bottom: 10px;">
+                    <input type="number" class="form-control" id="inputPortions" ng-model="product.portions[0].g" placeholder="Per cucchiaio">
+                    <span class="input-group-addon" id="basic-addon2">g/cucchiaio</span>
+                </div>
+
+                <div class="input-group">
+                    <input type="number" class="form-control" id="inputPortions" ng-model="product.portions[1].g" placeholder="Per bicchiere">
+                    <span class="input-group-addon" id="basic-addon2">g/bicchiere</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputName" class="col-sm-2 control-label">Produttore</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputName" ng-model="product.manufacturer" placeholder="Produttore">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEnergy" class="col-sm-2 control-label">Energia</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="inputEnergy" ng-model="product.nutrients[3].value" placeholder="Energia">
+                    <span class="input-group-addon" id="basic-addon2">kcal/100g</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputProtein" class="col-sm-2 control-label">Proteine</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="inputProtein" ng-model="product.nutrients[0].value" placeholder="Proteine">
+                    <span class="input-group-addon" id="basic-addon2">g/100g</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputCarbs" class="col-sm-2 control-label">Carboidrati</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="inputCarbs" ng-model="product.nutrients[2].value" placeholder="Carboidrati">
+                    <span class="input-group-addon" id="basic-addon2">g/100g</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputSugar" class="col-sm-2 control-label">Zuccheri</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="inputSugar" ng-model="product.nutrients[7].value" placeholder="Zuccheri">
+                    <span class="input-group-addon" id="basic-addon2">g/100g</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputFat" class="col-sm-2 control-label">Grassi</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="inputFat" ng-model="product.nutrients[1].value" placeholder="Grassi">
+                    <span class="input-group-addon" id="basic-addon2">g/100g</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputFatSat" class="col-sm-2 control-label">Grassi saturi</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="inputFatSat" ng-model="product.nutrients[16].value" placeholder="Grassi saturi">
+                    <span class="input-group-addon" id="basic-addon2">g/100g</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputWater" class="col-sm-2 control-label">Liquidi</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="inputWater" ng-model="product.nutrients[5].value" placeholder="Liquidi">
+                    <span class="input-group-addon" id="basic-addon2">g/100g</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputFiber" class="col-sm-2 control-label">Fibre</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="inputFiber" ng-model="product.nutrients[8].value" placeholder="Fibre">
+                    <span class="input-group-addon" id="basic-addon2">g/100g</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputSodium" class="col-sm-2 control-label">Sodio</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <input type="number" class="form-control" id="inputSodium" ng-model="product.nutrients[14].value" placeholder="Sodio">
+                    <span class="input-group-addon" id="basic-addon2">mg/100g</span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="cancel()">Annulla</button>
+    <button class="btn btn-danger" type="button" ng-click="ok()">Aggiungi prodotto<i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
+</div>

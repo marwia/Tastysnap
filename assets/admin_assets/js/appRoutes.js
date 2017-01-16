@@ -49,6 +49,9 @@ angular.module('adminAppRoutes', []).config([
                     userPromise: ['User', function (User) {
                         console.log("getUsers");
                         return User.getUsers();
+                    }],
+                    invitationCheckPromise: ['Auth', function (Auth) {
+                        return Auth.isInvitationRequired();
                     }]
                 }
             })
@@ -71,6 +74,17 @@ angular.module('adminAppRoutes', []).config([
                 resolve: {
                     collectionPromise: ['Collection', function (Collection) {
                         return Collection.getCollections();
+                    }]
+                }
+            })
+
+            .state('main.product_mngmnt', {
+                url: '/product_mngmnt',
+                templateUrl: 'admin_assets/templates/product_mngmnt.html',
+                controller: 'ProductMngmntCtrl',
+                resolve: {
+                    productPromise: ['Product', function (Product) {
+                        return Product.getProducts();
                     }]
                 }
             })

@@ -9,6 +9,7 @@
 
 var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies', 'xeditable', 'angularFileUpload',
                 'ngMessages', 'uiGmapgoogle-maps', 'angular-spinkit', 'angular.filter', 'ngSails', 'infinite-scroll',
+                'myDropdown-directive',
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
                 'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService', 'ImageUtilsService',
                 'NotificationService', 'ActivityService', 'Utils', 'SearchService', 'PageService',
