@@ -108,6 +108,33 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
 
         };
 
+        // MODALE PER GESTIRE LA CONDIVISIONE DI UNA RICETTA
+
+        $scope.openShareModal = function () {
+            var selectedCollection = $scope.detailedCollection;
+            $uibModal.open({
+                animation: true,
+                templateUrl: 'templates/collection_share_modal.html',
+                controller: function ($uibModalInstance, $scope) {
+                    // passaggio paramteri
+                    $scope.loading = false;
+                    $scope.selectedCollection = selectedCollection;
+                    console.info("selectedCollection", selectedCollection);
+                    // azioni possibili all'interno della modale
+                    $scope.ok = function () {
+                        // to do
+                        $uibModalInstance.dismiss('cancel');
+                    };
+
+                    $scope.cancel = function () {
+                        // to do
+                        $uibModalInstance.dismiss('cancel');
+                    };
+                },
+                size: ''
+            });
+        };
+
         
 
         /**

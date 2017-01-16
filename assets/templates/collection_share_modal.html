@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <h3 class="modal-title text-center">Condividi <strong>{{ selectedCollection.title }}</strong></h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <!-- CONTINER CARD -->
+        <div class="col-xs-12 col-sm-5 col-md-5 text-center">
+
+            <collection-card collection="selectedCollection"></collection-card>  
+        </div>
+
+        <!-- CONTAINER LISTA COLLECTION -->
+        <div class="col-xs-12 col-sm-7 col-md-7">
+            <div class="container-fluid">
+                <div class="row modal-share-collection_row text-center">
+                    <div class="col-md-12">
+                        <a class="btn btn-default share_button facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://tastysnap.com/app/collection/{{selectedCollection.id}}" role="button" target="_blanc">Facebook</a>
+                    </div>
+                    <div class="col-md-12">
+                        <a class="btn btn-default share_button twitter" href="https://twitter.com/intent/tweet?text={{selectedCollection.title}}&url=http://tastysnap.com/app/collection/{{selectedCollection.id}}" role="button" target="_blanc">Twitter</a>
+                    </div>
+                    <div class="col-md-12">
+                        <a class="btn btn-default share_button google" href="https://plus.google.com/share?url=http://tastysnap.com/app/collection/{{selectedCollection.id}}" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                            GOOGLE+
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
