@@ -86,7 +86,7 @@ angular.module('UserService', [])
                     }
                 })
                 .then(function(response) {
-                    angular.copy(o.users_count, response.data);
+                    angular.copy(response.data, o.users_count);
                     if (successCB)
                         successCB(response);
                 }, errorCB);

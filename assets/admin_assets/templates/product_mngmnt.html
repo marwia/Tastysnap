@@ -1,0 +1,23 @@
+<div class="starter-template">
+        <h1>Gestione prodotti</h1>
+        <p class="lead">Interfaccia amministratore per gestire il database degli ingredienti.<br> Nel caso che un prodotto sia mancante può essere aggiunto.</p>
+        <p class="pull-right"><button type="button" class="btn btn-primary btn-sm" ng-click="openAddModal()">Aggiungi prodotto</button></p>
+      </div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Nome</th>
+      <th>Categoria</th>
+      <th>Azioni</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="product in products">
+      <td><a target="_blank">{{product.id}}</a></td>
+      <td>{{product.name.long}}</td>
+      <td>{{product.group}}</td>
+      <td><button type="button" class="btn btn-warning btn-sm" ng-click="openEliminationModal(product)">Elimina prodotto</button></td>
+    </tr>
+  </tbody>
+</table>

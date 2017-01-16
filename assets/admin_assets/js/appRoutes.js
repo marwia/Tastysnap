@@ -78,6 +78,17 @@ angular.module('adminAppRoutes', []).config([
                 }
             })
 
+            .state('main.product_mngmnt', {
+                url: '/product_mngmnt',
+                templateUrl: 'admin_assets/templates/product_mngmnt.html',
+                controller: 'ProductMngmntCtrl',
+                resolve: {
+                    productPromise: ['Product', function (Product) {
+                        return Product.getProducts();
+                    }]
+                }
+            })
+
         // DEFAULT PAGE ==========================================================
         $urlRouterProvider.otherwise(function ($injector, $location) {
             var $state = $injector.get("$state");
