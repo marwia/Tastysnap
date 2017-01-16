@@ -13,13 +13,8 @@
 $(document).ready(function() {
     var overlay = $('.sidebar-overlay');
 
-    overlay.on('click', function() {
-        $(this).removeClass('active');
-        $('#sidebar').removeClass('open');
-    });
-
-    /* my script */
-    $('#menu-toggle').on('click', function() {
+    //click menu toogle
+    $('#menu-toggle').on('click', function(){
         var sidebar = $('#sidebar');
         sidebar.toggleClass('open');
         if ((sidebar.hasClass('sidebar-fixed-left') || sidebar.hasClass('sidebar-fixed-right')) && sidebar.hasClass('open')) {
@@ -30,11 +25,19 @@ $(document).ready(function() {
     });
 });
 
+// if click outside the sidebar
+$(document).mouseup(function (e){
+    var container = $("#sidebar");
+
+    if (!container.is(e.target) && container.has(e.target).length === 0){
+        $('#sidebar').removeClass('open');
+    }
+});
+
 // Sidebar constructor
 //
 // -------------------
 $(document).ready(function() {
-
     var sidebar = $('#sidebar');
     var sidebarHeader = $('#sidebar .sidebar-header');
     var sidebarImg = sidebarHeader.css('background-image');
