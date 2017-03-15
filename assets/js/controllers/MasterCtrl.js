@@ -34,22 +34,21 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
             $cookieStore.put('toggle', $scope.toggle);
             
             //toogle sidebar
+            
             var sidebar = $('#sidebar');
             sidebar.toggleClass('open');
-            if ((sidebar.hasClass('sidebar-fixed-left') || sidebar.hasClass('sidebar-fixed-right')) && sidebar.hasClass('open')) {
-                overlay.addClass('active');
-            } else {
-                overlay.removeClass('active');
-            }
+
         };
         
         /**
          * Funzione per nascondere la sideBar.
          */
+        
         $scope.hideSidebar = function() {
             $scope.toggle = false;
             $cookieStore.put('toggle', $scope.toggle);
         };
+        
 
 
     }]);
