@@ -324,7 +324,12 @@ angular.module('IngredientService', [])
                 // ottengo la porzione di un bicchiere del prodotto
                 console.info(product);
                 var cupPortion = o.findPortion(product, 'cup');
-                ing_quantity = ing_quantity * scale_factor * cupPortion.g;
+                // se è null, provo con un cucchiaio da tavolo
+                if (cupPortion == null)
+                    cupPortion = o.findPortion(product, 'tbsp');
+                
+                if (cupPortion['g'] != null)
+                    ing_quantity = ing_quantity * scale_factor * cupPortion.g;
 
                 // aggiorno il scale factor di nuovo (sapendo che ormai 
                 // il valore da liquidi è stato converito in peso, grammi per la precisione)
