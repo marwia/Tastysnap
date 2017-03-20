@@ -1,5 +1,4 @@
-<div class="collection_nav" set-class-when-at-top="prof_personal_header-scrolled" padding-when-at-top="0"
-    add-offset="400">
+<div class="collection_nav" set-class-when-at-top="prof_personal_header-scrolled" padding-when-at-top="0" add-offset="400">
 
     <!-- testata cover + profilo -->
     <div class="prof_personal_header" id="profile_header" back-img="{{user.coverImageUrl}}">
@@ -13,26 +12,30 @@
             <div class="row">
                 <span>
                     <h4>
-                        <a href="#" ng-show="user.id == currentUser.id" ng-click="openProfileEditModal(user)">{{user.name}} {{user.surname}}</a>
-                        <div ng-hide="user.id == currentUser.id">{{user.name}} {{user.surname}}</div>
+                        {{user.name}} {{user.surname}}
                     </h4>
                 </span>
             </div>
             <!-- profile description -->
             <div class="row">
-                <h6>
-                    <a href="#" ng-show="user.id == currentUser.id" ng-click="openProfileEditModal(user)">{{ user.description || 'Nessuna descrizione' }}</a>
-                    <div ng-hide="user.id == currentUser.id">{{ user.description }}</div>
-                </h6>
+                <div class="col-sm-6 col-md-offset-3">
+                    <h6>
+                        {{ user.description }}
+                    </h6>
+                </div>
             </div>
 
             <!-- profile follow -->
             <div class="row prof_personal_info_item">
-                <button type="button" class="btn btn-warning btn-sm" ng-click="toggleFollow(user)" ng-disabled="user.id == currentUser.id" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
-                <div ng-if="action.length>0"><span class="glyphicon glyphicon-user"></span>{{action}}</div>
-                <div ng-if="user.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
-                <div ng-if="user.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI</div>
-            </button>
+                <button type="button" class="btn btn-warning btn-sm" ng-click="toggleFollow(user)" ng-hide="user.id == currentUser.id"
+                    ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
+                    <div ng-if="action.length>0"><span class="glyphicon glyphicon-user"></span>{{action}}</div>
+                    <div ng-if="user.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
+                    <div ng-if="user.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI</div>
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="openProfileEditModal(user)" ng-show="user.id == currentUser.id">
+                    <i class="fa fa-cog" aria-hidden="true"></i> Modifica profilo
+                </button>
             </div>
         </div>
 
