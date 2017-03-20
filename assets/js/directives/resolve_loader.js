@@ -30,8 +30,6 @@ angular.module('sampleApp')
                 $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
                     console.log("stateChangeStart");
 
-                    if (fromState.name != "") return;
-
                     $timeout(function () {
                         element.removeClass('ng-hide');
                     });
