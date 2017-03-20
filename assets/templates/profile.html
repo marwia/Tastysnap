@@ -23,7 +23,7 @@
             </div>
             <!-- profile follow -->
             <div class="row prof_personal_info_item">
-                <button type="button" class="btn btn-warning btn-sm" ng-click="toggleFollow(user)" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
+                <button type="button" class="btn btn-warning btn-sm" ng-click="toggleFollow(user)" ng-disabled="user.id == currentUser.id" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
                 <div ng-if="action.length>0"><span class="glyphicon glyphicon-user"></span>{{action}}</div>
                 <div ng-if="user.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
                 <div ng-if="user.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI</div>
