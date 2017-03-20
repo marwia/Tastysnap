@@ -31,6 +31,8 @@ module.exports = {
     email: { type: 'String', email: true },
     
     coverImageUrl: { type: 'String', url: true },
+
+    description: { type: 'String' },
     
     //FACEBOOK
     

@@ -16,7 +16,8 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
     'FileUploader', // per il file upload
     '$http',
     'toastr',
-    function($scope, User, $state, Recipe, ImageUtils, Auth, $filter, FileUploader, $http, toastr) {
+    '$uibModal',
+    function($scope, User, $state, Recipe, ImageUtils, Auth, $filter, FileUploader, $http, toastr, $uibModal) {
         // Espongo gli elementi del User service
         $scope.currentUser = User.currentUser;
         $scope.user = User.user;//utente del profilo
@@ -54,6 +55,40 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
 
         $scope.toggleAction = function() {
             $scope.action = "";
+        };
+
+        // MODALE PER CONFERMARE L'ELIMINAZIONE DI UNA RICETTA
+
+        $scope.openProfileEditModal = function(selectedUser) {
+            $uibModal.open({
+                animation: true,
+                templateUrl: 'templates/profile_edit_modal.html',
+                controller: function($uibModalInstance, $scope) {
+                    // passaggio paramteri
+                    $scope.loading = false;
+                    $scope.selectedUser = selectedUser;
+                    // azioni possibili all'interno della modale
+                    $scope.ok = function() {
+                        $scope.loading = true
+
+                        User.update(selectedUser,
+                            function(response) {
+                                //do what you need here
+                                $scope.loading = false;
+                                $uibModalInstance.dismiss('cancel');
+                                
+                            }, function(response) {
+                                // errore
+                                $scope.loading = false;
+                            });
+                    };
+
+                    $scope.cancel = function() {
+                        $uibModalInstance.dismiss('cancel');
+                    };
+                },
+                size: 'md'
+            });
         };
 
         /**

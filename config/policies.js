@@ -51,6 +51,7 @@ module.exports.policies = {
     'uploadCoverImage': ['isAuthorized', 'findUser'],
     'getLastSeen': ['isAuthorized'],
     'registerToNotifications' : ['isAuthorized'],
+    'update': ['isAuthorized', 'isProfileOwner']
   },
 
   'CollectionController' : {

@@ -409,7 +409,7 @@ angular.module('RecipeService', [])
         };
 
         /**
-         * Servizio per creare una ricetta.
+         * Servizio per aggiornare una ricetta.
          */
         o.update = function(recipe, successCallback) {
             
@@ -421,8 +421,6 @@ angular.module('RecipeService', [])
                 server_prefix + '/recipe/' + recipe.id,
                 recipe)
                 .then(function(response) {
-
-                    User.currentUser.recipesCount++;
 
                     successCallback(response);
 

@@ -33,6 +33,23 @@ angular.module('UserService', [])
         };
 
         /**
+         * Metodo per aggiornare i dati dell'utente correntemente loggato.
+         */
+        service.update = function(user, successCB, errorCB) {
+            console.info("user to update:", user);
+            return $http.put(
+                server_prefix + '/user/' + user.id,
+                user)
+                .then(function(response) {
+                    // si può aggiornare soltanto l'utente loggato quindi aggiorno i dati....
+                    angular.copy(response.data, service.currentUser);
+
+                    if (successCB)
+                        successCB(response);
+            }, errorCB);
+        };
+
+        /**
          * Metodo per eseguire una ricerca per nome/cognome
          * di persona.
          */

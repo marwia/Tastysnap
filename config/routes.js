@@ -228,6 +228,8 @@ var apiRoutes = addGlobalPrefix({
 
     'post /user/notification/register': 'UserController.registerToNotifications',
 
+    'put /user/:id': 'UserController.update',
+
     /***************************************************************************
     *                                                                          *
     * Ricette.                                                                 *

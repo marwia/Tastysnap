@@ -11,16 +11,21 @@
             </div>
             <!-- profile name -->
             <div class="row">
-                <span><h4>{{user.name}} {{user.surname}}</h4></span>
-            </div>
-            <!-- profile where -->
-            <div class="row">
-                <span ng-hide="true">
-                <h5>
-                    <span class="glyphicon glyphicon-map-marker"></span> FABRIANO
-                </h5>
+                <span>
+                    <h4>
+                        <a href="#" ng-show="user.id == currentUser.id" ng-click="openProfileEditModal(user)">{{user.name}} {{user.surname}}</a>
+                        <div ng-hide="user.id == currentUser.id">{{user.name}} {{user.surname}}</div>
+                    </h4>
                 </span>
             </div>
+            <!-- profile description -->
+            <div class="row">
+                <h6>
+                    <a href="#" ng-show="user.id == currentUser.id" ng-click="openProfileEditModal(user)">{{ user.description || 'Nessuna descrizione' }}</a>
+                    <div ng-hide="user.id == currentUser.id">{{ user.description }}</div>
+                </h6>
+            </div>
+
             <!-- profile follow -->
             <div class="row prof_personal_info_item">
                 <button type="button" class="btn btn-warning btn-sm" ng-click="toggleFollow(user)" ng-disabled="user.id == currentUser.id" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
