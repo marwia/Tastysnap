@@ -1,24 +1,39 @@
 <div class="modal-header">
     <h3 class="modal-title">Richiesta di aggiungere un nuovo ingrediente</h3>
 </div>
-<div class="modal-body">
-    <form class="form-horizontal">
-        <div class="form-group">
-            <label for="inputName" class="col-sm-2 control-label">Nome ingrediente</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputName" ng-model="ingredient.name" placeholder="Nome ingrediente" name="name">
+
+
+<form name="ingredientReqForm" role="form" ng-submit="ok()" novalidate>
+
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">Nome ingrediente</label>
+                <div class="col-sm-10" ng-class="{ 'has-error': ingredientReqForm.name.$touched && ingredientReqForm.name.$invalid }">
+                    <input type="text" class="form-control" id="inputName" ng-model="ingredient.name" placeholder="Nome ingrediente" name="name"
+                        ng-minlength="3" required>
+                    <div class="help-block" ng-if="ingredientReqForm.name.$touched && ingredientReqForm.name.$invalid" ng-messages="ingredientReqForm.name.$error">
+                        <div ng-messages-include="templates/validation_messages.html"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputDesc" class="col-sm-2 control-label">Descrizione</label>
+                <div class="col-sm-10" ng-class="{ 'has-error': ingredientReqForm.description.$touched && ingredientReqForm.description.$invalid }">
+                    <textarea style="resize: none;" class="form-control" id="inputDesc" ng-model="ingredient.description" name="description"
+                        rows="3" placeholder="Fornisci maggiori dettagli sull'ingrediente che vuoi aggiungere." ng-minlength="3"
+                        required></textarea>
+                    <div class="help-block" ng-if="ingredientReqForm.description.$touched && ingredientReqForm.description.$invalid" ng-messages="ingredientReqForm.description.$error">
+                        <div ng-messages-include="templates/validation_messages.html"></div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <label for="inputDesc" class="col-sm-2 control-label">Descrizione</label>
-            <div class="col-sm-10">
-                <textarea style="resize: none;" class="form-control" id="inputDesc" ng-model="ingredient.description" name="description"
-                    rows="3" placeholder="Fornisci maggiori dettagli sull'ingrediente che vuoi aggiungere."></textarea>
-            </div>
-        </div>
-    </form>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-default" type="button" ng-click="cancel()">Annulla</button>
-    <button class="btn btn-danger" type="button" ng-click="ok()">Invia<i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
-</div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="cancel()">Annulla</button>
+        <button class="btn btn-danger" type="submit" ng-disabled="ingredientReqForm.$invalid">
+        Invia<i ng-show="loading" class="fa fa-spinner fa-spin"></i>
+    </button>
+    </div>
+</form>
