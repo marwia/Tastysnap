@@ -343,7 +343,8 @@ angular.module('IngredientService', [])
             if (nutrient_unit.localeCompare('mg') == 0) {
                 x = x / 1000;
             }
-            else if (nutrient_unit.localeCompare('g') == 0) {
+            else if (nutrient_unit.localeCompare('g') == 0
+                || nutrient_unit.localeCompare('kcal') == 0) {
                 x = x / 100;
             }
             else {
