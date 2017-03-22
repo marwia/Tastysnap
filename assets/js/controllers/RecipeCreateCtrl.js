@@ -40,7 +40,8 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         // espongo il metodo per ricercare i prodotti per nome
         $scope.searchProductsByName = Product.searchProductsByName;
 
-        $scope.unitsOfMeasure = Ingredient.unitsOfMeasure;
+        // espongo soltanto le unità di misura tradotte
+        $scope.translatedUnitsOfMeasure = Ingredient.translatedUnitsOfMeasure;
 
         // variabili per tenere traccia del completameto della crezione/modifica di una ricetta
         $scope.progressSum = 1;
@@ -78,6 +79,15 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             }
             return false;
         };
+
+        /**
+         * Funzione che scatta quando viene selezionata una unità di misura,
+         * serve ad azzerare la quantità in caso di unità "indefinite".
+         */
+        $scope.onUnitOfMeasureSelect = function (item, ingredient) {
+            if (item == 'qb' || item == 'pizzico')
+                ingredient.quantity = "";
+        }
 
         /**
          * Funzione che lega il prodotto selezionato dall'utente
@@ -814,8 +824,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         var init = function () {
             // inizializzazione del controller
-            Ingredient.GetIngredientUnitOfMeasure();
-
+            
             /**
              * Se sono in modalità modifica devo caricare 
              * dei dati della ricetta da modificare.

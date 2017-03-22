@@ -109,7 +109,7 @@
                                         <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient" ng-repeat="ingredient in ingredientGroup.ingredients">
                                             <div class="col-xs-7 col-sm-7 col-md-7">
                                                 <div class="text-left">
-                                                    <p class="recipe_ing_txt"><a href="">{{ingredient.product.name.long}}</a></p>
+                                                    <p class="recipe_ing_txt"><a href="" uib-tooltip-html="'static. {{dynamicTooltipText}}. <b>bold.</b>'">{{ingredient.product.name.long}}</a></p>
                                                 </div>
                                             </div>
                                             <div class="col-xs-5 col-sm-5 col-md-5">

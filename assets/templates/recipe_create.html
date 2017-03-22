@@ -279,7 +279,7 @@
                                     <table class="table table-condensed table-borderless">
                                         <tr style="font-weight: bold">
                                             <td style="width: 65%">Nome</td>
-                                            <td style="width: 15%">Quantità</td>
+                                            <td style="width: 15%" >Quantità</td>
                                             <td style="width: 20%">Tipo</td>
                                         </tr>
                                         <tr ng-repeat="ingredient in ingredient_group.ingredients">
@@ -293,14 +293,13 @@
 
                                                 </td>
                                                 <td>
-
-                                                    <input type="number" class="form-control" name="quantity" ng-model="ingredient.quantity" min="1" max="999" value="50" placeholder="50"
-                                                        autocomplete="off" required />
+                                                    <input type="number" ng-hide="ingredient.unitOfMeasure == 'qb' || ingredient.unitOfMeasure == 'pizzico'" class="form-control" name="quantity" ng-model="ingredient.quantity" min="1" max="999" value="50" placeholder="50"
+                                                        autocomplete="off" />
                                                 </td>
                                                 <td class="form-inline form-padding">
 
-                                                    <input type="text" style="width: 80%;" class="form-control" name="unitOfMeasure" ng-model="ingredient.unitOfMeasure" uib-typeahead="unit for unit in unitsOfMeasure | filter:$viewValue"
-                                                        typeahead-editable="false" required placeholder="es. g" autocomplete="off"
+                                                    <input type="text" style="width: 80%;" class="form-control" name="unitOfMeasure" ng-model="ingredient.unitOfMeasure" uib-typeahead="unit for unit in translatedUnitsOfMeasure | filter:$viewValue"
+                                                        typeahead-editable="false" required placeholder="es. g" autocomplete="off" typeahead-on-select="onUnitOfMeasureSelect($item, ingredient)"
                                                     />
                                                     <a href="#" ng-hide="ingredient_group.ingredients.length==1" ng-click="removeIngredient($parent.$index, $index)"><i class="fa fa-times"></i></a>
 

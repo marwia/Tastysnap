@@ -5,7 +5,7 @@
  * gli ingredienti e i gruppi di ingredienti.
  */
 angular.module('IngredientService', [])
-    .factory('Ingredient', ['$http', 'Auth', 'toastr', function($http, Auth, toastr) {
+    .factory('Ingredient', ['$http', 'Auth', 'toastr', function ($http, Auth, toastr) {
 
         var server_prefix = '/api/v1';
 
@@ -13,16 +13,39 @@ angular.module('IngredientService', [])
         var o = {
             ingredients: [],
             unitsOfMeasure: [],
+            translatedUnitsOfMeasure: []
         };
+
+
+        /**
+         * Metodo per richiedere la lista tradotta delle unità di misura.
+         */
+        o.getTranslatedUnitOfMeasure = function () {
+            // traduco
+            var translated = o.unitsOfMeasure.map(function (elem) {
+                switch (elem) {
+                    case 'enough':
+                        return 'qb';
+
+                    case 'tablespoon':
+                        return 'cucchiaino';
+
+                    case 'pinch':
+                        return 'pizzico';
+                }
+                return elem;
+            });
+            return translated;
+        }
 
         /**
          * Servizio per creare un gruppo di ingredienti per una data ricetta.
          */
-        o.createIngredientGroup = function(recipe, ingredientGroup, successCallback) {
+        o.createIngredientGroup = function (recipe, ingredientGroup, successCallback) {
             return $http.post(
                 server_prefix + '/recipe/' + recipe.id + '/ingredient_group',
                 ingredientGroup)
-                .then(function(response) {
+                .then(function (response) {
 
                     ingredientGroup.recipe = recipe.id;
                     ingredientGroup.id = response.data.id;
@@ -39,7 +62,7 @@ angular.module('IngredientService', [])
         /**
          * Servizio per aggiornare un ingrediente di un gruppo di una data ricetta.
          */
-        o.updateIngredientGroup = function(ingredientGroup, successCallback) {
+        o.updateIngredientGroup = function (ingredientGroup, successCallback) {
             return $http.put(
                 server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id,
                 ingredientGroup)
@@ -54,7 +77,7 @@ angular.module('IngredientService', [])
         /**
          * Servizio per eliminare un ingrediente da un gruppo di una data ricetta.
          */
-        o.deleteIngredientGroup = function(ingredientGroup, successCallback) {
+        o.deleteIngredientGroup = function (ingredientGroup, successCallback) {
             return $http.delete(
                 server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id)
                 .then(successCallback, function errorCallback(response) {
@@ -68,7 +91,10 @@ angular.module('IngredientService', [])
         /**
          * Servizio per creare un gruppo di ingredienti per una data ricetta.
          */
-        o.createIngredient = function(ingredientGroup, ingredient, successCallback) {
+        o.createIngredient = function (ingredientGroup, ingredient, successCallback) {
+            // eseguo una conversione da unità tradotta a originale
+            var idx = o.translatedUnitsOfMeasure.indexOf(ingredient.unitOfMeasure);
+            ingredient.unitOfMeasure = o.unitsOfMeasure[idx];
             return $http.post(
                 server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id + '/ingredient',
                 ingredient)
@@ -83,8 +109,11 @@ angular.module('IngredientService', [])
         /**
          * Servizio per aggiornare un ingrediente di un gruppo di una data ricetta.
          */
-        o.updateIngredient = function(ingredientGroup, ingredient, successCallback) {
-            console.info("updateIngredient", ingredient);
+        o.updateIngredient = function (ingredientGroup, ingredient, successCallback) {
+            // eseguo una conversione da unità tradotta a originale
+            var idx = o.translatedUnitsOfMeasure.indexOf(ingredient.unitOfMeasure);
+            ingredient.unitOfMeasure = o.unitsOfMeasure[idx];
+
             return $http.put(
                 server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id + '/ingredient/' + ingredient.id,
                 ingredient)
@@ -99,7 +128,7 @@ angular.module('IngredientService', [])
         /**
          * Servizio per eliminare un ingrediente da un gruppo di una data ricetta.
          */
-        o.deleteIngredient = function(ingredientGroup, ingredient, successCallback) {
+        o.deleteIngredient = function (ingredientGroup, ingredient, successCallback) {
             return $http.delete(
                 server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id + '/ingredient/' + ingredient.id)
                 .then(successCallback, function errorCallback(response) {
@@ -113,12 +142,15 @@ angular.module('IngredientService', [])
         /**
          * Servizio per caricare la lista delle unità di misura degli ingredienti
          */
-        o.GetIngredientUnitOfMeasure = function() {
+        o.GetIngredientUnitOfMeasure = function () {
             return $http.get(
                 server_prefix + '/ingredient/unit_of_measure')
                 .then(function successCallback(response) {
-                    console.info(response.data);
                     angular.copy(response.data.enum, o.unitsOfMeasure);
+
+                    // translate units...
+                    var translated = o.getTranslatedUnitOfMeasure();
+                    angular.copy(translated, o.translatedUnitsOfMeasure);
 
                 }, function errorCallback(response) {
                     // called asynchronously if an error occurs
@@ -131,14 +163,20 @@ angular.module('IngredientService', [])
         /**
          * Servizio per caricare la lista di ingredienti dato un gruppo.
          */
-        o.getIngredientGroupIngredients = function(ingredientGroup, successCB, errorCB) {
+        o.getIngredientGroupIngredients = function (ingredientGroup, successCB, errorCB) {
             return $http.get(
                 server_prefix + '/ingredientgroup/' + ingredientGroup.id + '/ingredients')
                 .then(function successCallback(response) {
                     ingredientGroup.ingredients = [];
-                    console.info(response.data);
-                    angular.copy(response.data, ingredientGroup.ingredients);
                     
+                    response.data.forEach(function (ingredient) {
+                        // eseguo una conversione da unità originale a tradotta
+                        var idx = o.unitsOfMeasure.indexOf(ingredient.unitOfMeasure);
+                        ingredient.unitOfMeasure = o.translatedUnitsOfMeasure[idx];
+                    });
+
+                    angular.copy(response.data, ingredientGroup.ingredients);
+
                     if (successCB)
                         successCB();
 
@@ -147,7 +185,7 @@ angular.module('IngredientService', [])
                     // or server returns response with an error status.
                     //alert("Errore: " + response);
                     console.log(response);
-                    
+
                     if (errorCB)
                         errorCB();
                 });
@@ -161,7 +199,7 @@ angular.module('IngredientService', [])
         /**
          * Funzione per ritrovare un nutrient per il suo codice.
          */
-        o.findNutrient = function(nutrients, nutrient_code) {
+        o.findNutrient = function (nutrients, nutrient_code) {
             for (var i in nutrients) {
                 if (nutrients[i].code.localeCompare(nutrient_code) == 0) {
                     return nutrients[i];
@@ -174,7 +212,7 @@ angular.module('IngredientService', [])
          * Funzione per trovare un particolare tipo di porzione
          * di un prodotto. Es.: 'cup'
          */
-        o.findPortion = function(product, portion_unit) {
+        o.findPortion = function (product, portion_unit) {
             for (var i in product.portions) {
                 if (product.portions[i].unit.localeCompare(portion_unit) == 0) {
                     return product.portions[i];
@@ -186,20 +224,20 @@ angular.module('IngredientService', [])
         /**
          * Servizio per inviare una richiesta di aggiunta di un ingrediente.
          */
-        o.addIngredientReq = function(name, description, successCallback, errorCallback) {
+        o.addIngredientReq = function (name, description, successCallback, errorCallback) {
             return $http.post(
                 server_prefix + '/ingredient/add_request',
                 {
                     name: name,
                     description: description
                 }
-                ).then(function (response) {
+            ).then(function (response) {
 
-                    toastr.success('Richiesta inviata');
+                toastr.success('Richiesta inviata');
 
-                    if(successCallback)
-                        successCallback(response);
-                }, errorCallback);
+                if (successCallback)
+                    successCallback(response);
+            }, errorCallback);
         };
 
         /**
@@ -207,7 +245,7 @@ angular.module('IngredientService', [])
          * Il risultato della funzione sarebbe il fattore di scala per 
          * trasformare l'ingrediente nell'unità di misura del nutriente
          */
-        o.scaleFactor = function(ingredient_unit_of_measure, nutrient_unit_of_measure) {
+        o.scaleFactor = function (ingredient_unit_of_measure, nutrient_unit_of_measure) {
             // controllo se l'unità di misura dell'ingredient è un multiplo o sotto
             // multiplo di quella dell'ingrediente (il grammo)
 
@@ -304,6 +342,8 @@ angular.module('IngredientService', [])
                     // moltiplicarlo per il g della porzione del cup
                 }
             }
+            // default
+            return 0;
         }
 
         /**
@@ -317,7 +357,7 @@ angular.module('IngredientService', [])
          * @return {Object} nutrient_val - Il valore del nutriente presente nell'ingrediente
          * espresso nell'unità di misura del nutriente.
          */
-        o.getNutrientValue = function(ing_quantity, ing_unit, nutrient_unit, nutrient_val, product) {
+        o.getNutrientValue = function (ing_quantity, ing_unit, nutrient_unit, nutrient_val, product) {
             var scale_factor = o.scaleFactor(ing_unit, nutrient_unit)
             console.info(scale_factor);
             if (ing_unit.indexOf('l') > -1) {
@@ -327,7 +367,7 @@ angular.module('IngredientService', [])
                 // se è null, provo con un cucchiaio da tavolo
                 if (cupPortion == null)
                     cupPortion = o.findPortion(product, 'tbsp');
-                
+
                 if (cupPortion['g'] != null)
                     ing_quantity = ing_quantity * scale_factor * cupPortion.g;
 
@@ -354,7 +394,7 @@ angular.module('IngredientService', [])
             return { "value": x, "unit": nutrient_unit }
 
         }
-        
+
         /**
          * Funzione che calcola il totale di un nutriente presente in tutti gli ingredienti
          * di tutti i gruppi.
@@ -363,7 +403,7 @@ angular.module('IngredientService', [])
          * @return {Object} totale - Oggetto che rappresenta il totale di un nutriente
          * presente negli ingredienti di una ricetta e la sua unità di misura
          */
-        o.calculateNutrientTotal = function(ingredientGroups, nutrient_code) {
+        o.calculateNutrientTotal = function (ingredientGroups, nutrient_code) {
             var total = 0;
             var unit = "";
 
@@ -374,11 +414,11 @@ angular.module('IngredientService', [])
 
                     var ing = ingredientGroup.ingredients[k];
                     var nutrient = o.findNutrient(ing.product.nutrients, nutrient_code);
-                    
+
                     if (nutrient) {
                         var nutrient_value = o.getNutrientValue(ing.quantity,
                             ing.unitOfMeasure, nutrient.units, nutrient.value, ing.product);
-                        
+
                         total += nutrient_value.value;
                         unit = nutrient_value.unit;
                     }

@@ -78,6 +78,9 @@ angular.module('appRoutes', []).config([
                             }],
                             dosageType: ['Recipe', function (recipes) {
                                 return recipes.getAllDosageTypes();
+                            }],
+                            unitOfMeasurePromise: ['Ingredient', function (Ingredient) {
+                                return Ingredient.GetIngredientUnitOfMeasure();
                             }]
                         }
                     }
@@ -550,6 +553,9 @@ angular.module('appRoutes', []).config([
                                     // carico le ricette raccomandate
                                     recipes.getRecommendedRecipes(false);// without reset
                                 });
+                            }],
+                            unitOfMeasurePromise: ['Ingredient', function (Ingredient) {
+                                return Ingredient.GetIngredientUnitOfMeasure();
                             }]
                         }
                     }

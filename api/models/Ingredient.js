@@ -9,13 +9,14 @@ module.exports = {
 
   attributes: {
 
-  	quantity : { type: 'Float', required: true },
+  	quantity : { type: 'Float', required: false },// non è richiesto in caso di 'pinch' o 'enough'
 
   	unitOfMeasure : { 
   		type: 'String', 
   		required: true,
   		enum: ['kg', 'hg', 'dg', 'g', 'mg',
-  			'l', 'dl', 'cl', 'ml'
+  			'l', 'dl', 'cl', 'ml',
+        'pinch', 'tablespoon', 'enough'
              /*,'drop', 'pinch', 'teaspoon', 'tablespoon', 'cup'*/]// disabilitate per motivi tecnici
   	},
 
