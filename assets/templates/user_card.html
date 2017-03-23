@@ -1,7 +1,32 @@
 <!-- user card -->
+<!--
 <div class="col-xs-6 col-sm-4 col-md-3 profile_card">
     <a href="app/profile/{{user.id}}">
         <div back-img="{{ getUserProfileImage(user) }}" class="img-circle profile_card_img"></div>
         <div class="profile_card_name text-center">{{user.name}}  {{user.surname}}</div>
     </a>
+</div>
+-->
+
+<div class="col-xs-6 col-sm-4 col-md-3">
+    <div class="panel panel-default panel-card">
+        <div class="panel-heading">
+            <img src="http://www.theshiznit.co.uk/images/main/john-wick.jpg" />
+            <button class="btn btn-warning btn-sm btn-circle" role="button">
+                <i class="fa fa-user-plus" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="panel-figure">
+            <img class="img-responsive img-circle" src="{{ getUserProfileImage(user) }}" />
+        </div>
+        <div class="panel-body text-center">
+            <h4 class="panel-header"><a href="app/profile/{{user.id}}">{{user.name}}  {{user.surname}}</a></h4>
+            <small>breve descrizione</small>
+        </div>
+        <div class="panel-thumbnails">
+            <div class="row">
+                <div class="col-md-12">50 ricette inserite</div>
+            </div>
+        </div>
+    </div>   
 </div>
