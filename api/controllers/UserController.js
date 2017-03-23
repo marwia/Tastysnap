@@ -169,7 +169,8 @@ module.exports = {
                 return res.json(count);
             });
         } else {
-            UserService.find(req, res, next);
+            // find users
+            UserService.find(req, res, next, null, actionUtil.parseCriteria(req));
         }
     },
 

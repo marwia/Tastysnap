@@ -148,9 +148,10 @@ module.exports = {
             var followersList = foundFollowers.map(function(elem) {
                 return elem.follower;
             });
+            console.info("followersList: ", followersList);
 
             // find users
-            UserService.find(req, res, next, followersList);
+            UserService.find(req, res, next, followersList, "");
         });
 
     },
@@ -181,9 +182,10 @@ module.exports = {
             var followingList = foundFollowing.map(function(elem) {
                 return elem.following;
             });
+            console.info("followingList: ", followingList);
 
             // find users
-            UserService.find(req, res, next, followingList);
+            UserService.find(req, res, next, followingList, "");
         });
     },
 

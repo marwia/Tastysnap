@@ -13,14 +13,9 @@ module.exports = {
      * Sostanzialmente serve a dare una definizione standard alle
      * liste di utenti.
      */
-    find: function (req, res, next, userIds) {
+    find: function (req, res, next, userIds, whereCriteria) {
 
-        var whereCriteria = actionUtil.parseCriteria(req);
-        if (userIds) {
-            whereCriteria['id'] = userIds
-        }
-
-        User.find()
+        User.find(userIds)
             .where(whereCriteria)
             .limit(actionUtil.parseLimit(req))
             .skip(actionUtil.parseSkip(req))
