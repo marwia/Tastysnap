@@ -21,11 +21,11 @@ angular.module('sampleApp')
             
             link: function (scope, element, attrs) {
                 scope.getUserProfileImage = User.getUserProfileImage;
-                
+                scope.toggleFollow = User.toggleFollow;
                 /**
                  * Inizializzazione del controller
                  */
-                //niente
+                User.areYouFollowing(scope.user);
             },
             templateUrl: 'templates/user_card.html'
         };

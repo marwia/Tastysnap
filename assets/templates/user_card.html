@@ -11,8 +11,8 @@
 <div class="col-xs-6 col-sm-4 col-md-3">
     <div class="panel panel-default panel-card">
         <div class="panel-heading">
-            <img src="http://www.theshiznit.co.uk/images/main/john-wick.jpg" />
-            <button class="btn btn-warning btn-sm btn-circle" role="button">
+            <img src="{{user.coverImageUrl}}"/>
+            <button class="btn btn-warning btn-sm btn-circle btn-active" ng-model="user.isFollowed" role="button" ng-click="toggleFollow(user)" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
                 <i class="fa fa-user-plus" aria-hidden="true"></i>
             </button>
         </div>
@@ -21,11 +21,11 @@
         </div>
         <div class="panel-body text-center">
             <h4 class="panel-header"><a href="app/profile/{{user.id}}">{{user.name}}  {{user.surname}}</a></h4>
-            <small>breve descrizione</small>
+            <small>{{ user.description | limitTo: 50 }}{{user.description.length > 50 ? '...' : ''}}</small>
         </div>
         <div class="panel-thumbnails">
             <div class="row">
-                <div class="col-md-12">50 ricette inserite</div>
+                <div class="col-md-12">{{user.recipesCount}} ricette inserite</div>
             </div>
         </div>
     </div>   

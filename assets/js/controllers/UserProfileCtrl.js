@@ -35,17 +35,7 @@ angular.module('UserProfileCtrl', []).controller('UserProfileCtrl', [
 
         // Testo sul pulsante per seguire una persona
         $scope.action = "SEGUI";
-        $scope.toggleFollow = function(user) {
-            if (user.isFollowed == true) {
-                User.unfollowUser(user, function() {
-                    //fatto
-                })
-            } else {
-                User.followUser(user, function() {
-                    //fatto
-                })
-            }
-        };
+        $scope.toggleFollow = User.toggleFollow;
 
         $scope.onMouseEnter = function() {
             if ($scope.user.isFollowed == true) {

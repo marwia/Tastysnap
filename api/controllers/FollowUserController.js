@@ -140,12 +140,17 @@ module.exports = {
 
         FollowUser.find({
             following: requestedUser.id
-        }).populate('follower').exec(function (err, foundFollowers) {
+        }).exec(function (err, foundFollowers) {
             if (err) { return next(err); }
 
             if (foundFollowers.length == 0) return res.notFound('No follower found');
 
-            return res.json(foundFollowers);
+            var followersList = foundFollowers.map(function(elem) {
+                return elem.follower;
+            });
+
+            // find users
+            UserService.find(req, res, next, followersList);
         });
 
     },
@@ -168,12 +173,17 @@ module.exports = {
 
         FollowUser.find({
             follower: requestedUser.id
-        }).populate('following').exec(function (err, foundFollowing) {
+        }).exec(function (err, foundFollowing) {
             if (err) { return next(err); }
 
             if (foundFollowing.length == 0) return res.notFound('No following found');
 
-            return res.json(foundFollowing);
+            var followingList = foundFollowing.map(function(elem) {
+                return elem.following;
+            });
+
+            // find users
+            UserService.find(req, res, next, followingList);
         });
     },
 

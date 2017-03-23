@@ -210,6 +210,18 @@ angular.module('UserService', [])
                 });
         };
 
+        service.toggleFollow = function(user) {
+            if (user.isFollowed == true) {
+                service.unfollowUser(user, function() {
+                    //fatto
+                })
+            } else {
+                service.followUser(user, function() {
+                    //fatto
+                })
+            }
+        };
+
 
         return service;
     }]);

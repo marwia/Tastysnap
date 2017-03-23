@@ -140,7 +140,7 @@ module.exports = {
      * @apiGroup User
      *
      * @apiDescription Serve per richiedere un lista di ricette.
-     * Attenzione che i risultati sono limitati ad un numero preciso di ricette, massimo 30 per richiesta.<br>
+     * Attenzione che i risultati sono limitati ad un numero preciso di utenti, massimo 30 per richiesta.<br>
      * Questo end point accetta prametri.
      *
      * @apiParam {Integer} skip The number of records to skip (useful for pagination).

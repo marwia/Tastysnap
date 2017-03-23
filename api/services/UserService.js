@@ -33,6 +33,10 @@ module.exports = {
             .exec(function (err, foundUsers) {
                 if (err) { return next(err); }
 
+                if (foundUsers.length == 0) { 
+                    return res.notFound({ error: 'No user found' }); 
+                }
+
                 // array di appoggio
                 var users = new Array();
 
@@ -50,6 +54,12 @@ module.exports = {
                      * il seguente metodo.
                      */
                     var obj = foundUsers[i].toObject();
+                    delete obj.recipes;
+                    delete obj.collections;
+                    delete obj.followers;
+                    delete obj.following;
+                    delete obj.followingCollections;
+                    // aggiungo in fondo all'array
                     users.push(obj);
                 }
 

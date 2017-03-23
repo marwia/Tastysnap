@@ -1551,6 +1551,7 @@ HR.recipe_hr{
     height: 241px;
     border: none;
     overflow: hidden;
+	border-radius: 0;
 }
 .panel.panel-card .panel-heading {
     position: relative;
@@ -1558,6 +1559,7 @@ HR.recipe_hr{
     height: 120px;
     border-bottom-color: #fff;
     overflow: hidden;
+	border-radius: 0;
     
     -webkit-transition: height 600ms ease-in-out;
             transition: height 600ms ease-in-out;
@@ -1608,6 +1610,7 @@ HR.recipe_hr{
 
 .panel.panel-card .panel-thumbnails {
     padding: 0 15px 20px;
+	color: grey;
 }
 .panel-thumbnails .thumbnail {
     width: 60px;
