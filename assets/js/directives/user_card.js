@@ -22,7 +22,7 @@ angular.module('sampleApp')
             link: function (scope, element, attrs) {
                 scope.currentUser = User.currentUser;
                 scope.getUserProfileImage = User.getUserProfileImage;
-                
+
                 // devo passare l'oggeto user in una funzione per problemi di scope sulle ng-repeat
                 scope.onClick = function() {
                     //devo invertirlo per motivi tecnici legati al uib-btn-checkbox
