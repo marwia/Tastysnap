@@ -32,6 +32,9 @@ angular.module('SearchCtrl', []).controller('SearchCtrl', [
         // vari filtri impostabili dall'utente
         $scope.searchModel = undefined;
 
+        // variabile che mi indica se sto caricando dei risultati
+        $scope.loading = false;
+
         /**
          * Funzione che serve a rifare la query di ricerca avanzata.
          */
@@ -45,8 +48,7 @@ angular.module('SearchCtrl', []).controller('SearchCtrl', [
             // eseguo un refresh se l'url è cambiata ma sono ancora nella pagina di ricerca
             if ($location.path().indexOf("app/search") > -1)
                 $scope.search_timer = $timeout(function () {
-                    toastr.success('Aggiorno...');
-
+                    
                     // ricavo i filtri dalla url
                     var searchFilters = Search.readSearchFilters();
                     if (!searchFilters) searchFilters = {};
@@ -54,6 +56,7 @@ angular.module('SearchCtrl', []).controller('SearchCtrl', [
 
                     switch ($scope.searchModel) {
                         case 'recipe':
+                            $scope.loading = true;
                             Recipe.advancedSearch({
                                 title: $scope.q,
                                 categoryArray: searchFilters.selectedCategories,
@@ -66,17 +69,33 @@ angular.module('SearchCtrl', []).controller('SearchCtrl', [
                                 sort_by: searchFilters.selectedSortOptionIdx,
                                 sort_mode: searchFilters.selectedSortMode,
                                 reset: true
+                            }, function() {
+                                    $scope.loading = false;//fine ok
+                                }, function() {
+                                    $scope.loading = false;//fine not ok
                                 });
                             break;
 
                         case 'collection':
+                            $scope.loading = true;
                             Collection.search($scope.q,
                                 searchFilters.selectedSortOptionIdx,
-                                searchFilters.selectedSortMode, null, true);
+                                searchFilters.selectedSortMode, null, true,
+                                function() {
+                                    $scope.loading = false;//fine ok
+                                }, function() {
+                                    $scope.loading = false;// fine not ok
+                                });
                             break;
 
                         case 'user':
-                            User.search($scope.q, null, true);
+                            $scope.loading = true;
+                            User.search($scope.q, null, true,
+                            function() {
+                                    $scope.loading = false;//fine ok
+                                }, function() {
+                                    $scope.loading = false;//fine not ok
+                                });
                             break;
                     }
                 }, 750);

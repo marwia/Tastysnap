@@ -88,8 +88,10 @@
 
                             <div class="control-group" ng-repeat="f in recipeFilters.nutrientFilters">
                                 <div class="controls form-inline">
-                                    <my-dropdown data-menu-type="button" select-val="f.nutrient = selectedVal" preselected-item="f.nutrient || remainingNutrientTitles[0]" data-dropdown-data="remainingNutrientTitles"></my-dropdown>
-                                    <my-dropdown data-menu-type="button" select-val="f.comparator = selectedVal" preselected-item="f.comparator || comparatorTitles[0]" data-dropdown-data="comparatorTitles"></my-dropdown>
+                                    <my-dropdown data-menu-type="button" select-val="f.nutrient = selectedVal" preselected-item="f.nutrient || remainingNutrientTitles[0]"
+                                        data-dropdown-data="remainingNutrientTitles"></my-dropdown>
+                                    <my-dropdown data-menu-type="button" select-val="f.comparator = selectedVal" preselected-item="f.comparator || comparatorTitles[0]"
+                                        data-dropdown-data="comparatorTitles"></my-dropdown>
                                     <input type="number" class="form-control" name="preparation_time" id="preparation_time" ng-model="f.value" required min="1"
                                         max="1000" value="30" placeholder="30" />
                                     <a href="#" ng-click="removeNutrientFilter($index)" class=""><i class="fa fa-times"></i></a>
@@ -195,8 +197,7 @@
 
                     <div class="row search_background_white search_row">
                         <div class="col-md-12 col-sm-6">
-                            <p>Nessun criterio di ricerca ulteriore disponibile.<br>
-                            Prova a cercare per nome o cognome.</p>
+                            <p>Nessun criterio di ricerca ulteriore disponibile.<br> Prova a cercare per nome o cognome.</p>
                         </div>
                     </div>
 
@@ -206,8 +207,15 @@
 
         </div>
 
+
+
         <!-- risultati ricerca -->
         <div class="search_left pull-left">
+            <div class='vertical-center' ng-show="loading == true">
+                <div class="container">
+                    <rotating-plane-spinner></rotating-plane-spinner>
+                </div>
+            </div>
             <!-- -------------------------------- ricette -------------------------------- -->
             <div ng-show="searchModel=='recipe'">
                 <!-- container card -->
