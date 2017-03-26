@@ -114,7 +114,12 @@ angular.module('CollectionService', [])
                 }
                 if (successCB)
                     successCB(response);
-            }, errorCB);
+            }, function (response) {
+                // nessuna raccolta trovata? Pulisco tutto...
+                angular.copy([], o.collections);
+                if (errorCB)
+                    errorCB(response);
+            });
         };
 
         /**

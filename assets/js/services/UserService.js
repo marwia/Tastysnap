@@ -54,20 +54,28 @@ angular.module('UserService', [])
          * di persona.
          */
         o.search = function (query, skip, reset, successCB, errorCB) {
-            return $http.get(server_prefix + '/user', {
+            // distinugo le parole
+            var splitted = query.split(' ');
+            // oggetto params di base
+            var params = {
                 params: {
                     where: {
-                        "or": [
-                            {
-                                "name": { "contains": query }
-                            },
-                            {
-                                "surname": { "contains": query }
-                            }
-                        ]
+                        or: []
                     }
                 }
-            }).then(function (response) {
+            };
+
+            // aggiungo in or nome e cognome per ogni parola cercata
+            for (var i = 0; i < splitted.length; i++) {
+                params.params.where.or.push({
+                    "name": { "contains": splitted[i] }
+                });
+                params.params.where.or.push({
+                    "surname": { "contains": splitted[i] }
+                });
+            }
+
+            return $http.get(server_prefix + '/user', params).then(function (response) {
                 if (skip) {
                     for (var i = 0; i < response.data.length; i++) {
                         o.users.push(response.data[i]);
@@ -80,7 +88,12 @@ angular.module('UserService', [])
                 }
                 if (successCB)
                     successCB(response);
-            }, errorCB);
+            }, function (response) {
+                // nessuna persona trovata? Pulisco tutto...
+                angular.copy([], o.users);
+                if (errorCB)
+                    errorCB(response);
+            });
         };
 
         /**
@@ -186,7 +199,7 @@ angular.module('UserService', [])
                  */
                 if (o.user.id != o.currentUser.id)
                     o.follower_users.push(o.currentUser);
-                else 
+                else
                     // aggiungo l'utente
                     o.following_users.push(userToFollow);
 
@@ -214,7 +227,7 @@ angular.module('UserService', [])
                         o.user.followersCount -= 1;
                     else
                         o.user.followingCount -= 1;
-                    
+
                     /**
                      *  Se il profilo visualizzato non è quello della persona loggata
                      *  tolgo l'utente loggato come follower.
