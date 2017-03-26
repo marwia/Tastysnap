@@ -194,7 +194,7 @@ angular.module('RecipeService', [])
                 
             if (query.hasOwnProperty('productsIdsArray') 
                 && query.productsIdsArray instanceof Array 
-                && productsIdsArray.length > 0)
+                && query.productsIdsArray.length > 0)
                 params.where["products"] = query.productsIdsArray;// products in AND
                 
             if (query.hasOwnProperty('difficulty'))
