@@ -12,9 +12,14 @@
     <div class="panel panel-default panel-card">
         <div class="panel-heading">
             <img src="{{user.coverImageUrl}}"/>
-            <button class="btn btn-warning btn-sm btn-circle btn-active" ng-model="user.isFollowed" role="button" ng-click="toggleFollow(user)" uib-btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false">
-                <i class="fa fa-user-plus" aria-hidden="true"></i>
-            </button>
+            <div ng-hide="user.id == currentUser.id">
+                <button class="btn btn-warning btn-sm btn-circle" ng-show="isFollowed() == true" uib-tooltip="Non seguire più" tooltip-placement="left" ng-model="user.isFollowed" role="button" ng-click="onClick()" uib-btn-checkbox>
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-warning btn-sm btn-circle" ng-show="isFollowed() == false" uib-tooltip="Inizia a seguire" tooltip-placement="left" ng-model="user.isFollowed" role="button" ng-click="onClick()" uib-btn-checkbox>
+                    <i class="fa fa-user-plus" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
         <div class="panel-figure">
             <img class="img-responsive img-circle" src="{{ getUserProfileImage(user) }}" />
