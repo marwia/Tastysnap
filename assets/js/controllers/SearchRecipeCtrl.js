@@ -30,6 +30,7 @@ angular.module('SearchRecipeCtrl', []).controller('SearchRecipeCtrl', [
         // nutritional filtering settings
         $scope.comparatorTitles = ['<', '>'];
         $scope.nutrientTitles = ['energia', 'proteine', 'carboidrati', 'zuccheri', 'grassi'];
+        $scope.nutrientUnits = ['kcal', 'g', 'g', 'g', 'g'];
         $scope.remainingNutrientTitles = $scope.nutrientTitles;
 
         $scope.addNutrientFilter = function () {

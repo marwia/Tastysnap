@@ -189,7 +189,7 @@ angular.module('RecipeService', [])
 
             if (query.hasOwnProperty('categoryArray') 
                 && query.categoryArray instanceof Array 
-                && categoryArray.length > 0)
+                && query.categoryArray.length > 0)
                 params.where["category"] = query.categoryArray;// categories in OR
                 
             if (query.hasOwnProperty('productsIdsArray') 
@@ -209,7 +209,7 @@ angular.module('RecipeService', [])
 
             if (query.hasOwnProperty('nutrientFiltersArray') 
                 && query.nutrientFiltersArray instanceof Array 
-                && nutrientFiltersArray.length > 0) {
+                && query.nutrientFiltersArray.length > 0) {
                 var nutrientFiltersTransformed = query.nutrientFiltersArray.map(o.nutrientTransform);
                 // trasformo l'array in un oggetto:
                 // in pratica, prendo ogni elemento e ne ricavo il nome della prima proprietà

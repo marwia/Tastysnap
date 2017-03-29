@@ -17,7 +17,10 @@ angular
         },
         link: function (scope, element, attrs) {
             var html = '';
-            switch (attrs.menuType) {
+            switch (attrs.menuType) {     
+                case "button_sm":
+                    html += '<div uib-dropdown class="btn-group"><button type="button" class="btn btn-sm btn-default" uib-dropdown-toggle>Seleziona <span class="caret"></span></button>';
+                    break;
                 case "button":
                     html += '<div uib-dropdown class="btn-group"><button type="button" class="btn btn-default" uib-dropdown-toggle>Seleziona <span class="caret"></span></button>';
                     break;
@@ -36,6 +39,9 @@ angular
                 }
             scope.selectVal = function (item) {
                 switch (attrs.menuType) {
+                    case "button_sm":
+                        $('button.dropdown-toggle', element).html(item + ' <span class="caret"></span> ');
+                        break;
                     case "button":
                         $('button.dropdown-toggle', element).html(item + ' <span class="caret"></span> ');
                         break;

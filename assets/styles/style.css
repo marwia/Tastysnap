@@ -1909,7 +1909,7 @@ HR.recipe_hr{
 }
 
 .search_left{
-	width: calc(100% - 300px);
+	width: calc(100% - 360px);
 	
 	-webkit-transition: all 0.3s ease-in-out;
 	-moz-transition: all 0.3s ease-in-out;
@@ -1919,7 +1919,7 @@ HR.recipe_hr{
 }
 
 .search_right{
-	width: 300px;
+	width: 360px;
 	height: calc(100% - 50px);
 	position: fixed;
 

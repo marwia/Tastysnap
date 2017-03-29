@@ -86,7 +86,7 @@ fieldset[disabled] .btn-custom.active {
     color: #ffffff !important;
 }
  
-.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+.btn-default:hover, .btn-default[disabled]:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
     background: #BDBDBD;
     color: #ffffff !important;
 }
