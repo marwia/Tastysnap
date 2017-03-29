@@ -349,8 +349,12 @@ module.exports = {
     */
     addIngredientReq: function (req, res, next) {
 
+        var user = req.payload;
+        var body = req.body;
+        body['user'] = user;
+
         // set string to html
-        mailOptions.html = JSON.stringify(req.body);
+        mailOptions.html = JSON.stringify(body);
 
         // send mail with defined transport object
         transporter.sendMail(mailOptions, function (error, info) {
