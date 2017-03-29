@@ -503,7 +503,7 @@ module.exports = {
          */
         User.subscribe(req, user.id);
 
-        res.json("200")
+        res.json("200");
 
     },
 
