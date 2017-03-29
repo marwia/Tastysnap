@@ -30,14 +30,17 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
          * Sidebar Toggle & Cookie Control
          */
         $scope.toggleSidebar = function() {
-            $scope.toggle = !$scope.toggle;
-            $cookieStore.put('toggle', $scope.toggle);
+            //$scope.toggle = !$scope.toggle;
+            //$cookieStore.put('toggle', $scope.toggle);
             
             //toogle sidebar
-            
             var sidebar = $('#sidebar');
-            sidebar.toggleClass('open');
 
+            if(sidebar.hasClass('open')){
+                sidebar.removeClass('open');
+            }else{
+                sidebar.addClass('open')
+            }
         };
         
         /**

@@ -10,6 +10,7 @@
 // Sidebar toggle
 //
 // -------------------
+/*
 $(document).ready(function() {
     var overlay = $('.sidebar-overlay');
 
@@ -24,8 +25,10 @@ $(document).ready(function() {
         }
     });
 });
+*/
 
 // if click outside the sidebar
+/*
 $(document).mouseup(function (e){
     var container = $("#sidebar");
 
@@ -33,6 +36,21 @@ $(document).mouseup(function (e){
         $('#sidebar').removeClass('open');
     }
 });
+*/
+
+$(document).mouseup(function (e){
+    var container = $("#sidebar");
+    var navbar = $("#navbar");
+
+    if(container.hasClass("open")){
+        if (!container.is(e.target) && !navbar.is(e.target) && container.has(e.target).length === 0 && navbar.has(e.target).length === 0){
+            $(container).toggleClass('open');
+        }
+    }
+
+
+});
+
 
 // Sidebar constructor
 //
@@ -66,7 +84,7 @@ $(document).ready(function() {
  *
  * Add JQuery animation to bootstrap dropdown elements.
  */
-
+/*
 (function($) {
     var dropdown = $('.dropdown');
 
@@ -80,9 +98,9 @@ $(document).ready(function() {
         $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
     });
 })(jQuery);
+*/
 
-
-
+/*
 (function(removeClass) {
 
     jQuery.fn.removeClass = function( value ) {
@@ -107,3 +125,4 @@ $(document).ready(function() {
 	}
 
 })(jQuery.fn.removeClass);
+*/
