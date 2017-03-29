@@ -2,6 +2,9 @@
         <h1>Gestione raccolte</h1>
         <p class="lead">Interfaccia amministratore per gestire le raccolte.<br> Nel caso che una raccolta viola le regole può essere eliminata.</p>
       </div>
+
+      <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="5" items-per-page="itemsPerPage" boundary-links="true" class="pagination-sm"></ul>
+
 <table class="table table-striped">
   <thead>
     <tr>

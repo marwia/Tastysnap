@@ -12,7 +12,21 @@ angular.module('RecipeMngmntCtrl', [])
         '$uibModal',
         function ($scope, Recipe, $uibModal) {
 
+            // pagination variables
+            $scope.totalItems = Recipe.recipesCount;
+            $scope.currentPage = 1;
+            $scope.itemsPerPage = 30;
+
             $scope.recipes = Recipe.recipes;
+
+            $scope.$watch("currentPage", function (newValue, oldValue) {
+                if (newValue === oldValue) {
+                    console.log("called due initialization");
+                } else if (newValue != oldValue) {
+                    console.info("currentPage", $scope.currentPage);
+                    Recipe.getRecipes(($scope.currentPage -1) * $scope.itemsPerPage, true);
+                }
+            }, true);
 
             $scope.openEliminationModal = function (selectedRecipe) {
                 $uibModal.open({

@@ -12,7 +12,21 @@ angular.module('ProductMngmntCtrl', [])
         '$uibModal',
         function ($scope, Product, $uibModal) {
 
+            // pagination variables
+            $scope.totalItems = Product.productsCount;
+            $scope.currentPage = 1;
+            $scope.itemsPerPage = 30;
+
             $scope.products = Product.products;
+
+            $scope.$watch("currentPage", function (newValue, oldValue) {
+                if (newValue === oldValue) {
+                    console.log("called due initialization");
+                } else if (newValue != oldValue) {
+                    console.info("currentPage", $scope.currentPage);
+                    Product.getProducts(null, ($scope.currentPage -1) * $scope.itemsPerPage, true);
+                }
+            }, true);
 
             $scope.openEliminationModal = function (selectedProduct) {
                 $uibModal.open({

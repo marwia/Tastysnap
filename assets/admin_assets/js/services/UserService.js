@@ -11,14 +11,15 @@ angular.module('UserService', [])
         var server_prefix = '/api/v1';
 
         var o = {
-            users: []
+            users: [],
+            usersCount: 0
         }
 
         /**
          * Metodo per richiedere la lista di utenti che seguono un particolare
          * utente.
          */
-        o.getUsers = function(order_by, skip, successCB, errorCB) {
+        o.getUsers = function(order_by, skip, reset, successCB, errorCB) {
             var params = {};
             if (order_by)
                 params['order'] = order_by;
@@ -29,13 +30,33 @@ angular.module('UserService', [])
                     params: params
                 }).then(function(response) {
                     console.info("resp", response.data);
-                    if (skip) {
+                    if (skip && reset == false) {
                         for (var i = 0; i < response.data.length; i++) {
                             o.users.push(response.data[i]);
                         }
                     } else {
                         angular.extend(o.users, response.data);
                     }
+                    if (successCB)
+                        successCB(response);
+
+                }, errorCB);
+        };
+
+        /**
+         * Metodo per richiedere il numero totale di utenti.
+         * Utile per la paginazione.
+         */
+        o.getUsersCount = function (successCB, errorCB) {
+            return $http.get(server_prefix + '/user',
+                {
+                    params: {
+                        'count': true
+                    }
+                }).then(function(response) {
+                    angular.copy(response.data, o.usersCount);
+                    o.usersCount = response.data;
+                    
                     if (successCB)
                         successCB(response);
 

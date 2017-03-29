@@ -3,6 +3,10 @@
   <p class="lead">Interfaccia amministratore per gestire gli utenti.<br> Nel caso che un utente violi le regole può essere eliminato.</p>
   <p class="pull-right">Il sistema ad inviti è <span class="label label-primary">{{isInvitationRequired ? 'ON' : 'OFF'}}</span></p>
 </div>
+
+      <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="5" items-per-page="itemsPerPage" boundary-links="true" class="pagination-sm"></ul>
+
+
 <table class="table table-striped">
   <thead>
     <tr>

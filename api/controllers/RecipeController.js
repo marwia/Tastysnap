@@ -648,6 +648,13 @@ module.exports = {
      * @apiUse InvalidTokenError
      */
     find: function (req, res, next, recipeIdList, whereCriteria) {
+        if (req.param('count')) {
+            Product.count().exec(function(err, count) {
+                if (err) { return next(err); }
+
+                return res.json(count);
+            });
+        } else {
         Recipe.find(recipeIdList)
             .where(whereCriteria ? whereCriteria : actionUtil.parseCriteria(req))
             .limit(actionUtil.parseLimit(req))
@@ -718,6 +725,7 @@ module.exports = {
                 });
 
             });
+        }
     },
 
 

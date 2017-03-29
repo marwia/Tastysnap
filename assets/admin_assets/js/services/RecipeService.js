@@ -11,19 +11,20 @@ angular.module('RecipeService', [])
         var server_prefix = '/api/v1';
 
         var o = {
-            recipes: []
+            recipes: [],
+            recipesCount: 0
         }
         
         /**
          * Metodo per eseguire una ricerca per titolo di ricetta.
          */
-        o.getRecipes = function(skip, successCB, errorCB) {
+        o.getRecipes = function(skip, reset, successCB, errorCB) {
             return $http.get(server_prefix + '/recipe', {
                 params: {
                     skip: skip
                 }
             }).then(function(response) {
-                if (skip) {
+                if (skip && reset == false) {
                     for (var i = 0; i < response.data.length; i++) {
                         o.recipes.push(response.data[i]);
                     }
@@ -33,6 +34,26 @@ angular.module('RecipeService', [])
                 if (successCB)
                     successCB(response);
             }, errorCB);
+        };
+
+        /**
+         * Metodo per richiedere il numero totale di ricette.
+         * Utile per la paginazione.
+         */
+        o.getRecipesCount = function (successCB, errorCB) {
+            return $http.get(server_prefix + '/recipe',
+                {
+                    params: {
+                        'count': true
+                    }
+                }).then(function(response) {
+                    angular.copy(response.data, o.recipesCount);
+                    o.recipesCount = response.data;
+                    
+                    if (successCB)
+                        successCB(response);
+
+                }, errorCB);
         };
 
         o.delete = function(recipeId, successCallback, errorCallback) {

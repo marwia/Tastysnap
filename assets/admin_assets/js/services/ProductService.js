@@ -12,13 +12,14 @@ angular.module('ProductService', [])
 
         var o = {
             products: [],
+            productsCount: 0,
             groups: []// categorie di prodotti
         }
 
          /**
          * Metodo per richiedere una lista di Product.
          */
-        o.getProducts = function (order_by, skip, successCB, errorCB) {
+        o.getProducts = function (order_by, skip, reset, successCB, errorCB) {
             return $http.get(server_prefix + '/product',
                 {
                     params: {
@@ -26,13 +27,33 @@ angular.module('ProductService', [])
                         'order': order_by
                     }
                 }).then(function(response) {
-                    if (skip) {
+                    if (skip && reset == false) {
                         for (var i = 0; i < response.data.length; i++) {
                             o.products.push(response.data[i]);
                         }
                     } else {
                         angular.extend(o.products, response.data);
                     }
+                    if (successCB)
+                        successCB(response);
+
+                }, errorCB);
+        };
+
+         /**
+         * Metodo per richiedere il numero totale di Product.
+         * Utile per la paginazione.
+         */
+        o.getProductsCount = function (successCB, errorCB) {
+            return $http.get(server_prefix + '/product',
+                {
+                    params: {
+                        'count': true
+                    }
+                }).then(function(response) {
+                    angular.copy(response.data, o.productsCount);
+                    o.productsCount = response.data;
+                    
                     if (successCB)
                         successCB(response);
 

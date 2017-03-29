@@ -12,7 +12,23 @@ angular.module('UserMngmntCtrl', [])
         '$uibModal',
         function ($scope, User, Auth, $uibModal) {
 
+            
+            // pagination variables
+            $scope.totalItems = User.usersCount;
+            $scope.currentPage = 1;
+            $scope.itemsPerPage = 30;
+
             $scope.users = User.users;
+
+            $scope.$watch("currentPage", function (newValue, oldValue) {
+                if (newValue === oldValue) {
+                    console.log("called due initialization");
+                } else if (newValue != oldValue) {
+                    console.info("currentPage", $scope.currentPage);
+                    User.getUsers(($scope.currentPage -1) * $scope.itemsPerPage, true);
+                }
+            }, true);
+
             $scope.isInvitationRequired = Auth.isInvitationRequired;
 
             $scope.openEliminationModal = function (selectedUser) {

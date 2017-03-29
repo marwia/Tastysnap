@@ -85,7 +85,10 @@ angular.module('adminAppRoutes', []).config([
                 resolve: {
                     productPromise: ['Product', function (Product) {
                         return Product.getProducts();
-                    }]
+                    }],
+                    productCountPromise: ['Product', function (Product) {
+                        return Product.getProductsCount();
+                    }],
                 }
             })
 
