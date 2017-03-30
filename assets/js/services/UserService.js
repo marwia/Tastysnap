@@ -180,32 +180,36 @@ angular.module('UserService', [])
          * correntemente loggato.
          */
         o.followUser = function (userToFollow, successCallback) {
-            return $http.put(server_prefix + '/user/' + userToFollow.id + '/follow').then(function (response) {
-                o.currentUser.followingCount += 1;
+            return $http.put(server_prefix + '/user/' + userToFollow.id + '/follow')
+                .then(function (response) {
+                    o.currentUser.followingCount += 1;
 
-                /**
-                 *  Se il profilo visualizzato non è quello della persona loggata
-                 *  aggiorno il numero delle persone che la seguono.
-                 *  Altrimenti aggiorno il numero delle persone seguite.
-                 */
-                if (o.user.id != o.currentUser.id)
-                    o.user.followersCount += 1;//
-                else
-                    o.user.followingCount += 1;
+                    /**
+                     *  Se il profilo visualizzato è quello della persona loggata
+                     *  aggiorno il numero delle persone seguite.
+                     *  Altrimenti aggiorno il numero delle persone che la seguono, 
+                     *  se è la stessa persona che si è seguiti.
+                     */
+                    if (o.user.id == o.currentUser.id)// profilo del loggato (proprio profilo)
+                        o.user.followingCount += 1;
+                    else if (userToFollow.id == o.user.id)// profilo della persona visualizzata coincide con l'azione
+                        o.user.followersCount += 1;
 
-                /**
-                 *  Se il profilo visualizzato non è quello della persona loggata
-                 *  aggiungo l'utente loggato come follower.
-                 */
-                if (o.user.id != o.currentUser.id)
-                    o.follower_users.push(o.currentUser);
-                else
-                    // aggiungo l'utente
-                    o.following_users.push(userToFollow);
 
-                userToFollow.isFollowed = true;
-                successCallback();
-            });
+                    /**
+                     *  Se il profilo visualizzato non è quello della persona loggata
+                     *  aggiungo l'utente loggato come follower.
+                     */
+                    if (o.user.id == o.currentUser.id)// profilo del loggato (proprio profilo)
+                        // aggiungo l'utente
+                        o.following_users.push(userToFollow);
+                    else if (userToFollow.id == o.user.id)// profilo della persona visualizzata coincide con l'azione
+                        o.follower_users.push(o.currentUser);
+
+
+                    userToFollow.isFollowed = true;
+                    successCallback();
+                });
         };
 
         /**
@@ -219,27 +223,21 @@ angular.module('UserService', [])
                     o.currentUser.followingCount -= 1;
 
                     /**
-                     *  Se il profilo visualizzato non è quello della persona loggata
-                     *  aggiorno il numero delle persone che la seguono.
-                     *  Altrimenti aggiorno il numero delle persone seguite.
-                     */
-                    if (o.user.id != o.currentUser.id)
-                        o.user.followersCount -= 1;
-                    else
+                    *  Se il profilo visualizzato è quello della persona loggata
+                    *  aggiorno il numero delle persone seguite.
+                    *  Altrimenti aggiorno il numero delle persone che la seguono, 
+                    *  se è la stessa persona che si è seguiti.
+                    */
+                    if (o.user.id == o.currentUser.id)// profilo del loggato (proprio profilo)
                         o.user.followingCount -= 1;
+                    else if (userToUnfollow.id == o.user.id)// profilo della persona visualizzata coincide con l'azione
+                        o.user.followersCount -= 1;
 
                     /**
-                     *  Se il profilo visualizzato non è quello della persona loggata
-                     *  tolgo l'utente loggato come follower.
-                     */
-                    if (o.user.id != o.currentUser.id)
-                        for (var i in o.follower_users) {
-                            if (o.follower_users[i].id == o.currentUser.id) {
-                                o.follower_users.splice(i, 1);
-                                break;
-                            }
-                        }
-                    else
+                    *  Se il profilo visualizzato non è quello della persona loggata
+                    *  aggiungo l'utente loggato come follower.
+                    */
+                    if (o.user.id == o.currentUser.id)// profilo del loggato (proprio profilo)
                         // rimuovo l'utente
                         for (var i in o.following_users) {
                             if (o.following_users[i].id == userToUnfollow.id) {
@@ -247,6 +245,14 @@ angular.module('UserService', [])
                                 break;
                             }
                         }
+                    else if (userToUnfollow.id == o.user.id)// profilo della persona visualizzata coincide con l'azione
+                        for (var i in o.follower_users) {
+                            if (o.follower_users[i].id == o.currentUser.id) {
+                                o.follower_users.splice(i, 1);
+                                break;
+                            }
+                        }
+
 
                     userToUnfollow.isFollowed = false;
                     if (successCallback)
