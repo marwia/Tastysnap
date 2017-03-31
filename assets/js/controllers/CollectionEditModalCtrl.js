@@ -9,7 +9,7 @@
  */
 angular.module('CollectionEditModalCtrl', [])
     .controller('CollectionEditModalCtrl',
-    function ($scope, $uibModalInstance, selectedCollection, Collection, $uibModal, toastr, Auth, ImageUtils, FileUploader, $http) {
+    function ($scope, $uibModalInstance, selectedCollection, Collection, $uibModal, toastr, Auth, ImageUtils, FileUploader, $http, $state) {
         // passaggio paramteri
         $scope.loading = false;//serve per garantire una migliore esperienza utente
         $scope.collection = angular.copy(selectedCollection);
@@ -136,7 +136,7 @@ angular.module('CollectionEditModalCtrl', [])
          */
 
         $scope.openEliminationModal = function () {
-            var collection = $scope.detailedCollection;
+            var collection = $scope.collection;
             return $uibModal.open({
                 animation: true,
                 templateUrl: 'templates/collection_elimination_modal.html',
@@ -148,7 +148,7 @@ angular.module('CollectionEditModalCtrl', [])
                     $scope.ok = function () {
                         $scope.loading = true;
 
-                        Collection.delete(collection.id,
+                        Collection.delete($scope.collection.id,
                             function (response) {
                                 //do what you need here
                                 $scope.loading = false;
