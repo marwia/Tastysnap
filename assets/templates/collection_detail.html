@@ -23,7 +23,7 @@
         <div class="collection_header collection_header_background">
             <!-- Profilo -->
             <div class="text-center collection_profile_link">
-                <div class="darken_profile_photo" uib-tooltip="Ultima modifica {{formatDate(detailedCollection)}}" tooltip-append-to-body="true">   
+                <div class="darken_profile_photo" uib-tooltip="Ultima modifica {{formatDate(detailedCollection)}}" tooltip-append-to-body="true">
                     <a href="app/profile/{{detailedCollection.author.id}}" class="text-center image-link">
                         <div class="img-circle collection_profile_photo" back-img="{{ getUserProfileImage(detailedCollection.author) }}"></div>
 
@@ -33,25 +33,53 @@
             </div>
             <!-- Titolo collection -->
             <div class="text-center">
-                <h2>{{detailedCollection.title}}</h2>
+                <h2 style="margin: 0 0 0 0;">{{detailedCollection.title}}</h2>
+                <span ng-show="detailedCollection.isPrivate == true"><i class="fa fa-lock" aria-hidden="true"></i> Raccolta privata</span>
                 <h4>{{detailedCollection.description}}</h4>
             </div>
         </div>
 
         <!-- Navbar scroll top -->
         <nav class="collection_nav navbar-inverse" id="collection_nav" set-class-when-at-top="collection_nav-scrolled" padding-when-at-top="0">
-            <div class="tasty_container">
-                <p class="navbar-text" uib-tooltip="Visualizzazioni" tooltip-append-to-body="true"><i class="fa fa-eye" aria-hidden="true"></i> {{detailedCollection.viewsCount}}</p>
-                <p class="navbar-text" uib-tooltip="Followers" tooltip-append-to-body="true"><i class="fa fa-heart" aria-hidden="true"></i> {{detailedCollection.followersCount}}</p>
-                <p class="navbar-text"><a href="#" ng-click="openShareModal()"><i class="fa fa-share" aria-hidden="true"></i> Condividi</a></p>
 
-                <!-- Titolo da centrare -->
-                <p class="navbar-text" ng-hide="showUpArrow"><strong>{{detailedCollection.title}}</strong></p>
+            <div class="tasty_container home_navbar">
 
-                <button ng-show="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn" data-wow-delay="0.7s" uib-btn-checkbox ng-model="recipeRemoveOn" >Modifica ricette</button>
-                <button ng-show="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn" data-wow-delay="0.7s" ng-click="openEditModal()">Modifica raccolta</button>
-                
-                <button ng-hide="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn" ng-click="toggleFollow(detailedCollection)" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
+                <!-- 'Sticky' (non-collapsing) menu item(s) -->
+                <div class="navbar-header">
+                    <ul class="nav pull-left">
+                        <!-- This works well for static text, like a username -->
+                        <li class="navbar-text pull-left" uib-tooltip="Visualizzazioni" tooltip-append-to-body="true"><i class="fa fa-eye" aria-hidden="true"></i> {{detailedCollection.viewsCount}} </li>
+                        <li class="navbar-text pull-left" uib-tooltip="Followers" tooltip-append-to-body="true"><i class="fa fa-heart" aria-hidden="true"></i> {{detailedCollection.followersCount}} </li>
+                        <li class="navbar-text pull-left"><a href="#" ng-click="openShareModal()"><i class="fa fa-share" aria-hidden="true"></i> Condividi</a></li>
+                        <!-- Titolo da centrare -->
+                        <li class="navbar-text pull-left" ng-hide="showUpArrow"><strong>{{detailedCollection.title}}</strong></li>
+                    </ul>
+
+                    <!-- Required bootstrap placeholder for the collapsed menu -->
+                    <button type="button" class="navbar-toggle collapsed" ng-click="navCollapsed = !navCollapsed" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div uib-collapse="navCollapsed" class="collapse navbar-collapse navbar-right">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <button ng-show="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn"
+                                data-wow-delay="0.7s" uib-btn-checkbox ng-model="recipeRemoveOn">Modifica ricette</button>
+                        </li>
+                        <li>
+                            <button ng-show="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn"
+                                data-wow-delay="0.7s" ng-click="openEditModal()">Modifica raccolta</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <button ng-hide="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn"
+                    ng-click="toggleFollow(detailedCollection)" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
                     <div ng-if="action.length>0"><span class="glyphicon glyphicon-user"></span>{{action}}</div>
                     <div ng-if="detailedCollection.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
                     <div ng-if="detailedCollection.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI RACCOLTA</div>
@@ -64,11 +92,9 @@
             <div class="tasty_container">
                 <h4 class="no-margin collection_title text_center" ng-show="detailedCollection.recipes.length == 0">Nessuna ricetta presente</h4>
                 <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
-                    show-remove-button="recipeRemoveOn" remove-callback="removeRecipe(recipe)"
-                    ng-repeat="recipe in detailedCollection.recipes"></recipe-card>
+                    show-remove-button="recipeRemoveOn" remove-callback="removeRecipe(recipe)" ng-repeat="recipe in detailedCollection.recipes"></recipe-card>
                 <div class="clearfix"></div>
             </div>
         </div>
     </div>
 </div>
-

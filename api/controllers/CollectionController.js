@@ -29,7 +29,7 @@ var setCollectionViewed = function (req, foundCollection) {
  * vederle. Infatti, soltanto l'autore di una raccolta privata
  * può vederla.
  */
-var filterPrivateCollection = function (collection) {
+var filterPrivateCollection = function (req, collection) {
 
     // se la raccolta è privata controllo se l'utente che ha
     // effettuato la richiesta è l'autore della raccolta
@@ -70,7 +70,7 @@ module.exports = {
                 if (err) { return next(err); }
 
                 // filtro le collection private
-                foundCollection = filterPrivateCollection(foundCollection);
+                foundCollection = filterPrivateCollection(req, foundCollection);
 
                 if (!foundCollection) {
                     return res.notFound({ error: 'No collection found' });
@@ -160,7 +160,9 @@ module.exports = {
                 if (err) { return next(err); }
 
                 // filtro le raccolte private
-                foundCollections = foundCollections.filter(filterPrivateCollection);
+                foundCollections = foundCollections.filter(function (collection) {
+                    return filterPrivateCollection(req, collection);
+                });
 
                 if (foundCollections.length == 0) {
                     return res.notFound({ error: 'No collection found' });

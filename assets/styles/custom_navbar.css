@@ -10,6 +10,10 @@
  .navbar-form .input-group>.form-control { 
    width: 140%;
  }
+
+ .nav>li>a:focus, .nav>li>a:hover {
+   background-color: transparent;
+ }
  
 #navbar {
 	margin-bottom: 0;

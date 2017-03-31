@@ -31,7 +31,7 @@ module.exports = function (req, res, next) {
 
       if(!collection) { return res.notFound({error: 'No collection found'}); }
 
-      req.collection = collection;// aggiungo la ricetta alla richiesta
+      req.collection = collection;// aggiungo la raccolta alla richiesta
       next();// prosegui
     });
 

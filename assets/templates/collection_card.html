@@ -2,6 +2,11 @@
 <!-- card collection 1 -->
 <div class="col-xs-12 col-sm-6 col-md-4 box">
     <!-- <a href="app/collection/{{collection.id}}"> -->
+        <div class="container-fluid card_collection_top_content">
+            <div class="row collection_card_info">
+                <i ng-show="collection.isPrivate" uib-tooltip="Raccolta privata" tooltip-placement="left-top" tooltip-append-to-body="true" class="fa fa-lock" aria-hidden="true"></i>
+            </div>
+        </div>
         <!-- versione a 4 immagini -->
         <div class="card_collection_content_bg2" ng-style="{'background-image': 'url(' + collection.coverImageUrl + ')'}">
 
