@@ -67,23 +67,25 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div uib-collapse="navCollapsed" class="collapse navbar-collapse navbar-right">
                     <ul class="nav navbar-nav">
-                        <li>
-                            <button ng-show="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn"
+                        <li ng-show="isCollectionAuthor(detailedCollection)">
+                            <button type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn"
                                 data-wow-delay="0.7s" uib-btn-checkbox ng-model="recipeRemoveOn">Modifica ricette</button>
                         </li>
-                        <li>
-                            <button ng-show="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn"
+                        <li ng-show="isCollectionAuthor(detailedCollection)">
+                            <button type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn"
                                 data-wow-delay="0.7s" ng-click="openEditModal()">Modifica raccolta</button>
+                        </li>
+                        <li ng-hide="isCollectionAuthor(detailedCollection)">
+                            <button type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn"
+                                ng-click="toggleFollow(detailedCollection)" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
+                                <div ng-if="action.length>0"><span class="glyphicon glyphicon-user"></span>{{action}}</div>
+                                <div ng-if="detailedCollection.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
+                                <div ng-if="detailedCollection.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI RACCOLTA</div>
+                            </button>
                         </li>
                     </ul>
                 </div>
 
-                <button ng-hide="isCollectionAuthor(detailedCollection)" type="button" class="btn btn-warning btn-sm navbar-btn pull-right collection_btn"
-                    ng-click="toggleFollow(detailedCollection)" ng-mouseenter="onMouseEnter()" ng-mouseleave="toggleAction()">
-                    <div ng-if="action.length>0"><span class="glyphicon glyphicon-user"></span>{{action}}</div>
-                    <div ng-if="detailedCollection.isFollowed == true && action.length==0"><span class="glyphicon glyphicon-user"></span>STAI SEGUENDO</div>
-                    <div ng-if="detailedCollection.isFollowed == false && action.length==0"><span class="glyphicon glyphicon-user"></span>SEGUI RACCOLTA</div>
-                </button>
             </div>
         </nav>
 
