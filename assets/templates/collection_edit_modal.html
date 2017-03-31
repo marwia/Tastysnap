@@ -1,12 +1,17 @@
 <div class="modal-header">
-    <h3 class="modal-title">Modifica raccolta {{collection.title}}</h3>
+    <h3 class="modal-title">Modifica raccolta {{originalCollection.title}}</h3>
 </div>
-<div class="modal-body">
-    <form class="form-horizontal">
-        <div class="form-group">
+
+<form class="form-horizontal" name="editForm" role="form" ng-submit="ok()" novalidate>
+
+    <div class="modal-body">
+        <div class="form-group" ng-class="{ 'has-error': editForm.title.$touched && editForm.title.$invalid }">
             <label for="inputTitle" class="col-sm-2 control-label">Titolo</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputTitle" ng-model="collection.title" placeholder="Titolo">
+                <input type="text" class="form-control" id="inputTitle" name="title" ng-model="collection.title" placeholder="Titolo" required>
+                <div class="help-block" ng-if="editForm.title.$touched && editForm.title.$invalid" ng-messages="editForm.title.$error">
+                    <div ng-messages-include="templates/validation_messages.html"></div>
+                </div>
             </div>
         </div>
         <div class="form-group">
@@ -19,7 +24,8 @@
         <div class="form-group">
             <label for="inputDesc" class="col-sm-2 control-label">Immagine di copertina</label>
             <div class="col-sm-10">
-                 <div nv-file-drop class="well my-drop-zone text-center recipe_create_add_photo_box" nv-file-over="" uploader="coverImageUploader" ng-hide="collection.coverImageUrl != null || coverImageUploader.queue.length == 1">
+                <div nv-file-drop class="well my-drop-zone text-center recipe_create_add_photo_box" nv-file-over="" uploader="coverImageUploader"
+                    ng-hide="collection.coverImageUrl != null || coverImageUploader.queue.length == 1">
                     <i class="fa fa-camera recipe_create_add_photo_icon"></i>
                     <h5>Trascina un'immagine oppure usa il seguente pulsante</h5>
                     <div class="fileUpload btn btn-warning">
@@ -50,15 +56,17 @@
                     <label class="btn btn-default" ng-model="collection.isPrivate" uib-btn-radio="true">Si</label>
                     <label class="btn btn-default" ng-model="collection.isPrivate" uib-btn-radio="false">No</label>
                 </div>
-                <strong ng-show="collection.isPrivate" style="color: grey;">Quando la raccolta è privata soltanto tu puoi vederla e consultarla.</strong>
+                <strong ng-show="collection.isPrivate" style="color: grey;">Quando la raccolta è privata soltanto tu puoi vederla.</strong>
             </div>
         </div>
-    </form>
-</div>
-<div class="modal-footer">
-    <div style="float:left;">
-        <button class="btn btn-default" type="button" ng-click="delete()">Elimina raccolta</button>
     </div>
-    <button class="btn btn-default" type="button" ng-click="cancel()">Annulla</button>
-    <button class="btn btn-danger" type="button" ng-click="ok()">Salva<i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
-</div>
+
+    <div class="modal-footer">
+        <div style="float:left;">
+            <button class="btn btn-default" type="button" ng-click="delete()">Elimina raccolta</button>
+        </div>
+        <button class="btn btn-default" type="button" ng-click="cancel()">Annulla</button>
+        <button class="btn btn-danger" type="button" type="submit" ng-disabled="editForm.$invalid">Salva<i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
+    </div>
+
+</form>

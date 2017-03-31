@@ -1,12 +1,17 @@
 <div class="modal-header">
     <h3 class="modal-title">Crea nuova raccolta</h3>
 </div>
-<div class="modal-body">
-    <form class="form-horizontal">
-        <div class="form-group">
+
+<form class="form-horizontal" name="createForm" role="form" ng-submit="ok()" novalidate>
+
+    <div class="modal-body">
+        <div class="form-group" ng-class="{ 'has-error': createForm.title.$touched && createForm.title.$invalid }">
             <label for="inputTitle" class="col-sm-2 control-label">Titolo</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputTitle" ng-model="collection.title" placeholder="Titolo">
+                <input type="text" class="form-control" id="inputTitle" name="title" ng-model="collection.title" placeholder="Titolo" required>
+                <div class="help-block" ng-if="createForm.title.$touched && createForm.title.$invalid" ng-messages="createForm.title.$error">
+                    <div ng-messages-include="templates/validation_messages.html"></div>
+                </div>
             </div>
         </div>
         <div class="form-group">
@@ -23,12 +28,14 @@
                     <label class="btn btn-default" ng-model="collection.isPrivate" uib-btn-radio="true">Si</label>
                     <label class="btn btn-default" ng-model="collection.isPrivate" uib-btn-radio="false">No</label>
                 </div>
-                <strong ng-show="collection.isPrivate" style="color: grey;">Quando la raccolta è privata soltanto tu puoi vederla e consultarla.</strong>
+                <strong ng-show="collection.isPrivate" style="color: grey;">Quando la raccolta è privata soltanto tu puoi vederla.</strong>
             </div>
         </div>
-    </form>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-default" type="button" ng-click="cancel()">Annulla</button>
-    <button class="btn btn-danger" type="button" ng-click="ok()">Salva<i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
-</div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="cancel()">Annulla</button>
+        <button class="btn btn-danger" type="button" type="submit" ng-disabled="createForm.$invalid">Salva<i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
+    </div>
+
+</form>

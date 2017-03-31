@@ -13,6 +13,7 @@ angular.module('CollectionEditModalCtrl', [])
         // passaggio paramteri
         $scope.loading = false;//serve per garantire una migliore esperienza utente
         $scope.collection = angular.copy(selectedCollection);
+        $scope.originalCollection = selectedCollection; // la raccolta originale (non andrebbe modificata)
         $scope.updateProgress = 0;
         $scope.updateProgressSum = 0;
         $scope.uploadedCoverImageUrl = null;
