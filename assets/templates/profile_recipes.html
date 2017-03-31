@@ -1,7 +1,8 @@
+<div class="row tasty_container text-center">
 
-<empty-list-holder ng-hide="recipes.length > 0" msg="'Nessuna ricetta trovata'"></empty-list-holder>
+    <empty-list-holder ng-hide="recipes.length > 0" msg="'Nessuna ricetta trovata'"></empty-list-holder>
 
-<recipe-card recipe="recipe" 
-            open-collection-modal="openCollectionSelectionModal(recipe)"
-            open-share-modal="openShareModal(recipe)"
-            ng-repeat="recipe in recipes"></recipe-card>
+    <recipe-card recipe="recipe" open-collection-modal="openCollectionSelectionModal(recipe)" open-share-modal="openShareModal(recipe)"
+        ng-repeat="recipe in recipes"></recipe-card>
+
+</div>

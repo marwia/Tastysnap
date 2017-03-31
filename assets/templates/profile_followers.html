@@ -1,8 +1,6 @@
-
-<empty-list-holder  ng-hide="follower_users.length > 0" msg="'Nessun follower trovato'"></empty-list-holder>
-
-<!-- profile's cards -->
 <div class="row tasty_container text-center tasty_load_space">
+
+    <empty-list-holder ng-hide="follower_users.length > 0" msg="'Nessun follower trovato'"></empty-list-holder>
 
     <!-- user card -->
     <user-card user="user" ng-repeat="user in follower_users"></user-card>
