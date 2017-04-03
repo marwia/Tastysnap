@@ -1495,6 +1495,10 @@ HR.recipe_hr{
 	.recipe_sp_2_1{
 		padding-top: 70%;
 	}
+
+	.recipe{
+		margin-top: 0;
+	}
 }
 
 @media screen and (max-width: 585px){
