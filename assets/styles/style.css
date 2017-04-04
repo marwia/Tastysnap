@@ -1552,24 +1552,15 @@ HR.recipe_hr{
 
 /* ------------------------------------------------------------------ 10 -------------------------------------------------------- */
 /* ------------------------------------------------------------- PERSONAL CARDS ------------------------------------------------- */
-/*
-.profile_card{
-    padding: 15px 0 15px 0;
-}
 
-.profile_card_img{
-    width:90px;
-    height:90px;
-    margin: auto;
-	background-position: center;
-}
+.profile_image{
+	width: 70px;
+	height: 70px;
 
-.profile_card_name{
-    margin-top: 15px;
-    color: white;
-    font-size: 1.2em
+	background-size: contain;
+	background-repeat: no-repeat;
+	border-radius:50%;
 }
-*/
 
 .panel.panel-card {
     position: relative;
@@ -1595,6 +1586,7 @@ HR.recipe_hr{
     left: 50%;
     z-index: 1;
     width: 120%;
+	background-color: orange;
     
     -webkit-transform: translate3d(-50%,-50%,0);
             transform: translate3d(-50%,-50%,0);
@@ -1642,8 +1634,7 @@ HR.recipe_hr{
     max-width: 100%;
     margin: 0 auto;
     background-color: #fff;
-} 
-
+}
 
 .panel.panel-card:hover .panel-heading {
     height: 55px;
@@ -1653,15 +1644,14 @@ HR.recipe_hr{
 }
 .panel.panel-card:hover .panel-figure {
     opacity: 0;
-    
     -webkit-transition: opacity 400ms ease-in-out;
-            transition: opacity 400ms ease-in-out;
+	transition: opacity 400ms ease-in-out;
 }
 .panel.panel-card:hover .panel-body {
     padding-top: 20px;
     
     -webkit-transition: padding 400ms ease-in-out;
-            transition: padding 400ms ease-in-out;
+	transition: padding 400ms ease-in-out;
 }
 
 /* ------------------------------------------------------------------ 11 -------------------------------------------------------- */
