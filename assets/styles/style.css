@@ -1158,7 +1158,7 @@ ul.top_menu_notify_dropdown {
 
 .home_navbar{
 	top: 50px;
-	z-index: 3;
+	z-index: 10;
     background-color: rgba(0,0,0,0.4);
     border-color: transparent;
     text-align: center;
