@@ -112,7 +112,7 @@
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #BFBFBF;
 }
-.sidebar .sidebar-header {
+.sidebar .sidebar-header{
   color: white;
   position: relative;
   font-size: 13px;
@@ -131,7 +131,7 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  background-color: #FFA726;
+  background-image: url('../app_images/login.jpg');
 }
 
 .sidebar .sidebar-header .col-xs-6 a {

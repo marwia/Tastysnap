@@ -978,7 +978,7 @@ ul.top_menu_notify_dropdown {
     background-repeat: no-repeat;
     background-position: center; 
     background-size: cover;
-	background-color: #FFA726;
+	background-image: url('../app_images/login.jpg');
 	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 	-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 	box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
