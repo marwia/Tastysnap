@@ -19,7 +19,7 @@ angular.module('AuthService', [])
     // Funzione per caricare il token salvato in locale
     auth.getToken = function () {
         return $window.localStorage['tastysnap-token'];
-    }
+    };
 
     // Funzione che verifica se esite un token e se è scaduto (non valido)
     auth.isLoggedIn = function () {
