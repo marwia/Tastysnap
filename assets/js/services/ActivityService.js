@@ -57,7 +57,7 @@ angular.module('ActivityService', [])
                             tempArray.push(response.data[i]);
                         }
                     }
-                    console.info(tempArray);
+                    console.info("activites", tempArray);
                     // vuole per forza 'extend'
                     //angular.extend(o.activities, tempArray);
                     for (var i in tempArray) {

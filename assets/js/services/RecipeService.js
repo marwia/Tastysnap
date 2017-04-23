@@ -117,7 +117,7 @@ angular.module('RecipeService', [])
             // ricerco la ricetta nelle variabili locali
             for(var i = 0; i < o.recipes.length; i++) {
                 if(o.recipes[i].id == id) {
-                    collection = o.recipes[i];
+                    recipe = o.recipes[i];
                     break;
                 }
             }

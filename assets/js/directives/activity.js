@@ -30,7 +30,7 @@ angular.module('sampleApp')
 
                 scope.message = {
                     'VoteComment': 'Hai espresso un giudizio ad un tuo commento',
-                    'FollowUser': 'Hai iniziato a seguirti',
+                    'FollowUser': 'Hai iniziato a seguire',
                     'FollowCollection': 'Hai iniziato a seguire la raccolta',
                     'Collection': 'Hai creato la raccolta',
                     'CollectionRecipe': 'Hai aggiunta una nuova ricetta alla raccolta',
@@ -77,7 +77,6 @@ angular.module('sampleApp')
                         // trova raccolta
                         if (typeof scope.activity.event.collection === 'string') {
                             Collection.searchById(scope.activity.event.collection, function success(response) {
-                                console.log("caricato");
                                 scope.object = response.data[0].title;
                                 scope.activity.event.collection = response.data[0];
                                 scope.objectLink = "/app/collection/" + response.data[0].id;
@@ -91,7 +90,7 @@ angular.module('sampleApp')
                             scope.objectLink = "/app/collection/" + scope.activity.event.id;
                         }
                         break;
- 
+
                     case 'Comment':
                     case 'ReviewRecipe':
                     case 'TryRecipe':
@@ -108,7 +107,24 @@ angular.module('sampleApp')
                         scope.object = scope.activity.event.title;
                         scope.objectLink = "/app/recipe/" + scope.activity.event.id;
                         break;
-                    
+                    case 'FollowUser':
+                        // trova utente
+                        if (typeof scope.activity.event.following === 'string') {   
+                            User.searchById(scope.activity.event.following, function success(response) {
+                                scope.object = response.data[0].name + " " + response.data[0].surname;
+                                scope.activity.event.collection = response.data[0];
+                                scope.objectLink = "/app/user/" + response.data[0].id;
+                            }, function error(response) {
+                                // probabilmente la notifica non è più "integra"
+                                scope.hide = true;
+                            });
+                        }
+                        else {
+                            scope.object = scope.activity.event.title;
+                            scope.objectLink = "/app/user/" + scope.activity.event.id;
+                        }
+                        break;
+
                 }
 
             },

@@ -50,6 +50,37 @@ angular.module('UserService', [])
         };
 
         /**
+         * Metodo per eseguire una ricerca per id della persona.
+         */
+        o.searchById = function(id, successCB, errorCB) {
+            var user;
+            // ricerco la ricetta nelle variabili locali
+            for(var i = 0; i < o.users.length; i++) {
+                if(o.users[i].id == id) {
+                    user = o.users[i]
+                    break;
+                }
+            }
+
+            if (user) return successCB({data: [user]});
+
+            // se non ho trovato la ricetta, la richiedo al server
+            return $http.get(server_prefix + '/user', {
+                params: {
+                    where: {
+                        "id": id
+                    }
+                }
+            }).then(function(response) {
+                // non lo eseguo
+                //angular.extend(o.recipes, response.data);
+
+                if (successCB)
+                    successCB(response);
+            }, errorCB);
+        };
+
+        /**
          * Metodo per eseguire una ricerca per nome/cognome
          * di persona.
          */
