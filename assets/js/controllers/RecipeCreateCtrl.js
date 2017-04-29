@@ -190,6 +190,11 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             // mostro la finestra modale con il caricamento
             $scope.progressModalInstance = $scope.openProgressModal();
 
+            // Catturo l'evento di modale chiusa
+            $scope.progressModalInstance.result.then(null, function () {
+                $state.go("app.recipe", { id: $scope.recipeToCreate.id });
+            });
+
             // calcolo del totale delle create che saranno eseguite
             $scope.progressSum = 1 // ricetta stessa
                 + coverImageUploader.queue.length * 2 // immagine di copertina + quella sfocata
@@ -322,7 +327,6 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         $scope.closeModal = function () {
             $scope.progressModalInstance.dismiss('cancel');
-            $state.go("app.recipe", { id: $scope.recipeToCreate.id });
         }
 
         /**
@@ -779,11 +783,11 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         // MODALE PER ESEGUIRE LA RICHIESTA DI AGGIUNTA DI UN INGREDIENTE
 
-        $scope.openIngredientAddReqModal = function() {
+        $scope.openIngredientAddReqModal = function () {
             $uibModal.open({
                 animation: true,
                 templateUrl: 'templates/ingredient_req_modal.html',
-                controller: function($uibModalInstance, $scope) {
+                controller: function ($uibModalInstance, $scope) {
                     // passaggio paramteri
                     $scope.loading = false;
                     $scope.ingredient = {
@@ -792,7 +796,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     };
                     $scope.finish = false;
                     // azioni possibili all'interno della modale
-                    $scope.ok = function() {
+                    $scope.ok = function () {
                         if ($scope.finish) {
                             $uibModalInstance.dismiss('cancel');
                         } else {
@@ -801,19 +805,19 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                             Ingredient.addIngredientReq(
                                 $scope.ingredient.name,
                                 $scope.ingredient.description,
-                                function(response) {
+                                function (response) {
                                     $scope.loading = false;
                                     $scope.finish = true;// sono pronto a uscire
                                     $uibModalInstance.close();
-                                }, 
-                                function(response) {
+                                },
+                                function (response) {
                                     // errore
                                     $scope.loading = false;
                                 })
                         }
                     };
 
-                    $scope.cancel = function() {
+                    $scope.cancel = function () {
                         $uibModalInstance.dismiss('cancel');
                     };
                 },
@@ -824,7 +828,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         var init = function () {
             // inizializzazione del controller
-            
+
             /**
              * Se sono in modalità modifica devo caricare 
              * dei dati della ricetta da modificare.

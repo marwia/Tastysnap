@@ -2257,6 +2257,8 @@ rzslider .rz-pointer.rz-active:after {
 
 .create_recipe_modal {
 	padding-bottom: 25px;
+	min-height: 200px;
+    color: white;
 }
 
 .fa-5 {
