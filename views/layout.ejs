@@ -99,7 +99,7 @@
 
   </head>
 
-  <body>
+  <body ng-controller="BodyCtrl" ng-mouseleave="showIt()" ng-mouseenter="hideIt()">
     <%- body %>
 
 
@@ -195,6 +195,7 @@
     <script src="/js/appRoutes.js"></script>
     <script src="/js/controllers/ActivitesCtrl.js"></script>
     <script src="/js/controllers/AuthCtrl.js"></script>
+    <script src="/js/controllers/BodyCtrl.js"></script>
     <script src="/js/controllers/CollectionCtrl.js"></script>
     <script src="/js/controllers/CollectionDetailCtrl.js"></script>
     <script src="/js/controllers/CollectionEditModalCtrl.js"></script>
@@ -256,6 +257,7 @@
     <script src="/js/services/RecipeService.js"></script>
     <script src="/js/services/RecipeStepService.js"></script>
     <script src="/js/services/SearchService.js"></script>
+    <script src="/js/services/UserEngagementService.js"></script>
     <script src="/js/services/UserService.js"></script>
     <script src="/js/services/Utils.js"></script>
     <script src="/js/sidebar.js"></script>

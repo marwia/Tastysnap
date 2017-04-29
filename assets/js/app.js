@@ -12,7 +12,7 @@ var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies
                 'myDropdown-directive',
 				'AuthService', 'PostService', 'RecipeService', 'UserService', 'CollectionService', 'ProductService',
                 'IngredientService', 'CommentService', 'RecipeStepService', 'RecipeReviewService', 'ImageUtilsService',
-                'NotificationService', 'ActivityService', 'Utils', 'SearchService', 'PageService',
+                'NotificationService', 'ActivityService', 'Utils', 'SearchService', 'PageService', 'UserEngagementService',
 				'ngAnimate', 'appRoutes', 'toastr', 'rzModule', 'angular-click-outside', 'ngGPlaces', 'angular-timeline',
 				'AuthCtrl', 'MasterCtrl', 'NavCtrl', 'SideBarCtrl',
 				'RecipeCtrl', 'RecipeDetailCtrl', 'RecipeCreateCtrl', 'UserProfileCtrl', 'UserHomeCtrl', 'CollectionCtrl',
@@ -20,7 +20,7 @@ var myApp = angular.module('sampleApp', ['ui.router', 'ui.bootstrap', 'ngCookies
                 'SearchCtrl', 'SearchRecipeCtrl', 'SearchCollectionCtrl', 'SimilarRecipeCtrl',
                 'UserProfileFollowerUsersCtrl', 'UserProfileFollowingUsersCtrl', 'NearRecipesCtrl', 'FollowingCollectionsCtrl',
                 'RecipeReviewCtrl', 'RecipeImageSliderCtrl', 'NotificationCtrl', 'ActivitesCtrl',
-                'CollectionEditModalCtrl', 'HeadCtrl']);
+                'CollectionEditModalCtrl', 'HeadCtrl', 'BodyCtrl']);
 
 /**
  * Configurazione iniziale dell'app, viene fatta una sola volta all'avvio.

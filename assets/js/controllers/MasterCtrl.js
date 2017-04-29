@@ -51,6 +51,29 @@ angular.module('MasterCtrl', []).controller('MasterCtrl', [
             $scope.toggle = false;
             $cookieStore.put('toggle', $scope.toggle);
         };
+
+        $scope.openRetainModal = function() {
+        var modalInstance = $uibModal.open({
+					animation: true,
+					templateUrl: 'templates/create_first_recipe_modal.html',
+					controller: function ($uibModalInstance, $scope) {
+						// passaggio paramteri
+						$scope.currentUser = User.currentUser;
+
+						// azioni possibili all'interno della modale
+						$scope.cancel = function () {
+							$uibModalInstance.dismiss('cancel');
+						};
+					},
+					size: 'md'
+				});
+
+				modalInstance.result.then(null, function () {
+					console.info('Modal dismissed at: ' + new Date());
+					// salvataggio della data di visualizzazione della modale
+					UserEngagement.saveDate(UserEngagement.date_strings[0], new Date());
+				});
+        }
         
 
 

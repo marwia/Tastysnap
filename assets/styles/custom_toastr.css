@@ -19,3 +19,20 @@
 #toast-container.toast-bottom-center > div {
   margin-top: 10px;
 }
+
+.toast-black {
+    background-color: black;
+}
+
+.toast-white {
+    background-color: white;
+    color: black;     
+}
+
+.toast-white .toast-title {
+  color: black;
+}
+
+.toast-white .toast-message {
+  color: black;
+}
