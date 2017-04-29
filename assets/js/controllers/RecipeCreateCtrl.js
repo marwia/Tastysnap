@@ -190,11 +190,6 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             // mostro la finestra modale con il caricamento
             $scope.progressModalInstance = $scope.openProgressModal();
 
-            // Catturo l'evento di modale chiusa
-            $scope.progressModalInstance.result.then(null, function () {
-                $state.go("app.recipe", { id: $scope.recipeToCreate.id });
-            });
-
             // calcolo del totale delle create che saranno eseguite
             $scope.progressSum = 1 // ricetta stessa
                 + coverImageUploader.queue.length * 2 // immagine di copertina + quella sfocata
@@ -327,6 +322,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
         $scope.closeModal = function () {
             $scope.progressModalInstance.dismiss('cancel');
+            $state.go("app.recipe", { id: $scope.recipeToCreate.id });
         }
 
         /**
@@ -777,6 +773,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 animation: true,
                 templateUrl: 'templates/recipe_progress_modal.html',
                 scope: $scope,
+                backdrop: 'static',// modal window is not closed when clicking outside of the modal window 
                 size: 'md'
             });
         };
