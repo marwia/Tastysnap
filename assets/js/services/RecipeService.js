@@ -182,7 +182,7 @@ angular.module('RecipeService', [])
 
             // parametri aggiuntivi
             if (query.hasOwnProperty('title'))
-                params.where["title"] = { "contains": query.recipeTitle };
+                params.where["title"] = { "contains": query.title };
             
             if (query.hasOwnProperty('author'))
                 params.where["author"] = query.author;
@@ -197,14 +197,18 @@ angular.module('RecipeService', [])
                 && query.productsIdsArray.length > 0)
                 params.where["products"] = query.productsIdsArray;// products in AND
                 
-            if (query.hasOwnProperty('difficulty'))
+            if (query.hasOwnProperty('difficulty')
+                && query.difficulty != undefined)
                 params.where["difficulty"] = { '>': query.difficulty - 1, '<=': query.difficulty };
-            if (query.hasOwnProperty('cost'))
+            if (query.hasOwnProperty('cost')
+                && query.cost != undefined)
                 params.where["cost"] = { '>': query.cost - 1, '<=': query.cost };
-            if (query.hasOwnProperty('calories'))
+            if (query.hasOwnProperty('calories')
+                && query.calories != undefined)
                 params.where["calories"] = { '>': query.calories - 1, '<=': query.calories };
                 
-            if (query.hasOwnProperty('maxTime'))
+            if (query.hasOwnProperty('maxTime')
+                && query.maxTime != undefined)
                 params.where["preparationTime"] = { '<=': query.maxTime};
 
             if (query.hasOwnProperty('nutrientFiltersArray') 
@@ -223,10 +227,12 @@ angular.module('RecipeService', [])
             if (query.hasOwnProperty('sort_by') && query.sort_by > 0 && query.hasOwnProperty('sort_mode'))
                 params["sort"] = o.sortOptions[query.sort_by] + " " + query.sort_mode;
                 
-            if (query.hasOwnProperty('skip'))
+            if (query.hasOwnProperty('skip')
+                && query.skip != undefined)
                 params["skip"] = query.skip;
 
-            if (query.hasOwnProperty('limit'))
+            if (query.hasOwnProperty('limit')
+                && query.limit != undefined)
                 params["limit"] = query.limit;
                  
             // esecuzione della richiesta
