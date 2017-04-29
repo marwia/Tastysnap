@@ -59,12 +59,6 @@ angular.module('RecipeCtrl', []).controller('RecipeCtrl', [
                     }
                 }
             });
-
-            modalInstance.result.then(function () {
-                $log.info('Modal dismissed with success at: ' + new Date());
-            }, function () {
-                $log.info('Modal dismissed at: ' + new Date());
-            });
         };
 
         

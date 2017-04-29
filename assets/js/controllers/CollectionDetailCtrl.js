@@ -135,6 +135,31 @@ angular.module('CollectionDetailCtrl', []).controller('CollectionDetailCtrl', [
             });
         };
 
+        $scope.openCollectionSelectionModal = function (selectedRecipe) {
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'templates/recipe_collection_selection_modal.html',
+                controller: 'CollectionSelectionModalCtrl',
+                // classe aggiuntiva a modal-dialog (ci imposto la dmensione) modal-add-recipe-to-collection
+                size: 'add-recipe-to-collection',
+                resolve: {
+                    // passaggio di paramteri
+                    selectedRecipe: selectedRecipe,
+                    collections: function () {
+                        console.log("chiamata selection modal, id utente: " + Auth.currentUser().id);
+                        return Collection.getUserCollections(
+                            Auth.currentUser().id,
+                            null,
+                            function errorCB(response) {
+                                // in caso di assenza di raccolte del corrente utente devo svuotare l'array
+                                Collection.collections = [];
+                            });
+                    }
+                }
+            });
+        };
+
         
 
         /**
