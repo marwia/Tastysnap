@@ -51,20 +51,22 @@ angular.module('RecipeReviewCtrl', []).controller('RecipeReviewCtrl', [
             
             if (avg < 1) 
                 return "Nessuna recensione";
-            
-            return $scope[titlesArray][avg-1];
+
+            // Ritorno la string con la prima lettera grande
+            var string = $scope[titlesArray][avg-1];
+            return string.charAt(0).toUpperCase() + string.slice(1);
         };
         
         $scope.getStringReviewsCount = function (property) {
             if ($scope.detailedRecipe[property]) {
                 if ($scope.detailedRecipe[property].reviewsCount > 1) {
-                    return $scope.detailedRecipe[property].reviewsCount + " utenti";
+                    return "per " + $scope.detailedRecipe[property].reviewsCount + " utenti";
                 } else if ($scope.detailedRecipe[property].reviewsCount > 0) {
-                    return $scope.detailedRecipe[property].reviewsCount + " utente";
+                    return "per " + $scope.detailedRecipe[property].reviewsCount + " utente";
                 }
             }
-            return "Nessuna recensione";
-        }
+            return "";
+        };
         
         /**
          * Osserva la variabile che indica un giudizio

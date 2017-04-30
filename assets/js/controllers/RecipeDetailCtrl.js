@@ -172,6 +172,15 @@ angular.module('RecipeDetailCtrl', []).controller('RecipeDetailCtrl', [
             });
         };
 
+        /**
+         * Serve per formattare i nomi degli ingredienti
+         */
+        $scope.formatIngredientName = function(text) {
+            var formatted = text.toLowerCase();
+            // lettera iniziale grande
+            return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+        }
+
         $scope.calculateNutrientValues = function(recipe) {
             // calcolo totale kcal
             recipe.totalEnergy = Ingredient.calculateNutrientTotal(recipe.ingredientGroups, '208');

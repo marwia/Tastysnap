@@ -109,12 +109,12 @@
                                         <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient" ng-repeat="ingredient in ingredientGroup.ingredients">
                                             <div class="col-xs-7 col-sm-7 col-md-7">
                                                 <div class="text-left">
-                                                    <p class="recipe_ing_txt"><a href="" uib-tooltip-html="'static. {{dynamicTooltipText}}. <b>bold.</b>'">{{ingredient.product.name.long}}</a></p>
+                                                    <p class="recipe_ing_txt"><a href="">{{formatIngredientName(ingredient.product.name.long)}}</a></p>    
                                                 </div>
                                             </div>
                                             <div class="col-xs-5 col-sm-5 col-md-5">
                                                 <div class="text-right">
-                                                    <p class="recipe_ing_txt">{{ingredient.quantity}} {{ingredient.unitOfMeasure}}</p>
+                                                    <p class="recipe_ing_txt"><strong>{{ingredient.quantity}} {{ingredient.unitOfMeasure}}</strong></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -196,7 +196,7 @@
                             <hr class="recipe_hr">
 
                             <table class="recipe_sp_3_table">
-                                <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringAverageValue('difficulty', 'difficultyTitles')}} secondo {{getStringReviewsCount('difficulty')}}">   
+                                <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringAverageValue('difficulty', 'difficultyTitles')}} {{getStringReviewsCount('difficulty')}}">   
                                     <td class="text-left">Difficoltà</td>
                                     <td class="text-right">
                                         <div class="recipe_rating_con">
@@ -208,7 +208,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="recipe_sp_3_tr" uib-tooltip="{{getStringAverageValue('cost', 'costTitles')}} secondo {{getStringReviewsCount('cost')}}">
+                                <tr class="recipe_sp_3_tr" uib-tooltip="{{getStringAverageValue('cost', 'costTitles')}} {{getStringReviewsCount('cost')}}">
                                     <td class="text-left">Costo</td>
                                     <td class="text-right">
                                         <div class="recipe_rating_con">
@@ -220,7 +220,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringAverageValue('calories', 'caloriesTitles')}} secondo {{getStringReviewsCount('calories')}}">
+                                <tr class="recipe_sp_3_tr"  uib-tooltip="{{getStringAverageValue('calories', 'caloriesTitles')}} {{getStringReviewsCount('calories')}}">
                                     <td class="text-left">Calorie</td>
                                     <td class="text-right">
                                         <div class="recipe_rating_con">
@@ -240,52 +240,52 @@
                     <!-- Valori Nutrizionali -->
                     <div class="panel panel-default">
                         <div class="panel-body text-left recipe_val_nutriz">
-                            <h5 class="text-left"><strong>VALORI NUTRIZIONALI</strong></h5>
+                            <h5 class="text-left"><strong>VALORI NUTRIZIONALI per 100g</strong></h5>
                             <hr class="recipe_hr">
                             <table>
                                 <tr>
                                     <td class="text-left"><strong>Valore energetico</strong></td>
-                                    <td class="text-right">{{detailedRecipe.totalEnergy.value.toFixed(2)}} {{detailedRecipe.totalEnergy.unit}}</td>
+                                    <td class="text-right">{{(detailedRecipe.totalEnergy.value/100).toFixed(2)}} {{detailedRecipe.totalEnergy.unit}}</td>
                                 </tr>
 
                                 <tr>
                                     <td class="text-left"><strong>Proteine</strong></td>
-                                    <td class="text-right">{{detailedRecipe.totalProtein.value.toFixed(2)}} {{detailedRecipe.totalProtein.unit}}</td>
+                                    <td class="text-right">{{(detailedRecipe.totalProtein.value/100).toFixed(2)}} {{detailedRecipe.totalProtein.unit}}</td>
                                 </tr>
 
                                 <tr>
                                     <td class="text-left"><strong>Carboidrati</strong></td>
-                                    <td class="text-right">{{detailedRecipe.totalCarbs.value.toFixed(2)}} {{detailedRecipe.totalCarbs.unit}}</td>
+                                    <td class="text-right">{{(detailedRecipe.totalCarbs.value/100).toFixed(2)}} {{detailedRecipe.totalCarbs.unit}}</td>
                                 </tr>
 
                                 <tr>
                                     <td class="text-left"><strong>di cui zuccheri</strong></td>
-                                    <td class="text-right">{{detailedRecipe.totalSugar.value.toFixed(2)}} {{detailedRecipe.totalSugar.unit}}</td>
+                                    <td class="text-right">{{(detailedRecipe.totalSugar.value/100).toFixed(2)}} {{detailedRecipe.totalSugar.unit}}</td>
                                 </tr>
 
                                 <tr>
                                     <td class="text-left"><strong>Grassi</strong></td>
-                                    <td class="text-right">{{detailedRecipe.totalFat.value.toFixed(2)}} {{detailedRecipe.totalFat.unit}}</td>
+                                    <td class="text-right">{{(detailedRecipe.totalFat.value/100).toFixed(2)}} {{detailedRecipe.totalFat.unit}}</td>
                                 </tr>
 
                                 <tr>
                                     <td class="text-left"><strong>di cui saturi</strong></td>
-                                    <td class="text-right">{{detailedRecipe.totalFatSat.value.toFixed(2)}} {{detailedRecipe.totalFatSat.unit}}</td>
+                                    <td class="text-right">{{(detailedRecipe.totalFatSat.value/100).toFixed(2)}} {{detailedRecipe.totalFatSat.unit}}</td>
                                 </tr>
 
                                 <tr>
                                     <td class="text-left"><strong>Liquidi</strong></td>
-                                    <td class="text-right">{{detailedRecipe.totalWater.value.toFixed(2)}} {{detailedRecipe.totalWater.unit}}</td>
+                                    <td class="text-right">{{(detailedRecipe.totalWater.value/100).toFixed(2)}} {{detailedRecipe.totalWater.unit}}</td>
                                 </tr>
 
                                 <tr>
                                     <td class="text-left"><strong>Fibre</strong></td>
-                                    <td class="text-right">{{detailedRecipe.totalFibers.value.toFixed(2)}} {{detailedRecipe.totalFibers.unit}}</td>
+                                    <td class="text-right">{{(detailedRecipe.totalFibers.value/100).toFixed(2)}} {{detailedRecipe.totalFibers.unit}}</td>
                                 </tr>
 
                                 <tr>
                                     <td class="text-left"><strong>Sodio</strong></td>
-                                    <td class="text-right">{{detailedRecipe.totalSod.value.toFixed(2)}} {{detailedRecipe.totalSod.unit}}</td>
+                                    <td class="text-right">{{(detailedRecipe.totalSod.value/100).toFixed(0)}} {{detailedRecipe.totalSod.unit}}</td>
                                 </tr>
                             </table>
                         </div>
