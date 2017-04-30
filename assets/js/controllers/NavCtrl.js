@@ -18,7 +18,8 @@ angular.module('NavCtrl', []).controller('NavCtrl', [
 	'UserEngagement',
 	'Collection',
 	'toastr',
-	function ($scope, $stateParams, Auth, User, $http, $location, $uibModal, UserEngagement, Collection, toastr) {
+	'$timeout',
+	function ($scope, $stateParams, Auth, User, $http, $location, $uibModal, UserEngagement, Collection, toastr, $timeout) {
 		// Espongo i metodi del Auth service
 		$scope.isLoggedIn = Auth.isLoggedIn;
 		$scope.q = $stateParams.q;// query di ricerca
@@ -47,27 +48,28 @@ angular.module('NavCtrl', []).controller('NavCtrl', [
 			var diff = new Date() - new Date(lastDate);
 
 			if (isNaN(diff) == true || diff >= 6 * 60 * 60 * 1000) {//6 ore
+				$timeout(function () {
+					var modalInstance = $uibModal.open({
+						animation: true,
+						templateUrl: 'templates/create_first_recipe_modal.html',
+						controller: function ($uibModalInstance, $scope) {
+							// passaggio paramteri
+							$scope.currentUser = User.currentUser;
 
-				var modalInstance = $uibModal.open({
-					animation: true,
-					templateUrl: 'templates/create_first_recipe_modal.html',
-					controller: function ($uibModalInstance, $scope) {
-						// passaggio paramteri
-						$scope.currentUser = User.currentUser;
+							// azioni possibili all'interno della modale
+							$scope.cancel = function () {
+								$uibModalInstance.dismiss('cancel');
+							};
+						},
+						size: 'md'
+					});
 
-						// azioni possibili all'interno della modale
-						$scope.cancel = function () {
-							$uibModalInstance.dismiss('cancel');
-						};
-					},
-					size: 'md'
-				});
-
-				modalInstance.result.then(null, function () {
-					console.info('Modal dismissed at: ' + new Date());
-					// salvataggio della data di visualizzazione della modale
-					UserEngagement.saveDate(UserEngagement.date_strings[0], new Date());
-				});
+					modalInstance.result.then(null, function () {
+						console.info('Modal dismissed at: ' + new Date());
+						// salvataggio della data di visualizzazione della modale
+						UserEngagement.saveDate(UserEngagement.date_strings[0], new Date());
+					});
+				}, 5 * 1000);// 5s
 			}
 		}
 
@@ -81,77 +83,79 @@ angular.module('NavCtrl', []).controller('NavCtrl', [
 
 			if (isNaN(diff) == true || diff >= 6 * 60 * 60 * 1000) {//6 ore
 
-				var modalInstance = $uibModal.open({
-					animation: true,
-					templateUrl: 'templates/create_first_collection_modal.html',
-					controller: function ($uibModalInstance, $scope) {
-						// passaggio paramteri
-						$scope.currentUser = User.currentUser;
+				$timeout(function () {
+					var modalInstance = $uibModal.open({
+						animation: true,
+						templateUrl: 'templates/create_first_collection_modal.html',
+						controller: function ($uibModalInstance, $scope) {
+							// passaggio paramteri
+							$scope.currentUser = User.currentUser;
 
-						// azioni possibili all'interno della modale
-						$scope.cancel = function () {
+							// azioni possibili all'interno della modale
+							$scope.cancel = function () {
 
-							var createCollectionmodalInstance = $uibModal.open({
-								animation: true,
-								templateUrl: 'templates/collection_create_modal.html',
-								controller: function ($uibModalInstance, $scope) {
-									// passaggio paramteri
-									$scope.loading = false;
-									// creazione di una nuova collection
-									$scope.collection = {
-										title: "",
-										description: "",
-										isPrivate: false
-									};
+								var createCollectionmodalInstance = $uibModal.open({
+									animation: true,
+									templateUrl: 'templates/collection_create_modal.html',
+									controller: function ($uibModalInstance, $scope) {
+										// passaggio paramteri
+										$scope.loading = false;
+										// creazione di una nuova collection
+										$scope.collection = {
+											title: "",
+											description: "",
+											isPrivate: false
+										};
 
-									// azioni possibili all'interno della modale
+										// azioni possibili all'interno della modale
 
-									// crea
-									$scope.ok = function () {
-										$scope.loading = true;
+										// crea
+										$scope.ok = function () {
+											$scope.loading = true;
 
-										Collection.create($scope.collection,
-											function (response) {
-												// close modal
-												$uibModalInstance.close(response.data);
-											}, function (response) {
-												// errore
-												$scope.loading = false;
-											});
-									};
+											Collection.create($scope.collection,
+												function (response) {
+													// close modal
+													$uibModalInstance.close(response.data);
+												}, function (response) {
+													// errore
+													$scope.loading = false;
+												});
+										};
 
-									// annulla
-									$scope.cancel = function () {
-										$uibModalInstance.dismiss('cancel');
-									};
+										// annulla
+										$scope.cancel = function () {
+											$uibModalInstance.dismiss('cancel');
+										};
 
-								},
-								size: 'lg'
-							});
+									},
+									size: 'lg'
+								});
 
-							// aggiorno i risultati
-							createCollectionmodalInstance.result.then(function (collection) {
-								toastr.success('Raccolta creata e ricetta aggiunta');
-								// aggiungo subito la nuova raccolta
-								Collection.userCollections.push(collection);
-								Collection.collections.push(collection);
-								// la raccolta è stata creata e la ricetta è stata aggiunta
-								$uibModalInstance.close();
-							});
+								// aggiorno i risultati
+								createCollectionmodalInstance.result.then(function (collection) {
+									toastr.success('Raccolta creata e ricetta aggiunta');
+									// aggiungo subito la nuova raccolta
+									Collection.userCollections.push(collection);
+									Collection.collections.push(collection);
+									// la raccolta è stata creata e la ricetta è stata aggiunta
+									$uibModalInstance.close();
+								});
 
-							$uibModalInstance.dismiss('cancel');
+								$uibModalInstance.dismiss('cancel');
 
-						};
+							};
 
-					},
-					size: 'md'
-				});
+						},
+						size: 'md'
+					});
 
-				modalInstance.result.then(null, function () {
-					console.info('Modal dismissed at: ' + new Date());
-					// salvataggio della data di visualizzazione della modale
-					UserEngagement.saveDate(UserEngagement.date_strings[1], new Date());
-				});
+					modalInstance.result.then(null, function () {
+						console.info('Modal dismissed at: ' + new Date());
+						// salvataggio della data di visualizzazione della modale
+						UserEngagement.saveDate(UserEngagement.date_strings[1], new Date());
+					});
+				}, 5 * 1000);// 5s
 			}
 		}
 
@@ -180,12 +184,14 @@ angular.module('NavCtrl', []).controller('NavCtrl', [
 				var diff = new Date() - new Date(lastDate);
 
 				if (isNaN(diff) == true || diff >= 2 * 60 * 60 * 1000) {//2 ore
-					toastr.info(toastBody, toastTitle, {
-						allowHtml: true,
-						toastClass: 'toast-black'
-					});
-					// salvo la data di visualizzazione per non mostrare lo stesso toast per 2 ore
-					UserEngagement.saveDate(toastType, new Date());
+					$timeout(function () {
+						toastr.info(toastBody, toastTitle, {
+							allowHtml: true,
+							toastClass: 'toast-black'
+						});
+						// salvo la data di visualizzazione per non mostrare lo stesso toast per 2 ore
+						UserEngagement.saveDate(toastType, new Date());
+					}, 60 * 1000);// 60s
 				}
 			}
 		}
