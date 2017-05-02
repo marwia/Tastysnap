@@ -168,7 +168,7 @@ angular.module('IngredientService', [])
                 server_prefix + '/ingredientgroup/' + ingredientGroup.id + '/ingredients')
                 .then(function successCallback(response) {
                     ingredientGroup.ingredients = [];
-                    
+
                     response.data.forEach(function (ingredient) {
                         // eseguo una conversione da unità originale a tradotta
                         var idx = o.unitsOfMeasure.indexOf(ingredient.unitOfMeasure);
@@ -426,6 +426,64 @@ angular.module('IngredientService', [])
             }
 
             return { "value": total, "unit": unit };
+        }
+
+        /**
+         * Funzione che calcola il peso totale di una ricetta.
+         * @param {Number} ing_quantity - quantità dell'ingrediente
+         * @param {String} ing_unit - unità di misura dell'ingrediente
+         * @return {Object} ingredient_weight - Il peso di un determinato
+         * ingredient convertito in grammi (a prescindere dall'unità di misura
+         * in cui è espresso)
+         */
+        o.getIngredientWeight = function (ing_quantity, ing_unit, product) {
+            var scale_factor = o.scaleFactor(ing_unit, 'g')
+            if (ing_unit.indexOf('l') > -1) {
+                // ottengo la porzione di un bicchiere del prodotto
+                var cupPortion = o.findPortion(product, 'cup');
+                // se è null, provo con un cucchiaio da tavolo
+                if (cupPortion == null)
+                    cupPortion = o.findPortion(product, 'tbsp');
+
+                if (cupPortion['g'] != null)
+                    ing_quantity = ing_quantity * scale_factor * cupPortion.g;
+
+                // aggiorno il scale factor di nuovo (sapendo che ormai 
+                // il valore da liquidi è stato converito in peso, grammi per la precisione)
+                scale_factor = o.scaleFactor('g', 'g')
+            }
+
+            // ottengo il valore grezzo
+            var x = ing_quantity * scale_factor;
+            console.info(x);
+
+
+            return { "value": x, "unit": 'g' }
+
+        }
+
+        /**
+         * Funzione che calcola peso totale di una ricetta.
+         * @param {Array} ingredientGroups - Array di gruppi di ingredienti
+         * @return {Object} totale - Peso totale in grammi
+         */
+        o.calculateRecipeTotalWeight = function (ingredientGroups) {
+            var total = 0;
+
+            for (var i in ingredientGroups) {
+                var ingredientGroup = ingredientGroups[i];
+
+                for (var k in ingredientGroup.ingredients) {
+
+                    var ing = ingredientGroup.ingredients[k];
+
+                    var ingredientWeight = o.getIngredientWeight(ing.quantity, ing.unitOfMeasure, ing.product);
+
+                    total += ingredientWeight.value;
+                }
+            }
+
+            return total;
         }
 
         return o;
