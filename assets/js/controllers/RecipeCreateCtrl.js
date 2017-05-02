@@ -821,7 +821,16 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 size: 'md'
             });
         };
+        
+        // Registro il messaggio da mostrare prima del unload
+        window.onbeforeunload = function (e) {
+            return 'Perderai tutti i dati inseriti, sei sicuro che vuoi abbandonare?';
+        };
 
+        // Dopo il destroy del controller cancello anche il messaggio registrato
+        $scope.$on('$destroy', function () {
+            window.onbeforeunload = undefined;
+        });
 
         var init = function () {
             // inizializzazione del controller
