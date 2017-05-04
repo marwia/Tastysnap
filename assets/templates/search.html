@@ -236,7 +236,8 @@
                         <hr class="tasty_title_bar"></hr>
                     </div>
                     <div class="col-md-4">
-                        <h3 class="tasty_title_text">{{recipes.length}} ricette trovate per {{q}}</h3>
+                        <h3 class="tasty_title_text" ng-show="q.length > 0">{{recipes.length}} {{recipes.length == 1 ? "ricetta" : "ricette"}} trovate per {{q}}</h3>
+                        <h3 class="tasty_title_text" ng-hide="q.length > 0">{{recipes.length}} {{recipes.length == 1 ? "ricetta" : "ricette"}}</h3>
                     </div>
                     <div class="col-md-4">
                         <hr class="tasty_title_bar"></hr>
@@ -267,7 +268,8 @@
                         <hr class="tasty_title_bar"></hr>
                     </div>
                     <div class="col-md-4">
-                        <h3 class="tasty_title_text">{{collections.length}} raccolte trovate per {{q}}</h3>
+                        <h3 class="tasty_title_text" ng-show="q.length > 0">{{collections.length}} {{collections.length == 1 ? "raccolta" : "raccolte"}} trovate per {{q}}</h3>
+                        <h3 class="tasty_title_text" ng-hide="q.length > 0">{{collections.length}} {{collections.length == 1 ? "raccolta" : "raccolte"}}</h3>
                     </div>
                     <div class="col-md-4">
                         <hr class="tasty_title_bar"></hr>
@@ -296,7 +298,8 @@
                         <hr class="tasty_title_bar"></hr>
                     </div>
                     <div class="col-md-4">
-                        <h3 class="tasty_title_text">{{users.length}} persone trovate per {{q}}</h3>
+                        <h3 class="tasty_title_text" ng-show="q.length > 0">{{users.length}} {{users.length == 1 ? "persona" : "persone"}} trovate per {{q}}</h3>
+                        <h3 class="tasty_title_text" ng-hide="q.length > 0">{{users.length}} {{users.length == 1 ? "persona" : "persone"}}</h3>
                     </div>
                     <div class="col-md-4">
                         <hr class="tasty_title_bar"></hr>

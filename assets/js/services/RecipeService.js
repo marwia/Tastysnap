@@ -181,7 +181,7 @@ angular.module('RecipeService', [])
             };
 
             // parametri aggiuntivi
-            if (query.hasOwnProperty('title'))
+            if (query.hasOwnProperty('title') && typeof query.title != 'undefined')
                 params.where["title"] = { "contains": query.title };
             
             if (query.hasOwnProperty('author'))

@@ -87,13 +87,14 @@ angular.module('CollectionService', [])
          * attuali, di default è false
          */
 		o.search = function (query, sort_by, sort_mode, skip, reset, successCB, errorCB) {
-			var params = {
-				params: {
-					where: {
-						"title": { "contains": query }
-					}
-				}
-			};
+			// parametri base
+            var params = {
+                where: {}
+            };
+			
+			// parametri aggiuntivi
+            if (typeof query != 'undefined' && query.length > 0)
+                params.where["title"] = { "contains": query };
 
 			if (sort_by != null && sort_by > 0)
 				params["sort"] = o.sortOptions[sort_by] + " " + sort_mode;

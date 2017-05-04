@@ -85,16 +85,17 @@ angular.module('UserService', [])
          * di persona.
          */
         o.search = function (query, skip, reset, successCB, errorCB) {
-            // distinugo le parole
-            var splitted = query.split(' ');
-            // oggetto params di base
+            // parametri base
             var params = {
-                params: {
-                    where: {
-                        or: []
-                    }
-                }
+                where: {}
             };
+
+            // distinugo le parole
+            var splitted = [];
+            if (typeof query != 'undefined' && query.length > 0) {
+                splitted = query.split(' ');
+                params.where["or"] = [];
+            }
 
             // aggiungo in or nome e cognome per ogni parola cercata
             for (var i = 0; i < splitted.length; i++) {
