@@ -165,17 +165,17 @@ angular.module('NavCtrl', []).controller('NavCtrl', [
 
 			if (currentDate.getHours() > 18) {// dinner
 				toastTitle = "Fame?";
-				toastBody = "E' orario di cena, cosa vuoi preparare?<br><a href='/app/search' class='btn btn-warning btn-sm'>Cerca ricette</a>";
+				toastBody = "E' orario di cena, cosa vuoi preparare?<br><a href='/app/search?q=&m=recipe&f=eyJzZWxlY3RlZFByb2R1Y3RzIjpbXSwic2VsZWN0ZWRDYXRlZ29yaWVzIjpbInNlY29uZGkgcGlhdHRpIiwiY29udG9ybmkiXSwidGltZVZhbHVlIjpudWxsLCJudXRyaWVudEZpbHRlcnMiOltdLCJzZWxlY3RlZFNvcnRNb2RlIjoiQVNDIiwic2VsZWN0ZWRTb3J0T3B0aW9uSWR4Ijo4LCJzZWxlY3RlZFNvcnRPcHRpb24iOiJ0ZW1wbyJ9' class='btn btn-warning btn-sm'>Cerca secondi piatti</a>";
 				toastType = "dinnerToast";
 			} else if (currentDate.getHours() > 11) {// lunch
 				toastTitle = "Fame?";
-				toastBody = "E' orario di pranzo, cosa vuoi preparare?<br><a href='/app/search' class='btn btn-warning btn-sm'>Cerca ricette</a>";
-				toastType = "dinnerToast";
+				toastBody = "E' orario di pranzo, cosa vuoi preparare?<br><a href='/app/search?q=&m=recipe&f=eyJzZWxlY3RlZFByb2R1Y3RzIjpbXSwic2VsZWN0ZWRDYXRlZ29yaWVzIjpbInByaW1pIHBpYXR0aSJdLCJ0aW1lVmFsdWUiOm51bGwsIm51dHJpZW50RmlsdGVycyI6W10sInNlbGVjdGVkU29ydE1vZGUiOiJBU0MiLCJzZWxlY3RlZFNvcnRPcHRpb25JZHgiOjgsInNlbGVjdGVkU29ydE9wdGlvbiI6InRlbXBvIn0%3D' class='btn btn-warning btn-sm'>Cerca primi piatti</a>";
+				toastType = "lunchToast";
 
 			} else if (currentDate.getHours() > 5) {// breakfast
 				toastTitle = "Fame?";
-				toastBody = "E' orario di colazione, cosa vuoi preparare?<br><a href='/app/search' class='btn btn-warning btn-sm'>Cerca ricette</a>";
-				toastType = "dinnerToast";
+				toastBody = "E' orario di colazione, cosa vuoi preparare?<br><a href='/app/search?q=&m=recipe&f=eyJzZWxlY3RlZFByb2R1Y3RzIjpbXSwic2VsZWN0ZWRDYXRlZ29yaWVzIjpbImRlc3NlcnQgZSB0b3J0ZSIsIm1hcm1lbGxhdGUgZSBjb25zZXJ2ZSJdLCJ0aW1lVmFsdWUiOm51bGwsIm51dHJpZW50RmlsdGVycyI6W10sInNlbGVjdGVkU29ydE1vZGUiOiJBU0MiLCJzZWxlY3RlZFNvcnRPcHRpb25JZHgiOjgsInNlbGVjdGVkU29' class='btn btn-warning btn-sm'>Cerca dolci e marmellate</a>";
+				toastType = "breakfastToast";
 			}
 
 			//Verifico se posso mostrare il toast
