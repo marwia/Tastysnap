@@ -88,13 +88,13 @@ angular.module('CollectionService', [])
          */
 		o.search = function (query, sort_by, sort_mode, skip, reset, successCB, errorCB) {
 			// parametri base
-            var params = {
-                where: {}
-            };
-			
+			var params = {
+				where: {}
+			};
+
 			// parametri aggiuntivi
-            if (typeof query != 'undefined' && query.length > 0)
-                params.where["title"] = { "contains": query };
+			if (typeof query != 'undefined' && query.length > 0)
+				params.where["title"] = { "contains": query };
 
 			if (sort_by != null && sort_by > 0)
 				params["sort"] = o.sortOptions[sort_by] + " " + sort_mode;
@@ -102,25 +102,28 @@ angular.module('CollectionService', [])
 			if (skip != null)
 				params["skip"] = skip;
 
-			return $http.get(server_prefix + '/collection', params).then(function (response) {
-				if (skip) {
-					for (var i = 0; i < response.data.length; i++) {
-						o.collections.push(response.data[i]);
+			return $http.get(server_prefix + '/collection',
+				{
+					params: params
+				}).then(function (response) {
+					if (skip) {
+						for (var i = 0; i < response.data.length; i++) {
+							o.collections.push(response.data[i]);
+						}
+					} else {
+						if (reset)
+							angular.copy(response.data, o.collections);
+						else
+							angular.extend(o.collections, response.data);
 					}
-				} else {
-					if (reset)
-						angular.copy(response.data, o.collections);
-					else
-						angular.extend(o.collections, response.data);
-				}
-				if (successCB)
-					successCB(response);
-			}, function (response) {
-				// nessuna raccolta trovata? Pulisco tutto...
-				angular.copy([], o.collections);
-				if (errorCB)
-					errorCB(response);
-			});
+					if (successCB)
+						successCB(response);
+				}, function (response) {
+					// nessuna raccolta trovata? Pulisco tutto...
+					angular.copy([], o.collections);
+					if (errorCB)
+						errorCB(response);
+				});
 		};
 
         /**
@@ -259,9 +262,9 @@ angular.module('CollectionService', [])
 
 					if (User.user.id == User.currentUser.id // profilo del loggato (proprio profilo)
 						&& o.userCollections instanceof Array)
-                        // aggiungo la raccolta (visto che è l'array delle raccolte del profilo)
-                        o.userCollections.push(collection);
-						
+						// aggiungo la raccolta (visto che è l'array delle raccolte del profilo)
+						o.userCollections.push(collection);
+
 					if (successCB)
 						successCB(response);
 

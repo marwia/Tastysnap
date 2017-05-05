@@ -52,17 +52,17 @@ angular.module('UserService', [])
         /**
          * Metodo per eseguire una ricerca per id della persona.
          */
-        o.searchById = function(id, successCB, errorCB) {
+        o.searchById = function (id, successCB, errorCB) {
             var user;
             // ricerco la ricetta nelle variabili locali
-            for(var i = 0; i < o.users.length; i++) {
-                if(o.users[i].id == id) {
+            for (var i = 0; i < o.users.length; i++) {
+                if (o.users[i].id == id) {
                     user = o.users[i]
                     break;
                 }
             }
 
-            if (user) return successCB({data: [user]});
+            if (user) return successCB({ data: [user] });
 
             // se non ho trovato la ricetta, la richiedo al server
             return $http.get(server_prefix + '/user', {
@@ -71,7 +71,7 @@ angular.module('UserService', [])
                         "id": id
                     }
                 }
-            }).then(function(response) {
+            }).then(function (response) {
                 // non lo eseguo
                 //angular.extend(o.recipes, response.data);
 
@@ -99,33 +99,36 @@ angular.module('UserService', [])
 
             // aggiungo in or nome e cognome per ogni parola cercata
             for (var i = 0; i < splitted.length; i++) {
-                params.params.where.or.push({
+                params.where.or.push({
                     "name": { "contains": splitted[i] }
                 });
-                params.params.where.or.push({
+                params.where.or.push({
                     "surname": { "contains": splitted[i] }
                 });
             }
 
-            return $http.get(server_prefix + '/user', params).then(function (response) {
-                if (skip) {
-                    for (var i = 0; i < response.data.length; i++) {
-                        o.users.push(response.data[i]);
+            return $http.get(server_prefix + '/user',
+                {
+                    params: params
+                }).then(function (response) {
+                    if (skip) {
+                        for (var i = 0; i < response.data.length; i++) {
+                            o.users.push(response.data[i]);
+                        }
+                    } else {
+                        if (reset)
+                            angular.copy(response.data, o.users);
+                        else
+                            angular.extend(o.users, response.data);
                     }
-                } else {
-                    if (reset)
-                        angular.copy(response.data, o.users);
-                    else
-                        angular.extend(o.users, response.data);
-                }
-                if (successCB)
-                    successCB(response);
-            }, function (response) {
-                // nessuna persona trovata? Pulisco tutto...
-                angular.copy([], o.users);
-                if (errorCB)
-                    errorCB(response);
-            });
+                    if (successCB)
+                        successCB(response);
+                }, function (response) {
+                    // nessuna persona trovata? Pulisco tutto...
+                    angular.copy([], o.users);
+                    if (errorCB)
+                        errorCB(response);
+                });
         };
 
         /**
