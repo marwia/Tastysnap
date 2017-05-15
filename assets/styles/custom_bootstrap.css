@@ -32,6 +32,41 @@ fieldset[disabled] .btn-custom.active {
   color: white;
 }
 
+/**
+ * Pulsante per seguire l'utente
+ * posto all'interno della card.
+ *
+ */
+.btn-user-card {
+  background-color: white;
+  border-color: white;
+  color: black;
+}
+.btn-user-card:hover,
+.btn-user-card:focus,
+.btn-user-card:active,
+.btn-user-card.active {
+  background-color: #ff9800;
+  border-color: #ff9800;
+  color: white;
+}
+.btn-user-card.disabled:hover,
+.btn-user-card.disabled:focus,
+.btn-user-card.disabled:active,
+.btn-user-card.disabled.active,
+.btn-user-card[disabled]:hover,
+.btn-user-card[disabled]:focus,
+.btn-user-card[disabled]:active,
+.btn-user-card[disabled].active,
+fieldset[disabled] .btn-user-card:hover,
+fieldset[disabled] .btn-user-card:focus,
+fieldset[disabled] .btn-user-card:active,
+fieldset[disabled] .btn-user-card.active {
+  background-color: #ffa500;
+  border-color: #ffa500;
+  color: white;
+}
+
 .fileUpload {
     position: relative;
     overflow: hidden;

@@ -11,6 +11,7 @@ angular.module('UserEngagementService', [])
             date_strings: [
                 'create_first_recipe_modal_date',
                 'create_first_collection_modal_date',
+                'did_you_knew_modal_date',
             ]
         };
 

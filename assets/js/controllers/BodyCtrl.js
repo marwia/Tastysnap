@@ -12,7 +12,8 @@ angular.module('BodyCtrl', []).controller('BodyCtrl', [
     '$uibModal',
     '$timeout',
     'User',
-    function ($scope, $uibModal, $timeout, User) {
+    'UserEngagement',
+    function ($scope, $uibModal, $timeout, User, UserEngagement) {
         /**
          * Vari tipi di messaggi mostrati quando l'utente sta per abbandonare
          * il sito.
@@ -32,10 +33,16 @@ angular.module('BodyCtrl', []).controller('BodyCtrl', [
 
         // mouseenter event
         $scope.showIt = function () {
-            // aspetto prima di mostrare la modale
-            timer = $timeout(function () {
-                openRetainModal();
-            }, 500);
+            var lastDate = UserEngagement.getDate(UserEngagement.date_strings[2]);
+			var diff = new Date() - new Date(lastDate);
+            if (isNaN(diff) == true || diff >= 24 * 60 * 60 * 1000) {//24 ore
+                // aspetto prima di mostrare la modale
+                timer = $timeout(function () {
+                    // salvataggio della data di visualizzazione della modale
+					UserEngagement.saveDate(UserEngagement.date_strings[2], new Date());
+                    openRetainModal();
+                }, 1000);
+            }
         };
 
         // mouseleave event

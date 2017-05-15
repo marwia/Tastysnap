@@ -14,10 +14,10 @@
             <!--<img src="{{user.coverImageUrl}}"/>-->
             <img ng-src="{{ user.coverImageUrl || 'app_images/login.jpg' }}">
             <div ng-hide="user.id == currentUser.id">
-                <button class="btn btn-warning btn-sm btn-circle" ng-show="isFollowed() == true" uib-tooltip="Non seguire più" tooltip-placement="left" ng-model="user.isFollowed" role="button" ng-click="onClick()" uib-btn-checkbox>
+                <button class="btn btn-user-card btn-sm btn-circle" ng-show="isFollowed() == true" uib-tooltip="Non seguire più" tooltip-placement="left" ng-model="user.isFollowed" role="button" ng-click="onClick()" uib-btn-checkbox>
                     <i class="fa fa-user" aria-hidden="true"></i>
                 </button>
-                <button class="btn btn-warning btn-sm btn-circle" ng-show="isFollowed() == false" uib-tooltip="Inizia a seguire" tooltip-placement="left" ng-model="user.isFollowed" role="button" ng-click="onClick()" uib-btn-checkbox>
+                <button class="btn btn-user-card btn-sm btn-circle" ng-show="isFollowed() == false" uib-tooltip="Inizia a seguire" tooltip-placement="left" ng-model="user.isFollowed" role="button" ng-click="onClick()" uib-btn-checkbox>
                     <i class="fa fa-user-plus" aria-hidden="true"></i>
                 </button>
             </div>
