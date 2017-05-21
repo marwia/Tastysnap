@@ -95,6 +95,21 @@
             <div class="row row_recipe_con">
                 <!-- Colonna 1 - Ingrendienti e Descrizione -->
                 <div class="col-xs-12 col-sm-7 col-sm-push-3 col-md-7 col-md-push-3 recipe_column">
+
+                    <!-- Descrizione -->
+                    <div class="panel panel-warning" ng-show="detailedRecipe.ingredientState == 'toBeValidate'">
+                        <div class="panel-body text-left">
+                            <h5 class="text-left"><strong>AVVISO</strong></h5>
+                            <hr class="recipe_hr">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p>Questa ricetta è in fase di revisione perchè contiene nuovi ingredienti pertanto è visibile solanto a te. Non ti preoccupare, verrai avvisato quando sarà pubblica.</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                    <div class="panel panel-default">
                         <div class="panel-body text-left">
                             <h5 class="text-left"><strong>INGREDIENTI</strong></h5>
@@ -109,7 +124,7 @@
                                         <div class="col-xs-6 col-sm-6 col-md-6 recipe_ingredient" ng-repeat="ingredient in ingredientGroup.ingredients">
                                             <div class="col-xs-7 col-sm-7 col-md-7">
                                                 <div class="text-left">
-                                                    <p class="recipe_ing_txt"><a href="">{{formatIngredientName(ingredient.product.name.long)}}</a></p>    
+                                                    <p class="recipe_ing_txt"><a href="">{{formatIngredientName(ingredient.product.name.long)}}</a> <span ng-show="ingredient.product.state == 'toBeCompleted'" uib-tooltip="Il prodotto è in fase di verifica..." class="label label-warning">Verifica in corso</span> </p>    
                                                 </div>
                                             </div>
                                             <div class="col-xs-5 col-sm-5 col-md-5">

@@ -24,7 +24,7 @@ angular.module('ProductService', [])
                 {
                     params: {
                         'skip': skip,
-                        'order': order_by
+                        'sort': order_by
                     }
                 }).then(function(response) {
                     if (skip && reset == false) {
@@ -101,6 +101,23 @@ angular.module('ProductService', [])
                 .then(function (response) {
                     // push on top
                     o.products.unshift(response.data);
+
+                    if (successCallback)
+                        successCallback(response);
+
+                }, errorCallback);
+        };
+
+        /**
+         * Servizio per aggiungerer un nuovo prodotto.
+         */
+        o.update = function (product, successCallback, errorCallback) {
+            return $http.put(
+                server_prefix + '/product/' + product.id,
+                product)
+                .then(function (response) {
+                    // update object
+                    angular.copy(response.data, product);
 
                     if (successCallback)
                         successCallback(response);

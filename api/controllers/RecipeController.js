@@ -72,6 +72,43 @@ var updateCreationCoordinates = function (recipe, req) {
     });
 };
 
+/**
+ * Funzione per filtrare le ricette da validare oppure non valide,
+ * ovvero per toglierle dalla risposta se l'utente non risulta 
+ * essere autorizzato a vederle.
+ * Se nei criteri di ricerca c'è il parametro 'includeAll'
+ * allora vengono incluse tutte le ricette a priscindere dal
+ * loro stato (questo viene usato dalla redazione).
+ */
+var filterRecipe = function (req, recipe, originalCriteria) {
+    
+    if (originalCriteria.includeAll && originalCriteria.includeAll == true) {
+        return recipe;
+    }
+
+    /**
+     * Se la ricetta non è valida, allora non la faccio vedere
+     */
+    if (recipe && recipe.ingredientState == "notValid") {
+        return null;
+    }
+
+    // se la ricetta è da validare controllo se l'utente che ha
+    // effettuato la richiesta è l'autore della ricetta
+    if (recipe && recipe.ingredientState == "toBeValidate") {
+        // riprendo l'utente dalla policy "attachUser"
+        var user = req.payload;
+        /**
+         * se l'utente non è autenticato oppure non è l'autore allora 
+         * non può vedere la ricetta
+         */
+        if (!user || recipe.author.id != user.id)
+            return null;
+    }
+
+    return recipe;
+};
+
 module.exports = {
 
     /**
@@ -93,6 +130,9 @@ module.exports = {
      *
      * @apiParamExample Skip-Limit-Param-Example:
      *     ?skip=6&limit=3
+     * 
+     * @apiParamExample IncludeAll-Param-Example:
+     *     ?includeAll=true
      * 
      * @apiParamExample Not-In-Products-Param-Example:
      *     ?where{"products":{"!":["product_id1", "product_id2"]}}
@@ -136,6 +176,8 @@ module.exports = {
         delete filteredCriteria["sugar"];
         delete filteredCriteria["fat"];
 
+        delete filteredCriteria["includeAll"];
+
         console.info("filtered criteria: ", filteredCriteria);
 
         Recipe.find()
@@ -143,6 +185,11 @@ module.exports = {
             .populate('author')
             .exec(function (err, foundRecipes) {
                 if (err) { return next(err); }
+
+                // filtro le ricette toBeValidate e notValid 
+                foundRecipes = foundRecipes.filter(function (recipe) {
+                    return filterRecipe(req, recipe, originalCriteria);
+                });
 
                 if (foundRecipes.length == 0) {
                     return res.notFound({ error: 'No recipe found' });
@@ -584,6 +631,9 @@ module.exports = {
      *
      * @apiParamExample Request-Param-Example:
      *     ?skip=6&limit=3
+     * 
+     * @apiParamExample IncludeAll-Param-Example:
+     *     ?includeAll=true
      *
      * @apiSuccessExample {json} Success-Response-Example:
      *     HTTP/1.1 200 OK
@@ -648,21 +698,29 @@ module.exports = {
      * @apiUse InvalidTokenError
      */
     find: function (req, res, next, recipeIdList, whereCriteria) {
+        var filteredCriteria = whereCriteria ? whereCriteria : actionUtil.parseCriteria(req);
+        delete filteredCriteria['includeAll'];
+
         if (req.param('count')) {
-            Product.count().exec(function(err, count) {
+            Recipe.count().exec(function(err, count) {
                 if (err) { return next(err); }
 
                 return res.json(count);
             });
         } else {
         Recipe.find(recipeIdList)
-            .where(whereCriteria ? whereCriteria : actionUtil.parseCriteria(req))
+            .where(filteredCriteria)
             .limit(actionUtil.parseLimit(req))
             .skip(actionUtil.parseSkip(req))
             .sort(actionUtil.parseSort(req))
             .populate('author')
             .exec(function (err, foundRecipes) {
                 if (err) { return next(err); }
+
+                // filtro le ricette toBeValidate e notValid 
+                foundRecipes = foundRecipes.filter(function (recipe) {
+                    return filterRecipe(req, recipe, whereCriteria ? whereCriteria : actionUtil.parseCriteria(req));
+                });
 
                 if (foundRecipes.length == 0) {
                     return res.notFound({ error: 'No recipe found' });
@@ -763,6 +821,10 @@ module.exports = {
             .populate('ingredientGroups')
             .exec(function (err, foundRecipe) {
                 if (err) { return next(err); }
+
+                // filtro la ricetta che può essere toBeValidate, notValid 
+                // oppure ok
+                foundRecipe = filterRecipe(req, foundRecipe, actionUtil.parseCriteria(req));
 
                 if (!foundRecipe) { return res.notFound({ error: 'No recipe found' }); }
 
@@ -1061,6 +1123,62 @@ module.exports = {
      */
     getRecipeDosageTypes: function (req, res) {
         return res.json(sails.models.recipe.definition.dosagesType);
+    },
+
+
+    /**
+     * @api {put} /recipe/:id/:ingredientState Update a Recipe ingredientState
+     * @apiName UpdateRecipeIngredientState
+     * @apiGroup Recipe
+     *
+     * @apiDescription Serve per modificare lo stato degli ingredienti di una ricetta.
+     * Questa richiesta può essere fatto soltanto con diritti di amministratore.<br>
+     * Le richieste devono essere con codifica <strong>
+     * application/x-www-form-urlencoded</strong> oppure <strong>application/json.</strong>
+     *
+     * @apiUse TokenHeader
+     *
+     * @apiParam {String} id Recipe id.
+     * @apiParam {String} ingredientState Ingredient state.
+     *
+     *
+     * @apiSuccess {json} recipe JSON that represents the recipe object.
+     *
+     * @apiSuccessExample {json} Success-Response-Example:
+     *     HTTP/1.1 200 OK
+     *     {
+     *     "recipe": 
+     *       {
+     *         "createdAt": "2015-08-11T18:58:46.329Z",
+     *         "updatedAt": "2015-08-11T18:58:46.329Z",
+     *         "id": "55ca45e69b4246110b319cb1"
+     *       }
+     *     }
+     *
+     * @apiUse TokenFormatError
+     *
+     * @apiUse NoAuthHeaderError
+     *
+     * @apiUse InvalidTokenError
+     *
+     * @apiUse NoPermissionError
+     */
+    changeIngredientState: function (req, res, next) {
+        var ingredientState = req.param('ingredientState');
+        if (!ingredientState) { return next(); }
+
+        Recipe.update(req.recipe.id, {ingredientState: ingredientState}).exec(function(err, updatedRecipes) {
+            if (err) { return next(err); }
+
+            /**
+             * Notifico l'autore della ricetta che la ricetta
+             * ha cambiato stato degli ingredienti.
+             */
+            if (req.recipe.ingredientState != ingredientState)
+                EmailService.sendRecipeChangeIngredientStateNotification(updatedRecipes[0]);
+
+            return res.json(updatedRecipes[0]);
+        });
     },
 
     /********************************************************************************************

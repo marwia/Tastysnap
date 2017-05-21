@@ -84,7 +84,7 @@ angular.module('adminAppRoutes', []).config([
                 controller: 'ProductMngmntCtrl',
                 resolve: {
                     productPromise: ['Product', function (Product) {
-                        return Product.getProducts();
+                        return Product.getProducts('createdAt DESC');
                     }],
                     productCountPromise: ['Product', function (Product) {
                         return Product.getProductsCount();

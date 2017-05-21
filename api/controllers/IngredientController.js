@@ -117,6 +117,21 @@ module.exports = {
 
             if (!foundProduct) { return res.notFound({ error: 'No product found' }); }
 
+            //Se il prodotto è in stato "toBeCompleted" si deve segnare la ricetta
+            // come "toBeValidate"
+            if (foundProduct.state != undefined && foundProduct.state == 'toBeCompleted') {
+                Recipe.update(recipe.id, {ingredientState: 'toBeValidate'}).exec(function(err, updatedRecipes) {
+                    if (err) 
+                        console.info(err);
+                    else {
+                        /**
+                         * Avviso lo staff della ricetta da validare.
+                         */
+                        EmailService.sendRecipeToBeValidateNotification(updatedRecipes[0]);
+                    }
+                });
+            }
+
             Ingredient.create(ingredientToCreate).exec(function (err, created) {
                 if (err) { return next(err); }
 
@@ -178,6 +193,7 @@ module.exports = {
      * @apiUse NoIngredientError
      */
     update: function (req, res, next) {
+        var recipe = req.recipe;
         var ingredientGroup = req.ingredientGroup;
 
         var ingredientId = req.param('ingredient');
@@ -193,6 +209,21 @@ module.exports = {
             if (err) { return next(err); }
 
             if (!foundProduct) { return res.notFound({ error: 'No product found' }); }
+
+            //Se il prodotto è in stato "toBeCompleted" si deve segnare la ricetta
+            // come "toBeValidate"
+            if (foundProduct.state != undefined && foundProduct.state == 'toBeCompleted') {
+                Recipe.update(recipe.id, {ingredientState: 'toBeValidate'}).exec(function(err, updatedRecipes) {
+                    if (err) 
+                        console.info(err);
+                    else {
+                        /**
+                         * Avviso lo staff della ricetta da validare.
+                         */
+                        EmailService.sendRecipeToBeValidateNotification(updatedRecipes[0]);
+                    }
+                });
+            }
 
             Ingredient.update({ id: ingredientId, ingredientGroup: ingredientGroup.id }, ingredientToUpdate).exec(function (err, updated) {
                 if (err) { return next(err); }

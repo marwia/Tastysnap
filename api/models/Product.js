@@ -13,6 +13,18 @@ module.exports = {
 
   attributes: {
 
+    /**
+     * Indica lo stato in cui si trova l'ingrediente:
+     * ok: significa che il prodotto è completo e può essere usato nelle ricette,
+     * toBeCompleted: significa che il prodotto deve essere controllato dalla redazione e non può
+     * essere usato nelle ricette (ad esclusione della ricetta con cui è stato creato)
+     */
+    state : { 
+        type: 'String', 
+        required: true,
+        defaultsTo: 'ok',
+        enum: ['ok', 'toBeCompleted'] },
+
     name: { type: 'json' },
 
     group: {
@@ -50,7 +62,13 @@ module.exports = {
     usedAsIngredient: {
       collection: 'Ingredient',
       via: 'product'
-    }
+    },
+
+    // Reference to User
+    author : { 
+      model :'User',
+      required : false
+    },
 
   },
 

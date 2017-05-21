@@ -60,5 +60,38 @@ angular.module('RecipeMngmntCtrl', [])
                 });
             };
 
+            $scope.openChangeIngredientStateModal = function (selectedRecipe) {
+                $uibModal.open({
+                    animation: true,
+                    templateUrl: 'admin_assets/templates/recipe_change_ing_state_modal.html',
+                    controller: function ($uibModalInstance, $scope) {
+                        // passaggio paramteri
+                        $scope.loading = false;
+                        $scope.selectedRecipe = selectedRecipe;
+                        $scope.ingredientStates = ['ok', 'toBeValidate', 'notValid']
+                        // azioni possibili all'interno della modale
+                        $scope.ok = function () {
+                            $scope.loading = true
+
+                            Recipe.changeIngredientState(selectedRecipe,
+                                function (response) {
+                                    //do what you need here
+                                    $scope.loading = false;
+                                    $uibModalInstance.dismiss('cancel');
+
+                                }, function (response) {
+                                    // errore
+                                    $scope.loading = false;
+                                });
+                        };
+
+                        $scope.cancel = function () {
+                            $uibModalInstance.dismiss('cancel');
+                        };
+                    },
+                    size: 'lg'
+                });
+            };
+
         }
     ]);

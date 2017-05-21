@@ -9,6 +9,7 @@
   <thead>
     <tr>
       <th>Id</th>
+      <th>Stato</th>
       <th>Titolo</th>
       <th>Autore</th>
       <th>Azioni</th>
@@ -17,9 +18,17 @@
   <tbody>
     <tr ng-repeat="recipe in recipes">
       <td><a href="app/recipe/{{recipe.id}}" target="_blank">{{recipe.id}}</a></td>
+      <td><span class="label label-primary">{{recipe.ingredientState}}</span></td>
       <td>{{recipe.title}}</td>
       <td>{{recipe.author.name}} {{recipe.author.surname}}</td>
-      <td><button type="button" class="btn btn-warning btn-sm" ng-click="openEliminationModal(recipe)">Elimina ricetta</button></td>
+      <td>
+        <button type="button" class="btn btn-danger btn-sm" ng-click="openEliminationModal(recipe)">
+          <i class="fa fa-trash" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="btn btn-warning btn-sm" ng-click="openChangeIngredientStateModal(recipe)">
+					<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+				</button>
+      </td>
     </tr>
   </tbody>
 </table>

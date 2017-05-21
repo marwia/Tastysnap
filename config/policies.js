@@ -85,7 +85,8 @@ module.exports.policies = {
     'destroy' : ['isAuthorized', 'isRecipeAuthor', 'findRecipe'],
     'uploadCoverImage' : ['isAuthorized', 'isRecipeAuthor'],
     'uploadBlurredCoverImage' : ['isAuthorized', 'isRecipeAuthor'],
-    'uploadImage' : ['isAuthorized', 'isRecipeAuthor']
+    'uploadImage' : ['isAuthorized', 'isRecipeAuthor'],
+    'changeIngredientState': ['isAuthorized', 'hasAdminPermission', 'findRecipe']
   },
   
   'RecipeStepController' : {
@@ -196,6 +197,11 @@ module.exports.policies = {
     'recommendFor' : 'isAuthorized',
     'mostSimilarUsers' : 'isAuthorized',
     'leastSimilarUsers' : 'isAuthorized'
+  },
+
+  'ProductController' : {
+    'create' : 'isAuthorized',
+    'update' : ['isAuthorized', 'isProductAuthor']
   },
 
   'UserPermissionController' : {

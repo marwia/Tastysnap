@@ -102,6 +102,12 @@ module.exports = {
       via: 'user'
     },
 
+    // Reference to many Products
+    recipes : {
+      collection: 'Product',
+      via: 'author'
+    },
+
     // Override toJSON method to remove password from API
     toJSON: function() {
       var obj = this.toObject();

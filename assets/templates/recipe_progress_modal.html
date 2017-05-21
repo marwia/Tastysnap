@@ -3,8 +3,14 @@
     <div ng-show="finish">
         <i class="fa fa-check-circle fa-5" style="color: white;" aria-hidden="true"></i>
         <h3 class="modal-title">Evivva!</h3>
-        <h4 ng-show="editMode">La ricetta è stata aggiornata con successo.</h4>
-        <h4 ng-hide="editMode">La ricetta è stata creata con successo.</h4>
+        <h4 ng-show="editMode">
+            La ricetta è stata aggiornata con successo.
+            <p ng-show="recipeToCreate.ingredientState == 'toBeValidate'">La ricetta contiene ingredienti nuovi, prima dovrà essere verificata dallo staff.</p>
+        </h4>
+        <h4 ng-hide="editMode">
+            La ricetta è stata creata con successo.
+            <p ng-show="recipeToCreate.ingredientState == 'toBeValidate'">La ricetta contiene ingredienti nuovi, prima dovrà essere verificata dallo staff.</p>
+        </h4>
         <button class="btn btn-default" type="button" ng-click="closeModal()">Mostra ricetta</button>
     </div>
 

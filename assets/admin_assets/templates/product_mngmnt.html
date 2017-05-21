@@ -12,6 +12,7 @@
 	<thead>
 		<tr>
 			<th>Id</th>
+			<th>Stato</th>
 			<th>Nome</th>
 			<th>Categoria</th>
 			<th>Azioni</th>
@@ -20,9 +21,17 @@
 	<tbody>
 		<tr ng-repeat="product in products">
 			<td><a target="_blank">{{product.id}}</a></td>
+			<td><span class="label label-primary">{{product.state}}</span></td>
 			<td>{{product.name.long}}</td>
 			<td>{{product.group}}</td>
-			<td><button type="button" class="btn btn-warning btn-sm" ng-click="openEliminationModal(product)">Elimina prodotto</button></td>
+			<td>
+				<button type="button" class="btn btn-danger btn-sm" ng-click="openEliminationModal(product)">
+					<i class="fa fa-trash" aria-hidden="true"></i>
+				</button>
+				<button type="button" class="btn btn-warning btn-sm" ng-click="openEditModal(product)">
+					<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+				</button>
+			</td>
 		</tr>
 	</tbody>
 </table>

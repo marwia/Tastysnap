@@ -1,5 +1,5 @@
 /**
- * isRecipeAuthor.js
+ * isProductAuthor.js
  *
  * Questa è una politica che si occupa di verificare se l'utente che vuole eseguire
  * una update su una risorsa è il suo autore.
@@ -16,30 +16,22 @@ module.exports = function (req, res, next) {
     var id = req.param('id');
 
     // caso alternativo se il parametro dell'id ha un nome diverso
-    if (req.param('recipe'))
-        id = req.param('recipe');
+    if (req.param('product'))
+        id = req.param('product');
 
-    Recipe
+    Product
         .findOne(id)
-        .exec(function (err, originalRecipe) {
+        .exec(function (err, originalProduct) {
             if (err) { return next(err); }
 
-            if (!originalRecipe) { return res.notFound({ error: 'No recipe found' }); }
+            if (!originalProduct) { return res.notFound({ error: 'No product found' }); }
 
             // per sicurezza elimino l'author 
             delete req.body.author;// cancello elementi inopportuni
-            /**
-             * Cancello l'ingredientState perchè questo è
-             * modificabile soltanto dagli amministratori
-             * oppure dal server internamente.
-             */
-            delete req.body.ingredientState;
-
-            // passo la ricetta alle fasi successive
-            req.recipe = originalRecipe;
+            req.product = originalProduct;
 
             // verifico che l'utente è il creatore della risorsa
-            if (originalRecipe.author == user.id) {
+            if (originalProduct.author == user.id) {
                 next();
 
                 // altrimenti verifico se l'utente possiede permessi d'amministratore   

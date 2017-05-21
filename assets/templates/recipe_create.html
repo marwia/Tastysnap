@@ -288,7 +288,7 @@
                                                 <td ng-class="{ 'has-error': recipeForm3.name.$touched && recipeForm3.name.$invalid }">
 
                                                     <input type="text" class="form-control" name="name" ng-model="ingredient.name" uib-typeahead="product.name.long for product in searchProductsByName($viewValue)"
-                                                        typeahead-editable="false" typeahead-no-results="noResults" required
+                                                        typeahead-editable="true" typeahead-no-results="ingredient.noProduct" required
                                                         placeholder="es. zucchero" typeahead-on-select="onProductSelect($item, ingredient)"
                                                         autocomplete="off" />
 
@@ -313,7 +313,7 @@
 
                                     <button type="button" class="btn btn-default" ng-click="addIngredient($index)">Aggiungi ingrediente</button>
                                     <br>   
-                                    <a href="#" ng-click="openIngredientAddReqModal()">Non hai trovato l'ingredienti che cercavi? Fai un richiesta per aggiungere l'ingrediente mancante.</a>
+                                    <a ng-hide="true" href="#" ng-click="openIngredientAddReqModal()">Non hai trovato l'ingredienti che cercavi? Fai un richiesta per aggiungere l'ingrediente mancante.</a>
 
                                 </div>
                             </div>

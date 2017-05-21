@@ -76,6 +76,19 @@ module.exports = {
     // Coordinate in geoJSON attribuite al momento della creazione della ricetta
     creationCoordinates: { type: 'json' },
 
+    /**
+     * Indica lo stato degli ingredienti della ricetta.
+     * ok: la ricetta è valida,
+     * toBeValidate: la ricetta contiene ingredienti che devono essere validati
+     * dalla redazione, pertanto può essere visibile soltanto all'autore
+     * notValid: la ricetta è contiene ingredienti che violano le regole e pertanto
+     * non può essere mostrata.
+     */
+    ingredientState : { 
+        type: 'String', 
+        required: true,
+        enum: ['ok', 'toBeValidate', 'notValid'] },
+
     // Reference to User
     author : { 
       model :'User',

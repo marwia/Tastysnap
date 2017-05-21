@@ -95,6 +95,9 @@ angular.module('IngredientService', [])
             // eseguo una conversione da unità tradotta a originale
             var idx = o.translatedUnitsOfMeasure.indexOf(ingredient.unitOfMeasure);
             ingredient.unitOfMeasure = o.unitsOfMeasure[idx];
+
+            ingredient.product =  ingredient.product.id;
+
             return $http.post(
                 server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id + '/ingredient',
                 ingredient)
@@ -113,6 +116,8 @@ angular.module('IngredientService', [])
             // eseguo una conversione da unità tradotta a originale
             var idx = o.translatedUnitsOfMeasure.indexOf(ingredient.unitOfMeasure);
             ingredient.unitOfMeasure = o.unitsOfMeasure[idx];
+
+            ingredient.product =  ingredient.product.id;
 
             return $http.put(
                 server_prefix + '/recipe/' + ingredientGroup.recipe + '/ingredient_group/' + ingredientGroup.id + '/ingredient/' + ingredient.id,

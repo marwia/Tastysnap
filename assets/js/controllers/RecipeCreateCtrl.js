@@ -94,7 +94,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
          * all'ingrediente.
          */
         $scope.onProductSelect = function (item, ingredient) {
-            ingredient.product = item.id;
+            ingredient.product = item;
         };
 
         $scope.recipeToCreate = {
@@ -116,7 +116,8 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                     name: "",
                     quantity: "",
                     unitOfMeasure: "",
-                    product: ""
+                    product: "",
+                    noProduct: false
                 }]
             }];
 
@@ -135,7 +136,8 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                         name: "",
                         quantity: "",
                         unitOfMeasure: "",
-                        product: {}
+                        product: {},
+                        noProduct: false
                     }]
                 });
         };
@@ -149,7 +151,8 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 name: "",
                 quantity: "",
                 unitOfMeasure: "",
-                product: {}
+                product: {},
+                noProduct: false
             });
         };
 
@@ -157,7 +160,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
             $scope.$item = $item;
             $scope.$model = $model;
             $scope.$label = $label;
-            ingredient.product = $item.id;
+            ingredient.product = $item;
         };
 
         /**
@@ -186,6 +189,8 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         $scope.createRecipe = function () {
 
             $scope.isCreating = true;
+            // default value for new recipe...
+            $scope.recipeToCreate.ingredientState = "ok";
 
             // mostro la finestra modale con il caricamento
             $scope.progressModalInstance = $scope.openProgressModal();
@@ -199,7 +204,19 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
             for (var i in $scope.ingredient_groups) {
                 $scope.progressSum += $scope.ingredient_groups[i].ingredients.length // numero di ingredienti di ogni gruppo
+
+                //Calcolo delle creazioni di nuovi prodotti 
+                //oppure della modifica di prodotti creati dall'utente
+                for (var j in $scope.ingredient_groups[i].ingredients) {
+                    if ($scope.ingredient_groups[i].ingredients[j].noProduct == true) {
+                        $scope.progressSum++;
+                        // comunico che questa ricetta dovrà essere controllata dalla redazione
+                        $scope.recipeToCreate.ingredientState = "toBeValidate";
+                    }
+                }
             }
+
+
 
             /**
              * Aggiungi l'eventuale posizione associata alla ricetta,
@@ -471,34 +488,114 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
         }
 
         /**
+         * Metodo d'aiuto per ovviare al problema delle 
+         * callback e dell'indice
+         * @param {Array} ingredientGroup 
+         * @param {Number} index 
+         */
+        function createProduct(ingredientGroup, index) {
+            Product.createProduct({
+                name: {
+                        long: ingredientGroup.ingredients[index].name
+                    }
+                },
+                function (response) {
+                    $scope.progress++;
+                    // collego il prodotto appena creato con l'ingrediente
+                    ingredientGroup.ingredients[index].product = response.data;
+                    //crea l'ingrediente
+                    Ingredient.createIngredient(
+                        ingredientGroup,
+                        ingredientGroup.ingredients[index],
+                        function (response) {
+                            $scope.progress++;
+                            console.info(response);
+                        });
+                });
+        }
+
+        /**
+         * Metodo d'aiuto per ovviare al problema delle 
+         * callback e dell'indice
+         * @param {Array} ingredientGroup 
+         * @param {Number} index 
+         */
+        function createProductAndUpdateIngredient(ingredientGroup, ingredient) {
+            Product.createProduct({
+                name: {
+                        long: ingredient.name
+                    }
+                },
+                function (response) {
+                    $scope.progress++;
+                    // collego il prodotto appena creato con l'ingrediente
+                    ingredient.product = response.data;
+                    // aggiorno l'ingrediente
+                    Ingredient.updateIngredient(
+                        ingredientGroup,
+                        ingredient,        
+                        function (response) {
+                            $scope.progress++;
+                            console.info(response);
+                        });
+                });
+        }
+
+        /**
          * Crea tutti gli ingredienti per un gruppo di ingredienti.
          */
         function createIngredients(ingredientGroup) {
             $scope.progress++;
             for (var k = 0; k < ingredientGroup.ingredients.length; k++) {
 
-                //crea per ogni gruppo di ingredienti gli ingredienti
-                Ingredient.createIngredient(
-                    ingredientGroup,
-                    ingredientGroup.ingredients[k],
-                    function (response) {
-                        $scope.progress++;
-                        console.info(response);
-                    });
+                //TODO: Verificare se si deve creare il nuovo
+                // prodotto prima!
+                if (ingredientGroup.ingredients[k].noProduct == true) {
+                    createProduct(ingredientGroup, k);
+                } else {// se non devo creare il prodotto
+                    //crea per ogni gruppo di ingredienti gli ingredienti
+                    Ingredient.createIngredient(
+                        ingredientGroup,
+                        ingredientGroup.ingredients[k],
+                        function (response) {
+                            $scope.progress++;
+                            console.info(response);
+                        });
+                }
             }
         }
         // un'alternativa
         function createIngredientsAlt(ingredientGroup, ingredients) {
             for (var k = 0; k < ingredients.length; k++) {
 
-                //crea per ogni gruppo di ingredienti gli ingredienti
-                Ingredient.createIngredient(
-                    ingredientGroup,
-                    ingredients[k],
-                    function (response) {
-                        $scope.progress++;
-                        console.info(response);
-                    });
+                if (ingredients[k].noProduct == true) {
+                    Product.createProduct({
+                        name: ingredients[k].name
+                    },
+                        function (response) {
+                            $scope.progress++;
+                            // collego il prodotto appena creato con l'ingrediente
+                            ingredients[k].product = response.data;
+                            //crea l'ingrediente
+                            Ingredient.createIngredient(
+                                ingredientGroup,
+                                ingredients[k],
+                                function (response) {
+                                    $scope.progress++;
+                                    console.info(response);
+                                });
+                        });
+
+                } else {// se non devo creare il prodotto
+                    //crea per ogni gruppo di ingredienti gli ingredienti
+                    Ingredient.createIngredient(
+                        ingredientGroup,
+                        ingredients[k],
+                        function (response) {
+                            $scope.progress++;
+                            console.info(response);
+                        });
+                }
             }
         }
 
@@ -555,18 +652,24 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
 
                 if (ingredients[i].quantity == originalIngredientGroup.ingredients[i].quantity &&
                     ingredients[i].unitOfMeasure.localeCompare(originalIngredientGroup.ingredients[i].unitOfMeasure) == 0 &&
-                    ingredients[i].product.id.localeCompare(originalIngredientGroup.ingredients[i].product.id) == 0)
+                    ingredients[i].product.id.localeCompare(originalIngredientGroup.ingredients[i].product.id) == 0 &&
+                    ingredients[i].noProduct == false)
                     $scope.progress++;// non necessità di update
                 else {
-                    // preparo l'oggetto
-                    ingredients[i].product = ingredients[i].product.id;
-
-                    Ingredient.updateIngredient(
-                        ingredientGroup,
-                        ingredients[i],
-                        function () {// success
-                            $scope.progress++;
-                        });// success
+                    /**
+                     * Se nell'ingredient è stato cambiato il prodotto con uno
+                     * non esistente, allora devo creare quel prodotto.
+                     */
+                    if(ingredients[i].noProduct == true) {
+                        createProductAndUpdateIngredient(ingredientGroup, ingredients[i]);
+                    } else {
+                        Ingredient.updateIngredient(
+                            ingredientGroup,
+                            ingredients[i],
+                            function () {// success
+                                $scope.progress++;
+                            });// success
+                    }
                 }
             }
         }
@@ -821,7 +924,7 @@ angular.module('RecipeCreateCtrl', []).controller('RecipeCreateCtrl', [
                 size: 'md'
             });
         };
-        
+
         // Registro il messaggio da mostrare prima del unload
         window.onbeforeunload = function (e) {
             return 'Perderai tutti i dati inseriti, sei sicuro che vuoi abbandonare?';

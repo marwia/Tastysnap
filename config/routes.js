@@ -252,6 +252,8 @@ var apiRoutes = addGlobalPrefix({
     
     'get /recipe/search/coordinates': 'RecipeController.searchByCoordinates',
 
+    'put /recipe/:recipe/:ingredientState': 'RecipeController.changeIngredientState',
+
     /***************************************************************************
     *                                                                          *
     * Passi di ricette.                                                        *

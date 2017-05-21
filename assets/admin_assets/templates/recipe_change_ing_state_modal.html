@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <h3 class="modal-title">Modifica stato degli ingredienti</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label for="inputIngState" class="col-sm-2 control-label">Stato ingredienti</label>
+            <div class="col-sm-10">
+                <my-dropdown id="inputIngState" data-menu-type="button" select-val="selectedRecipe.ingredientState = selectedVal" preselected-item="selectedRecipe.ingredientState || ingredientStates[0]"
+                    data-dropdown-data="ingredientStates"></my-dropdown>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="cancel()">Annulla</button>
+    <button class="btn btn-danger" type="button" ng-click="ok()">Salva<i ng-show="loading" class="fa fa-spinner fa-spin"></i></button>
+</div>

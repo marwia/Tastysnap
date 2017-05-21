@@ -150,6 +150,24 @@ fieldset[disabled] .btn-user-card.active {
     box-shadow: none;
 }
 
+
+/*
+ * Colorazione panel WARNING
+ */
+
+ .panel-warning {
+     background-color: #ff9800;
+     border-color: #FF8E2A;
+ }
+
+ /*
+ * Colorazione label WARNING
+ */
+
+ .label-warning {
+     background-color: #ff9800;
+ }
+
 /*
  * Variante pulsante outline
  */

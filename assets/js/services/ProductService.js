@@ -29,6 +29,14 @@ angular.module('ProductService', [])
                 return response.data;
             });
         };
+
+        /**
+         * Metodo per creare un nuovo prodotto.
+         */
+        o.createProduct = function (product, successCallback, errorCallback) {
+            return $http.post(server_prefix + '/product', product)
+                .then(successCallback, errorCallback);
+        }
         
 
         return o;
