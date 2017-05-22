@@ -28,9 +28,11 @@ module.exports = {
       required: true
     },
 
+    // alcune notifiche sono private, quindi non perforza hanno un a persona che le subisce ma 
+    // vengono usate solo come elenco attività dell'utente.
     affectedUser: {
       model: 'user',
-      required: true
+      required: false
     },
 
   },
@@ -44,7 +46,7 @@ module.exports = {
   beforeValidate: function (values, cb) {
     if (process.env.NODE_ENV === 'production') {
       if (values.triggeringUser && values.affectedUser &&
-          values.triggeringUser == values.affectedUser) {
+        values.triggeringUser == values.affectedUser) {
         cb('Triggering user and affected user are the same!');
       }
       else {
@@ -85,7 +87,8 @@ module.exports = {
 
       // richiamo la callback finale
       // spedisco la notifica
-      User.message(values.affectedUser, values);
+      if (values.affectedUser != undefined)
+        User.message(values.affectedUser, values);
     });
 
     cb();
@@ -103,23 +106,47 @@ module.exports = {
    * @param {String} eventType Nome dell'evento o del modello che lo rappresenta
    */
   notifyUserFollowers: function (user, event, eventType) {
-    FollowUser.find({ following: user.id }).exec(function (err, followers) {
-      if (!err) {
-        followers.forEach(function (follower) {
+    var notifyOthers = true;
 
-          Notification.create({
-            event: event.id,
-            type: eventType,
-            red: false,
-            triggeringUser: user.id,
-            affectedUser: follower.follower
-          }).exec(function (err, createdNotification) {
-            if (err) console.log(err);
+    /**
+     * Applico alcune restrizioni alla creazione notifiche.
+     */
+    if (eventType == 'Collection' && event.isPrivate == true)
+      notifyOthers = false;
 
-          });
-        }, this);
-      }
-    });
+    if (eventType == 'Recipe' && event.ingredientState != 'ok')
+      notifyOthers = false;
+
+      // creo una notifiche che coinvolgerà altri utenti
+    if (notifyOthers) {
+      FollowUser.find({ following: user.id }).exec(function (err, followers) {
+        if (!err) {
+          followers.forEach(function (follower) {
+
+            Notification.create({
+              event: event.id,
+              type: eventType,
+              red: false,
+              triggeringUser: user.id,
+              affectedUser: follower.follower
+            }).exec(function (err, createdNotification) {
+              if (err) console.log(err);
+
+            });
+          }, this);
+        }
+      });
+      // creo una notifica soltanto visibile soltanto nel feed attività dell'utente che l'ha generata
+    } else {
+      Notification.create({
+        event: event.id,
+        type: eventType,
+        red: false,
+        triggeringUser: user.id
+      }).exec(function (err, createdNotification) {
+        if (err) console.log(err);
+      });
+    }
   },
 
   /**

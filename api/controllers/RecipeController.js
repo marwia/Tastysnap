@@ -1144,8 +1144,13 @@ module.exports = {
              * Notifico l'autore della ricetta che la ricetta
              * ha cambiato stato degli ingredienti.
              */
-            if (req.recipe.ingredientState != ingredientState)
+            if (req.recipe.ingredientState != ingredientState) {
                 EmailService.sendRecipeChangeIngredientStateNotification(updatedRecipes[0]);
+
+                if (ingredientState == 'ok')
+                    // Notifico l'evento ai followers dell'autore della ricetta
+                    Notification.notifyUserFollowers(user, updatedRecipes[0], 'Recipe');
+            }
 
             return res.json(updatedRecipes[0]);
         });
