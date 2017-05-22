@@ -14,9 +14,13 @@ module.exports = {
      * liste di utenti.
      */
     find: function (req, res, next, userIds, whereCriteria) {
+        var originalCriteria = whereCriteria;
+
+        var filteredCriteria = whereCriteria;
+        delete filteredCriteria["includeAll"];
 
         User.find(userIds)
-            .where(whereCriteria)
+            .where(filteredCriteria)
             .limit(actionUtil.parseLimit(req))
             .skip(actionUtil.parseSkip(req))
             .sort(actionUtil.parseSort(req))
@@ -28,8 +32,8 @@ module.exports = {
             .exec(function (err, foundUsers) {
                 if (err) { return next(err); }
 
-                if (foundUsers.length == 0) { 
-                    return res.notFound({ error: 'No user found' }); 
+                if (foundUsers.length == 0) {
+                    return res.notFound({ error: 'No user found' });
                 }
 
                 // array di appoggio
@@ -37,6 +41,17 @@ module.exports = {
 
                 // conto gli elementi delle collection
                 for (var i in foundUsers) {
+
+                    // filtro le ricette toBeValidate e notValid 
+                    foundUsers[i].recipes = foundUsers[i].recipes.filter(function (recipe) {
+                        return RecipeService.filterRecipe(req, recipe, originalCriteria);
+                    });
+
+                    // filtro le raccolte private
+                    foundUsers[i].collections = foundUsers[i].collections.filter(function (collection) {
+                        return CollectionService.filterPrivateCollection(req, collection);
+                    });
+
                     foundUsers[i].recipesCount = foundUsers[i].recipes.length;
                     foundUsers[i].collectionsCount = foundUsers[i].collections.length;
                     foundUsers[i].followersCount = foundUsers[i].followers.length;

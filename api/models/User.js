@@ -103,7 +103,7 @@ module.exports = {
     },
 
     // Reference to many Products
-    recipes : {
+    products : {
       collection: 'Product',
       via: 'author'
     },

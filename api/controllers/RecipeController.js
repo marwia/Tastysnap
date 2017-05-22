@@ -72,43 +72,6 @@ var updateCreationCoordinates = function (recipe, req) {
     });
 };
 
-/**
- * Funzione per filtrare le ricette da validare oppure non valide,
- * ovvero per toglierle dalla risposta se l'utente non risulta 
- * essere autorizzato a vederle.
- * Se nei criteri di ricerca c'è il parametro 'includeAll'
- * allora vengono incluse tutte le ricette a priscindere dal
- * loro stato (questo viene usato dalla redazione).
- */
-var filterRecipe = function (req, recipe, originalCriteria) {
-    
-    if (originalCriteria.includeAll && originalCriteria.includeAll == true) {
-        return recipe;
-    }
-
-    /**
-     * Se la ricetta non è valida, allora non la faccio vedere
-     */
-    if (recipe && recipe.ingredientState == "notValid") {
-        return null;
-    }
-
-    // se la ricetta è da validare controllo se l'utente che ha
-    // effettuato la richiesta è l'autore della ricetta
-    if (recipe && recipe.ingredientState == "toBeValidate") {
-        // riprendo l'utente dalla policy "attachUser"
-        var user = req.payload;
-        /**
-         * se l'utente non è autenticato oppure non è l'autore allora 
-         * non può vedere la ricetta
-         */
-        if (!user || recipe.author.id != user.id)
-            return null;
-    }
-
-    return recipe;
-};
-
 module.exports = {
 
     /**
@@ -188,7 +151,7 @@ module.exports = {
 
                 // filtro le ricette toBeValidate e notValid 
                 foundRecipes = foundRecipes.filter(function (recipe) {
-                    return filterRecipe(req, recipe, originalCriteria);
+                    return RecipeService.filterRecipe(req, recipe, originalCriteria);
                 });
 
                 if (foundRecipes.length == 0) {
@@ -698,11 +661,18 @@ module.exports = {
      * @apiUse InvalidTokenError
      */
     find: function (req, res, next, recipeIdList, whereCriteria) {
-        var filteredCriteria = whereCriteria ? whereCriteria : actionUtil.parseCriteria(req);
+        var originalCriteria = whereCriteria ? whereCriteria : actionUtil.parseCriteria(req);
+        var filteredCriteria = originalCriteria;
         delete filteredCriteria['includeAll'];
 
         if (req.param('count')) {
-            Recipe.count().exec(function(err, count) {
+            var countCriteria = {ingredientState: 'ok'};
+
+            // se si vuole il conteggio totale delle ricette allora azero il countCriteria
+            if (originalCriteria.includeAll && originalCriteria.includeAll == true) 
+                countCriteria = undefined;
+
+            Recipe.count(countCriteria).exec(function(err, count) {
                 if (err) { return next(err); }
 
                 return res.json(count);
@@ -719,7 +689,7 @@ module.exports = {
 
                 // filtro le ricette toBeValidate e notValid 
                 foundRecipes = foundRecipes.filter(function (recipe) {
-                    return filterRecipe(req, recipe, whereCriteria ? whereCriteria : actionUtil.parseCriteria(req));
+                    return RecipeService.filterRecipe(req, recipe, originalCriteria);
                 });
 
                 if (foundRecipes.length == 0) {
@@ -824,7 +794,7 @@ module.exports = {
 
                 // filtro la ricetta che può essere toBeValidate, notValid 
                 // oppure ok
-                foundRecipe = filterRecipe(req, foundRecipe, actionUtil.parseCriteria(req));
+                foundRecipe = RecipeService.filterRecipe(req, foundRecipe, actionUtil.parseCriteria(req));
 
                 if (!foundRecipe) { return res.notFound({ error: 'No recipe found' }); }
 

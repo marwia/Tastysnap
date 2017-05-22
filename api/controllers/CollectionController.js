@@ -23,30 +23,6 @@ var setCollectionViewed = function (req, foundCollection) {
     }
 };
 
-/**
- * Funzione per filtrare le raccolte private, ovvero per toglierle
- * dalla risposta se l'utente non risulta essere autorizzato a 
- * vederle. Infatti, soltanto l'autore di una raccolta privata
- * può vederla.
- */
-var filterPrivateCollection = function (req, collection) {
-
-    // se la raccolta è privata controllo se l'utente che ha
-    // effettuato la richiesta è l'autore della raccolta
-    if (collection && collection.isPrivate) {
-        // riprendo l'utente dalla policy "attachUser"
-        var user = req.payload;
-        /**
-         * se l'utente non è autenticato oppure non è l'autore allora 
-         * non può vedere la raccolta
-         */
-        if (!user || collection.author.id != user.id)
-            return null;
-    }
-
-    return collection;
-};
-
 module.exports = {
 
     /**
@@ -70,7 +46,7 @@ module.exports = {
                 if (err) { return next(err); }
 
                 // filtro le collection private
-                foundCollection = filterPrivateCollection(req, foundCollection);
+                foundCollection = CollectionService.filterPrivateCollection(req, foundCollection);
 
                 if (!foundCollection) {
                     return res.notFound({ error: 'No collection found' });
@@ -161,7 +137,7 @@ module.exports = {
 
                 // filtro le raccolte private
                 foundCollections = foundCollections.filter(function (collection) {
-                    return filterPrivateCollection(req, collection);
+                    return CollectionService.filterPrivateCollection(req, collection);
                 });
 
                 if (foundCollections.length == 0) {
@@ -296,7 +272,7 @@ module.exports = {
      *
      * @apiSuccess {json} recipe JSON that represents the updated collection object.
      **/
-    update: function(req, res, next) {
+    update: function (req, res, next) {
 
         var newCollection = req.body;
 
@@ -306,7 +282,7 @@ module.exports = {
         delete newCollection.followers;
         delete newCollection.views;
 
-        Collection.update({ id: req.collection.id }, newCollection).exec(function(err, updatedCollections) {
+        Collection.update({ id: req.collection.id }, newCollection).exec(function (err, updatedCollections) {
             if (err) { return next(err); }
 
             return res.json(updatedCollections[0]);
@@ -357,11 +333,11 @@ module.exports = {
 
     // USO LA FUNZIONE DI DEFAULT CON UNA POLICY PER VERIFICARE I PERMESSI
 
-     /********************************************************************************************
-     * 
-     *                          UPLOADING DELLE IMMAGINI PER LE RACCOLTE
-     * 
-     ********************************************************************************************/
+    /********************************************************************************************
+    * 
+    *                          UPLOADING DELLE IMMAGINI PER LE RACCOLTE
+    * 
+    ********************************************************************************************/
 
     /**
     * @api {put} /collection/:collection/upload_cover_image Upload the cover image
@@ -507,14 +483,14 @@ module.exports = {
     **/
     deleteCoverImage: function (req, res) {
         var collection = req.collection;
-        
+
         if (process.env.NODE_ENV === 'production') {
             // se la raccolta ha già una immagine di copertina
-                    // elimino l'immagine di copertina vecchia
-                    if (collection.coverImageUrl) {
-                        var filename = collection.coverImageUrl.replace(/^.*[\\\/]/, '');
-                        S3FileService.deleteS3Object(filename);
-                    }
+            // elimino l'immagine di copertina vecchia
+            if (collection.coverImageUrl) {
+                var filename = collection.coverImageUrl.replace(/^.*[\\\/]/, '');
+                S3FileService.deleteS3Object(filename);
+            }
         }
 
         // aggiorno la raccolta

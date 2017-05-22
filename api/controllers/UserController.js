@@ -163,7 +163,7 @@ module.exports = {
      */
     find: function (req, res, next) {
         if (req.param('count')) {
-            User.count().exec(function(err, count) {
+            User.count().exec(function (err, count) {
                 if (err) { return next(err); }
 
                 return res.json(count);
@@ -217,6 +217,16 @@ module.exports = {
                 if (err) { return next(err); }
 
                 if (!foundUser) { return res.notFound({ error: 'No user found' }); }
+
+                // filtro le ricette toBeValidate e notValid
+                foundUser.recipes = foundUser.recipes.filter(function (recipe) {
+                    return RecipeService.filterRecipe(req, recipe, actionUtil.parseCriteria(req));
+                });
+
+                // filtro le raccolte private
+                foundUser.collections = foundUser.collections.filter(function (collection) {
+                    return CollectionService.filterPrivateCollection(req, collection);
+                });
 
                 // conto gli elementi delle collection
                 foundUser.recipesCount = foundUser.recipes.length;

@@ -52,7 +52,6 @@ angular.module('ProductService', [])
                     }
                 }).then(function(response) {
                     angular.copy(response.data, o.productsCount);
-                    o.productsCount = response.data;
                     
                     if (successCB)
                         successCB(response);
