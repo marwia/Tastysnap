@@ -15,6 +15,8 @@ var smtpConfig = {
     host: 'smtps.aruba.it',
     port: 465,
     secure: true, // use SSL
+    pool: true,
+    maxConnections: 2,
     auth: {
         user: 'hello@tastysnap.com',
         pass: 'tastypwdsnap'
