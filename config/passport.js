@@ -36,7 +36,7 @@ passport.use(new FacebookStrategy(FBstrategy,
         console.log("Facebook strategy triggered...\n");
         var fbUser = {
             facebookId: profile.id,
-            facebookImageUrl: profile.photos[0].value,
+            facebookImageUrl: "https://graph.facebook.com/" + profile.id + "/picture" + "?width=200&height=200" + "&access_token=" + accessToken,
             name: profile.name.givenName,
             surname: profile.name.familyName,
             email: profile.emails[0].value
