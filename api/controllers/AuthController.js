@@ -34,7 +34,7 @@ var finishLogin = function (res, user, isNewUser) {
     }
 }
 
-var authenticateUser = function (queryArray, res, user, invitation_code) {
+var authenticateUser = function (queryArray, res, next, user, invitation_code) {
     User.update({
         or: queryArray
     }, user).exec(function (err, foundUser) {
@@ -89,7 +89,7 @@ module.exports = {
                 authenticateUser([
                     { facebookId: user.facebookId },
                     { email: user.email }
-                ], res, user, invitation_code);
+                ], res, next, user, invitation_code);
 
             })(req, res, next);
     },
@@ -127,7 +127,7 @@ module.exports = {
                 authenticateUser([
                     { googleId: user.googleId },
                     { email: user.email }
-                ], res, user, invitation_code);
+                ], res, next, user, invitation_code);
 
             })(req, res, next);
     },
@@ -167,7 +167,7 @@ module.exports = {
                 authenticateUser([
                     { twitterId: user.twitterId },
                     { email: user.email }
-                ], res, user, invitation_code);
+                ], res, next, user, invitation_code);
 
             })(req, res, next);
     },
