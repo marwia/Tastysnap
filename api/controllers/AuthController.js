@@ -78,11 +78,13 @@ module.exports = {
 
     facebookCallback: function (req, res, next) {
         passport.authenticate('facebook',
-            function (err, user, isNewUser) {
+            function (err, user, info) {
 
                 console.log("AUTH Facebook Response error=", err, "user=", user);
 
                 if (err) { return next(err); }
+
+                if (!user) { return next(info); }
 
                 var invitation_code = req.query.state;
 
@@ -116,11 +118,13 @@ module.exports = {
 
     googleCallback: function (req, res, next) {
         passport.authenticate('google',
-            function (err, user, isNewUser) {
+            function (err, user, info) {
 
                 console.log("AUTH Google Response error=", err, "user=", user);
 
                 if (err) { return next(err); }
+
+                if (!user) { return next(info); }
 
                 var invitation_code = req.query.state;
 
@@ -156,11 +160,13 @@ module.exports = {
 
     twitterCallback: function (req, res, next) {
         passport.authenticate('twitter',
-            function (err, user, isNewUser) {
+            function (err, user, info) {
 
                 console.log("AUTH Twitter Response error= ", err, "user= ", user);
 
                 if (err) { return next(err); }
+
+                if (!user) { return next(info); }
 
                 var invitation_code = req.query.state;
 
