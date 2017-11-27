@@ -14,7 +14,7 @@ module.exports = {
 
     /**
      * admin: può modificare e visualizzare
-     * view: può solo modificare
+     * view: può solo visualizzare
      */
     type: { type: 'String', required: true, enum: ['admin', 'view' ] }
 
