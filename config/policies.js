@@ -53,7 +53,8 @@ module.exports.policies = {
     'registerToNotifications' : ['isAuthorized'],
     'update': ['isAuthorized', 'isProfileOwner'],
     'findOne' : 'attachUser',
-    'find' : 'attachUser',   
+    'find' : 'attachUser',
+    'create': false
   },
 
   'CollectionController' : {

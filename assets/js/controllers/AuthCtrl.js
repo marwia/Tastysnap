@@ -34,22 +34,4 @@ angular.module('AuthCtrl', []).controller('AuthCtrl', [
 				$scope.error=2;
 			}
 		})*/
-		
-		$scope.register = function(){
-			Auth.register($scope.user).error(function(error){
-				$scope.error = error;
-			}).then(function(){
-				$state.go('app.home.most_recent');
-			});
-		};
-
-		$scope.logIn = function(){
-	
-			Auth.logIn($scope.user).error(function(error){
-				$scope.error = error;
-			}).then(function(){
-				$state.go('app.home.most_recent');
-			});
-			
-		};
 	}]);

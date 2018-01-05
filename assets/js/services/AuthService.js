@@ -48,20 +48,6 @@ angular.module('AuthService', [])
         return null;
     };
 
-
-    auth.register = function (user) {
-        return $http.post(server_prefix + '/user/create', user).then(function (response) {
-            auth.saveToken(response.data.token);
-        });
-    };
-
-
-    auth.logIn = function (user) {
-        return $http.post(server_prefix + '/login', user).then(function (response) {
-            auth.saveToken(response.data.token);
-        });
-    };
-
     auth.isInvitationRequired = function (successCB) {
         return $http.get(server_prefix + '/auth/invitation').then(function (response) {
             successCB(response.data);
