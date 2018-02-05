@@ -9,15 +9,6 @@
 
 var raccoon = require('raccoon');
 
-/**
- * Il motore dei consigli viene usato soltanto in produzione,
- * tanto in locale non si avrebbero dati sufficienti a dare 
- * dei consigli.
- */
-if (process.env.NODE_ENV === 'production') 
-    raccoon.connect(sails.config.raccoon.port, sails.config.raccoon.url);
-
-
 module.exports = {
 
   attributes: {

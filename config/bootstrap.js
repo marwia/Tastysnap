@@ -9,7 +9,7 @@
  * http://sailsjs.org/#/documentation/reference/sails.config/sails.config.bootstrap.html
  */
 
-module.exports.bootstrap = function(cb) {
+module.exports.bootstrap = function (cb) {
 
   // Ensure we have 2dsphere index on Property so GeoSpatial queries can work!
   Recipe.native(function (err, collection) {
@@ -21,4 +21,14 @@ module.exports.bootstrap = function(cb) {
 
     });
   });
+
+  /**
+ * Il motore dei consigli viene usato soltanto in produzione,
+ * tanto in locale non si avrebbero dati sufficienti a dare 
+ * dei consigli.
+ */
+  if (process.env.NODE_ENV === 'production') {
+    process.env.RACCOON_REDIS_URL = sails.config.raccoon.url;
+    process.env.RACCOON_REDIS_PORT = sails.config.raccoon.port;
+  }
 };
