@@ -9,8 +9,6 @@
 /**
  * Module dependencies
  */
-var bcrypt = require('bcrypt-nodejs');// per generare l'hash
-
 var jwt = require('jsonwebtoken');// per l'autenticazione basata su token JSON
 
 
@@ -137,33 +135,6 @@ module.exports = {
   * Metodi della classe (una sorta di metodi statici in Java).               *
   *                                                                          *
   ***************************************************************************/
-
-  // Generating a hash
-  /*
-  generateHash: function (password) {
-      return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-  },
-
-  // Checking if password is valid
-  validPassword: function (user, password) {
-    //console.log("password" + password);
-    console.log(this.generateHash(password));
-    console.log("encryptedPassword" + user.encryptedPassword);
-      try {
-          return bcrypt.compareSync(password, user.encryptedPassword);
-      }
-      catch (exception) {
-          return false;
-      }
-  },
-
-  // Here we encrypt password before creating a User
-  beforeCreate : function (values, next) {
-    values.encryptedPassword = this.generateHash(values.password);
-    next();
-  },
-  */
- 
 
   /***************************************************************************
   *                                                                          *
