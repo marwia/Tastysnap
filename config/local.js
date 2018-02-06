@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production') {
     module.exports = {
 
         ssl: {
-            ca: fs.readFileSync('/etc/letsencrypt/live/tastysnap.com/chain.pem'),
+            ca: fs.readFileSync('/etc/letsencrypt/live/tastysnap.com/chain.pem', 'utf8'),
             key: fs.readFileSync('/etc/letsencrypt/live/tastysnap.com/privkey.pem'),
             cert: fs.readFileSync('/etc/letsencrypt/live/tastysnap.com/cert.pem')
         },
