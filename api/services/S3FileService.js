@@ -8,17 +8,18 @@
 
 var fs = require('fs');
 var path = require('path');
-var bucket = 'tastysnapcdn';
 var aws = require('aws-sdk');
-aws.config.loadFromPath('./aws_config.json');
+var awsS3Config = require('./config/aws_s3.json');
 
+aws.config.loadFromPath('./config/aws_s3.json');
+aws.config.a
 var s3 = new aws.S3();
 
 module.exports = {
 
     /**
      * Funzione per stampare la lista di tutti i 
-     * file del bucket "tastysnapcdn".
+     * file del bucket associato a Tastysnap.
      */
     listBuckets: function() {
         s3.listBuckets(function(error, data) {
@@ -34,7 +35,7 @@ module.exports = {
      * Funzione per caricare qualsiasi file inferiore a 10MB sul 
      * bucket 'tastysnapcdn'.
      * Tale file verrà reso disponibile a tutti in lettura tramite
-     * la url: 'https://tastysnapcdn.s3.amazonaws.com/<nome_file>'
+     * la url: 'https://<BUCKET NAME>.s3.amazonaws.com/<nome_file>'
      * 
      * @param {File} file - file da caricare
      * @param {Function} whenDone - callback finale
@@ -55,7 +56,7 @@ module.exports = {
             var filename = file.fd.replace(/^.*[\\\/]/, '');
             
             var params = { 
-                Bucket: bucket, 
+                Bucket: awsS3Config.bucket, 
                 ContentType: file.type, 
                 Key: filename, 
                 Body: data 
@@ -67,7 +68,7 @@ module.exports = {
 
     /**
      * Funzione per eliminare qualsiasi dal
-     * bucket 'tastysnapcdn'.
+     * bucket associato a Tastysnap.
      * L'eliminazione avviene per nome del file.
      * 
      * @param {String} filename - nomde del file da eliminare
@@ -77,7 +78,7 @@ module.exports = {
      */
     deleteS3Object: function(filename) {
         var params = {
-            Bucket: bucket, /* required */
+            Bucket: awsS3Config.bucket, /* required */
             Delete: { /* required */
                 Objects: [ /* required */
                     {

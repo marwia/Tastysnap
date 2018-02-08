@@ -1,0 +1,7 @@
+{
+  "accessKeyId": "AKIAJ5SOJBN426KBF42A",
+  "secretAccessKey": "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",
+  "region": "eu-central-1",
+  "url": "https://tastysnap-cdn.s3.amazonaws.com/",
+  "bucket": "tastysnap-cdn"
+}

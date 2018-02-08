@@ -8,13 +8,12 @@
 var md5 = require('md5');
 var fs = require('fs');
 
+var awsS3Config = require('./config/aws_s3.json');
+
 // setting allowed file types
 var allowedTypes = ['image/jpeg', 'image/png'];
 // skipper default upload directory .tmp/uploads/
 var localImagesDir = sails.config.appPath + "/assets/images";
-
-var server_name = "https://tastysnap.com";
-var cdn_url = "https://tastysnapcdn.s3.amazonaws.com/";
 
 module.exports = {
 
@@ -79,7 +78,7 @@ module.exports = {
             }
 
             var filename = filesUploaded[0].fd.replace(/^.*[\\\/]/, '');
-            var fileUrl = cdn_url + filename;
+            var fileUrl = awsS3Config.url + filename;
 
             // elimino il file temporaneo
             fs.unlink(filesUploaded[0].fd, function (err) {
