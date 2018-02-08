@@ -14,14 +14,14 @@ Questo progetto è stato creato usando:
 6. Installare NGINX web server tramite la guida https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-16-04
 7. Configurare NGINX per fare il redirect delle chiamate HTTP a HTTPS, quindi aggiungere alla fine del primo blocco:
 	```
-		##
-        # Tastysnap HTTPS redirect
-        ##
+	##
+	# Tastysnap HTTPS redirect
+	##
 
-        server {
-                server_name tastysnap.com www.tastysnap.com;
-                return 301 https://$host$request_uri;
-        }
+	server {
+			server_name tastysnap.com www.tastysnap.com;
+			return 301 https://$host$request_uri;
+	}
 	```
 8. Installare Redis tramite la guida https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-redis-on-ubuntu-16-04
 9. Creare un bucket S3;
