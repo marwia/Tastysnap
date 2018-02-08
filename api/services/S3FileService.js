@@ -9,10 +9,9 @@
 var fs = require('fs');
 var path = require('path');
 var aws = require('aws-sdk');
-var awsS3Config = require('./config/aws_s3.json');
+var awsS3Config = require('../../config/aws_s3.json');
 
-aws.config.loadFromPath('./config/aws_s3.json');
-aws.config.a
+aws.config.loadFromPath('././config/aws_s3.json');
 var s3 = new aws.S3();
 
 module.exports = {

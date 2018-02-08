@@ -8,7 +8,7 @@
 var md5 = require('md5');
 var fs = require('fs');
 
-var awsS3Config = require('./config/aws_s3.json');
+var awsS3Config = require('../../config/aws_s3.json');
 
 // setting allowed file types
 var allowedTypes = ['image/jpeg', 'image/png'];
