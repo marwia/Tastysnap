@@ -1,7 +1,7 @@
 {
-  "name": "TastySnap",
+  "name": "tastysnap",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "TastySnap è il social network sul cibo. Come tale offre una serie di API RESTful.",
   "keywords": [],
   "dependencies": {
@@ -49,9 +49,9 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Mariusz/flapperNews.git"
+    "url": "https://mariusz_wiazowski@bitbucket.org/tastysnap/tastysnap_core.git"
   },
-  "author": "Mariusz",
+  "author": "Mariusz Wiazowski <mariusz.wiazowski@gmail.com>",
   "license": "Copyright (c) Mariusz Wiazowski",
   "apidoc": {
     "title": "TastySnap apiDoc",
